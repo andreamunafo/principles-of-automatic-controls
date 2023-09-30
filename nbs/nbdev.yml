@@ -1,0 +1,9 @@
+project:
+  output-dir: _docs
+
+website:
+  title: "principles-of-automatic-controls"
+  site-url: "https://andreamunafo.github.io/principles-of-automatic-controls"
+  description: "ls -la"
+  repo-branch: main
+  repo-url: "https://github.com/andreamunafo/principles-of-automatic-controls"
