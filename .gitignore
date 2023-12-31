@@ -151,3 +151,4 @@ checklink/cookies.txt
 .quarto
 
 nbs/prompt.txt
+.jupyter_ystore.db
