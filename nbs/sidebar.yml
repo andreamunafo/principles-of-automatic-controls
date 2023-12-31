@@ -1,0 +1,35 @@
+website:
+  sidebar:
+    contents:
+      - index.ipynb
+      - 01_intro.ipynb
+      - 02_basics_of_feedback_control.ipynb
+      - 03_introduction_to_control_problem.ipynb
+      - 04_dynamic_systems.ipynb
+      - 05_dynamic_response.ipynb
+      - 06_inverse_laplace_transform.ipynb
+      - 07_modeling_dynamic_systems.ipynb
+      - 08_control_system_components.ipynb
+      - 09_Models_of_Control_Devices_and_Systems.ipynb
+      - 10_hardware_and_case_studies.ipynb
+      - 11_AC_hardware_and_case_studies.ipynb
+      - 12_A_First_Complete_Application.ipynb
+      - 13_Principles_of_Feedback_Control.ipynb
+      - 14_Feedback_systems_and_their_effects.ipynb
+      - 15_Introduction_to_Control_Systems.ipynb
+      - 16_Stabilty.ipynb
+      - 17_Stability_and_Routh_Criterion.ipynb
+      - 18_Performance_of_Feedback_Systems.ipynb
+      - 19_Design_of_feedback_control.ipynb
+      - 20_Design_of_feedback_control_continued.ipynb
+      - 21_Steady_State_Accuracy_And_Design_Principles.ipynb
+      - 22_Compensator_Design_Using_Root_Locus.ipynb
+      - 23_Design_with_the_root_locus.ipynb
+      - 24_Compensators_and_Root_Locus.ipynb
+      - 25_Introduction_to_Frequency_Domain_Analysis_in_Control_Systems.ipynb
+      - 26_Application_of_Nyquist_Stability_Criterion.ipynb
+      - 27_The_Nyquist_Stability_Criterion_and_Relative_Stability.ipynb
+      - 28_Body_Plots.ipynb
+      - 29_Feedback_system_performance_based_on_frequency_response.ipynb
+      - 30_.ipynb
+      - A_Models_of_Thermal_Systems.ipynb
