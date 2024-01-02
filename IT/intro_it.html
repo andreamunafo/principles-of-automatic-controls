@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>principles-of-automatic-controls - Principi di controllo automatico</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="../styles.css">
+<meta property="og:title" content="principles-of-automatic-controls - Principi di controllo automatico">
+<meta property="og:description" content="">
+<meta property="og:image" content="https://andreamunafo.github.io/principles-of-automatic-controls/IT/01_intro_it_files/figure-html/cell-3-output-1.png">
+<meta property="og:site-name" content="principles-of-automatic-controls">
+<meta property="og:image:height" content="547">
+<meta property="og:image:width" content="844">
+<meta name="twitter:title" content="principles-of-automatic-controls - Principi di controllo automatico">
+<meta name="twitter:description" content="">
+<meta name="twitter:image" content="https://andreamunafo.github.io/principles-of-automatic-controls/IT/01_intro_it_files/figure-html/cell-3-output-1.png">
+<meta name="twitter:image-height" content="547">
+<meta name="twitter:image-width" content="844">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">principles-of-automatic-controls</span>
+    </a>
+  </div>
+        <div class="quarto-navbar-tools ms-auto">
+</div>
+          <div id="quarto-search" class="" title="Search"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../IT/syllabus_it.html">IT</a></li><li class="breadcrumb-item"><a href="../IT/intro_it.html">Principi di controllo automatico</a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Feedback Control</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../syllabus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Syllabus for “Principles of Automatic Control”</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principles of Automatic Control</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../basics_of_feedback_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Feedback Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../introduction_to_control_problem.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to the control problem</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../dynamic_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modeling in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../dynamic_response.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Dynamic response of control systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../06_inverse_laplace_transform.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Inverse Laplace Transform: Partial fraction decomposition</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../modeling_dynamic_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Modeling of Dynamic Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../control_system_components.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Control System Components</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../models_of_control_devices_and_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Models of Controlled Devices</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../hardware_and_case_studies.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Hardware of Control Systems and Case Studies</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ac_hardware_and_case_studies.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">AC Motion Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../a_first_complete_application.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A Feedback Control System</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../principles_of_feedback_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principles of Feedback Control</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../feedback_systems_and_their_effects.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Feedback systems and their effects</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../introduction_to_control_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../stabilty.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Stability Analysis in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../stability_and_routh_criterion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Stability Analysis in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../performance_of_feedback_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Performance of Feedback Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../design_of_feedback_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Design Cycle for a Standard Second-Order System</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../20_Design_of_feedback_control_continued.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Understanding the Standard Second-Order System: Recap</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../steady_state_accuracy_and_design_principles.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Steady State Accuracy and Design Principles</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../compensator_design_using_root_locus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compensator Design</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../design_with_the_root_locus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Design with the Root Locus</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../compensators_and_root_locus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compensators and the Root Locus</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../introduction_to_frequency_domain_analysis_in_control_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Frequency Domain Analysis in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../application_of_nyquist_stability_criterion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Application of Nyquist Stability Criterion in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../the_nyquist_stability_criterion_and_relative_stability.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The Nyquist Stability Criterion and Relative Stability</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../body_plots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Bode Plot Analysis</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../feedback_system_performance_based_on_frequency_response.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Feedback System Performance Based On Frequency Response</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">IT</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT/syllabus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Programma per “Principi del controllo automatico”</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT/intro_it.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Principi di controllo automatico</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT/basics_of_feedback_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione ai sistemi di controllo del feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT/introduction_to_control_problem_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione al problema del controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT/dynamic_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modellazione nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT/dynamic_response_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Risposta dinamica dei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT/06_inverse_laplace_transform_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Trasformata di Laplace inversa: scomposizione parziale di frazioni</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT/modeling_dynamic_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione alla modellazione dei sistemi dinamici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT/control_system_components_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Componenti del sistema di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT/models_of_control_devices_and_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modelli di dispositivi controllati</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT/hardware_and_case_studies_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Hardware dei sistemi di controllo e casi di studio</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT/ac_hardware_and_case_studies_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sistemi di controllo del movimento CA</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT/a_first_complete_application_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Un sistema di controllo del feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT/principles_of_feedback_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principi di controllo del feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT/feedback_systems_and_their_effects_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sistemi di feedback e loro effetti</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT/introduction_to_control_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione ai sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT/stabilty_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analisi di stabilità nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT/stability_and_routh_criterion_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analisi di stabilità nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT/performance_of_feedback_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prestazioni dei sistemi di feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT/design_of_feedback_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Ciclo di progettazione per un sistema standard del secondo ordine</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT/20_Design_of_feedback_control_continued_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Comprensione del sistema standard del secondo ordine: riepilogo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT/steady_state_accuracy_and_design_principles_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Precisione dello stato stazionario e principi di progettazione</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT/compensator_design_using_root_locus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Progettazione del compensatore</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT/design_with_the_root_locus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Progettare con il luogo delle radici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT/compensators_and_root_locus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compensatori e luogo delle radici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT/introduction_to_frequency_domain_analysis_in_control_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione all’analisi nel dominio della frequenza nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT/application_of_nyquist_stability_criterion_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Applicazione del criterio di stabilità di Nyquist nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT/the_nyquist_stability_criterion_and_relative_stability_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Il criterio di stabilità di Nyquist e la stabilità relativa</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT/body_plots_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analisi del diagramma di Bode</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT/feedback_system_performance_based_on_frequency_response_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prestazioni del sistema di feedback basate sulla risposta in frequenza</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT/index_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Controllo del feedback</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduzione-ai-sistemi-di-controllo" id="toc-introduzione-ai-sistemi-di-controllo" class="nav-link active" data-scroll-target="#introduzione-ai-sistemi-di-controllo">Introduzione ai sistemi di controllo</a>
+  <ul class="collapse">
+  <li><a href="#terminologia-del-sistema-di-controllo" id="toc-terminologia-del-sistema-di-controllo" class="nav-link" data-scroll-target="#terminologia-del-sistema-di-controllo">Terminologia del sistema di controllo</a></li>
+  <li><a href="#importanza-dei-sistemi-di-controllo" id="toc-importanza-dei-sistemi-di-controllo" class="nav-link" data-scroll-target="#importanza-dei-sistemi-di-controllo">Importanza dei sistemi di controllo</a></li>
+  <li><a href="#terminologie-di-base-dei-sistemi-di-controllo" id="toc-terminologie-di-base-dei-sistemi-di-controllo" class="nav-link" data-scroll-target="#terminologie-di-base-dei-sistemi-di-controllo">Terminologie di base dei sistemi di controllo</a></li>
+  <li><a href="#rappresentazione-del-diagramma-a-blocchi" id="toc-rappresentazione-del-diagramma-a-blocchi" class="nav-link" data-scroll-target="#rappresentazione-del-diagramma-a-blocchi">Rappresentazione del diagramma a blocchi</a></li>
+  <li><a href="#controllo-ad-anello-aperto" id="toc-controllo-ad-anello-aperto" class="nav-link" data-scroll-target="#controllo-ad-anello-aperto">Controllo ad anello aperto</a></li>
+  <li><a href="#struttura-dei-sistemi-di-controllo-del-feedback" id="toc-struttura-dei-sistemi-di-controllo-del-feedback" class="nav-link" data-scroll-target="#struttura-dei-sistemi-di-controllo-del-feedback">Struttura dei sistemi di controllo del feedback</a></li>
+  <li><a href="#sfide-nel-sistema-di-controllo-del-feedback" id="toc-sfide-nel-sistema-di-controllo-del-feedback" class="nav-link" data-scroll-target="#sfide-nel-sistema-di-controllo-del-feedback">Sfide nel sistema di controllo del feedback</a></li>
+  <li><a href="#vantaggi-del-controllo-del-feedback" id="toc-vantaggi-del-controllo-del-feedback" class="nav-link" data-scroll-target="#vantaggi-del-controllo-del-feedback">Vantaggi del controllo del feedback</a></li>
+  <li><a href="#esempio" id="toc-esempio" class="nav-link" data-scroll-target="#esempio">Esempio</a></li>
+  </ul></li>
+  <li><a href="#approcci-progettuali-per-sistemi-di-controllo-feedback" id="toc-approcci-progettuali-per-sistemi-di-controllo-feedback" class="nav-link" data-scroll-target="#approcci-progettuali-per-sistemi-di-controllo-feedback">Approcci progettuali per sistemi di controllo feedback</a></li>
+  <li><a href="#contesto-storico" id="toc-contesto-storico" class="nav-link" data-scroll-target="#contesto-storico">Contesto storico:</a></li>
+  <li><a href="#esempi-illustrativi-di-sistemi-di-controllo" id="toc-esempi-illustrativi-di-sistemi-di-controllo" class="nav-link" data-scroll-target="#esempi-illustrativi-di-sistemi-di-controllo">Esempi illustrativi di sistemi di controllo</a>
+  <ul class="collapse">
+  <li><a href="#esempi-di-sistemi-controllati" id="toc-esempi-di-sistemi-controllati" class="nav-link" data-scroll-target="#esempi-di-sistemi-controllati">Esempi di sistemi controllati:</a></li>
+  </ul></li>
+  <li><a href="#conclusioni" id="toc-conclusioni" class="nav-link" data-scroll-target="#conclusioni">Conclusioni</a></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/andreamunafo/principles-of-automatic-controls/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Principi di controllo automatico</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
+<p>Benvenuti al corso sui <strong>Principi del Controllo Automatico</strong>. In questa serie di notebook Jupyter interattivi, approfondiremo i principi, i concetti e le terminologie fondamentali utilizzati nel campo dell’ingegneria dei controlli.</p>
+<section id="introduzione-ai-sistemi-di-controllo" class="level2">
+<h2 class="anchored" data-anchor-id="introduzione-ai-sistemi-di-controllo">Introduzione ai sistemi di controllo</h2>
+<p>L’ingegneria di controllo o l’ingegneria dei sistemi di controllo si occupa della progettazione di sistemi in modo che si comportino nel modo desiderato. Oggi i sistemi di controllo sono parte integrante della nostra vita quotidiana e hanno una vasta gamma di applicazioni.</p>
+<section id="terminologia-del-sistema-di-controllo" class="level3">
+<h3 class="anchored" data-anchor-id="terminologia-del-sistema-di-controllo">Terminologia del sistema di controllo</h3>
+<p>Nelle nostre discussioni iniziali, ci concentreremo sulle terminologie utilizzate nei sistemi di controllo. È fondamentale acquisire familiarità con questi termini per avere una chiara comprensione degli argomenti successivi.</p>
+<p>Cominciamo!</p>
+</section>
+<section id="importanza-dei-sistemi-di-controllo" class="level3">
+<h3 class="anchored" data-anchor-id="importanza-dei-sistemi-di-controllo">Importanza dei sistemi di controllo</h3>
+<p>La civiltà moderna ha ampiamente beneficiato dei progressi nell’ingegneria dei controlli. Dagli elettrodomestici come frigoriferi, condizionatori e sistemi di riscaldamento alle configurazioni avanzate nelle industrie, nella tecnologia spaziale, nella robotica e nei sistemi d’arma, l’ingegneria di controllo gioca un ruolo fondamentale.</p>
+<blockquote class="blockquote">
+<p><strong>Inserisci immagine</strong>: un collage che mostra vari sistemi e settori in cui viene applicata l’ingegneria di controllo.</p>
+</blockquote>
+<p>La teoria del controllo del feedback, su cui ci concentreremo in questo corso, viene utilizzata anche nel controllo delle scorte e nei sistemi socioeconomici. Anche se il nostro focus principale sarà sui sistemi ingegneristici, è essenziale notare che i sistemi socioeconomici e biologici rientrano nella cibernetica, che non sarà discussa approfonditamente in questo corso.</p>
+</section>
+<section id="terminologie-di-base-dei-sistemi-di-controllo" class="level3">
+<h3 class="anchored" data-anchor-id="terminologie-di-base-dei-sistemi-di-controllo">Terminologie di base dei sistemi di controllo</h3>
+<p>Prima di andare avanti, definiamo alcune delle terminologie di base utilizzate nei sistemi di controllo:</p>
+<ul>
+<li><p><strong>Processo/Impianto/Sistema Controllato</strong>: il sistema primario che miriamo a controllare. Può trattarsi di qualsiasi sistema, macchina o processo che necessita di controllo automatizzato. Ad esempio, in settori come quello chimico, petrolifero ed energetico, esistono applicazioni specifiche che richiedono il controllo di temperatura, umidità, pressione, ecc. Queste applicazioni vengono spesso definite “applicazioni di controllo di processo”.</p></li>
+<li><p><strong>Variabile di risposta</strong>: l’output o la variabile del processo che intendiamo controllare.</p></li>
+<li><p><strong>Variabile manipolata</strong>: la variabile che regoliamo o controlliamo per influenzare la variabile di risposta.</p></li>
+<li><p><strong>Controller</strong>: Un’entità che regola la variabile manipolata in base all’output desiderato.</p></li>
+<li><p><strong>Disturbo</strong>: qualsiasi cambiamento indesiderato o imprevisto nel sistema che può influenzare la variabile di risposta. Può avere origine esternamente o internamente al processo.</p></li>
+</ul>
+<p>Il seguente codice Python mostra un semplice grafico di come un disturbo può influenzare l’output se non gestito.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the time and system parameters</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>time <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">1000</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>system_output_without_disturbance <span class="op">=</span> np.sin(time)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>disturbance <span class="op">=</span> np.random.normal(<span class="dv">0</span>, <span class="fl">0.5</span>, <span class="bu">len</span>(time))</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>system_output_with_disturbance <span class="op">=</span> system_output_without_disturbance <span class="op">+</span> disturbance</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>plt.plot(time, system_output_without_disturbance, label<span class="op">=</span><span class="st">"Without Disturbance"</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>plt.plot(time, system_output_with_disturbance, label<span class="op">=</span><span class="st">"With Disturbance"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Time"</span>)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Output"</span>)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Effect of Disturbance on System Output"</span>)</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="01_intro_it_files/figure-html/cell-3-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>Storicamente, l’applicazione delle tecniche di controllo è iniziata con il controllo di processo, tipicamente intorno al periodo compreso tra il 1900 e il 1940. Durante la Seconda Guerra Mondiale si affermò la pressante necessità di piloti automatici di aerei, sistemi di posizionamento dei cannoni, radar, sistemi di controllo delle antenne, che portò allo sviluppo della teoria dei servomeccanismi. Il termine “servomeccanismo” deriva da “servo” che significa schiavo o servitore, indicando un sistema che obbedisce ad un comando, indispensabile durante la guerra.</p>
+<p>Con la convergenza di varie teorie, è emersa una teoria del controllo del feedback unificato, che comprende diversi sottocampi.</p>
+</section>
+<section id="rappresentazione-del-diagramma-a-blocchi" class="level3">
+<h3 class="anchored" data-anchor-id="rappresentazione-del-diagramma-a-blocchi">Rappresentazione del diagramma a blocchi</h3>
+<p>Per comprendere come funziona un sistema di controllo di base, è utile utilizzare una rappresentazione in diagramma a blocchi.</p>
+
+<table>
+<tbody><tr>
+<td>
+<img src="../pics/01_intro_basic_elements.png" alt="01_intro_basic_elements" style="width: 650px;">
+</td></tr>
+
+</tbody></table>
+<p><em>Figura: diagramma a blocchi che rappresenta la struttura del sistema di controllo di base e i suoi componenti e segnali principali.</em></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.patches <span class="im">as</span> patches</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a figure and axis</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">6</span>))</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Create rectangles for blocks</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>process_rect <span class="op">=</span> patches.Rectangle((<span class="fl">0.6</span>, <span class="fl">0.3</span>), <span class="fl">0.2</span>, <span class="fl">0.4</span>, edgecolor<span class="op">=</span><span class="st">'black'</span>, facecolor<span class="op">=</span><span class="st">'lightgray'</span>, label<span class="op">=</span><span class="st">"Process"</span>)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>controller_rect <span class="op">=</span> patches.Rectangle((<span class="fl">0.2</span>, <span class="fl">0.3</span>), <span class="fl">0.2</span>, <span class="fl">0.4</span>, edgecolor<span class="op">=</span><span class="st">'black'</span>, facecolor<span class="op">=</span><span class="st">'lightgray'</span>, label<span class="op">=</span><span class="st">"Controller"</span>)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Add rectangles to the axis</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>ax.add_patch(process_rect)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>ax.add_patch(controller_rect)</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Text inside the blocks</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>ax.text(<span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="st">'Controller'</span>, horizontalalignment<span class="op">=</span><span class="st">'center'</span>, verticalalignment<span class="op">=</span><span class="st">'center'</span>, fontsize<span class="op">=</span><span class="dv">12</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>ax.text(<span class="fl">0.7</span>, <span class="fl">0.5</span>, <span class="st">'Process'</span>, horizontalalignment<span class="op">=</span><span class="st">'center'</span>, verticalalignment<span class="op">=</span><span class="st">'center'</span>, fontsize<span class="op">=</span><span class="dv">12</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Add arrows using annotate</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>ax.annotate(<span class="st">""</span>, xy<span class="op">=</span>(<span class="fl">0.2</span>, <span class="fl">0.5</span>), xytext<span class="op">=</span>(<span class="dv">0</span>, <span class="fl">0.5</span>), arrowprops<span class="op">=</span><span class="bu">dict</span>(arrowstyle<span class="op">=</span><span class="st">"-&gt;"</span>))</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="co"># ax.annotate("", xy=(0.4, 0.5), xytext=(0.2, 0.5), arrowprops=dict(arrowstyle="-&gt;"))</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>ax.annotate(<span class="st">""</span>, xy<span class="op">=</span>(<span class="fl">0.6</span>, <span class="fl">0.5</span>), xytext<span class="op">=</span>(<span class="fl">0.4</span>, <span class="fl">0.5</span>), arrowprops<span class="op">=</span><span class="bu">dict</span>(arrowstyle<span class="op">=</span><span class="st">"-&gt;"</span>))</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="co"># ax.annotate("", xy=(0.8, 0.5), xytext=(0.6, 0.5), arrowprops=dict(arrowstyle="-&gt;"))</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>ax.annotate(<span class="st">""</span>, xy<span class="op">=</span>(<span class="dv">1</span>, <span class="fl">0.5</span>), xytext<span class="op">=</span>(<span class="fl">0.8</span>, <span class="fl">0.5</span>), arrowprops<span class="op">=</span><span class="bu">dict</span>(arrowstyle<span class="op">=</span><span class="st">"-&gt;"</span>))</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>ax.annotate(<span class="st">""</span>, xy<span class="op">=</span>(<span class="fl">0.7</span>, <span class="fl">0.7</span>), xytext<span class="op">=</span>(<span class="fl">0.7</span>, <span class="fl">0.9</span>), arrowprops<span class="op">=</span><span class="bu">dict</span>(arrowstyle<span class="op">=</span><span class="st">"-&gt;"</span>))</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Text for arrows</span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>ax.text(<span class="fl">0.1</span>, <span class="fl">0.53</span>, <span class="st">'Command</span><span class="ch">\n</span><span class="st">Signal'</span>, verticalalignment<span class="op">=</span><span class="st">'center'</span>, fontsize<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>ax.text(<span class="fl">0.3</span>, <span class="fl">0.52</span>, <span class="st">'Manipulated</span><span class="ch">\n</span><span class="st">Variable'</span>, verticalalignment<span class="op">=</span><span class="st">'center'</span>, fontsize<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>ax.text(<span class="fl">0.5</span>, <span class="fl">0.53</span>, <span class="st">'Response</span><span class="ch">\n</span><span class="st">Variable'</span>, verticalalignment<span class="op">=</span><span class="st">'center'</span>, fontsize<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>ax.text(<span class="fl">0.75</span>, <span class="fl">0.52</span>, <span class="st">'Output'</span>, verticalalignment<span class="op">=</span><span class="st">'center'</span>, fontsize<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>ax.text(<span class="fl">0.61</span>, <span class="fl">0.8</span>, <span class="st">'Disturbance'</span>, verticalalignment<span class="op">=</span><span class="st">'center'</span>, fontsize<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a><span class="co"># Set the limits, remove the axes and display</span></span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>ax.set_xlim(<span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>ax.set_ylim(<span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>ax.axis(<span class="st">'off'</span>)</span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="01_intro_it_files/figure-html/cell-4-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+</section>
+<section id="controllo-ad-anello-aperto" class="level3">
+<h3 class="anchored" data-anchor-id="controllo-ad-anello-aperto">Controllo ad anello aperto</h3>
+<p>In uno scenario ideale, il controller garantisce che la variabile di risposta segua i comandi del sistema, indipendentemente da eventuali disturbi. La struttura di controllo in cui il circuito non è chiuso e il controller dispone solo delle informazioni del segnale di comando, è definita “controllo ad anello aperto”.</p>
+<p>Tuttavia, un tale sistema può essere vulnerabile ai disturbi. Se un disturbo casuale colpisce il sistema e il controller non è a conoscenza di questo cambiamento, potrebbe non riuscire a far sì che la variabile di risposta segua il comando.</p>
+<p>Per affrontare questo problema, viene utilizzato un sistema più intelligente, noto come sistema di “controllo a circuito chiuso”. Qui, il controller riceve feedback dalla variabile di risposta, consentendogli di regolare la variabile manipolata in tempo reale e garantendo che l’uscita segua da vicino il comando, anche quando si verificano disturbi.</p>
+<p>I sistemi di controllo del feedback svolgono un ruolo fondamentale in vari ambiti. Questi sistemi utilizzano un segnale di errore per produrre un segnale di controllo adatto, che a sua volta viene utilizzato per manipolare il segnale di ingresso all’impianto, minimizzando l’errore. L’obiettivo primario è ridurre la differenza tra il comando desiderato e l’output effettivo. Questo capitolo approfondisce le complessità del sistema di controllo del feedback e fa luce sulle sfide, i vantaggi e i metodi ad esso associati.</p>
+<blockquote class="blockquote">
+<p><strong>Diagramma</strong>: un diagramma a blocchi che mostra il sistema di controllo a circuito chiuso. La nuova struttura dovrebbe illustrare il feedback dalla variabile di risposta al controller.</p>
+</blockquote>
+
+<table>
+<tbody><tr>
+<td>
+<img src="../pics/01_intro_closed_loop_system.png" alt="01_intro_closed_loop_system" style="width: 650px;">
+</td></tr>
+
+</tbody></table>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.patches <span class="im">as</span> patches</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a figure and axis</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">6</span>))</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Create rectangles for blocks</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>process_rect <span class="op">=</span> patches.Rectangle((<span class="fl">0.6</span>, <span class="fl">0.3</span>), <span class="fl">0.2</span>, <span class="fl">0.4</span>, edgecolor<span class="op">=</span><span class="st">'black'</span>, facecolor<span class="op">=</span><span class="st">'lightgray'</span>, label<span class="op">=</span><span class="st">"Process"</span>)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>controller_rect <span class="op">=</span> patches.Rectangle((<span class="fl">0.2</span>, <span class="fl">0.3</span>), <span class="fl">0.2</span>, <span class="fl">0.4</span>, edgecolor<span class="op">=</span><span class="st">'black'</span>, facecolor<span class="op">=</span><span class="st">'lightgray'</span>, label<span class="op">=</span><span class="st">"Controller"</span>)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>sensor_rect <span class="op">=</span> patches.Rectangle((<span class="fl">0.4</span>, <span class="fl">0.1</span>), <span class="fl">0.2</span>, <span class="fl">0.15</span>, edgecolor<span class="op">=</span><span class="st">'black'</span>, facecolor<span class="op">=</span><span class="st">'lightgray'</span>, label<span class="op">=</span><span class="st">"Sensor"</span>)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Add rectangles to the axis</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>ax.add_patch(process_rect)</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>ax.add_patch(controller_rect)</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>ax.add_patch(sensor_rect)</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Text inside the blocks</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>ax.text(<span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="st">'Controller'</span>, horizontalalignment<span class="op">=</span><span class="st">'center'</span>, verticalalignment<span class="op">=</span><span class="st">'center'</span>, fontsize<span class="op">=</span><span class="dv">12</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>ax.text(<span class="fl">0.7</span>, <span class="fl">0.5</span>, <span class="st">'Process'</span>, horizontalalignment<span class="op">=</span><span class="st">'center'</span>, verticalalignment<span class="op">=</span><span class="st">'center'</span>, fontsize<span class="op">=</span><span class="dv">12</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>ax.text(<span class="fl">0.5</span>, <span class="fl">0.175</span>, <span class="st">'Sensor'</span>, horizontalalignment<span class="op">=</span><span class="st">'center'</span>, verticalalignment<span class="op">=</span><span class="st">'center'</span>, fontsize<span class="op">=</span><span class="dv">12</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Add arrows using annotate</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>ax.annotate(<span class="st">""</span>, xy<span class="op">=</span>(<span class="fl">0.2</span>, <span class="fl">0.5</span>), xytext<span class="op">=</span>(<span class="dv">0</span>, <span class="fl">0.5</span>), arrowprops<span class="op">=</span><span class="bu">dict</span>(arrowstyle<span class="op">=</span><span class="st">"-&gt;"</span>))</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>ax.annotate(<span class="st">""</span>, xy<span class="op">=</span>(<span class="fl">0.6</span>, <span class="fl">0.5</span>), xytext<span class="op">=</span>(<span class="fl">0.4</span>, <span class="fl">0.5</span>), arrowprops<span class="op">=</span><span class="bu">dict</span>(arrowstyle<span class="op">=</span><span class="st">"-&gt;"</span>))</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>ax.annotate(<span class="st">""</span>, xy<span class="op">=</span>(<span class="dv">1</span>, <span class="fl">0.5</span>), xytext<span class="op">=</span>(<span class="fl">0.8</span>, <span class="fl">0.5</span>), arrowprops<span class="op">=</span><span class="bu">dict</span>(arrowstyle<span class="op">=</span><span class="st">"-&gt;"</span>))</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>ax.annotate(<span class="st">""</span>, xy<span class="op">=</span>(<span class="fl">0.7</span>, <span class="fl">0.7</span>), xytext<span class="op">=</span>(<span class="fl">0.7</span>, <span class="fl">0.9</span>), arrowprops<span class="op">=</span><span class="bu">dict</span>(arrowstyle<span class="op">=</span><span class="st">"-&gt;"</span>))</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>ax.annotate(<span class="st">""</span>, xy<span class="op">=</span>(<span class="fl">0.7</span>, <span class="fl">0.7</span>), xytext<span class="op">=</span>(<span class="fl">0.7</span>, <span class="fl">0.925</span>), arrowprops<span class="op">=</span><span class="bu">dict</span>(arrowstyle<span class="op">=</span><span class="st">"-&gt;"</span>))</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>ax.annotate(<span class="st">""</span>, xy<span class="op">=</span>(<span class="fl">0.85</span>, <span class="fl">0.17</span>), xytext<span class="op">=</span>(<span class="fl">0.85</span>, <span class="fl">0.5</span>), arrowprops<span class="op">=</span><span class="bu">dict</span>(arrowstyle<span class="op">=</span><span class="st">"-"</span>))</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>ax.annotate(<span class="st">""</span>, xy<span class="op">=</span>(<span class="fl">0.6</span>, <span class="fl">0.175</span>), xytext<span class="op">=</span>(<span class="fl">0.85</span>, <span class="fl">0.175</span>), arrowprops<span class="op">=</span><span class="bu">dict</span>(arrowstyle<span class="op">=</span><span class="st">"-&gt;"</span>))</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>ax.annotate(<span class="st">""</span>, xy<span class="op">=</span>(<span class="fl">0.3</span>, <span class="fl">0.175</span>), xytext<span class="op">=</span>(<span class="fl">0.4</span>, <span class="fl">0.175</span>), arrowprops<span class="op">=</span><span class="bu">dict</span>(arrowstyle<span class="op">=</span><span class="st">"-"</span>))</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>ax.annotate(<span class="st">""</span>, xy<span class="op">=</span>(<span class="fl">0.3</span>, <span class="fl">0.17</span>), xytext<span class="op">=</span>(<span class="fl">0.3</span>, <span class="fl">0.3</span>), arrowprops<span class="op">=</span><span class="bu">dict</span>(arrowstyle<span class="op">=</span><span class="st">"&lt;-"</span>))</span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Text for arrows</span></span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>ax.text(<span class="fl">0.1</span>, <span class="fl">0.53</span>, <span class="st">'Command</span><span class="ch">\n</span><span class="st">Signal'</span>, verticalalignment<span class="op">=</span><span class="st">'center'</span>, fontsize<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>ax.text(<span class="fl">0.3</span>, <span class="fl">0.52</span>, <span class="st">'Manipulated</span><span class="ch">\n</span><span class="st">Variable'</span>, verticalalignment<span class="op">=</span><span class="st">'center'</span>, fontsize<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>ax.text(<span class="fl">0.5</span>, <span class="fl">0.53</span>, <span class="st">'Response</span><span class="ch">\n</span><span class="st">Variable'</span>, verticalalignment<span class="op">=</span><span class="st">'center'</span>, fontsize<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>ax.text(<span class="fl">0.75</span>, <span class="fl">0.52</span>, <span class="st">'Output'</span>, verticalalignment<span class="op">=</span><span class="st">'center'</span>, fontsize<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>ax.text(<span class="fl">0.61</span>, <span class="fl">0.81</span>, <span class="st">'Disturbance'</span>, verticalalignment<span class="op">=</span><span class="st">'center'</span>, fontsize<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a><span class="co"># ax.text(0.43, 0.62, 'Feedback', verticalalignment='center', fontsize=10)</span></span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a><span class="co"># Set the limits, remove the axes and display</span></span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>ax.set_xlim(<span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>ax.set_ylim(<span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>ax.axis(<span class="st">'off'</span>)</span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="01_intro_it_files/figure-html/cell-5-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+</section>
+<section id="struttura-dei-sistemi-di-controllo-del-feedback" class="level3">
+<h3 class="anchored" data-anchor-id="struttura-dei-sistemi-di-controllo-del-feedback">Struttura dei sistemi di controllo del feedback</h3>
+<p>Il meccanismo di un sistema di controllo del feedback è un processo di autoannullamento dell’errore. Il sistema verifica continuamente la presenza di discrepanze tra il comando desiderato e l’output effettivo, impiegando azioni del controller per mitigare questi errori. Un sistema di questo tipo è comunemente noto come sistema a circuito chiuso a causa della sua struttura ad anello, che facilita il processo di feedback.</p>
+<p>I componenti di questo sistema possono essere intesi come segue:</p>
+<ul>
+<li>Segnale di comando: l’uscita o il setpoint desiderato.</li>
+<li>Variabile controllata: l’output effettivo del sistema.</li>
+<li>Segnale di errore: differenza tra il segnale di comando e la variabile controllata.</li>
+<li>Controller: elabora il segnale di errore per produrre il segnale di controllo.</li>
+<li>Impianto: L’effettivo sistema controllato.</li>
+<li>Sensore: misura la potenza dell’impianto</li>
+</ul>
+</section>
+<section id="sfide-nel-sistema-di-controllo-del-feedback" class="level3">
+<h3 class="anchored" data-anchor-id="sfide-nel-sistema-di-controllo-del-feedback">Sfide nel sistema di controllo del feedback</h3>
+<ul>
+<li><p>Limitazioni del sensore: Una delle principali fonti di problemi nel sistema di controllo del feedback è il sensore. L’inclusione del sensore, assente nei sistemi a circuito aperto, presenta una serie di problemi:</p>
+<ul>
+<li>Rumore: Il sensore potrebbe introdurre rumore, soprattutto alle alte frequenze, durante la misurazione. Questo rumore può disturbare il corretto funzionamento dell’impianto e del controllore, riducendo così l’efficienza del sistema.</li>
+<li>Soluzioni al rumore: l’installazione di filtri antirumore adeguati può risolvere questo problema, garantendo che il rumore ad alta frequenza non interferisca con il funzionamento del circuito.</li>
+</ul></li>
+<li><p>Requisiti del controller: Un aspetto significativo del sistema di feedback è il suo controllore. Lo scopo principale del controller è rendere il sistema robusto. Un sistema robusto implica che la variabile controllata segua fedelmente il segnale di comando, anche in presenza di disturbi esterni o variazioni dei parametri dell’impianto. Per raggiungere questo obiettivo è necessario un attento equilibrio tra accuratezza e stabilità del sistema, un delicato compromesso che costituisce il nucleo della teoria del controllo del feedback.</p></li>
+<li><p>Preoccupazioni per la stabilità: Mentre ci impegniamo per una maggiore precisione del sistema, la stabilità potrebbe essere compromessa. Questo compromesso è una sfida intrinseca della struttura del feedback. La teoria del controllo del feedback e i suoi progetti mirano a trovare un equilibrio tra questi requisiti contrastanti.</p></li>
+</ul>
+</section>
+<section id="vantaggi-del-controllo-del-feedback" class="level3">
+<h3 class="anchored" data-anchor-id="vantaggi-del-controllo-del-feedback">Vantaggi del controllo del feedback</h3>
+<p>I sistemi di controllo del feedback sono indispensabili, principalmente a causa della loro natura robusta. Nonostante le sfide associate, la loro capacità di filtrare i disturbi e adattarsi alle variazioni dei parametri li rende superiori ai sistemi a circuito aperto. Senza strutture di controllo del feedback, sarebbe difficile ottenere in modo efficace la precisione del sistema.</p>
+</section>
+<section id="esempio" class="level3">
+<h3 class="anchored" data-anchor-id="esempio">Esempio</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.integrate <span class="im">import</span> odeint</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> open_loop_system(y, t, K, tau):</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Open-loop system model."""</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    u <span class="op">=</span> <span class="dv">1</span>  <span class="co"># step input</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="dv">3</span> <span class="op">&lt;=</span> t <span class="op">&lt;=</span> <span class="dv">8</span>:  <span class="co"># Adding a disturbance between time 3 and 5</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>        u <span class="op">+=</span> <span class="fl">1.0</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    dydt <span class="op">=</span> (<span class="op">-</span>y <span class="op">+</span> K <span class="op">*</span> u) <span class="op">/</span> tau</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> dydt</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> closed_loop_system(states, t, K, tau, Ki, Kd):</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Closed-loop system model with PID control."""</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    y, e_prev, e_int <span class="op">=</span> states  <span class="co"># y is system output, e_prev is previous error, e_int is integral of error</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    setpoint <span class="op">=</span> <span class="dv">1</span>  <span class="co"># desired setpoint</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    disturbance <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="dv">3</span> <span class="op">&lt;=</span> t <span class="op">&lt;=</span> <span class="dv">5</span>:  <span class="co"># Adding a disturbance between time 3 and 5</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>        disturbance <span class="op">+=</span> <span class="fl">1.0</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Error</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>    e <span class="op">=</span> setpoint <span class="op">-</span> y</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># PID Controller</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>    u <span class="op">=</span> K <span class="op">*</span> e <span class="op">+</span> Ki <span class="op">*</span> e_int <span class="op">+</span> Kd <span class="op">*</span> (e <span class="op">-</span> e_prev)</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>    dydt <span class="op">=</span> (<span class="op">-</span>y <span class="op">+</span> u <span class="op">+</span> disturbance) <span class="op">/</span> tau  <span class="co"># Disturbance is added directly to the system dynamics</span></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>    deintdt <span class="op">=</span> e  <span class="co"># Integral of error over time</span></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>    dedt <span class="op">=</span> e <span class="op">-</span> e_prev</span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [dydt, dedt, deintdt]</span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a><span class="co"># System parameters</span></span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>K <span class="op">=</span> <span class="fl">2.5</span></span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>tau <span class="op">=</span> <span class="fl">1.0</span></span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>Ki <span class="op">=</span> <span class="fl">1.0</span>  <span class="co"># Integral gain</span></span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>Kd <span class="op">=</span> <span class="fl">0.5</span>  <span class="co"># Derivative gain</span></span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a><span class="co"># Time array</span></span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">100</span>)</span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a><span class="co"># Solve ODE for the open-loop system</span></span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>y_open <span class="op">=</span> odeint(open_loop_system, <span class="dv">0</span>, t, args<span class="op">=</span>(K, tau))</span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a>error_open <span class="op">=</span> <span class="dv">1</span> <span class="op">-</span> y_open.squeeze()  <span class="co"># desired setpoint is 1, so error is 1 - output</span></span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a><span class="co"># Solve ODE for the closed-loop system</span></span>
+<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a>initial_conditions <span class="op">=</span> [<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>]  <span class="co"># initial values for y, e_prev, and e_int</span></span>
+<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a>y_closed, error_closed, _ <span class="op">=</span> odeint(closed_loop_system, initial_conditions, t, args<span class="op">=</span>(K, tau, Ki, Kd)).T</span>
+<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot Responses</span></span>
+<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>,<span class="dv">6</span>))</span>
+<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a>plt.plot(t, y_closed, <span class="st">'r-'</span>, label<span class="op">=</span><span class="st">'Closed-loop Response (PID)'</span>)</span>
+<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a>plt.plot(t, y_open, <span class="st">'b--'</span>, label<span class="op">=</span><span class="st">'Open-loop Response'</span>)</span>
+<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Response'</span>)</span>
+<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Control System Response with Disturbance'</span>)</span>
+<span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a>plt.grid()</span>
+<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-58"><a href="#cb6-58" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot Errors</span></span>
+<span id="cb6-59"><a href="#cb6-59" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">2</span>)</span>
+<span id="cb6-60"><a href="#cb6-60" aria-hidden="true" tabindex="-1"></a>plt.plot(t, error_closed, <span class="st">'r-'</span>, label<span class="op">=</span><span class="st">'Closed-loop Error (PID)'</span>)</span>
+<span id="cb6-61"><a href="#cb6-61" aria-hidden="true" tabindex="-1"></a>plt.plot(t, error_open, <span class="st">'b--'</span>, label<span class="op">=</span><span class="st">'Open-loop Error'</span>)</span>
+<span id="cb6-62"><a href="#cb6-62" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Time'</span>)</span>
+<span id="cb6-63"><a href="#cb6-63" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Error'</span>)</span>
+<span id="cb6-64"><a href="#cb6-64" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Control System Errors with Disturbance'</span>)</span>
+<span id="cb6-65"><a href="#cb6-65" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb6-66"><a href="#cb6-66" aria-hidden="true" tabindex="-1"></a>plt.grid()</span>
+<span id="cb6-67"><a href="#cb6-67" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb6-68"><a href="#cb6-68" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="01_intro_it_files/figure-html/cell-7-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>Il sistema che stiamo simulando è un sistema base del primo ordine. È uno dei sistemi dinamici più semplici, utilizzato spesso come elemento fondamentale nella teoria del controllo. Le equazioni che governano la sua dinamica, in generale, assomigliano a:</p>
+<p><span class="math display">\[
+\tau \frac{dy(t)}{dt} + y(t) = Ku(t)
+\]</span></p>
+<p>Qui: - <span class="math inline">\(\tau\)</span> è la costante di tempo del sistema. Dà un’idea della velocità con cui il sistema risponde ai cambiamenti nell’input. - <span class="math inline">\(K\)</span> è il guadagno del sistema. Ti dice quanto cambia l’output del sistema per una determinata modifica nell’input. - <span class="math inline">\(u(t)\)</span> è l’input del sistema al tempo <span class="math inline">\(t\)</span>. - <span class="math inline">\(y(t)\)</span> è l’output del sistema al tempo <span class="math inline">\(t\)</span>.</p>
+<p>Il sistema ad anello aperto agisce direttamente sul sistema con l’ingresso <span class="math inline">\(u(t)\)</span>. Non c’è feedback, quindi se c’è un disturbo o il sistema non si comporta come previsto, il sistema a circuito aperto non può correggerlo.</p>
+<p>Il sistema a circuito chiuso, invece, utilizza il feedback. L’uscita del sistema <span class="math inline">\(y(t)\)</span> viene costantemente misurata e confrontata con il setpoint desiderato per determinare l’errore. Un controller regola quindi l’ingresso del sistema <span class="math inline">\(u(t)\)</span> in base a questo errore per far sì che l’uscita del sistema corrisponda al setpoint desiderato. Ciò consente al sistema a circuito chiuso di correggere i disturbi e il comportamento del sistema che si discosta dal comportamento desiderato.</p>
+<p>Nella nostra simulazione specifica: - Il sistema ad anello aperto è stato modellato per mostrare come reagisce direttamente a un input e ad un disturbo senza alcun meccanismo di feedback. - Il sistema a circuito chiuso è stato modellato utilizzando un semplice controllore proporzionale con un termine derivativo. Il controller cerca di minimizzare l’errore, che è la differenza tra l’uscita desiderata (setpoint + disturbo) e l’uscita effettiva del sistema. Ciò consente al sistema a circuito chiuso di correggere eventuali disturbi o altri comportamenti imprevisti.</p>
+<p>Con questo meccanismo di feedback, il controller può regolare e correggere dinamicamente eventuali deviazioni, garantendo che il sistema rimanga stabile e funzioni come desiderato.</p>
+</section>
+</section>
+<section id="approcci-progettuali-per-sistemi-di-controllo-feedback" class="level2">
+<h2 class="anchored" data-anchor-id="approcci-progettuali-per-sistemi-di-controllo-feedback">Approcci progettuali per sistemi di controllo feedback</h2>
+<p>Progettare un controller efficace è fondamentale. Esistono vari approcci a questo proposito e possono essere classificati come segue:</p>
+<ol type="1">
+<li>Approccio sperimentale: si basa sull’esperienza pratica. Viene installato un controller basato sulle esperienze passate e quindi regolato in tempo reale fino al raggiungimento dei risultati desiderati. Questo metodo, denominato regolazione del controller, è ad hoc ed è ampiamente utilizzato nelle applicazioni di controllo di processo.</li>
+<li>Approccio basato su modelli o analitico: per i sistemi complessi in cui i requisiti di controllo sono rigorosi, un approccio basato su modelli è più adatto. Qui la dinamica del sistema viene catturata in un modello matematico, che viene poi utilizzato per progettare analiticamente il controller.</li>
+<li>Approccio basato sulla conoscenza: questo approccio sta guadagnando terreno, con sviluppi significativi nell’ultimo decennio. Metodi come controllo esperto, controllo fuzzy, reti neurali, apprendimento per rinforzo rientrano in questa categoria. L’idea centrale è quella di utilizzare linee guida qualitative o regole derivate dalla conoscenza degli esperti per progettare il controller.</li>
+</ol>
+<p>Nell’ambito di questo corso, ci concentreremo principalmente sul controllo basato su modelli. Ciò comporta la derivazione di un modello matematico del sistema fisico, che può essere basato su leggi fisiche o sperimentazione.</p>
+</section>
+<section id="contesto-storico" class="level2">
+<h2 class="anchored" data-anchor-id="contesto-storico">Contesto storico:</h2>
+<p>L’evoluzione dei metodi di progettazione del controllo può essere sostanzialmente classificata in due epoche principali:</p>
+<ol type="1">
+<li>Progettazione classica dei controlli (1940-1960): questo periodo ha visto lo sviluppo di metodi di progettazione nel dominio della frequenza. Sono emerse tecniche come i metodi di stabilità di Nyquist, i grafici di Bode e i grafici del luogo delle radici. Sono ancora molto utilizzati, soprattutto nelle applicazioni di controllo industriale.</li>
+<li>Modern Control Design (dagli anni ’60 in poi): i requisiti di controllo dei veicoli spaziali hanno dato vita a tecniche di stato-spazio, note come Modern Control Design. Sebbene questi metodi siano definiti “moderni”, è fondamentale comprendere che sia i metodi classici che quelli moderni sono ancora prevalenti e fondamentali nelle rispettive applicazioni.</li>
+</ol>
+<p>Il termine “progettazione di controlli moderna” potrebbe essere un po’ fuorviante. È emerso principalmente dai requisiti specifici del tracciamento nei veicoli spaziali. Tuttavia, nel campo del controllo industriale, i metodi classici di progettazione sono ancora ampiamente prevalenti. Infatti, circa il 75% degli odierni problemi di controllo industriale vengono affrontati utilizzando queste tecniche classiche.</p>
+<p>Sebbene i metodi moderni abbiano le loro origini e i loro vantaggi, in particolare in applicazioni specializzate come i veicoli spaziali, è ancora discutibile quale metodo offra maggiore <strong>robustezza</strong>. La robustezza, dopo tutto, è il requisito primario per la maggior parte dei sistemi.</p>
+<p>Questo dibattito in corso rende imperativo rinunciare alla terminologia del controllo classico e moderno, poiché entrambi sono ugualmente rilevanti a seconda dell’applicazione.</p>
+<p>Nell’ambito di questo corso, la nostra concentrazione principale sarà sui <strong>metodi di progettazione nel dominio della frequenza</strong>. Ciò ti fornirà una comprensione completa dei metodi fondamentali nella progettazione dei controlli.</p>
+<p>Tuttavia, non trascureremo del tutto i metodi delle variabili di stato. Verranno invece introdotti non dal punto di vista della progettazione ma piuttosto per la simulazione del sistema. La simulazione del sistema, se affrontata attraverso la formulazione delle variabili di stato, può essere più intuitiva ed efficace.</p>
+</section>
+<section id="esempi-illustrativi-di-sistemi-di-controllo" class="level2">
+<h2 class="anchored" data-anchor-id="esempi-illustrativi-di-sistemi-di-controllo">Esempi illustrativi di sistemi di controllo</h2>
+<p>Spesso è utile mettere in relazione i concetti teorici con esempi del mondo reale. Ciò aiuta a comprendere le applicazioni più ampie e le sfumature dei sistemi di controllo nella vita di tutti i giorni.</p>
+<section id="esempi-di-sistemi-controllati" class="level3">
+<h3 class="anchored" data-anchor-id="esempi-di-sistemi-controllati">Esempi di sistemi controllati:</h3>
+<ul>
+<li>Serbatoio del WC del bagno: un sistema apparentemente semplice, ma in sostanza è un meccanismo di controllo a feedback.</li>
+<li>Guida automobilistica: comprende vari sistemi di controllo, dalla regolazione della velocità al servosterzo.</li>
+<li>Riscaldamento residenziale: i termostati e i sistemi HVAC si affidano al feedback per mantenere le temperature desiderate.</li>
+<li>Meccanismo di sterzo idraulico: un componente critico per molti veicoli e sistemi pesanti.</li>
+<li>Servosistema antenna: utilizzato per il monitoraggio e le comunicazioni.</li>
+<li>Sistema di controllo della velocità: presente in varie macchine, dalle installazioni industriali agli elettrodomestici.</li>
+</ul>
+<blockquote class="blockquote">
+<p>[Inserisci un collage o una serie di immagini che illustrino gli esempi precedenti.]</p>
+</blockquote>
+<p>Figura 3: esempi reali di sistemi di controllo.</p>
+</section>
+</section>
+<section id="conclusioni" class="level2">
+<h2 class="anchored" data-anchor-id="conclusioni">Conclusioni</h2>
+<p>I sistemi di controllo del feedback costituiscono la spina dorsale di molte applicazioni ingegneristiche moderne. La capacità di fornire un meccanismo per regolare automaticamente il comportamento del sistema in base al feedback degli output rende questi sistemi indispensabili. Tuttavia, la progettazione e l’implementazione di questi sistemi richiedono una comprensione completa della loro struttura, delle sfide, dei vantaggi e dei vari approcci disponibili. Nei capitoli successivi approfondiremo ciascuno di questi aspetti, fornendo uno sguardo più dettagliato alle complessità dei sistemi di controllo del feedback.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

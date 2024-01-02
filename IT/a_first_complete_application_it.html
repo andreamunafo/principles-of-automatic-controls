@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>principles-of-automatic-controls - Un sistema di controllo del feedback</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="../styles.css">
+<meta property="og:title" content="principles-of-automatic-controls - Un sistema di controllo del feedback">
+<meta property="og:description" content="">
+<meta property="og:image" content="https://andreamunafo.github.io/principles-of-automatic-controls/pics/12_A_First_Complete_Application_image_diagram_process_control_room.png?1">
+<meta property="og:site-name" content="principles-of-automatic-controls">
+<meta name="twitter:title" content="principles-of-automatic-controls - Un sistema di controllo del feedback">
+<meta name="twitter:description" content="">
+<meta name="twitter:image" content="https://andreamunafo.github.io/principles-of-automatic-controls/pics/12_A_First_Complete_Application_image_diagram_process_control_room.png?1">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">principles-of-automatic-controls</span>
+    </a>
+  </div>
+        <div class="quarto-navbar-tools ms-auto">
+</div>
+          <div id="quarto-search" class="" title="Search"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../IT/syllabus_it.html">IT</a></li><li class="breadcrumb-item"><a href="../IT/a_first_complete_application_it.html">Un sistema di controllo del feedback</a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Feedback Control</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../syllabus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Syllabus for “Principles of Automatic Control”</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principles of Automatic Control</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../basics_of_feedback_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Feedback Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../introduction_to_control_problem.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to the control problem</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../dynamic_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modeling in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../dynamic_response.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Dynamic response of control systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../06_inverse_laplace_transform.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Inverse Laplace Transform: Partial fraction decomposition</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../modeling_dynamic_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Modeling of Dynamic Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../control_system_components.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Control System Components</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../models_of_control_devices_and_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Models of Controlled Devices</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../hardware_and_case_studies.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Hardware of Control Systems and Case Studies</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ac_hardware_and_case_studies.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">AC Motion Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../a_first_complete_application.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A Feedback Control System</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../principles_of_feedback_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principles of Feedback Control</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../feedback_systems_and_their_effects.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Feedback systems and their effects</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../introduction_to_control_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../stabilty.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Stability Analysis in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../stability_and_routh_criterion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Stability Analysis in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../performance_of_feedback_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Performance of Feedback Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../design_of_feedback_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Design Cycle for a Standard Second-Order System</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../20_Design_of_feedback_control_continued.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Understanding the Standard Second-Order System: Recap</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../steady_state_accuracy_and_design_principles.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Steady State Accuracy and Design Principles</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../compensator_design_using_root_locus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compensator Design</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../design_with_the_root_locus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Design with the Root Locus</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../compensators_and_root_locus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compensators and the Root Locus</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../introduction_to_frequency_domain_analysis_in_control_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Frequency Domain Analysis in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../application_of_nyquist_stability_criterion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Application of Nyquist Stability Criterion in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../the_nyquist_stability_criterion_and_relative_stability.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The Nyquist Stability Criterion and Relative Stability</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../body_plots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Bode Plot Analysis</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../feedback_system_performance_based_on_frequency_response.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Feedback System Performance Based On Frequency Response</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">IT</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT/syllabus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Programma per “Principi del controllo automatico”</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT/intro_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principi di controllo automatico</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT/basics_of_feedback_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione ai sistemi di controllo del feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT/introduction_to_control_problem_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione al problema del controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT/dynamic_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modellazione nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT/dynamic_response_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Risposta dinamica dei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT/06_inverse_laplace_transform_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Trasformata di Laplace inversa: scomposizione parziale di frazioni</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT/modeling_dynamic_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione alla modellazione dei sistemi dinamici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT/control_system_components_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Componenti del sistema di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT/models_of_control_devices_and_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modelli di dispositivi controllati</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT/hardware_and_case_studies_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Hardware dei sistemi di controllo e casi di studio</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT/ac_hardware_and_case_studies_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sistemi di controllo del movimento CA</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT/a_first_complete_application_it.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Un sistema di controllo del feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT/principles_of_feedback_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principi di controllo del feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT/feedback_systems_and_their_effects_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sistemi di feedback e loro effetti</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT/introduction_to_control_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione ai sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT/stabilty_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analisi di stabilità nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT/stability_and_routh_criterion_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analisi di stabilità nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT/performance_of_feedback_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prestazioni dei sistemi di feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT/design_of_feedback_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Ciclo di progettazione per un sistema standard del secondo ordine</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT/20_Design_of_feedback_control_continued_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Comprensione del sistema standard del secondo ordine: riepilogo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT/steady_state_accuracy_and_design_principles_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Precisione dello stato stazionario e principi di progettazione</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT/compensator_design_using_root_locus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Progettazione del compensatore</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT/design_with_the_root_locus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Progettare con il luogo delle radici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT/compensators_and_root_locus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compensatori e luogo delle radici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT/introduction_to_frequency_domain_analysis_in_control_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione all’analisi nel dominio della frequenza nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT/application_of_nyquist_stability_criterion_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Applicazione del criterio di stabilità di Nyquist nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT/the_nyquist_stability_criterion_and_relative_stability_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Il criterio di stabilità di Nyquist e la stabilità relativa</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT/body_plots_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analisi del diagramma di Bode</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT/feedback_system_performance_based_on_frequency_response_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prestazioni del sistema di feedback basate sulla risposta in frequenza</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT/index_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Controllo del feedback</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduzione" id="toc-introduzione" class="nav-link active" data-scroll-target="#introduzione">Introduzione</a>
+  <ul class="collapse">
+  <li><a href="#revisione-dei-concetti-di-controllo-dei-processi" id="toc-revisione-dei-concetti-di-controllo-dei-processi" class="nav-link" data-scroll-target="#revisione-dei-concetti-di-controllo-dei-processi">Revisione dei concetti di controllo dei processi</a></li>
+  <li><a href="#dispositivi-pneumatici-un-riepilogo" id="toc-dispositivi-pneumatici-un-riepilogo" class="nav-link" data-scroll-target="#dispositivi-pneumatici-un-riepilogo">Dispositivi pneumatici: un riepilogo</a></li>
+  <li><a href="#uno-sguardo-alla-storia-del-controllo-dei-processi" id="toc-uno-sguardo-alla-storia-del-controllo-dei-processi" class="nav-link" data-scroll-target="#uno-sguardo-alla-storia-del-controllo-dei-processi">Uno sguardo alla storia del controllo dei processi</a></li>
+  </ul></li>
+  <li><a href="#evoluzione-degli-standard-di-trasmissione-nel-controllo-di-processo" id="toc-evoluzione-degli-standard-di-trasmissione-nel-controllo-di-processo" class="nav-link" data-scroll-target="#evoluzione-degli-standard-di-trasmissione-nel-controllo-di-processo">Evoluzione degli standard di trasmissione nel controllo di processo</a>
+  <ul class="collapse">
+  <li><a href="#trasmissione-pneumatica" id="toc-trasmissione-pneumatica" class="nav-link" data-scroll-target="#trasmissione-pneumatica">Trasmissione pneumatica:</a></li>
+  <li><a href="#trasmissione-elettronica" id="toc-trasmissione-elettronica" class="nav-link" data-scroll-target="#trasmissione-elettronica">Trasmissione elettronica:</a></li>
+  <li><a href="#trasmissione-digitale" id="toc-trasmissione-digitale" class="nav-link" data-scroll-target="#trasmissione-digitale">Trasmissione digitale:</a></li>
+  <li><a href="#implicazioni" id="toc-implicazioni" class="nav-link" data-scroll-target="#implicazioni">Implicazioni:</a></li>
+  <li><a href="#diagramma-a-blocchi-della-trasmissione-del-segnale" id="toc-diagramma-a-blocchi-della-trasmissione-del-segnale" class="nav-link" data-scroll-target="#diagramma-a-blocchi-della-trasmissione-del-segnale">Diagramma a blocchi della trasmissione del segnale</a></li>
+  <li><a href="#componenti-e-tipi-di-condizionamento-del-segnale" id="toc-componenti-e-tipi-di-condizionamento-del-segnale" class="nav-link" data-scroll-target="#componenti-e-tipi-di-condizionamento-del-segnale">Componenti e tipi di condizionamento del segnale:</a></li>
+  <li><a href="#importanza-del-condizionamento-del-segnale" id="toc-importanza-del-condizionamento-del-segnale" class="nav-link" data-scroll-target="#importanza-del-condizionamento-del-segnale">Importanza del condizionamento del segnale:</a></li>
+  <li><a href="#applicazioni" id="toc-applicazioni" class="nav-link" data-scroll-target="#applicazioni">Applicazioni:</a></li>
+  </ul></li>
+  <li><a href="#unapplicazione-completa-sistema-di-controllo-della-temperatura" id="toc-unapplicazione-completa-sistema-di-controllo-della-temperatura" class="nav-link" data-scroll-target="#unapplicazione-completa-sistema-di-controllo-della-temperatura">Un’applicazione completa: sistema di controllo della temperatura</a>
+  <ul class="collapse">
+  <li><a href="#uno-sguardo-più-da-vicino-allo-scambiatore-di-calore" id="toc-uno-sguardo-più-da-vicino-allo-scambiatore-di-calore" class="nav-link" data-scroll-target="#uno-sguardo-più-da-vicino-allo-scambiatore-di-calore">Uno sguardo più da vicino allo scambiatore di calore</a></li>
+  <li><a href="#barra-laterale---trasduttori-elettropneumatici" id="toc-barra-laterale---trasduttori-elettropneumatici" class="nav-link" data-scroll-target="#barra-laterale---trasduttori-elettropneumatici">Barra laterale - Trasduttori elettropneumatici</a></li>
+  <li><a href="#derivazione-di-un-modello-matematico-costruzione-di-una-descrizione-schematica-a-blocchi-utilizzando-metodi-sperimentali" id="toc-derivazione-di-un-modello-matematico-costruzione-di-una-descrizione-schematica-a-blocchi-utilizzando-metodi-sperimentali" class="nav-link" data-scroll-target="#derivazione-di-un-modello-matematico-costruzione-di-una-descrizione-schematica-a-blocchi-utilizzando-metodi-sperimentali">Derivazione di un modello matematico: costruzione di una descrizione schematica a blocchi utilizzando metodi sperimentali</a></li>
+  <li><a href="#il-modello-del-sensore" id="toc-il-modello-del-sensore" class="nav-link" data-scroll-target="#il-modello-del-sensore"><strong>Il modello del sensore</strong></a></li>
+  <li><a href="#modello-di-sistema-completo" id="toc-modello-di-sistema-completo" class="nav-link" data-scroll-target="#modello-di-sistema-completo">Modello di sistema completo</a></li>
+  <li><a href="#avvolgendo" id="toc-avvolgendo" class="nav-link" data-scroll-target="#avvolgendo">Avvolgendo</a></li>
+  <li><a href="#barra-laterale---fattore-di-scala-nei-sistemi-di-feedback" id="toc-barra-laterale---fattore-di-scala-nei-sistemi-di-feedback" class="nav-link" data-scroll-target="#barra-laterale---fattore-di-scala-nei-sistemi-di-feedback">Barra laterale - Fattore di scala nei sistemi di feedback</a></li>
+  <li><a href="#perché-016-come-fattore-di-scala" id="toc-perché-016-come-fattore-di-scala" class="nav-link" data-scroll-target="#perché-016-come-fattore-di-scala">Perché 0,16 come fattore di scala?</a></li>
+  <li><a href="#un-esempio-illustrativo" id="toc-un-esempio-illustrativo" class="nav-link" data-scroll-target="#un-esempio-illustrativo">Un esempio illustrativo</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/andreamunafo/principles-of-automatic-controls/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Un sistema di controllo del feedback</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
+<section id="introduzione" class="level2">
+<h2 class="anchored" data-anchor-id="introduzione">Introduzione</h2>
+<p>Nella nostra discussione precedente, abbiamo approfondito il campo delle applicazioni di controllo di processo, con casi specifici che coinvolgono l’uso di motori CC e CC. In questo taccuino rivisiteremo questi concetti fondamentali ed espanderemo ulteriormente la nostra esplorazione con uno sguardo approfondito a un’altra applicazione fondamentale: lo scambiatore di calore.</p>
+<section id="revisione-dei-concetti-di-controllo-dei-processi" class="level3">
+<h3 class="anchored" data-anchor-id="revisione-dei-concetti-di-controllo-dei-processi">Revisione dei concetti di controllo dei processi</h3>
+<p>Il controllo del processo può essere caratterizzato dalla regolazione di alcune variabili. Queste variabili includono: - Temperatura - Pressione - Livello del liquido - Composizione</p>
+<p>Queste applicazioni sono spesso influenzate da fattori con costanti di tempo elevate. Pertanto, i dispositivi pneumatici, che possiedono intrinsecamente caratteristiche di risposta più lente, sono particolarmente adatti per queste applicazioni.</p>
+</section>
+<section id="dispositivi-pneumatici-un-riepilogo" class="level3">
+<h3 class="anchored" data-anchor-id="dispositivi-pneumatici-un-riepilogo">Dispositivi pneumatici: un riepilogo</h3>
+<p><strong>1. Valvola di controllo</strong> - Ingresso: segnale elettrico - Uscita: segnale di pressione o alterazione della posizione dell’asta di comando - Scopo: regolare il flusso del fluido al processo</p>
+<p><strong>2. Trasduttore elettropneumatico</strong> - Un dispositivo che si interfaccia tra l’attuatore (valvola di controllo) e il controller elettronico (che potrebbe essere basato su Op-Amp o su computer digitale). - Ingresso: segnale elettrico - Uscita: segnale di pressione adatto alla valvola di controllo (attuatore)</p>
+<p>Vale la pena notare che mentre ho menzionato che la costruzione del trasduttore elettropneumatico è abbastanza identica in linea di principio a un dispositivo elettroidraulico, ci stiamo concentrando su una descrizione schematica a blocchi per semplicità.</p>
+</section>
+<section id="uno-sguardo-alla-storia-del-controllo-dei-processi" class="level3">
+<h3 class="anchored" data-anchor-id="uno-sguardo-alla-storia-del-controllo-dei-processi">Uno sguardo alla storia del controllo dei processi</h3>
+<p>Storicamente, i controllori erano posizionati in una sala di controllo dedicata, separata dal processo. Ciò richiede la trasmissione del segnale dal processo alla sala di controllo e viceversa.</p>
+
+<img src="../pics/12_A_First_Complete_Application_image_diagram_process_control_room.png?1" alt="12_A_First_Complete_Application_image_diagram_process_control_room" style="width:550px;"><table>
+<tbody><tr>
+
+</tr>
+
+</tbody></table>
+<p><em>Figura: diagramma che mostra la trasmissione dei segnali tra processo e sala controllo</em></p>
+<p>Prima degli anni ’50 questa comunicazione veniva facilitata prevalentemente da segnali pneumatici o di pressione dell’aria. Questo metodo può ancora essere osservato nelle industrie più vecchie con estese reti di tubi. Tuttavia, con l’evoluzione della tecnologia, le industrie più nuove hanno gradualmente adottato controller elettronici o digitali, passando dai segnali pneumatici a quelli elettrici per la comunicazione.</p>
+</section>
+</section>
+<section id="evoluzione-degli-standard-di-trasmissione-nel-controllo-di-processo" class="level2">
+<h2 class="anchored" data-anchor-id="evoluzione-degli-standard-di-trasmissione-nel-controllo-di-processo">Evoluzione degli standard di trasmissione nel controllo di processo</h2>
+<p>Nell’ambito del controllo di processo, in particolare negli ambienti industriali, la trasmissione di informazioni tra controller, sensori, attuatori e altre apparecchiature è essenziale. Nel corso degli anni, gli standard e i mezzi di questa trasmissione hanno subito una significativa trasformazione.</p>
+<ul>
+<li><strong>anni ’50</strong>: lo standard industriale prevalente per la trasmissione del segnale era compreso tra 3 e 15 psi (libbre di pressione per pollice quadrato).</li>
+<li><strong>Dopo gli anni ’50</strong>: sono emersi una miriade di standard di trasmissione, come ±10 volt, da 1 volt a 5 volt, da 1 milliampere a 5 milliampere e così via.</li>
+<li><strong>Era moderna</strong>: la standardizzazione ha gravitato in gran parte verso l’intervallo compreso tra 4 milliampere e 20 milliampere per scopi di trasmissione.</li>
+</ul>
+<section id="trasmissione-pneumatica" class="level3">
+<h3 class="anchored" data-anchor-id="trasmissione-pneumatica">Trasmissione pneumatica:</h3>
+<p><strong>1. Segnali pneumatici (pre-anni ’50):</strong> Prima degli anni ’50, la comunicazione tra la sala di controllo e il processo utilizzava spesso segnali pneumatici. Questi sono tipicamente rappresentati in termini di pressione atmosferica.</p>
+<ul>
+<li><p><strong>Standard:</strong> lo standard industriale per questi segnali pneumatici era generalmente compreso tra 3 e 15 psi (libbre per pollice quadrato).</p></li>
+<li><p><strong>Infrastruttura:</strong> I sistemi pneumatici richiedevano tubi per trasmettere questi segnali di pressione tra i dispositivi. Questi tubi sono il motivo per cui, visitando le industrie di processo più vecchie, vedresti una rete di tubi che collegano diverse apparecchiature.</p></li>
+<li><p><strong>Limitazioni:</strong> I sistemi pneumatici sono generalmente lenti a rispondere a causa della natura fisica dell’aria o del gas compresso o decompresso. Ciò li rende adeguati per sistemi con costanti di tempo elevate ma non per applicazioni a risposta rapida.</p></li>
+</ul>
+</section>
+<section id="trasmissione-elettronica" class="level3">
+<h3 class="anchored" data-anchor-id="trasmissione-elettronica">Trasmissione elettronica:</h3>
+<p><strong>2. Segnali elettronici (dagli anni ’50 in poi):</strong> Con l’evoluzione della tecnologia, i segnali elettronici ed elettrici hanno cominciato a sostituire le trasmissioni pneumatiche.</p>
+<ul>
+<li><p><strong>Primi standard:</strong> Prima che avvenisse una standardizzazione a livello di settore, esistevano diversi standard di segnali elettronici come ±10 volt, da 1 volt a 5 volt e una varietà di segnali di corrente come da 1 milliampere a 5 milliampere.</p></li>
+<li><p><strong>Standard 4-20 mA:</strong> questo è diventato lo standard dominante per la trasmissione di corrente. È degno di nota perché un segnale da 4 mA può essere utilizzato per indicare lo stato “spento” di un sistema, mentre qualsiasi valore sopra indica uno stato “attivo”. Ciò garantisce che anche se il segnale scende al minimo (4 mA), è comunque rilevabile e distinto da una perdita completa del segnale o da una rottura del cavo.</p></li>
+<li><p><strong>Vantaggi:</strong> I segnali elettronici possono essere trasmessi più velocemente, con una minore perdita di energia e su distanze maggiori rispetto ai segnali pneumatici. I sistemi elettronici sono inoltre meno influenzati dai cambiamenti ambientali.</p></li>
+</ul>
+</section>
+<section id="trasmissione-digitale" class="level3">
+<h3 class="anchored" data-anchor-id="trasmissione-digitale">Trasmissione digitale:</h3>
+<p><strong>3. Segnali digitali (dalla fine del XX secolo in poi):</strong> Con l’avvento dei computer e della tecnologia digitale, la segnalazione digitale cominciò ad emergere nel controllo industriale.</p>
+<ul>
+<li><p><strong>Controller basati su microprocessore:</strong> questi controller sono in grado di gestire operazioni complesse, supportare una varietà di protocolli di comunicazione e interagire con la moderna infrastruttura digitale.</p></li>
+<li><p><strong>Protocolli:</strong> La comunicazione digitale ha introdotto una gamma di protocolli come Modbus, Profibus e, successivamente, standard basati su Ethernet come EtherCAT e PROFINET.</p></li>
+<li><p><strong>Vantaggi:</strong> I segnali digitali sono immuni al rumore e possono trasportare una grande quantità di dati. Possono essere integrati con l’infrastruttura IT, consentendo meccanismi di controllo, monitoraggio e reporting più sofisticati.</p></li>
+</ul>
+</section>
+<section id="implicazioni" class="level3">
+<h3 class="anchored" data-anchor-id="implicazioni">Implicazioni:</h3>
+<p>L’evoluzione dalla trasmissione pneumatica a quella elettronica a quella digitale rappresenta non solo un cambiamento nella tecnologia ma anche nella complessità e nella capacità dei sistemi di controllo di processo. I sistemi moderni possono gestire più variabili, integrarsi con altri sistemi IT e offrire una precisione di controllo senza precedenti.</p>
+<p>Sebbene la transizione abbia reso possibili sistemi più avanzati e complessi, richiede anche nuove competenze per la manutenzione, l’integrazione e la risoluzione dei problemi. È essenziale che i moderni ingegneri di controllo comprendano non solo gli aspetti tradizionali dei loro processi, ma anche la comunicazione digitale e gli aspetti IT.</p>
+<p>🤔 <strong>Domanda pop-up:</strong> Perché è stato adottato lo standard 4-20 mA rispetto ad altri standard di segnali elettronici nel settore del controllo di processo?</p>
+<p><strong>Risposta:</strong> Lo standard 4-20 mA offre vantaggi distinti: 1. Un segnale da 4 mA può indicare uno stato “spento”, rendendolo distinguibile da una completa perdita di segnale o da una rottura del cavo. 2. Segnali di corrente come questi sono meno influenzati dalla resistenza dei cavi lunghi, garantendo l’integrità del segnale su lunghe distanze. 3. Sono anche meno suscettibili al rumore elettrico rispetto ai segnali di tensione.</p>
+</section>
+<section id="diagramma-a-blocchi-della-trasmissione-del-segnale" class="level3">
+<h3 class="anchored" data-anchor-id="diagramma-a-blocchi-della-trasmissione-del-segnale">Diagramma a blocchi della trasmissione del segnale</h3>
+<p>Immagina un tipico processo in cui viene misurata una quantità (temperatura, livello del liquido o composizione). Questo segnale, una volta elaborato da un sensore, verrebbe convertito in un segnale elettrico. La maggior parte di queste uscite dei sensori sono segnali di tensione. Ma per la trasmissione, questi segnali di tensione vengono spesso convertiti in segnali di corrente, principalmente perché i segnali di corrente sono meno suscettibili al rumore.</p>
+
+<img src="../pics/12_A_First_Complete_Application_image_diagram_process_control_room_1.png?1" alt="12_A_First_Complete_Application_image_diagram_process_control_room_1" style="width:550px;"><table>
+<tbody><tr>
+
+</tr>
+
+</tbody></table>
+<ul>
+<li>Sarà necessaria la conversione da tensione a corrente nel punto del sensore,</li>
+<li>Sarà necessaria la conversione da corrente a tensione sul controller.</li>
+</ul>
+<p><strong>Circuito di condizionamento del segnale (o trasmettitore)</strong></p>
+<p>Il condizionamento del segnale è un aspetto fondamentale dell’elettronica e della strumentazione. Si riferisce al processo di modifica di un segnale in modo tale da soddisfare i requisiti della fase o del dispositivo successivo in un sistema. Questo processo può comportare amplificazione, filtraggio, conversione, adattamento della gamma, isolamento e qualsiasi altra funzione che ottimizzi il segnale per un’ulteriore elaborazione.</p>
+<ul>
+<li>Questa unità è composta da componenti di condizionamento del segnale e di guida della linea.</li>
+<li>Il suo ruolo è convertire il segnale elettrico del sensore in un formato compatibile con il controller, adattando al tempo stesso la distanza tra il processo e il controller.</li>
+</ul>
+<section id="nota-sulla-terminologia" class="level4">
+<h4 class="anchored" data-anchor-id="nota-sulla-terminologia">Nota sulla terminologia</h4>
+<p>Nel linguaggio del controllo di processo, l’interfaccia tra il processo e il controllore è spesso definita “trasmettitore”. Questa parola è usata in modo intercambiabile con “sensore” in tutta la nostra discussione, ma ricorda che in un contesto più ampio, il trasmettitore può includere anche il componente sensore.</p>
+</section>
+</section>
+<section id="componenti-e-tipi-di-condizionamento-del-segnale" class="level3">
+<h3 class="anchored" data-anchor-id="componenti-e-tipi-di-condizionamento-del-segnale">Componenti e tipi di condizionamento del segnale:</h3>
+<ol type="1">
+<li><p><strong>Amplificatori:</strong> questi sono i condizionatori di segnale più comuni. Aumentano l’ampiezza di un segnale. Ad esempio, i sensori che producono una tensione di uscita molto bassa (come le termocoppie) spesso necessitano di amplificazione prima che i loro segnali possano essere letti dalla maggior parte dei convertitori analogico-digitali (ADC).</p>
+<ul>
+<li><strong>Amplificatori operazionali (Amplificatori operazionali):</strong> Ampiamente utilizzati nei circuiti di condizionamento del segnale grazie alla loro versatilità. Possono essere configurati per una gamma di funzioni come circuiti invertenti, non invertenti, differenziali, integratori e differenziatori.</li>
+</ul></li>
+<li><p><strong>Filtri:</strong> i filtri vengono utilizzati per rimuovere le frequenze indesiderate da un segnale.</p>
+<ul>
+<li><strong>Filtri passa-basso:</strong> Consentono il passaggio dei segnali con una frequenza inferiore a una determinata frequenza di taglio e attenuano le frequenze superiori alla frequenza di taglio.</li>
+<li><strong>Filtri passa-alto:</strong> Fanno il contrario, attenuando le frequenze al di sotto della frequenza di taglio e consentendo a quelle al di sopra di passare.</li>
+<li><strong>Filtri passa banda:</strong> Consentono il passaggio solo ai segnali entro un determinato intervallo di frequenza.</li>
+</ul></li>
+<li><p><strong>Convertitori analogico-digitali (ADC):</strong> Convertono i segnali analogici in un formato digitale che può essere elaborato da apparecchiature digitali come i computer.</p></li>
+<li><p><strong>Convertitori tensione-corrente e corrente-tensione:</strong> questi convertitori sono utili per trasmettere segnali su lunghe distanze. Ad esempio, lo standard del loop di corrente da 4-20 mA negli ambienti industriali.</p></li>
+<li><p><strong>Linearizzatori:</strong> alcuni sensori hanno uscite non lineari, ovvero la relazione tra la quantità fisica misurata e l’uscita del sensore non è una linea retta. I linearizzatori vengono utilizzati per correggere queste uscite.</p></li>
+<li><p><strong>Isolatori:</strong> sono fondamentali nelle applicazioni in cui è essenziale interrompere il percorso elettrico tra due circuiti, pur continuando a trasferire il segnale. Possono proteggere le apparecchiature sensibili dai picchi di tensione e ridurre i circuiti di terra.</p></li>
+<li><p><strong>Multiplexer (MUX):</strong> quando è necessario inviare più segnali attraverso un singolo ADC, è possibile utilizzare un multiplexer. Seleziona un segnale alla volta da passare all’ADC.</p></li>
+</ol>
+</section>
+<section id="importanza-del-condizionamento-del-segnale" class="level3">
+<h3 class="anchored" data-anchor-id="importanza-del-condizionamento-del-segnale">Importanza del condizionamento del segnale:</h3>
+<ol type="1">
+<li><p><strong>Precisione:</strong> Il condizionamento migliora la precisione dei dati finali garantendo che il segnale sia preparato in modo ottimale per l’elaborazione.</p></li>
+<li><p><strong>Protezione:</strong> isolando i segnali, le apparecchiature sensibili possono essere protette da potenziali danni dovuti a problemi elettrici come sovratensioni o loop di terra.</p></li>
+<li><p><strong>Compatibilità:</strong> garantisce che i segnali provenienti da vari sensori e sorgenti possano essere resi compatibili con un’ampia gamma di apparecchiature di elaborazione e visualizzazione.</p></li>
+<li><p><strong>Prestazioni migliorate:</strong> i filtri possono aiutare a ridurre il rumore, gli amplificatori possono amplificare i segnali deboli e gli ADC possono facilitare l’elaborazione digitale.</p></li>
+<li><p><strong>Affidabilità:</strong> un condizionamento adeguato può rendere un sistema più robusto e affidabile riducendo al minimo l’impatto di rumore elettrico, interferenze o altri problemi che potrebbero altrimenti distorcere o degradare il segnale.</p></li>
+</ol>
+</section>
+<section id="applicazioni" class="level3">
+<h3 class="anchored" data-anchor-id="applicazioni">Applicazioni:</h3>
+<p>I circuiti di condizionamento del segnale sono onnipresenti nei sistemi elettronici. Alcune applicazioni comuni includono:</p>
+<ol type="1">
+<li><strong>Automazione industriale:</strong> garantire che i segnali dei sensori siano elaborati correttamente per i sistemi di controllo.</li>
+<li><strong>Elettronica medica:</strong> miglioramento dei segnali provenienti dai sensori biomedici.</li>
+<li><strong>Sistemi di comunicazione:</strong> preparazione dei segnali per la trasmissione o la ricezione.</li>
+<li><strong>Elettronica di consumo:</strong> ad esempio, nell’elaborazione audio nelle radio o nei lettori musicali.</li>
+</ol>
+<p>In sintesi, il condizionamento del segnale consiste nel preparare un segnale affinché sia ​​perfetto per la fase successiva di elaborazione, garantendo che i dati finali siano accurati, affidabili e significativi.</p>
+</section>
+</section>
+<section id="unapplicazione-completa-sistema-di-controllo-della-temperatura" class="level2">
+<h2 class="anchored" data-anchor-id="unapplicazione-completa-sistema-di-controllo-della-temperatura">Un’applicazione completa: sistema di controllo della temperatura</h2>
+<p>Con le conoscenze di base, esploriamo un’applicazione reale che coinvolge uno scambiatore di calore.</p>
+<p>Anche se in questo contesto discuteremo solo della variabile temperatura, in un processo industriale reale potrebbe essere necessario controllare più variabili contemporaneamente.</p>
+<ol type="1">
+<li><p><strong>Controllo a variabile singola</strong>: l’esempio del circuito di controllo della temperatura illustra un sistema di controllo a variabile singola. In questo scenario, il sistema si concentra sul solo controllo della temperatura, presupponendo che le portate siano mantenute da un altro circuito di controllo e che i disturbi siano trascurabili.</p></li>
+<li><p><strong>Controllo multivariabile</strong>: in un ambiente di controllo di processo reale, più variabili (come temperatura, flusso, composizione, valore pH, ecc.) potrebbero richiedere attenzione simultanea. La complessità nasce perché un cambiamento in una variabile potrebbe influenzarne altre. Ad esempio, la portata potrebbe influenzare la temperatura, oppure un cambiamento nella composizione potrebbe influire sul pH.</p></li>
+</ol>
+<p>Nel resto della discussione, il presupposto è che potrebbe esserci più di un ciclo di controllo ma che ciascuna variabile possa essere controllata in modo indipendente.</p>
+<section id="uno-sguardo-più-da-vicino-allo-scambiatore-di-calore" class="level3">
+<h3 class="anchored" data-anchor-id="uno-sguardo-più-da-vicino-allo-scambiatore-di-calore">Uno sguardo più da vicino allo scambiatore di calore</h3>
+<p>Come applicazione, consideriamo un circuito di controllo della temperatura che utilizza uno scambiatore di calore.</p>
+<p>Lo scambiatore di calore, come suggerisce il nome, è un dispositivo che permette lo scambio di calore tra due o più fluidi senza consentirne la miscelazione. Il mantenimento di una temperatura ottimale è fondamentale per garantire sia l’efficienza che la sicurezza dei processi in settori che vanno dal petrolchimico alla trasformazione alimentare.</p>
+<p>L’obiettivo di questo segmento è acquisire una comprensione approfondita del circuito di controllo della temperatura di uno scambiatore di calore, dalla configurazione fisica alla modellazione matematica. Inizieremo comprendendo i componenti hardware coinvolti, per poi ricavare una rappresentazione matematica del sistema. Inoltre, attraverso metodi sperimentali, capiremo come accertare i parametri critici che governano il comportamento del sistema.</p>
+<p><strong>Schema dello scambiatore di calore</strong>: Lo scambiatore di calore è rappresentato come un insieme di tubi cavi. Attraverso questi tubi circola il fluido di processo (di cui si vuole controllare la temperatura), entrando in un punto specifico ed uscendo da un altro.</p>
+
+<img src="../pics/12_A_First_Complete_Application_heat_exchanger.png?1" alt="12_A_First_Complete_Application_heat_exchanger" style="width:550px;"><table>
+<tbody><tr>
+
+</tr>
+
+</tbody></table>
+<p>Ad alto livello, uno scambiatore di calore è costituito da tubi cavi attraverso i quali passa un fluido di processo. Questo fluido entra ad una certa temperatura (temperatura di ingresso) ed esce ad un’altra (temperatura di uscita). Il nostro obiettivo principale è controllare la temperatura di questo fluido all’uscita dai tubi.</p>
+<p>Tuttavia, ricorda che ci stiamo concentrando esclusivamente sul circuito di controllo della temperatura. In un contesto reale, più variabili potrebbero richiedere il controllo e sarebbero presenti vari cicli di controllo. Ogni circuito può controllare variabili come temperatura, portata, composizione, pH, ecc. Per semplicità e chiarezza, stiamo isolando un circuito di controllo, il circuito di controllo della temperatura, presupponendo un’interferenza minima da parte degli altri circuiti di controllo.</p>
+<section id="procedura-dettagliata-sullo-scambiatore-di-calore" class="level4">
+<h4 class="anchored" data-anchor-id="procedura-dettagliata-sullo-scambiatore-di-calore">Procedura dettagliata sullo scambiatore di calore</h4>
+<p>Lo scambiatore di calore in esame è costituito da tubi cavi. Attraverso questi tubi circola il fluido di processo, di cui si vuole controllare la temperatura.</p>
+
+<img src="../pics/12_A_First_Complete_Application_heat_exchanger_1.png?1" alt="12_A_First_Complete_Application_heat_exchanger_1" style="width:550px;"><table>
+<tbody><tr>
+
+</tr>
+
+</tbody></table>
+<ul>
+<li><p>Il fluido entra con una temperatura di ingresso (indicata come <span class="math inline">\(\theta_i\)</span>, una perturbazione rispetto al valore di stato stazionario desiderato) ed esce ad un’altra temperatura (indicata come <span class="math inline">\(\theta\)</span>).</p></li>
+<li><p>L’obiettivo principale è garantire che il fluido esca ad una specifica temperatura comandata, indipendentemente da eventuali disturbi.</p></li>
+<li><p>Dal vapore viene tolto calore e fuoriesce condensa. Il vapore, se utilizzato come mezzo di riscaldamento, rilascia calore condensandosi (cambiando la sua fase da vapore a liquido). Quando il vapore cede il calore latente di vaporizzazione, si trasforma nuovamente in acqua, chiamata “condensa”. Il processo di condensazione del vapore rilascia una notevole quantità di calore, che viene utilizzata per scopi di riscaldamento in varie applicazioni.</p></li>
+</ul>
+<p>Indichiamo: - $ $: <strong>Perturbazione</strong> dal valore di temperatura desiderato in <span class="math inline">\(^oC\)</span>. - $ <em>i $: Perturbazione della temperatura in ingresso rispetto al valore di regime - $ q_m $: Perturbazione della portata rispetto al valore a regime. La perturbazione della portata può influenzare la temperatura. - $ q</em>{ms} $: è la perturbazione nel flusso di vapore. Questa è la nostra variabile manipolata che controlleremo utilizzando un controller che agisce sulla valvola per ridurre <span class="math inline">\(\theta\)</span> a zero.</p>
+<p>Non stiamo considerando come controllare la portata, ma dobbiamo considerarlo perché la perturbazione della portata sarà un disturbo per il nostro sistema.</p>
+<p><strong>Si noti che stiamo discutendo di perturbazioni rispetto allo stato stazionario. Ciò significa che l’obiettivo del controllo sarà quello di ridurre a zero $ $.</strong></p>
+<p>🤔 <strong>Domanda pop-up:</strong> In quale epoca lo standard industriale per la trasmissione del segnale si spostò da 4 milliampere a 20 milliampere?</p>
+<ol type="a">
+<li>Anni ’50</li>
+<li>Anni ’60</li>
+<li>Epoca moderna</li>
+<li>Prima degli anni ’50</li>
+</ol>
+<p><strong>Risposta:</strong> c) Epoca moderna</p>
+
+<img src="../pics/12_A_First_Complete_Application_heat_exchanger_2.png?1" alt="12_A_First_Complete_Application_heat_exchanger_2" style="width:750px;"><table>
+<tbody><tr>
+
+</tr>
+
+</tbody></table>
+<ul>
+<li>L’attuatore è una valvola di controllo ad azionamento pneumatico. Poiché l’uscita del controller (ad esempio, un computer digitale o un dispositivo elettrico analogico) è necessaria un’interfaccia tra l’uscita del controller e l’attuatore. Ecco perché abbiamo bisogno del trasduttore elettropneumatico.</li>
+</ul>
+</section>
+</section>
+<section id="barra-laterale---trasduttori-elettropneumatici" class="level3">
+<h3 class="anchored" data-anchor-id="barra-laterale---trasduttori-elettropneumatici">Barra laterale - Trasduttori elettropneumatici</h3>
+<p>Un trasduttore elettropneumatico, spesso indicato come “convertitore I/P” (corrente-pressione) o “convertitore E/P” (elettrico-pneumatico), è un dispositivo che converte un segnale elettrico, solitamente una corrente o tensione, in una corrispondente uscita pneumatica, tipicamente sotto forma di pressione dell’aria.</p>
+
+<img src="../pics/12_A_First_Complete_Application_1000IPT-Fullsize.gif?1" alt="12_A_First_Complete_Application_1000IPT" style="width:450px;"><table>
+<tbody><tr>
+
+</tr>
+
+</tbody></table>
+<p>Più specificamente:</p>
+<ol type="1">
+<li><p><strong>Segnale di ingresso</strong>: il segnale di ingresso più comune per i convertitori I/P è il circuito di corrente standard da 4-20 mA, sebbene alcuni modelli accettino segnali di tensione come 0-5 V o 0-10 V.</p></li>
+<li><p><strong>Segnale di uscita</strong>: l’uscita è in genere un segnale pneumatico compreso tra 3 e 15 psi (libbre per pollice quadrato), sebbene siano possibili anche altri intervalli come 3-27 psi o 6-30 psi, a seconda del dispositivo e applicazione.</p></li>
+<li><p><strong>Principio di funzionamento</strong>: Internamente, il trasduttore elettropneumatico utilizza un solenoide, un meccanismo a cerniera/ugello o altri componenti elettronici per rilevare il segnale elettrico in ingresso. Questo segnale viene quindi utilizzato per controllare un meccanismo di valvola pneumatica che modula la pressione dell’aria in uscita.</p></li>
+<li><p><strong>Applicazioni</strong>: i trasduttori elettropneumatici sono ampiamente utilizzati nei sistemi di controllo industriale. Consentono ai sistemi di controllo elettronico di interfacciarsi con attuatori pneumatici, valvole e altri dispositivi. Ad esempio, un PLC (controllore logico programmabile) potrebbe utilizzare un convertitore I/P per controllare una valvola pneumatica in un impianto di processo. Inviando diversi valori di corrente al convertitore I/P, il PLC può aprire, chiudere o aprire parzialmente la valvola, a seconda delle condizioni di processo richieste.</p></li>
+<li><p><strong>Vantaggi</strong>:</p>
+<ul>
+<li><strong>Sicurezza</strong>: i sistemi pneumatici sono intrinsecamente più sicuri in determinati ambienti esplosivi o infiammabili. Utilizzando un convertitore I/P, i sistemi di controllo elettronici possono interfacciarsi in modo sicuro con i dispositivi pneumatici in tali aree.</li>
+<li><strong>Integrazione</strong>: Consentono una facile integrazione di sistemi elettronici e pneumatici, consentendo strategie di controllo più versatili e complete.</li>
+</ul></li>
+<li><p><strong>Considerazioni</strong>: È essenziale garantire che i convertitori I/P siano calibrati correttamente, esenti da vibrazioni esterne e dotati di aria pulita. L’aria contaminata o l’umidità possono comprometterne le prestazioni o provocarne il malfunzionamento.</p></li>
+</ol>
+<p>In breve, i trasduttori elettropneumatici svolgono un ruolo cruciale nel colmare il divario tra i sistemi di controllo elettronico e l’attuazione pneumatica, consentendo un controllo preciso in una varietà di applicazioni industriali.</p>
+<p>— FINE DELLA BARRA LATERALE</p>
+</section>
+<section id="derivazione-di-un-modello-matematico-costruzione-di-una-descrizione-schematica-a-blocchi-utilizzando-metodi-sperimentali" class="level3">
+<h3 class="anchored" data-anchor-id="derivazione-di-un-modello-matematico-costruzione-di-una-descrizione-schematica-a-blocchi-utilizzando-metodi-sperimentali">Derivazione di un modello matematico: costruzione di una descrizione schematica a blocchi utilizzando metodi sperimentali</h3>
+<p>Siamo pronti a formulare il modello matematico completo per il nostro sistema di controllo della temperatura.</p>
+<p>Proprio come in precedenza ci si basava sui principi fisici per la derivazione delle equazioni, anche i metodi sperimentali possono essere impiegati per l’identificazione dei modelli. Conducendo esperimenti, possiamo discernere i modelli della funzione di trasferimento di componenti distinti, consentendo così la creazione del modello matematico per l’intero sistema.</p>
+<section id="identificazione-dei-parametri-di-processo" class="level4">
+<h4 class="anchored" data-anchor-id="identificazione-dei-parametri-di-processo">Identificazione dei parametri di processo:</h4>
+<p>Partiamo dall’Impianto, dal Processo stesso.</p>
+<p>Supponiamo che il processo possa essere approssimato da un sistema del primo ordine:</p>
+<p><span class="math display">\[
+G_p(s) = \frac{K_p}{\tau_p s +1}
+\]</span></p>
+<ul>
+<li>Supponiamo che i parametri $ K_p $ e $ _p $ del nostro modello possano essere determinati sperimentalmente.</li>
+<li>Supponiamo che la portata del vapore $ q_{ms} $ sia $ A $ chilogrammi al secondo. Questo sarà considerato come il nostro input:</li>
+</ul>
+<p><span class="math display">\[ q_{ms} = A\;\; kg/sec\]</span></p>
+<p><strong>Rappresentazione della curva di output:</strong> Quando viene fornito questo input specifico, l’output ottenuto sperimentalmente può essere tracciato come $ $ rispetto a $ $. La curva risultante potrebbe assomigliare a quella di un tipico processo del primo ordine.</p>
+
+<img src="../pics/12_A_First_Complete_Application_heat_exchanger_3.png?1" alt="12_A_First_Complete_Application_heat_exchanger_3" style="width:450px;"><table>
+<tbody><tr>
+
+</tr>
+
+</tbody></table>
+<p>Dallo stato stazionario di questa curva, possiamo denotare $ _{ss} $ come il valore dello stato stazionario ottenuto sperimentalmente. Possiamo stabilire:</p>
+<p><span class="math display">\[ K_p = \frac{\theta_{ss}}{A} \]</span></p>
+<p>In secondo luogo, considerando la funzione di trasferimento, il nostro obiettivo è determinare la costante di tempo. Analizzando il transitorio della curva di reazione (o curva di risposta) di questo processo, possiamo modellarlo come:</p>
+<p><span class="math display">\[ \frac{\theta(s)}{Q_{ms}(s)} = \frac{K_p}{\tau_p s + 1} \]</span></p>
+<p>Per un input di passo unitario o per un input di grandezza $ A $:</p>
+<p><span class="math display">\[ \theta(s) = \frac{K_p \cdot A}{s(\tau_p s + 1)} \]</span></p>
+<p>Facendo la trasformata inversa di Laplace, otteniamo:</p>
+<p><span class="math display">\[ \theta(t) = K_p \cdot A (1 - e^{-\frac{t}{\tau_p}}) \]</span></p>
+<p>Da cui segue (dato che $ K_p A = _{ss}):</p>
+<p><span class="math display">\[ \theta(t) = \theta_{ss} (1 - e^{-\frac{t}{\tau_p}}) \]</span></p>
+<p>Considerando la pendenza a $ t = 0 $, otteniamo:</p>
+<p><span class="math display">\[ \frac{d\theta}{dt} \Big|_{t=0} = \frac{\theta_{ss}}{\tau_p} \Big|_{t=0}\]</span></p>
+<p>Questa pendenza ci aiuta a comprendere ulteriormente la curva di reazione del processo.</p>
+
+<img src="../pics/12_A_First_Complete_Application_heat_exchanger_4.png?1" alt="12_A_First_Complete_Application_heat_exchanger_4" style="width:450px;"><table>
+<tbody><tr>
+
+</tr>
+
+</tbody></table>
+<p>Questa rappresentazione grafica facilita la determinazione sperimentale di $ _p $. Di conseguenza, possiamo rappresentare la nostra funzione di trasferimento del processo $ G_p(s) $ come:</p>
+<p><span class="math display">\[ G_p(s) = \frac{K_p}{\tau_p s + 1} \]</span></p>
+<p>e con un semplice esperimento possiamo identificare <span class="math inline">\(K_p\)</span> e <span class="math inline">\(\tau_p\)</span>.</p>
+<p><strong>Un esempio industriale:</strong> Consideriamo un esperimento con uno scambiatore di calore. I parametri identificati erano $ K_p = 50 $ e $ _p = 30 $, dandoci il modello:</p>
+<p><span class="math display">\[ G_p(s) = \frac{50}{30s + 1} \]</span></p>
+<p>Ricordate, questo modello è valido quando la temperatura $ $ è l’output e la portata del vapore è l’input. È essenziale riconoscere che altri input, come i disturbi nel processo, possono influenzare il processo. Per il nostro scambiatore di calore, i disturbi sono <span class="math inline">\(q_m\)</span> (disturbo nella portata del processo) e <span class="math inline">\(\theta_i\)</span> (disturbo nella temperatura del fluido di processo in ingresso).</p>
+<p>Anche le altre funzioni di trasferimento possono essere determinate sperimentalmente. Ad esempio:</p>
+<p><span class="math display">\[ \frac{\theta(s)}{Q_m(s)}: \frac{1}{30s + 1} \]</span></p>
+<p>Ciò significa che il guadagno è di $ 1^oC$ per $ Kg/sec$ di input. La costante di tempo è <span class="math inline">\(30\)</span>sec.&nbsp;Questa in effetti è la costante di tempo del processo quindi è ciò che abbiamo identificato prima.</p>
+<p><span class="math display">\[ \frac{\theta(s)}{\theta_i(s)}: \frac{3}{30s + 1} \]</span></p>
+<p>Ciò rappresenta quando l’input è una variazione di temperatura. Il guadagno è, in questo caso, $ 3^oC$ di output per ogni grado centigrado in input. La costante di tempo è <span class="math inline">\(30\)</span>sec.&nbsp;Questa in effetti è la costante di tempo del processo quindi è ciò che abbiamo identificato prima.</p>
+
+<img src="../pics/12_A_First_Complete_Application_heat_exchanger_5.png?1" alt="12_A_First_Complete_Application_heat_exchanger_5" style="width:450px;"><table>
+<tbody><tr>
+
+</tr>
+
+</tbody></table>
+<p><strong>Il trasduttore elettropneumatico e la valvola di controllo:</strong> Successivamente, esploreremo il trasduttore elettropneumatico combinato con la valvola di controllo. Il trasduttore prende la corrente in ingresso e produce pressione in uscita. Con un intervallo compreso tra 4 e 20 milliampere per la corrente e tra 3 e 15 psi per la pressione, il guadagno del trasduttore è $ $ psi per milliampere (assumendo che il dispositivo sia lineare nell’intervallo in questione):</p>
+<p><span class="math display">\[
+K_T = \frac{15-3}{20-4} = \frac{12}{16}\;\; \testo{psi/mA}
+\]</span></p>
+<p>Considerando la valvola di controllo, una pressione compresa tra 3 e 15 psi porta ad un flusso in uscita. Per il nostro sistema, il flusso massimo è di 1,6 chilogrammi al secondo (lo abbiamo determinato, ad esempio, attraverso esperimenti), il che porta ad un guadagno della valvola di controllo di $ $ chilogrammi al secondo per psi.</p>
+<p><span class="math display">\[
+K_V = \frac{1.6-0}{15-3} = \frac{1.6}{12}\;\; \text{kg/sec per psi}
+\]</span></p>
+<p>Quando entrambe le unità vengono prese insieme, otteniamo il guadagno combinato $ K_v $ pari a 0,1 chilogrammi al secondo per milliampere.</p>
+<p><span class="math display">\[K_v = \frac{12}{16}\cdot\frac{1.6}{12} = 0.1\;\; \text{kg/sec per mA}\]</span></p>
+<p>Se la costante di tempo del trasduttore elettropneumatico e della valvola di controllo può essere trascurata, questo potrebbe essere il mio intero modello.</p>
+<p>A seconda della dinamica del trasduttore elettropneumatico e della valvola di controllo e della loro relazione con il processo, possiamo rappresentare la loro funzione di trasferimento come:</p>
+<p><span class="math display">\[ G_v(s) = \frac{0,1}{3s + 1} \]</span></p>
+<p>Si noti che in questo caso, gli esperimenti con il trasduttore elettropneumatico e la valvola di controllo hanno fornito una costante di tempo di 3 sec.</p>
+<p>Se ritieni che 3 secondi siano trascurabili rispetto a 30 secondi, puoi considerare il modello più semplice di solo guadagno.</p>
+</section>
+</section>
+<section id="il-modello-del-sensore" class="level3">
+<h3 class="anchored" data-anchor-id="il-modello-del-sensore"><strong>Il modello del sensore</strong></h3>
+<p>Quando pensiamo al sensore, dovremmo considerare il suo ingresso e uscita. Nel nostro sistema: - <strong>Ingresso</strong>: Temperatura (<span class="math inline">\(^oC\)</span>) - <strong>Uscita</strong>: Milliampere (mA)</p>
+<p>Quindi, per il sistema di controllo della temperatura che stiamo progettando, dobbiamo definire l’intervallo di temperatura. Per un’applicazione tipica, questo intervallo è compreso tra 50°C e 150°C. Di conseguenza, l’uscita del sensore varierà da 4 a 20 mA.</p>
+<p>🤔 <strong>Domanda pop-up</strong>: Cosa pensi che accadrà se la temperatura scenderà sotto i 50°C o sopra i 150°C? <strong>Risposta</strong>: il sensore potrebbe non fornire letture accurate oppure potrebbe funzionare al di fuori dell’intervallo specificato, causando potenzialmente imprecisioni o addirittura danni.</p>
+<p>Con le informazioni di cui sopra, possiamo determinare il guadagno del sensore osservando la sua linearità nell’intervallo definito. Dato:</p>
+<p><span class="math display">\[ \text{Intervallo di uscita} = 20 \text{mA} - 4 \text{mA} = 16 \text{mA} \]</span></p>
+<p><span class="math display">\[ \text{Intervallo di input} = 150°C - 50°C = 100°C \]</span></p>
+<p>Il guadagno del sensore (K) è dato da:</p>
+<p><span class="math display">\[ K = \frac{\text{Intervallo di output}}{\text{Intervallo di input}} = \frac{16}{100} = 0,16 \]</span></p>
+<p>Pertanto, l’unità per il guadagno del sensore è milliampere per grado centigrado (mA/°C).</p>
+<p>Tuttavia, considerare semplicemente il guadagno del sensore potrebbe non darci il quadro completo. Spesso, nelle applicazioni reali, la dinamica del sensore non può essere ignorata. Soprattutto in scenari in cui il sensore ha una costante di tempo apprezzabile. Nel nostro caso, ad esempio, il sensore ha una costante di tempo di 10 secondi. Data la costante di tempo del processo di 30 secondi, trascurare la dinamica del sensore sarebbe una scarsa approssimazione.</p>
+<p>È essenziale ricordare che considerare solo un modello di ordine zero (solo guadagno) non sarà sufficiente in sistemi con costanti di tempo significative.</p>
+<p>Eseguendo un esperimento simile per il nostro sensore, rappresentiamo la sua funzione di trasferimento, H(s), come:</p>
+<p><span class="math display">\[ H(s) = \frac{0,16}{10s + 1} \]</span></p>
+<p>Questo rappresenta un fattore di primo ordine per il nostro sensore.</p>
+</section>
+<section id="modello-di-sistema-completo" class="level3">
+<h3 class="anchored" data-anchor-id="modello-di-sistema-completo">Modello di sistema completo</h3>
+<p>Con le informazioni di cui sopra, possiamo costruire uno schema a blocchi completo per il nostro sistema di controllo della temperatura.</p>
+<p>(Inserisci il diagramma qui)</p>
+<p>Nel diagramma Gp(s) è la funzione di trasferimento del processo, data da:</p>
+<p><span class="math display">\[ Gp(i) = \frac{50}{30s + 1} \]</span></p>
+<p>Le funzioni di trasferimento dei disturbi, che considerano fattori come cambiamenti nella temperatura in ingresso (theta i) e cambiamenti nella portata del fluido in afflusso (q m), sono:</p>
+<p><span class="math display">\[ \frac{1}{30s + 1} \]</span></p>
+<p><span class="math display">\[ \frac{3}{30s + 1} \]</span></p>
+<p>Ora pensiamo alla valvola di controllo. La sua funzione di trasferimento, come determinato in precedenza, è:</p>
+<p><span class="math display">\[ \frac{0.1}{3s + 1} \]</span></p>
+<p>In questo sistema, il nostro obiettivo è far sì che la temperatura in uscita (theta) segua un comando particolare. La sfida sta nel convertire il segnale di comando, espresso in temperatura, in una corrente corrispondente in milliampere per il rilevamento degli errori.</p>
+<p>È fondamentale comprendere che per un rilevamento efficace degli errori, il segnale di comando e l’uscita del sensore devono essere nella stessa unità (mA).</p>
+<p>Dato che il guadagno in stato stazionario del sensore è 0,16 mA/°C, ha senso scegliere un fattore di scala di 0,16 per il nostro sistema. Ciò garantisce che allo stato stazionario, il valore del segnale comandato (in mA) corrisponda all’uscita del sensore, facilitando un efficace rilevamento degli errori.</p>
+
+<img src="../pics/12_A_First_Complete_Application_heat_exchanger_6.png?1" alt="12_A_First_Complete_Application_heat_exchanger_6" style="width:750px;"><table>
+<tbody><tr>
+
+</tr>
+
+</tbody></table>
+</section>
+<section id="avvolgendo" class="level3">
+<h3 class="anchored" data-anchor-id="avvolgendo">Avvolgendo</h3>
+<p>I valori di cui abbiamo parlato si riferiscono ad un tipico processo industriale. Tuttavia, con la metodologia che abbiamo delineato, è possibile applicarla a qualsiasi situazione. Identificando sperimentalmente varie funzioni di trasferimento, possiamo costruire un modello completo del sistema.</p>
+<p>Per perfezionare ulteriormente il nostro sistema, possiamo introdurre un controllore, <span class="math inline">\(D(s)\)</span>, nel ciclo. La progettazione di questo controller è fondamentale per garantire che l’uscita <span class="math inline">\(\theta\)</span> (temperatura del fluido di processo in uscita) segua il comando (<span class="math inline">\(\theta_r\)</span>), nonostante eventuali disturbi che agiscono sul processo, <span class="math inline">\(\theta_i\)</span> (variazione della temperatura di ingresso ) e <span class="math inline">\(\q_m\)</span> (variazione della portata del fluido in entrata).</p>
+
+<img src="../pics/12_A_First_Complete_Application_heat_exchanger_7.png?1" alt="12_A_First_Complete_Application_heat_exchanger_7" style="width:750px;"><table>
+<tbody><tr>
+
+</tr>
+
+</tbody></table>
+<p>🤔 <strong>Domanda pop-up</strong>: Perché è fondamentale garantire che l’uscita del sensore e il segnale di comando siano nella stessa unità per il rilevamento degli errori? <strong>Risposta</strong>: Se si trovassero in unità diverse, il confronto non avrebbe senso. È come paragonare le mele alle arance. Averli nella stessa unità garantisce che qualsiasi differenza (errore) tra loro rappresenti accuratamente la deviazione del sistema dal comportamento desiderato.</p>
+</section>
+<section id="barra-laterale---fattore-di-scala-nei-sistemi-di-feedback" class="level3">
+<h3 class="anchored" data-anchor-id="barra-laterale---fattore-di-scala-nei-sistemi-di-feedback">Barra laterale - Fattore di scala nei sistemi di feedback</h3>
+<p>In un sistema di controllo con feedback, soprattutto quando si lavora con sensori e attuatori, potrebbero esserci discrepanze tra le unità o le grandezze del segnale di riferimento e il segnale di feedback. Per rendere comparabili i due segnali, a volte è necessario introdurre un fattore di scala.</p>
+</section>
+<section id="perché-016-come-fattore-di-scala" class="level3">
+<h3 class="anchored" data-anchor-id="perché-016-come-fattore-di-scala">Perché 0,16 come fattore di scala?</h3>
+<p>Considerato il contesto:</p>
+<ol type="1">
+<li><p><strong>Comportamento del sensore</strong>: il sensore del nostro sistema traduce la temperatura in un segnale di corrente, producendo un’uscita in milliampere (mA). Il guadagno a stato stazionario del sensore, che indica quanto cambia l’uscita per una determinata variazione dell’ingresso, è 0,16 mA/°C. In termini più semplici, per ogni grado Celsius di aumento della temperatura, l’uscita del sensore aumenta di 0,16 mA.</p></li>
+<li><p><strong>Obiettivo del controllo del feedback</strong>: Nel nostro sistema di controllo del feedback, l’obiettivo è fare in modo che l’uscita del processo (temperatura) segua un segnale di riferimento o di comando. Il rilevatore di errore confronta quindi l’uscita del sensore (un valore mA) con questo segnale di riferimento.</p></li>
+<li><p><strong>Coerenza dell’unità</strong>: il confronto nel rilevatore di errori richiede che i due segnali siano nella stessa unità. Poiché l’uscita del sensore è in mA, il segnale di riferimento (che è una temperatura desiderata) deve essere convertito nel suo equivalente in mA.</p></li>
+<li><p><strong>Corrispondenza al comportamento del sensore</strong>: per garantire che il segnale di riferimento in mA rappresenti correttamente la temperatura desiderata, è logico utilizzare il guadagno a stato stazionario del sensore come fattore di scala. Quando desideriamo una temperatura particolare come riferimento, moltiplicandola per 0,16 (guadagno del sensore) otteniamo l’esatto valore di corrente che il sensore produrrebbe a quella temperatura.</p></li>
+</ol>
+</section>
+<section id="un-esempio-illustrativo" class="level3">
+<h3 class="anchored" data-anchor-id="un-esempio-illustrativo">Un esempio illustrativo</h3>
+<p>Supponiamo di impostare una temperatura di riferimento (<span class="math inline">\(\theta_r\)</span>) di 100°C. Per convertirlo in una corrente di riferimento per il confronto:</p>
+<p><span class="math display">\[ \text{Corrente di riferimento} = \theta_r \times \text{Fattore di scala} \]</span></p>
+<p><span class="math display">\[ \text{Corrente di riferimento} = 100°C \times 0,16 \text{mA/°C} = 16 \text{mA} \]</span></p>
+<p>Pertanto, quando il processo raggiunge i 100°C, il sensore idealmente emetterebbe 16 mA. Il rilevatore di errore vedrebbe quindi un errore pari a zero tra la corrente di riferimento (16 mA) e l’uscita del sensore (16 mA), indicando che il sistema sta funzionando nella condizione desiderata.</p>
+<p>In conclusione, utilizzando il guadagno stazionario del sensore come fattore di scala si garantisce che il rilevatore di errori confronti mele con mele. Ciò è vitale per il corretto funzionamento del sistema di feedback, garantendo che le azioni di controllo siano basate su confronti significativi.</p>
+<p>— FINE DELLA BARRA LATERALE</p>
+<p>Nei prossimi quaderni esploreremo le complessità della progettazione del controller e capiremo come adattarlo alle nostre esigenze specifiche. Ciò garantirà che il nostro sistema di controllo della temperatura funzioni in modo ottimale in varie condizioni.</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
