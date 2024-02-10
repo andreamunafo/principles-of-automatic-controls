@@ -150,5 +150,7 @@ checklink/cookies.txt
 # Quarto
 .quarto
 
-nbs/prompt.txt
 .jupyter_ystore.db
+.DS_Store
+.ipynb_checkpoints
+videos/
