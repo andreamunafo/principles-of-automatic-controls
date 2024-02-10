@@ -2,6 +2,7 @@ website:
   sidebar:
     contents:
       - index.ipynb
+      - 00_Syllabus.ipynb
       - 01_intro.ipynb
       - 02_basics_of_feedback_control.ipynb
       - 03_introduction_to_control_problem.ipynb
@@ -33,4 +34,197 @@ website:
       - 29_Feedback_system_performance_based_on_frequency_response.ipynb
       - 30_.ipynb
       - A_Models_of_Thermal_Systems.ipynb
+      - TCLab_00_Syllabus.ipynb
+      - Untitled.ipynb
       - index-old.ipynb
+      - section: IT
+        contents:
+          - IT/00_Syllabus_it.ipynb
+          - IT/01_intro_it.ipynb
+          - IT/02_basics_of_feedback_control_it.ipynb
+          - IT/03_introduction_to_control_problem_it.ipynb
+          - IT/04_dynamic_systems_it.ipynb
+          - IT/05_dynamic_response_it.ipynb
+          - IT/06_inverse_laplace_transform_it.ipynb
+          - IT/07_modeling_dynamic_systems_it.ipynb
+          - IT/08_control_system_components_it.ipynb
+          - IT/09_Models_of_Control_Devices_and_Systems_it.ipynb
+          - IT/10_hardware_and_case_studies_it.ipynb
+          - IT/11_AC_hardware_and_case_studies_it.ipynb
+          - IT/12_A_First_Complete_Application_it.ipynb
+          - IT/13_Principles_of_Feedback_Control_it.ipynb
+          - IT/14_Feedback_systems_and_their_effects_it.ipynb
+          - IT/15_Introduction_to_Control_Systems_it.ipynb
+          - IT/16_Stabilty_it.ipynb
+          - IT/17_Stability_and_Routh_Criterion_it.ipynb
+          - IT/18_Performance_of_Feedback_Systems_it.ipynb
+          - IT/19_Design_of_feedback_control_it.ipynb
+          - IT/20_Design_of_feedback_control_continued_it.ipynb
+          - IT/21_Steady_State_Accuracy_And_Design_Principles_it.ipynb
+          - IT/22_Compensator_Design_Using_Root_Locus_it.ipynb
+          - IT/23_Design_with_the_root_locus_it.ipynb
+          - IT/24_Compensators_and_Root_Locus_it.ipynb
+          - IT/25_Introduction_to_Frequency_Domain_Analysis_in_Control_Systems_it.ipynb
+          - IT/26_Application_of_Nyquist_Stability_Criterion_it.ipynb
+          - IT/27_The_Nyquist_Stability_Criterion_and_Relative_Stability_it.ipynb
+          - IT/28_Body_Plots_it.ipynb
+          - IT/29_Feedback_system_performance_based_on_frequency_response_it.ipynb
+          - IT/TCLab_00_Syllabus_it.ipynb
+          - IT/index_it.ipynb
+      - section: TCLab
+        contents:
+          - TCLab/00_Spacecraft_Thermal_Control_Systems.ipynb
+          - TCLab/01_TCLab.ipynb
+          - TCLab/01_Understanding_TCLab.ipynb
+          - TCLab/02.11-TCLab-Lab-2-Fitting.ipynb
+          - TCLab/02_TCLab_Lab_1_Coding_a_relay_controller.ipynb
+          - TCLab/03_System_Model_and_Identification_TCLab.ipynb
+          - TCLab/04_Step_Testing_TCLab.ipynb
+          - TCLab/05_Fitting_Step_Test_Data_to_Empirical_Models.ipynb
+          - TCLab/06_TCLab_Lab_2_Model_Identification.ipynb
+          - TCLab/06_TCLab_Lab_2_Model_Identification_solutions.ipynb
+          - TCLab/0X_ Developing_the_Control_System_TCLab.ipynb
+          - TCLab/0X_Check_Your_Understanding.ipynb
+          - section: cbe
+            contents:
+              - TCLab/cbe/01.00-Introduction-to-the-Temperature-Control-Laboratory.ipynb
+      - section: TCLab
+        contents:
+          - section: cbe
+            contents:
+              - TCLab/cbe/01.01-TCLab.ipynb
+      - section: TCLab
+        contents:
+          - section: cbe
+            contents:
+              - TCLab/cbe/01.02-The-TCLab-Python-Package.ipynb
+      - section: TCLab
+        contents:
+          - section: cbe
+            contents:
+              - TCLab/cbe/01.11-TCLab-Lab-1-Coding-a-relay-controller.ipynb
+      - section: TCLab
+        contents:
+          - section: cbe
+            contents:
+              - TCLab/cbe/02.00-Model-Identification.ipynb
+      - section: TCLab
+        contents:
+          - section: cbe
+            contents:
+              - TCLab/cbe/02.01-Step-Testing.ipynb
+      - section: TCLab
+        contents:
+          - section: cbe
+            contents:
+              - TCLab/cbe/02.02-Fitting-Step-Test-Data-to-Empirical-Models.ipynb
+      - section: TCLab
+        contents:
+          - section: cbe
+            contents:
+              - TCLab/cbe/02.03-First-Order-Model-for-a-Single-Heater.ipynb
+      - section: TCLab
+        contents:
+          - section: cbe
+            contents:
+              - TCLab/cbe/02.04-Two-Input-Two-Output-Model.ipynb
+      - section: TCLab
+        contents:
+          - section: cbe
+            contents:
+              - TCLab/cbe/02.05-Two-State-Model-for-a-Single-Heater.ipynb
+      - section: TCLab
+        contents:
+          - section: cbe
+            contents:
+              - TCLab/cbe/02.06-Four-State-Model.ipynb
+      - section: TCLab
+        contents:
+          - section: cbe
+            contents:
+              - TCLab/cbe/02.10-TCLab-Lab-2-Model-Indentification-Solutions.ipynb
+      - section: TCLab
+        contents:
+          - section: cbe
+            contents:
+              - TCLab/cbe/02.10-TCLab-Lab-2-Model-Indentification.ipynb
+      - section: TCLab
+        contents:
+          - section: cbe
+            contents:
+              - TCLab/cbe/02.11-TCLab-Lab-2-Fitting.ipynb
+      - section: TCLab
+        contents:
+          - section: cbe
+            contents:
+              - TCLab/cbe/03.00-State-Estimation.ipynb
+      - section: TCLab
+        contents:
+          - section: cbe
+            contents:
+              - TCLab/cbe/03.01-Open-and-Closed-Loop-Estimation.ipynb
+      - section: TCLab
+        contents:
+          - section: cbe
+            contents:
+              - TCLab/cbe/04.00-Feedback-Control.ipynb
+      - section: TCLab
+        contents:
+          - section: cbe
+            contents:
+              - TCLab/cbe/04.01-Relay-Control.ipynb
+      - section: TCLab
+        contents:
+          - section: cbe
+            contents:
+              - TCLab/cbe/04.03-PID_Control.ipynb
+      - section: TCLab
+        contents:
+          - section: cbe
+            contents:
+              - TCLab/cbe/04.10-Lab-Assignment-PID-Control.ipynb
+      - section: TCLab
+        contents:
+          - section: cbe
+            contents:
+              - TCLab/cbe/04.11-Lab-Assignment-PI-Control.ipynb
+      - section: TCLab
+        contents:
+          - section: cbe
+            contents:
+              - TCLab/cbe/05.00-Predictive-Control-and-Real-Time-Optimization.ipynb
+      - section: TCLab
+        contents:
+          - section: cbe
+            contents:
+              - TCLab/cbe/05.01-Optimization-Control-and-Estimation-using-Pyomo.ipynb
+      - section: TCLab
+        contents:
+          - section: cbe
+            contents:
+              - TCLab/cbe/05.02-Optimization-Control-and-Estimation-using-Pyomo-With-Windows-ipopt.ipynb
+      - section: TCLab
+        contents:
+          - section: cbe
+            contents:
+              - TCLab/cbe/A.00-Additional-Python.ipynb
+      - section: TCLab
+        contents:
+          - section: cbe
+            contents:
+              - TCLab/cbe/A.01-Coding-Controllers-with-Python-Generators.ipynb
+      - section: TCLab
+        contents:
+          - section: cbe
+            contents:
+              - TCLab/cbe/A.02-Modular-Approach-to-Simulation-using-Python-Generators.ipynb
+      - section: TCLab
+        contents:
+          - section: cbe
+            contents:
+              - TCLab/cbe/A.03-Modular-Simulation-using-Python-Generators.ipynb
+      - section: TCLab
+        contents:
+          - section: cbe
+            contents:
+              - TCLab/cbe/A.04-Animation-in-Jupyter-Notebooks.ipynb
