@@ -13,6 +13,11 @@ Usage:
 2. To translate all notebooks in a directory:
    python jupyter_translate.py translate_all --directory="path/to/notebooks/folder" --language="it"
 
+For example, if you run it inside the `principles-of-automatic-controls` folder:
+   python jupyter_translate.py translate_all --directory='./nbs/' --language="it"
+
+
+
 Parameters:
 - fname: File path of the notebook to be translated (used for single file translation).
 - directory: Path to the folder containing notebook files (used for translating all notebooks in the folder).
