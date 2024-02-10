@@ -34,7 +34,64 @@ website:
       - 27_The_Nyquist_Stability_Criterion_and_Relative_Stability.ipynb
       - 28_Bode_Plots.ipynb
       - 29_Feedback_system_performance_based_on_frequency_response.ipynb
-      - 30_.ipynb
+      - 30_TBC.ipynb
+      - section: IT-not-verified
+        contents:
+          - IT-not-verified/07_modeling_dynamic_systems_it.ipynb
+          - IT-not-verified/08_control_system_components_it.ipynb
+          - IT-not-verified/09_Models_of_Control_Devices_and_Systems_it.ipynb
+          - IT-not-verified/10_hardware_and_case_studies_it.ipynb
+          - IT-not-verified/11_AC_hardware_and_case_studies_it.ipynb
+          - IT-not-verified/12_A_First_Complete_Application_it.ipynb
+          - IT-not-verified/13_Principles_of_Feedback_Control_it.ipynb
+          - IT-not-verified/14_Feedback_systems_and_their_effects_it.ipynb
+          - IT-not-verified/15_Introduction_to_Control_Systems_it.ipynb
+          - IT-not-verified/16_Stability_it.ipynb
+          - IT-not-verified/17_Stability_and_Routh_Criterion_it.ipynb
+          - IT-not-verified/18_Performance_of_Feedback_Systems_it.ipynb
+          - IT-not-verified/19_Design_of_feedback_control_it.ipynb
+          - IT-not-verified/20_Design_of_feedback_control_continued_it.ipynb
+          - IT-not-verified/21_Steady_State_Accuracy_And_Design_Principles_it.ipynb
+          - IT-not-verified/22_Compensator_Design_Using_Root_Locus_it.ipynb
+          - IT-not-verified/23_Design_with_the_root_locus_it.ipynb
+          - IT-not-verified/24_Compensators_and_Root_Locus_it.ipynb
+          - IT-not-verified/25_Introduction_to_Frequency_Domain_Analysis_in_Control_Systems_it.ipynb
+          - IT-not-verified/26_Application_of_Nyquist_Stability_Criterion_it.ipynb
+          - IT-not-verified/27_The_Nyquist_Stability_Criterion_and_Relative_Stability_it.ipynb
+          - IT-not-verified/28_Bode_Plots_it.ipynb
+          - IT-not-verified/29_Feedback_system_performance_based_on_frequency_response_it.ipynb
+          - IT-not-verified/30_TBC_it.ipynb
+      - section: IT_TCLab-not-verified
+        contents:
+          - IT_TCLab-not-verified/05_Fitting_Step_Test_Data_to_Empirical_Models_it.ipynb
+          - IT_TCLab-not-verified/06_TCLab_Lab_2_Model_Identification_it.ipynb
+          - IT_TCLab-not-verified/06_TCLab_Lab_2_Model_Identification_solutions_it.ipynb
+          - IT_TCLab-not-verified/07_TCLab_Lab_2_Fitting_it.ipynb
+          - IT_TCLab-not-verified/08_Relay_Control_it.ipynb
+          - IT_TCLab-not-verified/09_PID_Control_it.ipynb
+          - IT_TCLab-not-verified/10_Lab-Assignment-PID-Control_it.ipynb
+          - IT_TCLab-not-verified/11_Lab-Assignment-PI-Control_it.ipynb
+      - section: IT_TCLab_🇮🇹
+        contents:
+          - IT_TCLab_🇮🇹/00_Spacecraft_Thermal_Control_Systems_it.ipynb
+          - IT_TCLab_🇮🇹/00_TCLab_Exercises_Report_Template_it.ipynb
+          - IT_TCLab_🇮🇹/01_TCLab_it.ipynb
+          - IT_TCLab_🇮🇹/01_Understanding_TCLab_it.ipynb
+          - IT_TCLab_🇮🇹/02_TCLab_Lab_1_Coding_a_relay_controller_it.ipynb
+          - IT_TCLab_🇮🇹/03_System_Model_and_Identification_TCLab_it.ipynb
+          - IT_TCLab_🇮🇹/04_Step_Testing_TCLab_it.ipynb
+      - section: IT_🇮🇹
+        contents:
+          - IT_🇮🇹/00_FAQ_it.ipynb
+          - IT_🇮🇹/00_Syllabus_it.ipynb
+          - IT_🇮🇹/01_Getting_started_with_Python_and_Jupyter_Notebook_it.ipynb
+          - IT_🇮🇹/01_intro_it.ipynb
+          - IT_🇮🇹/02_basics_of_feedback_control_it.ipynb
+          - IT_🇮🇹/03_introduction_to_control_problem_it.ipynb
+          - IT_🇮🇹/04_dynamic_systems_it.ipynb
+          - IT_🇮🇹/05_dynamic_response_it.ipynb
+          - IT_🇮🇹/06_inverse_laplace_transform_it.ipynb
+          - IT_🇮🇹/index_it.ipynb
       - section: TCLab
         contents:
           - TCLab/00_Spacecraft_Thermal_Control_Systems.ipynb
