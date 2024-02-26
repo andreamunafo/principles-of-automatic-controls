@@ -1,0 +1,39 @@
+format: jb-book
+root: index.ipynb  # The root document for your book's main page.
+
+chapters:
+- file: 00_TOC
+- file: 00_Syllabus
+- file: 01_intro
+- file: 02_basics_of_feedback_control
+- file: 03_introduction_to_control_problem
+- file: 04_dynamic_systems
+- file: 05_dynamic_response
+- file: 06_inverse_laplace_transform
+- file: 07_modeling_dynamic_systems
+- file: 08_control_system_components
+- file: 09_Models_of_Control_Devices_and_Systems
+- file: 10_hardware_and_case_studies
+- file: 11_AC_hardware_and_case_studies
+- file: 12_A_First_Complete_Application
+- file: 13_Principles_of_Feedback_Control
+- file: 14_Feedback_systems_and_their_effects
+- file: 15_Introduction_to_Control_Systems
+- file: 16_Stability
+- file: 17_Stability_and_Routh_Criterion
+- file: 18_Performance_of_Feedback_Systems
+- file: 19_Design_of_feedback_control
+- file: 20_Design_of_feedback_control_continued
+- file: 21_Steady_State_Accuracy_And_Design_Principles
+- file: 22_Compensator_Design_Using_Root_Locus
+- file: 23_Design_with_the_root_locus
+- file: 24_Compensators_and_Root_Locus
+- file: 25_Introduction_to_Frequency_Domain_Analysis_in_Control_Systems
+- file: 26_Application_of_Nyquist_Stability_Criterion
+- file: 27_The_Nyquist_Stability_Criterion_and_Relative_Stability
+- file: 28_Bode_Plots
+- file: 29_Feedback_system_performance_based_on_frequency_response
+- file: 00_Getting_started_with_Python_and_Jupyter_Notebook
+- file: 00_FAQ
+
+

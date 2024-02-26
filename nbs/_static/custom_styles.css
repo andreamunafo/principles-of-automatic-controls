@@ -1,0 +1,111 @@
+/* Main body styling */
+body {    
+    font-family: 'Times New Roman', Times, serif;
+    line-height: 1.6;
+    color: #333333;
+    background-color: #f8f8f8;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+    color: #004d7a; /* Dark blue color for headings */
+}
+
+h1 {
+    font-size: 2.5em;
+}
+
+h2 {
+    font-size: 2em;
+}
+
+h3 {
+    font-size: 1.5em;
+}
+
+/* Paragraphs */
+p {
+    margin-bottom: 1em;
+}
+
+/* Code cells and blocks */
+.code-cell {
+    background-color: #f7f7f7;
+    border: 1px solid #ececec;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+/* Inline code */
+code {
+    background-color: #f7f7f7;
+    padding: 2px 4px;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+}
+
+/* Navigation menu */
+.navbar {
+    background-color: #004d7a; /* Dark blue background for navbar */
+    color: white;
+}
+
+.nav-link {
+    color: white;
+}
+
+.nav-link:hover {
+    color: #f8f8f8;
+}
+
+/* Link styling */
+a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Custom styles for tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+/* Footer styling */
+footer {
+    background-color: #f8f8f8;
+    padding: 10px;
+    text-align: center;
+}
+
+/* Hide 'Skip to Main Content' link */
+/* Hide 'Skip to Main Content' link for print */
+@media print {
+    .skip-to-content {
+        display: none !important;
+    }
+}
+
+#pst-skip-link {
+    display: none !important;
+}
+
+@media print {
+    body {
+        font-family: 'Times New Roman', Times, serif;
+    }
+}
+
