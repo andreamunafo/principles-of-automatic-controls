@@ -1,4 +1,4 @@
-name: tclab
+name: control_env
 channels:
   - defaults
 dependencies:
@@ -152,4 +152,4 @@ dependencies:
     - widgetsnbextension==4.0.9
     - y-py==0.6.0
     - ypy-websocket==0.12.3
-prefix: /Users/andreamunafo/opt/anaconda3/envs/tclab
+
