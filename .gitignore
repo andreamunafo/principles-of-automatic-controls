@@ -154,3 +154,11 @@ checklink/cookies.txt
 .DS_Store
 .ipynb_checkpoints
 videos/
+START-HERE-local-readme.md
+IT-not-verified/
+IT_TCLab-not-verified/
+videos/
+nbs/prompt.txt
+.gitignore
+info.txt
+BLANK.key
