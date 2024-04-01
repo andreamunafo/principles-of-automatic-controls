@@ -1,0 +1,1859 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.552">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>principles-of-automatic-controls - Prestazioni dei sistemi di feedback</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+<script src="https://unpkg.com/@jupyter-widgets/html-manager@*/dist/embed-amd.js" crossorigin="anonymous"></script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+<meta property="og:title" content="principles-of-automatic-controls - Prestazioni dei sistemi di feedback">
+<meta property="og:description" content="Course in feedback control for the University of Pisa">
+<meta property="og:site_name" content="principles-of-automatic-controls">
+<meta name="twitter:title" content="principles-of-automatic-controls - Prestazioni dei sistemi di feedback">
+<meta name="twitter:description" content="Course in feedback control for the University of Pisa">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">principles-of-automatic-controls</span>
+    </a>
+  </div>
+        <div class="quarto-navbar-tools tools-end">
+</div>
+          <div id="quarto-search" class="" title="Search"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../IT_🇮🇹/faq_it.html">IT_🇮🇹</a></li><li class="breadcrumb-item"><a href="../IT_🇮🇹/performance_of_feedback_systems_it.html">Prestazioni dei sistemi di feedback</a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Feedback Control</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../faq.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Frequently Asked Questions (FAQ)</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../syllabus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Syllabus for “Principles of Automatic Control”</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../toc.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Table of Contents</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../update_and_manage_local_changes_guide.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A Guide to Updating Your Local Repository with Git in Anaconda’s Virtual Environment</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../getting_started_with_python_and_jupyter_notebook.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Getting Started with Python and Jupyter Notebooks</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principles of Automatic Control</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../basics_of_feedback_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Feedback Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../introduction_to_control_problem.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to the control problem</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../dynamic_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modeling in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../dynamic_response.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Dynamic response of control systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../06_inverse_laplace_transform.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Inverse Laplace Transform: Partial fraction decomposition</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../modeling_dynamic_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Modeling of Dynamic Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../control_system_components.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Control System Components</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../models_of_control_devices_and_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Models of Controlled Devices</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../hardware_and_case_studies.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Hardware of Control Systems and Case Studies</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ac_hardware_and_case_studies.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">AC Motion Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../a_first_complete_application.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A Feedback Control System</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../principles_of_feedback_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principles of Feedback Control</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../feedback_systems_and_their_effects.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Feedback systems and their effects</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../introduction_to_control_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../stability.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Stability Analysis in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../stability_and_routh_criterion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Stability Analysis in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../performance_of_feedback_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Performance of Feedback Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../design_of_feedback_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Design Cycle for a Standard Second-Order System</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../20_Design_of_feedback_control_continued.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Understanding the Standard Second-Order System: Recap</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../steady_state_accuracy_and_design_principles.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Steady State Accuracy and Design Principles</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../compensator_design_using_root_locus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compensator Design</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../design_with_the_root_locus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Design with the Root Locus</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../compensators_and_root_locus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compensators and the Root Locus</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../introduction_to_frequency_domain_analysis_in_control_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Frequency Domain Analysis in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../application_of_nyquist_stability_criterion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Application of Nyquist Stability Criterion in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../the_nyquist_stability_criterion_and_relative_stability.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The Nyquist Stability Criterion and Relative Stability</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../bode_plots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Bode Plot Analysis</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../feedback_system_performance_based_on_frequency_response.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Feedback System Performance Based On Frequency Response</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../compensator_design_using_frequency_response_plots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principles of Automatic Control: Lead and Lag Compensation</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">IT_TCLab_🇮🇹</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/spacecraft_thermal_control_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Il Laboratorio di Controllo della Temperatura</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/tclab_exercises_report_template_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modello di report sugli esercizi TCLab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/tclab_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Il Laboratorio di Controllo della Temperatura</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/understanding_tclab_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Comprendere TCLab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/tclab_lab_1_coding_a_relay_controller_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 1: Codifica di un controller relè</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/system_model_and_identification_tclab_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modellazione del sistema</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/step_testing_tclab_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Passo Test</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/fitting_step_test_data_to_empirical_models_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Adattamento dei dati dei test di fase ai modelli empirici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/tclab_lab_2_model_identification_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 2: Identificazione del modello</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/tclab_lab_2_fitting_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Identificazione del modello: adattamento dei modelli ai dati</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/relay_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Controllo relè</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/pid_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Controllo PID</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/lab-assignment-pid-control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compito di laboratorio: Controllo PID</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/lab-assignment-pi-control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compito di laboratorio 4: Controllo PI</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">IT_🇮🇹</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/faq_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Domande frequenti (FAQ)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/syllabus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Programma del corso “Principi del controllo automatico”</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/update_and_manage_local_changes_guide_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Aggiornare il Proprio Repository Locale Mantenendo le Modifiche Locali</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/getting_started_with_python_and_jupyter_notebook_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Guida introduttiva ai notebook Python e Jupyter</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/intro_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principi di controllo automatico</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/basics_of_feedback_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione ai sistemi di controllo del feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/introduction_to_control_problem_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione al problema del controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/dynamic_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modellazione nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/dynamic_response_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Risposta dinamica dei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/06_inverse_laplace_transform_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Trasformata di Laplace inversa: scomposizione parziale di frazioni</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/modeling_dynamic_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione alla modellazione dei sistemi dinamici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/control_system_components_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Componenti del sistema di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/models_of_control_devices_and_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modelli di dispositivi controllati</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/hardware_and_case_studies_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Hardware dei sistemi di controllo e casi di studio</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/ac_hardware_and_case_studies_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sistemi di controllo del movimento CA</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/a_first_complete_application_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Un sistema di controllo del feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/principles_of_feedback_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principi di controllo del feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/feedback_systems_and_their_effects_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sistemi di feedback e loro effetti</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/introduction_to_control_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione ai sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/stability_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analisi di stabilità nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/stability_and_routh_criterion_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analisi di stabilità nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/performance_of_feedback_systems_it.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Prestazioni dei sistemi di feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/design_of_feedback_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Ciclo di progettazione per un sistema standard del secondo ordine</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/20_Design_of_feedback_control_continued_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Comprensione del sistema standard del secondo ordine: riepilogo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/steady_state_accuracy_and_design_principles_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Precisione dello stato stazionario e principi di progettazione</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/compensator_design_using_root_locus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Progettazione del compensatore</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/design_with_the_root_locus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Progettare con il luogo delle radici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/compensators_and_root_locus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compensatori e luogo delle radici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/introduction_to_frequency_domain_analysis_in_control_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione all’analisi nel dominio della frequenza nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/application_of_nyquist_stability_criterion_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Applicazione del criterio di stabilità di Nyquist nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/the_nyquist_stability_criterion_and_relative_stability_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Il criterio di stabilità di Nyquist e la stabilità relativa</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/bode_plots_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analisi del diagramma di Bode</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/feedback_system_performance_based_on_frequency_response_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prestazioni del sistema di feedback basate sulla risposta in frequenza</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/index_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Syllabus - Fondamenti di Automatica</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">TCLab</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/spacecraft_thermal_control_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The Temperature Control Laboratory</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/tclab_exercises_report_template.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Exercises Report Template</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The Temperature Control Lab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/understanding_tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Understanding TCLab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/tclab_lab_1_coding_a_relay_controller-solution.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 1: Coding a relay controller</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/tclab_lab_1_coding_a_relay_controller.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 1: Coding a relay controller</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/system_model_and_identification_tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">System Modeling</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/step_testing_tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Step Testing</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/fitting_step_test_data_to_empirical_models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Fitting Step Test Data to Empirical Models</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/tclab_lab_2_model_identification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 2: Model Identification</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/tclab_lab_2_model_identification_solutions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 2: Model Identification</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/tclab_lab_2_fitting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Model Identification: Fitting models to data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/relay_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Relay Control</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/pid_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">PID Control</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/lab-assignment-pid-control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab Assignment: PID Control</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/lab-assignment-pi-control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab Assignment 4: PI Control</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduzione-alle-specifiche-quantitative-delle-prestazioni" id="toc-introduzione-alle-specifiche-quantitative-delle-prestazioni" class="nav-link active" data-scroll-target="#introduzione-alle-specifiche-quantitative-delle-prestazioni">Introduzione alle specifiche quantitative delle prestazioni</a></li>
+  <li><a href="#rivisitazione-degli-aspetti-qualitativi" id="toc-rivisitazione-degli-aspetti-qualitativi" class="nav-link" data-scroll-target="#rivisitazione-degli-aspetti-qualitativi">Rivisitazione degli aspetti qualitativi</a></li>
+  <li><a href="#sfide-di-progettazione-e-prestazioni-in-regime-stazionario-nei-sistemi-di-controllo" id="toc-sfide-di-progettazione-e-prestazioni-in-regime-stazionario-nei-sistemi-di-controllo" class="nav-link" data-scroll-target="#sfide-di-progettazione-e-prestazioni-in-regime-stazionario-nei-sistemi-di-controllo">Sfide di progettazione e prestazioni in regime stazionario nei sistemi di controllo</a>
+  <ul class="collapse">
+  <li><a href="#comprendere-il-conflitto" id="toc-comprendere-il-conflitto" class="nav-link" data-scroll-target="#comprendere-il-conflitto">Comprendere il conflitto</a></li>
+  <li><a href="#specifiche-delle-prestazioni-in-stato-stazionario" id="toc-specifiche-delle-prestazioni-in-stato-stazionario" class="nav-link" data-scroll-target="#specifiche-delle-prestazioni-in-stato-stazionario">Specifiche delle prestazioni in stato stazionario</a></li>
+  <li><a href="#specifiche-degli-errori-in-stato-stazionario-per-vari-ingressi" id="toc-specifiche-degli-errori-in-stato-stazionario-per-vari-ingressi" class="nav-link" data-scroll-target="#specifiche-degli-errori-in-stato-stazionario-per-vari-ingressi">Specifiche degli errori in stato stazionario per vari ingressi</a></li>
+  <li><a href="#il-significato-di-eo-nelle-specifiche" id="toc-il-significato-di-eo-nelle-specifiche" class="nav-link" data-scroll-target="#il-significato-di-eo-nelle-specifiche">Il significato di “E/O” nelle specifiche</a></li>
+  <li><a href="#analisi-della-risposta-del-sistema-agli-input-di-passo-unitario-rampa-unitaria-e-parabola-unitaria" id="toc-analisi-della-risposta-del-sistema-agli-input-di-passo-unitario-rampa-unitaria-e-parabola-unitaria" class="nav-link" data-scroll-target="#analisi-della-risposta-del-sistema-agli-input-di-passo-unitario-rampa-unitaria-e-parabola-unitaria">Analisi della risposta del sistema agli input di passo unitario, rampa unitaria e parabola unitaria</a></li>
+  </ul></li>
+  <li><a href="#la-robustezza-del-design" id="toc-la-robustezza-del-design" class="nav-link" data-scroll-target="#la-robustezza-del-design">La robustezza del design</a>
+  <ul class="collapse">
+  <li><a href="#la-simulazione-come-strumento-chiave-nella-convalida-del-progetto" id="toc-la-simulazione-come-strumento-chiave-nella-convalida-del-progetto" class="nav-link" data-scroll-target="#la-simulazione-come-strumento-chiave-nella-convalida-del-progetto">La simulazione come strumento chiave nella convalida del progetto</a></li>
+  <li><a href="#perché-la-simulazione-è-essenziale" id="toc-perché-la-simulazione-è-essenziale" class="nav-link" data-scroll-target="#perché-la-simulazione-è-essenziale">Perché la simulazione è essenziale</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/andreamunafo/principles-of-automatic-controls/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../IT_🇮🇹/faq_it.html">IT_🇮🇹</a></li><li class="breadcrumb-item"><a href="../IT_🇮🇹/performance_of_feedback_systems_it.html">Prestazioni dei sistemi di feedback</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Prestazioni dei sistemi di feedback</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
+<section id="introduzione-alle-specifiche-quantitative-delle-prestazioni" class="level2">
+<h2 class="anchored" data-anchor-id="introduzione-alle-specifiche-quantitative-delle-prestazioni">Introduzione alle specifiche quantitative delle prestazioni</h2>
+<p>In questo notebook approfondiamo gli aspetti quantitativi della performance del sistema di controllo. Ci baseremo sulle nostre precedenti discussioni qualitative, passando da una comprensione generale di ciò che ci aspettiamo da un sistema di controllo a una specifica quantitativa più rigorosa delle prestazioni. Questa transizione è cruciale per progettare sistemi di controllo efficaci.</p>
+</section>
+<section id="rivisitazione-degli-aspetti-qualitativi" class="level2">
+<h2 class="anchored" data-anchor-id="rivisitazione-degli-aspetti-qualitativi">Rivisitazione degli aspetti qualitativi</h2>
+<p>Prima di avanzare, ricapitoliamo brevemente gli aspetti qualitativi di cui abbiamo parlato finora:</p>
+<ol type="1">
+<li><p><strong>Stabilità</strong>: il requisito principale per qualsiasi sistema di controllo è la stabilità. Un sistema instabile non può svolgere la funzione prevista. La stabilità è la pietra angolare delle prestazioni del sistema di controllo. Un sistema è considerato stabile se, in risposta ad un input limitato, produce un output limitato. In termini pratici, ciò significa che il sistema non mostrerà comportamenti fuori controllo o oscillazioni che crescono indefinitamente nel tempo.</p></li>
+<li><p><strong>Risposta transitoria</strong>: la risposta transitoria di un sistema di controllo è fondamentale per determinare la rapidità e la precisione con cui raggiunge lo stato desiderato dopo un cambiamento. Il comportamento transitorio ideale è caratterizzato dal rapido raggiungimento del valore target con superamento minimo e oscillazioni ridotte, garantendo prestazioni del sistema efficienti e reattive.</p></li>
+<li><p><strong>Precisione in stato stazionario</strong>: nella fase di stato stazionario, in cui gli effetti transitori non sono più significativi, l’attenzione principale è posta sulla precisione con cui l’output del sistema si allinea al valore comandato. L’elevata precisione in stato stazionario è vitale per la maggior parte dei sistemi per garantire errori di tracciamento minimi e prestazioni costanti nel tempo.</p></li>
+<li><p><strong>Sensibilità e robustezza</strong>: un sistema di controllo robusto mantiene l’affidabilità delle prestazioni anche di fronte a variazioni nei parametri del sistema o discrepanze nella modellazione. L’obiettivo è progettare un sistema che funzioni in modo efficace, indipendentemente dal fatto che i parametri effettivi si discostino da quelli inizialmente utilizzati nella progettazione.</p></li>
+<li><p><strong>Rifiuto dei disturbi</strong>: un efficace rifiuto dei disturbi è fondamentale, in particolare nella fase stazionaria del sistema di controllo. Il sistema dovrebbe essere progettato per ridurre al minimo l’impatto di disturbi esterni incontrollati, garantendo che l’uscita rimanga stabile e inalterata, sia durante i transitori che nel funzionamento a regime.</p></li>
+</ol>
+<p>Una volta delineati questi requisiti qualitativi, siamo ora pronti ad approfondire l’analisi quantitativa e la specificazione di questi aspetti.</p>
+<table class="table">
+<colgroup>
+<col style="width: 6%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>#### BARRA LATERALE - Esplorazione dei criteri di prestazione del sistema di controllo</td>
+</tr>
+<tr class="even">
+<td>### 1. Stabilità</td>
+</tr>
+<tr class="odd">
+<td>#### Definizione e importanza La stabilità è la pietra angolare delle prestazioni del sistema di controllo. Un sistema è considerato stabile se, in risposta ad un input limitato, produce un output limitato. In termini pratici, ciò significa che il sistema non mostrerà comportamenti fuori controllo o oscillazioni che crescono indefinitamente nel tempo.</td>
+</tr>
+<tr class="even">
+<td>#### Rappresentazione matematica - <strong>Stabilità BIBO</strong>: un sistema è stabile con input limitato e output limitato (BIBO) se ogni input limitato produce un output limitato. Matematicamente, se $ |x(t)| &lt; M &lt; $ per tutti $ t $, quindi $ |y(t)| &lt; N &lt; $ per tutti $ t $, dove $ x(t) $ è l’input, $ y(t) $ è l’output e $ M, N $ sono costanti. - <strong>Criterio di Routh-Hurwitz</strong>: questo criterio fornisce un metodo per determinare la stabilità di un sistema esaminando la posizione dei poli della funzione di trasferimento del sistema. Se tutti i poli si trovano nella metà sinistra del piano complesso, il sistema è stabile.</td>
+</tr>
+<tr class="odd">
+<td>#### Considerazioni pratiche - <strong>Margini di stabilità</strong>: nella progettazione, non si tratta solo di raggiungere la stabilità, ma di garantire un grado di robustezza nella stabilità, noto come margini di stabilità. Questi margini indicano quanto possono variare i parametri di un sistema prima che diventi instabile.</td>
+</tr>
+<tr class="even">
+<td>### 2. Risposta transitoria</td>
+</tr>
+<tr class="odd">
+<td>#### Caratterizzazione del comportamento transitorio La risposta transitoria si riferisce alla reazione del sistema da uno stato iniziale al raggiungimento del suo stato stazionario. Le caratteristiche chiave includono: - <strong>Tempo di salita</strong>: tempo impiegato dalla risposta per salire dal 10% al 90% del suo valore finale. - <strong>Tempo di assestamento</strong>: tempo impiegato dalla risposta per rimanere entro una certa percentuale (comunemente 2% o 5%) del valore finale. - <strong>Overshoot</strong>: la quantità di cui la risposta supera il valore finale. - <strong>Rapporto di smorzamento</strong>: una misura delle oscillazioni nella risposta.</td>
+</tr>
+<tr class="even">
+<td>#### Obiettivi di progettazione - <strong>Velocità di risposta</strong>: un tempo di salita più rapido è spesso auspicabile, ma può portare a un aumento del superamento. - <strong>Controllo dell’oscillazione</strong>: riduce al minimo il superamento e garantisce che il sistema si assesti rapidamente senza oscillazioni prolungate.</td>
+</tr>
+<tr class="odd">
+<td>### 3. Precisione allo stato stazionario</td>
+</tr>
+<tr class="even">
+<td>#### Comprendere lo stato stazionario Una volta che gli effetti transitori sono diminuiti, il sistema entra in uno stato stazionario. In questo caso, l’output dovrebbe idealmente corrispondere il più fedelmente possibile al valore comandato.</td>
+</tr>
+<tr class="odd">
+<td>#### Misure di accuratezza in regime stazionario - <strong>Metriche di errore</strong>: le misure comuni includono errore in stato stazionario, errore di tracciamento e costanti di errore come costanti di errore di posizione, velocità e accelerazione. - <strong>Tipo di sistema ed errore</strong>: il tipo di sistema di controllo (Tipo 0, Tipo 1, ecc.) determina la sua capacità di gestire diversi tipi di errori stazionari, in particolare per ingressi a gradino, rampa e parabolici.</td>
+</tr>
+<tr class="even">
+<td>#### Progettare per la precisione - <strong>Controllo del feedback</strong>: l’integrazione del feedback riduce efficacemente l’errore in stato stazionario. - <strong>Controllo integrale</strong>: l’aggiunta di un componente integrale può eliminare l’errore di stato stazionario per determinati tipi di ingressi.</td>
+</tr>
+<tr class="odd">
+<td>### 4. Sensibilità e robustezza</td>
+</tr>
+<tr class="even">
+<td>#### Resilienza alle variazioni La sensibilità e la robustezza misurano la capacità di un sistema di mantenere le prestazioni nonostante i cambiamenti nei parametri del sistema o nelle condizioni ambientali.</td>
+</tr>
+<tr class="odd">
+<td>#### Analisi quantitativa - <strong>Funzione sensibilità</strong>: questa funzione quantifica la sensibilità dell’output del sistema alle modifiche di un particolare parametro. - <strong>Tecniche di progettazione robusta</strong>: metodi come H-infinito e μ-sintesi vengono utilizzati per progettare sistemi che mantengono le prestazioni in una gamma di incertezze.</td>
+</tr>
+<tr class="even">
+<td>#### Applicazione pratica - <strong>Analisi del caso peggiore</strong>: valutazione delle prestazioni del sistema in condizioni di variazioni estreme per garantire un funzionamento affidabile.</td>
+</tr>
+<tr class="odd">
+<td>### 5. Rifiuto del disturbo</td>
+</tr>
+<tr class="even">
+<td>#### Minimizzare l’impatto esterno I sistemi di controllo spesso operano in ambienti con disturbi esterni. Un’efficace reiezione dei disturbi riduce al minimo l’impatto di questi disturbi sull’uscita del sistema.</td>
+</tr>
+<tr class="odd">
+<td>#### Valutazione del rifiuto dei disturbi - <strong>Risposta transitoria al disturbo</strong>: osservazione della rapidità ed efficacia con cui il sistema mitiga l’impatto di un disturbo. - <strong>Errore in stato stazionario dovuto a disturbo</strong>: garantire che, in stato stazionario, il disturbo abbia un impatto minimo o nullo sull’uscita.</td>
+</tr>
+<tr class="even">
+<td>#### Strategie di controllo - <strong>Controllo feedforward</strong>: Anticipare i disturbi e compensarli prima che incidano sul sistema. - <strong>Controllo feedback</strong>: regolazione del comportamento del sistema in risposta ai disturbi rilevati nell’uscita.</td>
+</tr>
+<tr class="odd">
+<td>— FINE DELLA BARRA LATERALE</td>
+</tr>
+<tr class="even">
+<td>## Transizione alle specifiche quantitative</td>
+</tr>
+<tr class="odd">
+<td>Nella progettazione del sistema di controllo, spesso iniziamo specificando: - il transitorio desiderato - e precisione in condizioni stazionarie.</td>
+</tr>
+<tr class="even">
+<td>Una volta progettato un sistema con queste specifiche, ne valutiamo le prestazioni in termini di robustezza e reiezione ai disturbi.</td>
+</tr>
+<tr class="odd">
+<td><em>Nota:</em> la ricerca attuale sulla progettazione dei sistemi di controllo si sta evolvendo verso l’inclusione della sensibilità e della robustezza nella fase di progettazione iniziale stessa. Tuttavia, questa è ancora un’area emergente e non ampiamente incorporata nei programmi di studio standard. Ci concentreremo sul modo classico di progettazione del controllo e questo fornirà la base per comprendere robustezza e sensibilità.</td>
+</tr>
+<tr class="even">
+<td>### Approccio classico nella progettazione dei sistemi di controllo</td>
+</tr>
+<tr class="odd">
+<td>Nella metodologia tradizionale dell’ingegneria dei sistemi di controllo, l’attenzione principale è inizialmente posta sulla precisione transitoria e stazionaria. Questo approccio metodico comprende diversi passaggi chiave:</td>
+</tr>
+<tr class="even">
+<td>1. <strong>Garanzia della stabilità del sistema</strong>: questa fase iniziale prevede l’applicazione di strumenti analitici come il criterio di stabilità di Routh. Questi strumenti vengono utilizzati per accertare le condizioni di stabilità del sistema determinando gli intervalli specifici di parametri che garantiscono la stabilità. <em>La stabilità del sistema è un requisito primario. Se questo non regge tutto il resto non ha importanza.</em></td>
+</tr>
+<tr class="odd">
+<td>2. <strong>Ottimizzazione per prestazioni transitorie e stazionarie</strong>: il passaggio successivo è l’attenta selezione dei parametri di sistema. Questi parametri vengono scelti all’interno dei domini di stabilità identificati con l’obiettivo di raggiungere i livelli desiderati di accuratezza transitoria e stazionaria. Questo processo di selezione è fondamentale affinché il sistema risponda efficacemente ai cambiamenti e mantenga la precisione nel tempo. <em>Questa è la specifica quantitativa delle prestazioni del sistema.</em></td>
+</tr>
+<tr class="even">
+<td>3. <strong>Valutazione della robustezza e delle capacità di reiezione ai disturbi</strong>: la fase finale prevede una simulazione approfondita del sistema di controllo. Questa simulazione è fondamentale per valutare se il sistema soddisfa gli standard predefiniti di robustezza e la sua capacità di respingere i disturbi. Se questi standard non vengono soddisfatti, si innesca una rivalutazione e una riprogettazione della strategia di controllo. Questa natura iterativa della progettazione riconosce che il raggiungimento di prestazioni ottimali spesso richiede molteplici aggiustamenti e perfezionamenti.</td>
+</tr>
+<tr class="odd">
+<td>Seguendo questi passaggi, l’approccio classico garantisce un processo di sviluppo completo e iterativo, con l’obiettivo di creare un sistema di controllo stabile, accurato, robusto e in grado di respingere efficacemente i disturbi.</td>
+</tr>
+<tr class="even">
+<td>### Metodologia di progettazione per il sistema di controllo: valutazione di stabilità, accuratezza e robustezza</td>
+</tr>
+<tr class="odd">
+<td>1. <strong>Identificazione dei domini di stabilità dei parametri</strong>: - Il passo iniziale nella progettazione di un sistema di controllo comporta la determinazione delle condizioni in cui il sistema rimarrà stabile. - Stabilità, nei sistemi di controllo, significa che il sistema non mostrerà un comportamento illimitato o irregolare in risposta a un dato input. - Per trovare queste condizioni, utilizziamo metodi analitici come il criterio di stabilità di Routh. Questo criterio aiuta a identificare i “domini” o intervalli di parametri del sistema (come guadagno, rapporto di smorzamento, ecc.) che garantiscono che il sistema rimanga stabile. - Ad esempio, potremmo risolvere problemi in cui manipoliamo uno o due parametri (come la regolazione del guadagno di un controller) per vedere come questi cambiamenti influiscono sulla stabilità del sistema.</td>
+</tr>
+<tr class="even">
+<td>2. <strong>Garantire la precisione transitoria e stazionaria</strong>: - Una volta identificati i domini di stabilità, il passo successivo è affinare i parametri di sistema all’interno di questi domini. - Questo perfezionamento mira a raggiungere obiettivi prestazionali specifici legati al modo in cui il sistema risponde nel tempo (prestazioni transitorie) e alla precisione con cui mantiene il suo output nel lungo termine (prestazioni stazionarie). - L’accuratezza transitoria riguarda la rapidità e l’efficacia con cui il sistema risponde ai cambiamenti, mentre l’accuratezza allo stato stazionario si concentra su quanto l’output del sistema corrisponde all’output desiderato dopo che le fluttuazioni iniziali si sono stabilizzate.</td>
+</tr>
+<tr class="odd">
+<td>3. <strong>Valutazione della robustezza e del rifiuto dei disturbi</strong>: - Dopo aver soddisfatto i requisiti transitori e stazionari, torniamo alla configurazione originale del sistema. - Qui simuliamo il sistema in varie condizioni per valutarne la robustezza (quanto bene si comporta in diverse condizioni operative o variazioni dei parametri) e la sua capacità di respingere i disturbi (quanto bene mantiene le sue prestazioni in presenza di influenze esterne impreviste). - Se il sistema non riesce a soddisfare i criteri di robustezza o di reiezione ai disturbi, potrebbe essere necessario rivedere il processo di progettazione. Ciò potrebbe comportare la nuova regolazione dei parametri o addirittura la riprogettazione di alcuni aspetti del sistema.</td>
+</tr>
+<tr class="even">
+<td>Seguendo questo approccio strutturato, garantiamo che il sistema di controllo che progettiamo non solo sia stabile ma soddisfi anche specifici criteri di prestazione sia a breve che a lungo termine e sia resistente ai disturbi esterni e ai cambiamenti dei parametri interni. Questa valutazione globale è fondamentale per creare un sistema di controllo affidabile ed efficiente.</td>
+</tr>
+<tr class="odd">
+<td>## Esplorazione delle specifiche relative alle prestazioni transitorie</td>
+</tr>
+<tr class="even">
+<td>### Sistemi di feedback unitario</td>
+</tr>
+<tr class="odd">
+<td>Per semplicità, considereremo un sistema con feedback unitario, sebbene i principi si applichino anche ai sistemi con feedback non unitario.</td>
+</tr>
+<tr class="even">
+<td></td>
+</tr>
+<tr class="odd">
+<td>- La funzione di trasferimento del sistema è:</td>
+</tr>
+<tr class="even">
+<td><span class="math display">\[ Y(s) / R(s) = G(s) / (1 + G(s)) \]</span></td>
+</tr>
+<tr class="odd">
+<td>- Qui, $ Y(s) $ è l’output, $ R(s) $ è l’input e $ G(s) $ è la funzione di trasferimento del sistema.</td>
+</tr>
+<tr class="even">
+<td>### Natura dei segnali di ingresso</td>
+</tr>
+<tr class="odd">
+<td>Nei sistemi di controllo pratici, la natura del segnale di ingresso è imprevedibile. Pertanto, utilizziamo segnali di test standard (gradino, rampa, parabola) per progettare e valutare il sistema. Se il sistema funziona bene con questi segnali, dovrebbe funzionare bene con qualsiasi altro segnale.</td>
+</tr>
+<tr class="even">
+<td>Le prestazioni transitorie dipendono dai poli del sistema ed sono relativamente indipendenti dalla natura del segnale di ingresso.</td>
+</tr>
+<tr class="odd">
+<td>Ad esempio, se i poli sono sulla sinistra, il transitorio si estinguerà. Il transitorio dipende quindi dalle caratteristiche del sistema e non dallo specifico ingresso.</td>
+</tr>
+<tr class="even">
+<td>In altre parole, nella progettazione del sistema di controllo, è fondamentale valutare come il sistema risponderà ai vari tipi di segnali di ingresso. Poiché non è pratico prevedere ogni possibile input che un sistema potrebbe incontrare nelle operazioni del mondo reale, utilizziamo input di test standard come parametri di riferimento. Questi includono, tra gli altri, <strong>segnali a gradino, rampa e parabolici</strong>.</td>
+</tr>
+<tr class="odd">
+<td>- <strong>Inserimento graduale</strong>: si tratta di un cambiamento improvviso, in genere da zero a un valore fisso. È utile per osservare la reazione immediata del sistema e le sue caratteristiche di risposta transitoria.</td>
+</tr>
+<tr class="even">
+<td>- <strong>Ingresso rampa</strong>: questo ingresso aumenta linearmente nel tempo, rappresentando un setpoint in continua evoluzione. Aiuta a comprendere come il sistema tiene traccia di un input che varia gradualmente e può essere particolarmente rivelatore per i sistemi in cui il tasso di variazione dell’input è significativo.</td>
+</tr>
+<tr class="odd">
+<td>- <strong>Ingresso parabolico</strong>: rappresenta uno scenario in cui l’input cambia a un ritmo accelerato, fornendo informazioni su come il sistema gestisce condizioni più complesse e in cambiamento dinamico.</td>
+</tr>
+<tr class="even">
+<td>La scelta di questi segnali di test non è arbitraria. Sono selezionati perché stimolano efficacemente diversi aspetti del comportamento del sistema. L’ingresso passo verifica la stabilità di base del sistema e la risposta transitoria. L’ingresso della rampa esamina la capacità del sistema di tenere il passo con un setpoint in continua evoluzione, che è fondamentale per monitorare le prestazioni. L’input parabolico, introducendo un cambiamento accelerato, sfida la reattività del sistema a input più complessi e dinamici.</td>
+</tr>
+<tr class="odd">
+<td>Progettando un sistema di controllo che funzioni in modo soddisfacente con questi input di test standard, possiamo dedurre che probabilmente gestirà un’ampia gamma di input del mondo reale in modo efficace. Questo approccio semplifica il processo di progettazione riducendo l’infinita varietà di possibili input in una serie gestibile di test standard, ciascuno incentrato su un aspetto critico delle prestazioni del sistema.</td>
+</tr>
+<tr class="even">
+<td>### Utilizzo dell’input passo per l’analisi della risposta transitoria</td>
+</tr>
+<tr class="odd">
+<td>- Nel contesto dell’analisi della risposta transitoria, viene comunemente utilizzato lo step input, rappresentato da una funzione unit-step $ (t) $. - Il ragionamento alla base di questa scelta è che uno step input è particolarmente efficace nello stimolare tutte le modalità del sistema. Questa eccitazione completa consente un’osservazione e un’analisi dettagliate della risposta transitoria del sistema. È importante notare che la stabilità e le caratteristiche transitorie di un sistema di controllo sono determinate principalmente dalla posizione dei suoi poli, che sono proprietà intrinseche del sistema stesso, piuttosto che dalla natura del segnale di ingresso. Pertanto, utilizzando la forma più semplice di input di test, lo step input, possiamo valutare in modo efficiente il comportamento del sistema senza la necessità di forme di input più complesse. Questo approccio semplifica l’analisi fornendo comunque una comprensione approfondita delle dinamiche transitorie del sistema.</td>
+</tr>
+<tr class="even">
+<td>Per questo motivo, l’input unitario viene utilizzato per specificare quantitativamente le caratteristiche transitorie del sistema. Si noti inoltre che un’ampiezza maggiore non cambia la natura della risposta, cambierà solo l’ampiezza della risposta.</td>
+</tr>
+<tr class="odd">
+<td></td>
+</tr>
+<tr class="even">
+<td><strong>🤔Domanda pop-up:</strong> Perché preferiamo un input a passi unitari per l’analisi transitoria?</td>
+</tr>
+<tr class="odd">
+<td><strong>Risposta:</strong> Un input a passi unitari semplifica l’analisi ed è efficace nell’attivare tutte le modalità del sistema, rendendolo ideale per osservare il comportamento transitorio del sistema.</td>
+</tr>
+<tr class="even">
+<td>## Specifiche delle prestazioni in stato stazionario</td>
+</tr>
+<tr class="odd">
+<td>### Dipendenza dall’input e caratteristiche del sistema</td>
+</tr>
+<tr class="even">
+<td>A differenza delle prestazioni transitorie, la risposta allo stato stazionario dipende sia dalle caratteristiche del sistema che dalla natura del segnale di ingresso. Pertanto, un singolo tipo di segnale di ingresso potrebbe non essere sufficiente per caratterizzare completamente le prestazioni in condizioni stazionarie.</td>
+</tr>
+<tr class="odd">
+<td>Idealmente, per caratterizzare a fondo il comportamento in stato stazionario, sarebbe necessario l’input effettivo che il sistema incontrerà nelle operazioni del mondo reale. Tuttavia, negli scenari pratici, questo input specifico potrebbe non essere sempre predeterminato o conosciuto in anticipo. Di conseguenza nasce la necessità di utilizzare segnali di test standardizzati. Questi segnali di test servono come proxy per approssimare una gamma di possibili input del mondo reale, consentendo così una valutazione più solida delle prestazioni stazionarie del sistema in varie condizioni ipotetiche.</td>
+</tr>
+<tr class="even">
+<td>## Gestione degli input sconosciuti nei sistemi di controllo</td>
+</tr>
+<tr class="odd">
+<td>### Esempi del mondo reale e la sfida degli input imprevedibili</td>
+</tr>
+<tr class="even">
+<td>Quando progettiamo sistemi di controllo, spesso affrontiamo la sfida di input sconosciuti o variabili. Esploriamolo attraverso alcuni esempi:</td>
+</tr>
+<tr class="odd">
+<td>#### Esempio 1: sistema radar di tracciamento - <strong>Scenario</strong>: un sistema radar progettato per tracciare i movimenti degli aerei. - <strong>Sfida</strong>: prevedere l’esatto profilo di movimento dell’aereo è quasi impossibile. Il sistema deve essere adattabile a diverse traiettorie possibili.</td>
+</tr>
+<tr class="even">
+<td>#### Esempio 2: Controllo Numerico di Macchine Utensili - <strong>Situazione</strong>: Macchine progettate per tagliare o modellare materiali. - <strong>Complessità</strong>: alla macchina potrebbe essere richiesto di eseguire una serie di attività, dalla rastremazione al taglio di profili parabolici. Il sistema deve gestire qualsiasi forma gli venga assegnata.</td>
+</tr>
+<tr class="odd">
+<td>#### Esempio 3: Impianto di riscaldamento residenziale - <strong>Condizione</strong>: variabilità delle temperature ambientali durante le stagioni. - <strong>Impatto</strong>: Questa variazione modifica sensibilmente i segnali di disturbo che il sistema deve gestire, dall’estate all’inverno.</td>
+</tr>
+<tr class="even">
+<td>In ciascuno di questi casi, l’ingresso del sistema di controllo e i segnali di disturbo che incontra non possono essere predeterminati con precisione. Questa incertezza influisce direttamente sulle prestazioni in condizioni stazionarie, che dipendono intrinsecamente dalla natura dell’input.</td>
+</tr>
+<tr class="odd">
+<td>### Affrontare input imprevedibili</td>
+</tr>
+<tr class="even">
+<td>#### Rappresentazione polinomiale degli input</td>
+</tr>
+<tr class="odd">
+<td>Per superare la sfida degli input imprevedibili, una strategia consiste nel rappresentare l’input effettivo come una somma di funzioni polinomiali. Matematicamente, qualsiasi funzione complessa può essere scomposta in una serie di funzioni polinomiali più semplici. Pertanto, garantire prestazioni soddisfacenti per una serie di input polinomiali può fornire la certezza che il sistema funzionerà bene per vari input del mondo reale.</td>
+</tr>
+<tr class="even">
+<td>- <strong>Rappresentazione della funzione polinomiale</strong>:</td>
+</tr>
+<tr class="odd">
+<td>Secondo la discussione precedente possiamo vedere l’input <span class="math inline">\(r(t)\)</span> come una generica funzione polinomiale indicizzata da <span class="math inline">\(k\)</span>:</td>
+</tr>
+<tr class="even">
+<td><span class="math display">\[ r(t) = \frac{1}{k!} t^k \mu(t) \]</span></td>
+</tr>
+<tr class="odd">
+<td>Qui, $ r(t) $ è una funzione polinomiale del tempo, $ k $ è l’ordine del polinomio e $ (t) $ è la funzione di passo unitario.</td>
+</tr>
+<tr class="even">
+<td>#### Ingressi polinomiali standard per prestazioni stazionarie</td>
+</tr>
+<tr class="odd">
+<td>Per diversi valori di $ k $, otteniamo vari input di test standard:</td>
+</tr>
+<tr class="even">
+<td>- <strong>$ k = 0 $</strong>: $ r(t) = (t)$ diventa una funzione a passo unitario. - <strong>$ k = 1 $</strong>: $ r(t) = t (t)$ rappresenta una funzione di rampa. - <strong>$ k = 2 $</strong>: $ r(t) = t^2(t)$ forma una funzione parabolica.</td>
+</tr>
+<tr class="odd">
+<td>All’aumentare di $ k $, l’input diventa più veloce, ma negli scenari pratici raramente sono necessari valori di $ k $ superiori a 2. Questo perché gli input del sistema del mondo reale generalmente non sono veloci quanto i polinomi di ordine superiore. Pertanto, nella maggior parte dei casi, è sufficiente soddisfare i criteri di prestazione per $ k = 1 $ (funzione rampa) e $ k = 2 $ (funzione parabolica).</td>
+</tr>
+<tr class="even">
+<td>#### Considerazioni pratiche sulla progettazione dei controlli</td>
+</tr>
+<tr class="odd">
+<td>- <strong>Complessità e stabilità</strong>: all’aumentare dell’ordine $ k $, la progettazione del sistema di controllo diventa più impegnativa, in particolare per quanto riguarda il mantenimento della stabilità. Per $ k &gt; 3 $ mantenere la stabilità è molto difficile.</td>
+</tr>
+<tr class="even">
+<td>- <strong>Rilevanza industriale</strong>: per molte applicazioni industriali, un valore di $ k = 1 $ è spesso sufficiente, in linea con i requisiti pratici.</td>
+</tr>
+<tr class="odd">
+<td>Andando avanti, la nostra analisi si concentrerà su tre input di test fondamentali, ciascuno caratterizzato dal suo comportamento unico e dipendente dal tempo e dalla sua caratteristica natura “unitaria”, derivata dalla proprietà che i suoi derivati ​​sono scalati all’unità:</td>
+</tr>
+<tr class="even">
+<td>1. <strong>Funzione di passo unitario</strong>: - Rappresentazione matematica: $ r(t) = (t) $ - Caratteristiche: questa funzione rappresenta un cambiamento improvviso a $ t = 0 $, passando bruscamente da 0 a 1. È chiamata “passo unitario” perché la sua derivata, una funzione delta, raggiunge il picco all’altezza unitaria.</td>
+</tr>
+<tr class="odd">
+<td>2. <strong>Funzione Rampa Unità</strong>: - Espressione: $ r(t) = t (t) $ - Descrizione: questa funzione crescente linearmente simboleggia un ingresso di rampa che inizia a $ t = 0 $ e aumenta a una velocità costante. La designazione “unità” è dovuta al fatto che la sua derivata è costante (unità) nel tempo.</td>
+</tr>
+<tr class="even">
+<td>3. <strong>Funzione Unità-Parabola</strong>: - Formulazione: $ r(t) = t^2 (t) $ - Spiegazione: questa funzione rappresenta una curva parabolica, che inizia da $ t = 0 $ e aumenta quadraticamente nel tempo. Il fattore <span class="math inline">\(\frac{1}{2}\)</span> garantisce che la derivata di questa funzione, $ t (t) $, si allinei con la funzione rampa unitaria, da qui il termine ‘parabola unitaria’.</td>
+</tr>
+<tr class="odd">
+<td>Ciascuno di questi input funge da segnale di test standard nell’analisi dei sistemi di controllo, fornendo una base per esaminare le risposte del sistema in diversi tipi di scenari di input.</td>
+</tr>
+<tr class="even">
+<td>## Specifiche delle prestazioni transitorie</td>
+</tr>
+<tr class="odd">
+<td>### Approccio basato sul settore</td>
+</tr>
+<tr class="even">
+<td>Invece di fare affidamento esclusivamente su modelli matematici, un approccio basato sull’industria prevede l’esame dei sistemi di controllo del mondo reale. Eccitando questi sistemi con un ingresso a gradino standard e osservando la loro risposta, possiamo ricavare specifiche pratiche sulle prestazioni transitorie.</td>
+</tr>
+<tr class="odd">
+<td>### Osservazioni e indici di performance transitoria</td>
+</tr>
+<tr class="even">
+<td>- <strong>Risposta tipica</strong>: la risposta transitoria di un sistema di controllo pratico spesso presenta oscillazioni smorzate prima di raggiungere lo stato stazionario.</td>
+</tr>
+<tr class="odd">
+<td></td>
+</tr>
+<tr class="even">
+<td>- <strong>Accettabilità delle oscillazioni</strong>: alcuni superamenti sono generalmente accettabili in scenari pratici.</td>
+</tr>
+<tr class="odd">
+<td>### Indici chiave di prestazione</td>
+</tr>
+<tr class="even">
+<td>1. <strong>Tempo di salita ($ t_r $)</strong>: è la durata necessaria affinché la risposta del sistema raggiunga inizialmente il valore finale (o il livello di stato stazionario) al 100% per la prima volta. Fornisce informazioni sulla velocità di risposta del sistema in seguito a una modifica.</td>
+</tr>
+<tr class="odd">
+<td>2. <strong>Peak Overshoot ($ M_p $)</strong>: questo parametro misura il livello massimo di cui la risposta del sistema supera il suo valore finale. Se il superamento del picco rientra nei limiti accettabili, si presume generalmente che anche eventuali successive fluttuazioni di magnitudo saranno accettabili, poiché sono generalmente inferiori.</td>
+</tr>
+<tr class="even">
+<td>3. <strong>Peak Time ($ t_p $)</strong>: si riferisce al tempo trascorso dall’inizio della risposta fino al raggiungimento del suo massimo superamento. Indica la velocità con cui il sistema raggiunge il picco di risposta in seguito ad un disturbo o ad un cambiamento.</td>
+</tr>
+<tr class="odd">
+<td>4. <strong>Tempo di assestamento</strong>: è il tempo necessario affinché la risposta del sistema rimanga costantemente entro un intervallo di tolleranza specifico attorno al valore finale. L’intervallo di tolleranza, spesso fissato al 2% o al 5% del valore finale, varia in base ai requisiti di precisione dell’applicazione. Questa metrica è fondamentale per determinare la velocità con cui il sistema si stabilizza dopo fluttuazioni transitorie.</td>
+</tr>
+<tr class="even">
+<td>#### Nota aggiuntiva sulla caratterizzazione matematica del tempo di assestamento:</td>
+</tr>
+<tr class="odd">
+<td>Consideriamo una funzione della forma <span class="math inline">\(e^{-t/\tau}\)</span>, che rappresenta un decadimento esponenziale.</td>
+</tr>
+<tr class="even">
+<td>Matematicamente, tale funzione si stabilizza completamente solo quando <span class="math inline">\(t\)</span> si avvicina all’infinito (<span class="math inline">\(t \rightarrow \infty\)</span>).</td>
+</tr>
+<tr class="odd">
+<td>In altre parole, il suo tempo di assestamento teorico è infinito. Tuttavia, nell’analisi e nella progettazione pratica del sistema di controllo, definiamo un tempo di assestamento all’interno di una fascia di accettabilità pratica per riflettere condizioni operative realistiche. Questo approccio riconosce che, in pratica, un sistema è considerato “stabilizzato” quando la sua risposta è sufficientemente vicina al valore di stato stazionario, anche se non lo ha raggiunto esattamente.</td>
+</tr>
+<tr class="even">
+<td>Infine, vale la pena notare che affronteremo separatamente la <strong>precisione stazionaria-stazionaria</strong> perché non è specificata solo per un passo unitario ma anche per gli ingressi a rampa e parabolici.</td>
+</tr>
+<tr class="odd">
+<td>Dati questi quattro parametri, possiamo quasi ricostruire la risposta al gradino.</td>
+</tr>
+<tr class="even">
+<td>### Esplorazione delle dinamiche transitorie nei sistemi del secondo ordine: una simulazione interattiva</td>
+</tr>
+<tr class="odd">
+<td>Possiamo vedere l’effetto della modifica di questi parametri utilizzando il seguente codice Python.</td>
+</tr>
+<tr class="even">
+<td>#### Istruzioni per l’uso:</td>
+</tr>
+<tr class="odd">
+<td>1. <strong>Slider Zeta</strong>: regolare questo cursore per modificare il rapporto di smorzamento del sistema. Un valore più basso significa meno smorzamento (più risposta oscillatoria), mentre un valore più alto significa più smorzamento (meno risposta oscillatoria). 2. <strong>Slider Omega_n</strong>: questo slider modifica la frequenza naturale del sistema. Una frequenza naturale più elevata generalmente porta ad una risposta più rapida.</td>
+</tr>
+<tr class="even">
+<td>3. <strong>Slider del tempo della simulazione</strong>: questo cursore modifica il tempo della simulazione.</td>
+</tr>
+<tr class="odd">
+<td>Con questi cursori è possibile osservare come la variazione del rapporto di smorzamento e della frequenza naturale influenzi la risposta ai transitori di un sistema stabile del secondo ordine.</td>
+</tr>
+<tr class="even">
+<td>::: {#8ee42504 .cell} ``` {.python .cell-code} # Import necessary libraries import numpy as np import matplotlib.pyplot as plt import control</td>
+</tr>
+<tr class="odd">
+<td>def find_max_consecutive_index(arr): max_consecutive_index = None consecutive_start = None</td>
+</tr>
+<tr class="even">
+<td>for i in range(len(arr) - 1): if arr[i] + 1 != arr[i + 1]: if consecutive_start is not None: max_consecutive_index = consecutive_start consecutive_start = None elif consecutive_start is None: consecutive_start = i + 1</td>
+</tr>
+<tr class="odd">
+<td># Check if the entire array is consecutive if consecutive_start is not None: max_consecutive_index = consecutive_start</td>
+</tr>
+<tr class="even">
+<td>return max_consecutive_index if max_consecutive_index is not None else len(arr) - 1</td>
+</tr>
+<tr class="odd">
+<td># Define a function to calculate and plot the system response with performance parameters def plot_response(zeta, omega_n, sim_time): # System parameters: zeta (damping ratio), omega_n (natural frequency) num = [omega_n**2] # Numerator (assuming unit gain) den = [1, 2 * zeta * omega_n, omega_n**2] # Denominator</td>
+</tr>
+<tr class="even">
+<td># Create a transfer function model system = control.tf(num, den)</td>
+</tr>
+<tr class="odd">
+<td># Time parameters t = np.linspace(0, sim_time, int(sim_time*100)) # Time vector</td>
+</tr>
+<tr class="even">
+<td># Step response t, y = control.step_response(system, t) steady_state_value = y[-1]</td>
+</tr>
+<tr class="odd">
+<td># Rise Time rise_time_indices = np.where(y &gt;= steady_state_value)[0] rise_time = t[rise_time_indices[0]] if rise_time_indices.size else None</td>
+</tr>
+<tr class="even">
+<td># Peak Overshoot and Peak Time peak_overshoot = np.max(y) - steady_state_value peak_time = t[np.argmax(y)]</td>
+</tr>
+<tr class="odd">
+<td># Settling Time (within 2% of steady-state value). This is found numerically. settling_time_indices = np.where(abs(y - steady_state_value) &lt;= 0.02 * steady_state_value)[0] ts_index = find_max_consecutive_index(settling_time_indices) settling_time = t[settling_time_indices[ts_index]] if settling_time_indices.size else None</td>
+</tr>
+<tr class="even">
+<td># Plot plt.figure(figsize=(10, 6)) plt.plot(t, y, label=‘System Response’) plt.axhline(steady_state_value, color=‘r’, linestyle=‘–’, label=‘Steady State’) # tolerange band (0.02 percent) plt.axhline(steady_state_value * 1.02, color=‘g’, linestyle=‘:’, label=‘Settling Time Bound’) plt.axhline(steady_state_value * 0.98, color=‘g’, linestyle=‘:’)</td>
+</tr>
+<tr class="odd">
+<td>if rise_time: plt.axvline(rise_time, color=‘y’, linestyle=‘-’, label=f’Rise Time: {rise_time:.2f}s’) plt.axvline(peak_time, color=‘b’, linestyle=‘-’, label=f’Peak Time: {peak_time:.2f}s’) plt.scatter(peak_time, np.max(y), color=‘black’, label=f’Peak Overshoot: {peak_overshoot:.2f}’)</td>
+</tr>
+<tr class="even">
+<td>if settling_time: plt.scatter(settling_time, y[settling_time_indices[ts_index]], color=‘purple’) plt.axvline(settling_time, color=‘purple’, linestyle=‘-’, label=f’Settling Time: {settling_time:.2f}s’)</td>
+</tr>
+<tr class="odd">
+<td>plt.title(‘Transient Response with Performance Parameters’) plt.xlabel(‘Time (seconds)’) plt.ylabel(‘Output’) plt.legend() plt.grid(True) plt.show()</td>
+</tr>
+<tr class="even">
+<td># Interactive sliders from ipywidgets import interact, FloatSlider interact(plot_response, zeta=FloatSlider(value=0.3, min=0.01, max=1.0, step=0.01), omega_n=FloatSlider(value=2, min=1, max=10, step=0.1), sim_time=FloatSlider(value=10, min=1, max=50, step=1)) ```</td>
+</tr>
+<tr class="odd">
+<td>::: {.cell-output .cell-output-display}</td>
+</tr>
+<tr class="even">
+<td><code>{=html} &lt;script type="application/vnd.jupyter.widget-view+json"&gt; {"model_id":"b6369e0b55f2465e86c0dd63e6c6496c","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"} &lt;/script&gt;</code></td>
+</tr>
+<tr class="odd">
+<td>:::</td>
+</tr>
+<tr class="even">
+<td>::: {.cell-output .cell-output-display}</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="sfide-di-progettazione-e-prestazioni-in-regime-stazionario-nei-sistemi-di-controllo" class="level2">
+<h2 class="anchored" data-anchor-id="sfide-di-progettazione-e-prestazioni-in-regime-stazionario-nei-sistemi-di-controllo">Sfide di progettazione e prestazioni in regime stazionario nei sistemi di controllo</h2>
+<p>Man mano che approfondiamo l’ambito della progettazione dei sistemi di controllo, incontriamo un aspetto cruciale che ha un impatto significativo sull’efficacia di un sistema: il conflitto intrinseco tra i parametri di progettazione. Questa sezione esplora questo conflitto e le sue implicazioni sulle prestazioni del sistema.</p>
+<section id="comprendere-il-conflitto" class="level3">
+<h3 class="anchored" data-anchor-id="comprendere-il-conflitto">Comprendere il conflitto</h3>
+<p>Nei sistemi di controllo, alcune qualità desiderabili sono intrinsecamente in contrasto tra loro. Per esempio:</p>
+<ul>
+<li><p><strong>Rise Time ($ t_r $)</strong>: Idealmente, vogliamo che $ t_r $ sia il più piccolo possibile. Un $ t_r $ più piccolo implica una risposta del sistema più rapida, evitando un comportamento lento. Tuttavia, la riduzione di $ t_r $ spesso ha un costo.</p></li>
+<li><p><strong>Tempo di picco ($ t_p $)</strong>: Desideriamo anche che $ t_p $ sia piccolo affinché il sistema raggiunga rapidamente il suo picco e poi si stabilizzi. Allo stesso modo, un piccolo $ t_p $ può avere effetti negativi su altri parametri del sistema.</p></li>
+<li><p><strong>Tempo di assestamento ($ t_s <span class="math inline">\()** e **Peak Overshoot (\)</span> M_p $)</strong>: Entrambi questi parametri dovrebbero idealmente essere piccoli. Tuttavia, gli sforzi per minimizzarne uno spesso si traducono nell’aumento dell’altro.</p></li>
+</ul>
+<p>Questo conflitto nasce perché le caratteristiche dinamiche del sistema sono interconnesse. La regolazione di un parametro per migliorare un determinato aspetto delle prestazioni del sistema può inavvertitamente peggiorare un altro aspetto.</p>
+<section id="esempio-compromesso-nel-design" class="level4">
+<h4 class="anchored" data-anchor-id="esempio-compromesso-nel-design">Esempio: compromesso nel design</h4>
+<p>Considera uno scenario in cui la riduzione del tempo di salita si traduce in un superamento del picco maggiore. Questo è un compromesso comune nei sistemi di controllo. Un sistema che risponde rapidamente (piccolo $ t_r $) potrebbe superare il suo obiettivo in modo significativo (grande $ M_p $), portando potenzialmente a instabilità o inefficienze.</p>
+</section>
+</section>
+<section id="specifiche-delle-prestazioni-in-stato-stazionario" class="level3">
+<h3 class="anchored" data-anchor-id="specifiche-delle-prestazioni-in-stato-stazionario">Specifiche delle prestazioni in stato stazionario</h3>
+<p>Passando alle prestazioni in regime stazionario, consideriamo il sistema a retroazione unitaria con la funzione di errore $ e(t) $ definita come $ r(t) - y(t) <span class="math inline">\(. L'errore a regime (\)</span> e_{ss} $) è dato da:</p>
+<p><span class="math display">\[ e_{ss} = \lim_{t \to \infty} [r(t) - y(t)] \]</span></p>
+<img src="../pics/18_Performance_of_Feedback_Systems_System_Error.png" alt="18_Performance_of_Feedback_Systems_System_Error" style="width:350px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+</section>
+<section id="specifiche-degli-errori-in-stato-stazionario-per-vari-ingressi" class="level3">
+<h3 class="anchored" data-anchor-id="specifiche-degli-errori-in-stato-stazionario-per-vari-ingressi">Specifiche degli errori in stato stazionario per vari ingressi</h3>
+<p>Nei sistemi di controllo, l’errore stazionario ($ e_{ss} $) è una metrica chiave per valutare quanto bene il sistema mantiene il suo output in linea con l’input desiderato nel tempo. L’errore a regime varia a seconda del tipo di segnale di ingresso applicato al sistema. I tipi di input comunemente considerati includono:</p>
+<ol type="1">
+<li><p><strong>Ingresso unitario</strong>: Quando viene applicata una funzione di incremento unitario $ r(t) = (t) $, l’errore di stato stazionario $ e_{ss} $ valuta quanto l’output del sistema corrisponde a una costante valore dopo che i transitori iniziali si sono estinti. È una misura della capacità del sistema di mantenere un output stabile in risposta a un cambiamento improvviso e fisso nell’input.</p></li>
+<li><p><strong>Ingresso rampa unitaria</strong>: Per un ingresso rampa $ r(t) = t (t) $, che aumenta linearmente nel tempo, l’errore di stato stazionario $ e_{ss} $ valuta la capacità del sistema di tenere traccia di un input in continua evoluzione. Un input a rampa mette alla prova la capacità del sistema di adattare il proprio output a un ritmo corrispondente al tasso di variazione dell’input.</p></li>
+<li><p><strong>Ingresso parabola unitario</strong>: Con un ingresso parabolico $ r(t) = t^2 (t) $, che rappresenta un ingresso che cambia a un ritmo accelerato, l’ingresso costante -state error $ e_{ss} $ indica le prestazioni del sistema nel tracciare un input con accelerazione crescente.</p></li>
+</ol>
+</section>
+<section id="il-significato-di-eo-nelle-specifiche" class="level3">
+<h3 class="anchored" data-anchor-id="il-significato-di-eo-nelle-specifiche">Il significato di “E/O” nelle specifiche</h3>
+<p>Le specifiche dello stato stazionario sono generalmente definite come: <span class="math inline">\(e_{ss}|_{\mu(t}\)</span> <em>e/o</em> <span class="math inline">\(e_{ss}|_{t\mu(t)}\)</span> <em>e/o</em> <span class="math inline">\(e_{ss}| _{.5t^2\mu(t)}\)</span>.</p>
+<p>Il termine “e/o” nel contesto di queste specifiche implica flessibilità nei requisiti di sistema. Non tutti i sistemi devono eccellere nel rispondere a ogni tipo di input. A seconda delle esigenze dell’applicazione, i criteri di progettazione possono essere personalizzati:</p>
+<ul>
+<li><p><strong>Requisiti meno rigorosi</strong>: se l’applicazione non richiede un’elevata precisione per diversi tipi di input, specificare $ e_{ss} $ solo per un input di passo unitario potrebbe essere adeguato. Questo scenario semplifica il processo di progettazione, poiché il sistema deve essere ottimizzato solo per un input costante dopo il periodo transitorio iniziale.</p></li>
+<li><p><strong>Requisiti rigorosi e diversificati</strong>: al contrario, se un’applicazione richiede il monitoraggio preciso degli input che cambiano nel tempo (come ingressi a rampa o parabolici), allora il sistema deve soddisfare anche $ e_{ss} $ per questi tipi di input . Questo requisito rende il processo di progettazione più complesso. Il sistema deve essere sufficientemente versatile da gestire non solo un input costante ma anche input che cambiano linearmente o quadraticamente nel tempo.</p></li>
+</ul>
+<p><strong>🤔 Domanda pop-up:</strong> Perché specificare $ e_{ss} $ per più tipi di input complica il processo di progettazione?</p>
+<p><strong>Risposta:</strong> Specificare $ e_{ss} $ per vari tipi di input come gradino, rampa e parabola impone più vincoli al sistema. Ciascun tipo di input verifica aspetti diversi del comportamento del sistema e la progettazione di un sistema che funzioni bene per tutti questi input richiede una regolazione più complessa dei parametri di sistema.</p>
+</section>
+<section id="analisi-della-risposta-del-sistema-agli-input-di-passo-unitario-rampa-unitaria-e-parabola-unitaria" class="level3">
+<h3 class="anchored" data-anchor-id="analisi-della-risposta-del-sistema-agli-input-di-passo-unitario-rampa-unitaria-e-parabola-unitaria">Analisi della risposta del sistema agli input di passo unitario, rampa unitaria e parabola unitaria</h3>
+<p>Per ottenere informazioni più approfondite su questo aspetto, esploriamo il comportamento di un sistema quando sottoposto a segnali di input come passo unitario, rampa unitaria e parabola unitaria. Il codice seguente illustra questa analisi.</p>
+<div id="0a73d12f" class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> control</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Define system parameters (modify as needed for your example)</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>Kp <span class="op">=</span> <span class="fl">1.0</span>    <span class="co"># Proportional gain</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>omega_n <span class="op">=</span> <span class="fl">1.0</span>  <span class="co"># Natural frequency</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>zeta <span class="op">=</span> <span class="fl">0.5</span>  <span class="co"># Damping ratio</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>num <span class="op">=</span> [Kp <span class="op">*</span> omega_n<span class="op">**</span><span class="dv">2</span>]</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>den <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span> <span class="op">*</span> zeta <span class="op">*</span> omega_n, omega_n<span class="op">**</span><span class="dv">2</span>]</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Create transfer function</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>G <span class="op">=</span> control.tf(num, den)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Time vector</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">20</span>, <span class="dv">1000</span>)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Unit Step Input</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>t_step, y_step <span class="op">=</span> control.step_response(G, t)</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>e_step <span class="op">=</span> <span class="dv">1</span> <span class="op">-</span> y_step  <span class="co"># Steady-state error for step input</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Unit Ramp Input</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>t_ramp, y_ramp <span class="op">=</span> control.forced_response(G, t, t)</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>e_ramp <span class="op">=</span> t <span class="op">-</span> y_ramp  <span class="co"># Steady-state error for ramp input</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Unit Parabola Input</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>t_parabola, y_parabola <span class="op">=</span> control.forced_response(G, t, t<span class="op">**</span><span class="dv">2</span> <span class="op">/</span> <span class="dv">2</span>)</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>e_parabola <span class="op">=</span> t<span class="op">**</span><span class="dv">2</span> <span class="op">/</span> <span class="dv">2</span> <span class="op">-</span> y_parabola  <span class="co"># Steady-state error for parabola input</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">15</span>, <span class="dv">5</span>))</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">1</span>)</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>plt.plot(t_step, y_step, label<span class="op">=</span><span class="st">'Response'</span>)</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>plt.plot(t_step, np.ones_like(t_step), <span class="st">'r--'</span>, label<span class="op">=</span><span class="st">'Step Input'</span>)</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>plt.plot(t_step, e_step, <span class="st">'g:'</span>, label<span class="op">=</span><span class="st">'Error'</span>)</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Response to Unit Step Input'</span>)</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Time'</span>)</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Output'</span>)</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">2</span>)</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>plt.plot(t_ramp, y_ramp, label<span class="op">=</span><span class="st">'Response'</span>)</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>plt.plot(t_ramp, t_ramp, <span class="st">'r--'</span>, label<span class="op">=</span><span class="st">'Ramp Input'</span>)</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>plt.plot(t_ramp, e_ramp, <span class="st">'g:'</span>, label<span class="op">=</span><span class="st">'Error'</span>)</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Response to Unit Ramp Input'</span>)</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Time'</span>)</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Output'</span>)</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">3</span>)</span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>plt.plot(t_parabola, y_parabola, label<span class="op">=</span><span class="st">'Response'</span>)</span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>plt.plot(t_parabola, t_parabola<span class="op">**</span><span class="dv">2</span> <span class="op">/</span> <span class="dv">2</span>, <span class="st">'r--'</span>, label<span class="op">=</span><span class="st">'Parabola Input'</span>)</span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>plt.plot(t_parabola, e_parabola, <span class="st">'g:'</span>, label<span class="op">=</span><span class="st">'Error'</span>)</span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Response to Unit Parabola Input'</span>)</span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Time'</span>)</span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Output'</span>)</span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="18_Performance_of_Feedback_Systems_it_files/figure-html/cell-3-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="la-robustezza-del-design" class="level2">
+<h2 class="anchored" data-anchor-id="la-robustezza-del-design">La robustezza del design</h2>
+<p>Un aspetto critico della progettazione del sistema di controllo è garantire la robustezza. La robustezza si riferisce alla capacità del sistema di mantenere prestazioni soddisfacenti in una serie di condizioni, in particolare quando i parametri effettivi del sistema variano dai valori nominali utilizzati nella progettazione.</p>
+<section id="la-simulazione-come-strumento-chiave-nella-convalida-del-progetto" class="level3">
+<h3 class="anchored" data-anchor-id="la-simulazione-come-strumento-chiave-nella-convalida-del-progetto">La simulazione come strumento chiave nella convalida del progetto</h3>
+<ol type="1">
+<li><p><strong>Variazione dei parametri del modello</strong>: quando si progetta un sistema di controllo, inizialmente si lavora con un modello matematico che rappresenta il sistema fisico. Tuttavia, questo modello si basa su alcune ipotesi e parametri nominali. In realtà, il sistema fisico reale può presentare variazioni in questi parametri a causa di tolleranze di produzione, cambiamenti ambientali, invecchiamento o altri fattori.</p></li>
+<li><p><strong>Colmare il divario tra modello e realtà</strong>: per garantire che la progettazione del sistema di controllo sia solida ed efficace nelle condizioni del mondo reale, è necessario tenere conto delle possibili deviazioni dal modello nominale. È qui che la simulazione gioca un ruolo cruciale. Variando i parametri del modello entro un intervallo ragionevole, è possibile simulare il comportamento del sistema reale in scenari diversi.</p></li>
+<li><p><strong>Approccio di simulazione</strong>:</p>
+<ul>
+<li>Regolare vari parametri del modello di sistema, come valori di guadagno, costanti di tempo, rapporti di smorzamento, ecc., entro gli intervalli di variazione previsti.</li>
+<li>Si eseguono quindi simulazioni per osservare come questi cambiamenti influiscono sulle prestazioni del sistema di controllo. Questo approccio aiuta a identificare potenziali punti deboli o punti di errore nella progettazione.</li>
+</ul></li>
+<li><p><strong>Valutazione della robustezza del progetto</strong>: l’obiettivo è garantire che il sistema di controllo soddisfi ancora i criteri di prestazione desiderati (come stabilità, risposta transitoria, errore a regime) in queste diverse condizioni. Se il sistema funziona in modo soddisfacente in un’ampia gamma di variazioni dei parametri, ciò indica una progettazione robusta.</p></li>
+<li><p><strong>Fase finale della progettazione</strong>: questo processo è fondamentale prima di finalizzare un progetto. Se il progetto regge bene in queste simulazioni, dà la certezza che funzionerà in modo affidabile una volta implementato nel sistema fisico reale. In sostanza, questo passaggio riguarda lo stress test del progetto rispetto alle incertezze e alle variabilità delle applicazioni del mondo reale.</p></li>
+</ol>
+</section>
+<section id="perché-la-simulazione-è-essenziale" class="level3">
+<h3 class="anchored" data-anchor-id="perché-la-simulazione-è-essenziale">Perché la simulazione è essenziale</h3>
+<ul>
+<li><p><strong>Colmare teoria e pratica</strong>: le simulazioni colmano il divario tra modelli teorici e applicazioni pratiche. Forniscono un ambiente controllato per testare come il sistema potrebbe rispondere all’imprevedibilità del mondo reale.</p></li>
+<li><p><strong>Test economici e sicuri</strong>: consente test approfonditi senza i costi e i rischi associati alla sperimentazione su sistemi fisici, soprattutto laddove i guasti possono essere costosi o pericolosi.</p></li>
+<li><p><strong>Miglioramento iterativo</strong>: le informazioni acquisite dagli studi di simulazione possono portare a miglioramenti iterativi nella progettazione, migliorando le prestazioni e l’affidabilità del sistema.</p></li>
+</ul>
+<p>In sintesi, la simulazione è un passaggio indispensabile nella progettazione del sistema di controllo, poiché fornisce una piattaforma per testare e perfezionare il sistema in una varietà di condizioni, garantendo che il progetto finale non sia solo teoricamente valido ma anche praticabile e robusto.</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script type="application/vnd.jupyter.widget-state+json">
+{"state":{},"version_major":2,"version_minor":0}
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/andreamunafo\.github\.io\/principles-of-automatic-controls");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/andreamunafo/principles-of-automatic-controls/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

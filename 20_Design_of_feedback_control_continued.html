@@ -1,0 +1,1964 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.552">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>principles-of-automatic-controls - Understanding the Standard Second-Order System: Recap</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+<meta property="og:title" content="principles-of-automatic-controls - Understanding the Standard Second-Order System: Recap">
+<meta property="og:description" content="Course in feedback control for the University of Pisa">
+<meta property="og:site_name" content="principles-of-automatic-controls">
+<meta name="twitter:title" content="principles-of-automatic-controls - Understanding the Standard Second-Order System: Recap">
+<meta name="twitter:description" content="Course in feedback control for the University of Pisa">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">principles-of-automatic-controls</span>
+    </a>
+  </div>
+        <div class="quarto-navbar-tools tools-end">
+</div>
+          <div id="quarto-search" class="" title="Search"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./20_Design_of_feedback_control_continued.html">Understanding the Standard Second-Order System: Recap</a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Feedback Control</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./faq.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Frequently Asked Questions (FAQ)</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./syllabus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Syllabus for “Principles of Automatic Control”</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./toc.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Table of Contents</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./update_and_manage_local_changes_guide.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A Guide to Updating Your Local Repository with Git in Anaconda’s Virtual Environment</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./getting_started_with_python_and_jupyter_notebook.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Getting Started with Python and Jupyter Notebooks</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principles of Automatic Control</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./basics_of_feedback_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Feedback Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./introduction_to_control_problem.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to the control problem</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dynamic_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modeling in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dynamic_response.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Dynamic response of control systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06_inverse_laplace_transform.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Inverse Laplace Transform: Partial fraction decomposition</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./modeling_dynamic_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Modeling of Dynamic Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./control_system_components.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Control System Components</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./models_of_control_devices_and_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Models of Controlled Devices</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./hardware_and_case_studies.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Hardware of Control Systems and Case Studies</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ac_hardware_and_case_studies.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">AC Motion Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./a_first_complete_application.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A Feedback Control System</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./principles_of_feedback_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principles of Feedback Control</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./feedback_systems_and_their_effects.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Feedback systems and their effects</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./introduction_to_control_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./stability.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Stability Analysis in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./stability_and_routh_criterion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Stability Analysis in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./performance_of_feedback_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Performance of Feedback Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./design_of_feedback_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Design Cycle for a Standard Second-Order System</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./20_Design_of_feedback_control_continued.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Understanding the Standard Second-Order System: Recap</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./steady_state_accuracy_and_design_principles.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Steady State Accuracy and Design Principles</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./compensator_design_using_root_locus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compensator Design</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./design_with_the_root_locus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Design with the Root Locus</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./compensators_and_root_locus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compensators and the Root Locus</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./introduction_to_frequency_domain_analysis_in_control_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Frequency Domain Analysis in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./application_of_nyquist_stability_criterion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Application of Nyquist Stability Criterion in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./the_nyquist_stability_criterion_and_relative_stability.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The Nyquist Stability Criterion and Relative Stability</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./bode_plots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Bode Plot Analysis</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./feedback_system_performance_based_on_frequency_response.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Feedback System Performance Based On Frequency Response</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./compensator_design_using_frequency_response_plots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principles of Automatic Control: Lead and Lag Compensation</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">IT_TCLab_🇮🇹</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/spacecraft_thermal_control_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Il Laboratorio di Controllo della Temperatura</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/tclab_exercises_report_template_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modello di report sugli esercizi TCLab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/tclab_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Il Laboratorio di Controllo della Temperatura</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/understanding_tclab_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Comprendere TCLab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/tclab_lab_1_coding_a_relay_controller_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 1: Codifica di un controller relè</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/system_model_and_identification_tclab_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modellazione del sistema</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/step_testing_tclab_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Passo Test</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/fitting_step_test_data_to_empirical_models_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Adattamento dei dati dei test di fase ai modelli empirici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/tclab_lab_2_model_identification_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 2: Identificazione del modello</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/tclab_lab_2_fitting_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Identificazione del modello: adattamento dei modelli ai dati</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/relay_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Controllo relè</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/pid_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Controllo PID</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/lab-assignment-pid-control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compito di laboratorio: Controllo PID</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/lab-assignment-pi-control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compito di laboratorio 4: Controllo PI</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">IT_🇮🇹</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/faq_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Domande frequenti (FAQ)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/syllabus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Programma del corso “Principi del controllo automatico”</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/update_and_manage_local_changes_guide_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Aggiornare il Proprio Repository Locale Mantenendo le Modifiche Locali</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/getting_started_with_python_and_jupyter_notebook_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Guida introduttiva ai notebook Python e Jupyter</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/intro_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principi di controllo automatico</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/basics_of_feedback_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione ai sistemi di controllo del feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/introduction_to_control_problem_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione al problema del controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/dynamic_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modellazione nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/dynamic_response_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Risposta dinamica dei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/06_inverse_laplace_transform_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Trasformata di Laplace inversa: scomposizione parziale di frazioni</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/modeling_dynamic_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione alla modellazione dei sistemi dinamici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/control_system_components_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Componenti del sistema di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/models_of_control_devices_and_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modelli di dispositivi controllati</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/hardware_and_case_studies_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Hardware dei sistemi di controllo e casi di studio</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/ac_hardware_and_case_studies_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sistemi di controllo del movimento CA</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/a_first_complete_application_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Un sistema di controllo del feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/principles_of_feedback_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principi di controllo del feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/feedback_systems_and_their_effects_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sistemi di feedback e loro effetti</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/introduction_to_control_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione ai sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/stability_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analisi di stabilità nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/stability_and_routh_criterion_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analisi di stabilità nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/performance_of_feedback_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prestazioni dei sistemi di feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/design_of_feedback_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Ciclo di progettazione per un sistema standard del secondo ordine</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/20_Design_of_feedback_control_continued_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Comprensione del sistema standard del secondo ordine: riepilogo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/steady_state_accuracy_and_design_principles_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Precisione dello stato stazionario e principi di progettazione</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/compensator_design_using_root_locus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Progettazione del compensatore</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/design_with_the_root_locus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Progettare con il luogo delle radici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/compensators_and_root_locus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compensatori e luogo delle radici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/introduction_to_frequency_domain_analysis_in_control_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione all’analisi nel dominio della frequenza nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/application_of_nyquist_stability_criterion_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Applicazione del criterio di stabilità di Nyquist nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/the_nyquist_stability_criterion_and_relative_stability_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Il criterio di stabilità di Nyquist e la stabilità relativa</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/bode_plots_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analisi del diagramma di Bode</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/feedback_system_performance_based_on_frequency_response_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prestazioni del sistema di feedback basate sulla risposta in frequenza</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/index_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Syllabus - Fondamenti di Automatica</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">TCLab</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/spacecraft_thermal_control_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The Temperature Control Laboratory</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/tclab_exercises_report_template.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Exercises Report Template</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The Temperature Control Lab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/understanding_tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Understanding TCLab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/tclab_lab_1_coding_a_relay_controller-solution.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 1: Coding a relay controller</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/tclab_lab_1_coding_a_relay_controller.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 1: Coding a relay controller</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/system_model_and_identification_tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">System Modeling</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/step_testing_tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Step Testing</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/fitting_step_test_data_to_empirical_models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Fitting Step Test Data to Empirical Models</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/tclab_lab_2_model_identification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 2: Model Identification</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/tclab_lab_2_model_identification_solutions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 2: Model Identification</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/tclab_lab_2_fitting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Model Identification: Fitting models to data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/relay_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Relay Control</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/pid_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">PID Control</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/lab-assignment-pid-control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab Assignment: PID Control</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/lab-assignment-pi-control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab Assignment 4: PI Control</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#transient-response-measures" id="toc-transient-response-measures" class="nav-link active" data-scroll-target="#transient-response-measures">Transient Response Measures</a></li>
+  <li><a href="#steady-state-response" id="toc-steady-state-response" class="nav-link" data-scroll-target="#steady-state-response">Steady-State Response</a></li>
+  <li><a href="#system-performance-specification" id="toc-system-performance-specification" class="nav-link" data-scroll-target="#system-performance-specification">System Performance Specification</a>
+  <ul class="collapse">
+  <li><a href="#high-natural-frequency-_n" id="toc-high-natural-frequency-_n" class="nav-link" data-scroll-target="#high-natural-frequency-_n">High Natural Frequency ($ _n $):</a></li>
+  <li><a href="#regulating-damping-ratio" id="toc-regulating-damping-ratio" class="nav-link" data-scroll-target="#regulating-damping-ratio">Regulating Damping Ratio ($ $):</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
+  <li><a href="#damping-ratio-zeta-range-and-key-considerations" id="toc-damping-ratio-zeta-range-and-key-considerations" class="nav-link" data-scroll-target="#damping-ratio-zeta-range-and-key-considerations">Damping Ratio (<span class="math inline">\(\zeta\)</span>) Range and Key Considerations</a></li>
+  </ul></li>
+  <li><a href="#translating-performance-specifications" id="toc-translating-performance-specifications" class="nav-link" data-scroll-target="#translating-performance-specifications">Translating Performance Specifications</a></li>
+  <li><a href="#handling-non-standard-systems-in-control-engineering" id="toc-handling-non-standard-systems-in-control-engineering" class="nav-link" data-scroll-target="#handling-non-standard-systems-in-control-engineering">Handling Non-Standard Systems in Control Engineering</a>
+  <ul class="collapse">
+  <li><a href="#handling-systems-with-a-zero" id="toc-handling-systems-with-a-zero" class="nav-link" data-scroll-target="#handling-systems-with-a-zero">Handling Systems with a Zero</a></li>
+  <li><a href="#understanding-transient-response-with-an-added-zero" id="toc-understanding-transient-response-with-an-added-zero" class="nav-link" data-scroll-target="#understanding-transient-response-with-an-added-zero">Understanding Transient Response with an Added Zero:</a></li>
+  <li><a href="#parameters-to-show-the-effect-of-zero" id="toc-parameters-to-show-the-effect-of-zero" class="nav-link" data-scroll-target="#parameters-to-show-the-effect-of-zero">Parameters to Show the Effect of Zero:</a></li>
+  <li><a href="#guideline-on-the-influence-of-a-zero" id="toc-guideline-on-the-influence-of-a-zero" class="nav-link" data-scroll-target="#guideline-on-the-influence-of-a-zero">Guideline on the Influence of a Zero</a></li>
+  <li><a href="#design-implications" id="toc-design-implications" class="nav-link" data-scroll-target="#design-implications">Design Implications</a></li>
+  <li><a href="#re-entering-the-design-cycle" id="toc-re-entering-the-design-cycle" class="nav-link" data-scroll-target="#re-entering-the-design-cycle">Re-Entering the Design Cycle</a></li>
+  <li><a href="#right-half-plane-zeros-and-system-dead-times" id="toc-right-half-plane-zeros-and-system-dead-times" class="nav-link" data-scroll-target="#right-half-plane-zeros-and-system-dead-times">Right Half Plane Zeros and System Dead Times</a></li>
+  </ul></li>
+  <li><a href="#handling-higher-order-systems" id="toc-handling-higher-order-systems" class="nav-link" data-scroll-target="#handling-higher-order-systems">Handling Higher Order Systems</a>
+  <ul class="collapse">
+  <li><a href="#designing-a-higher-order-system-dominance-condition" id="toc-designing-a-higher-order-system-dominance-condition" class="nav-link" data-scroll-target="#designing-a-higher-order-system-dominance-condition">Designing a Higher-Order System: Dominance Condition</a></li>
+  <li><a href="#example-pole-zero-cancellation" id="toc-example-pole-zero-cancellation" class="nav-link" data-scroll-target="#example-pole-zero-cancellation">Example: Pole-Zero Cancellation</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/andreamunafo/principles-of-automatic-controls/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Understanding the Standard Second-Order System: Recap</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>We first summarize our previous discussion on the various transient response and steady-state response measures with respect to a standard second-order system. Recall the model of the standard second-order system:</p>
+<img src="./pics/19_Design_of_feedback_control_system.png" alt="19_Design_of_feedback_control_system" style="width:450px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<p><span class="math display">\[
+\frac{Y(s)}{R(s)} = \frac{\omega_n^2}{s^2 + 2\zeta\omega_ns + \omega_n^2}
+\]</span></p>
+<p>Here, $ Y(s) $ is the output in the Laplace domain, and $ _n $ and $ $ represent the natural frequency and damping ratio, respectively.</p>
+<section id="transient-response-measures" class="level3">
+<h3 class="anchored" data-anchor-id="transient-response-measures">Transient Response Measures</h3>
+<ol type="1">
+<li><strong>Rise Time ($ t_r $)</strong>:</li>
+</ol>
+<p>Specify the desired time for the system to initially respond to a change.</p>
+<p><span class="math display">\[
+   t_r = \frac{\pi - \cos^{-1}(\zeta)}{\omega_d}
+   \]</span> Here, $ _d = _n $ is the damped frequency.</p>
+<ol start="2" type="1">
+<li><strong>Peak Time ($ t_p $)</strong>:</li>
+</ol>
+<p>Define the acceptable time to reach the first peak in response to a step input. <span class="math display">\[
+   t_p = \frac{\pi}{\omega_d}
+   \]</span></p>
+<ol start="3" type="1">
+<li><strong>Peak Overshoot ($ M_p $)</strong>:</li>
+</ol>
+<p>Determine the maximum allowable overshoot, which is the extent to which the system exceeds its steady-state output.</p>
+<p><span class="math display">\[\Large
+   M_p = e^{-\frac{\pi\zeta}{\sqrt{1 - \zeta^2}}}
+   \]</span></p>
+<ol start="4" type="1">
+<li><strong>Settling Time ($ t_s $)</strong>:</li>
+</ol>
+<p>Establish the time for the system to settle within a certain percentage of the steady-state value.</p>
+<p><span class="math display">\[
+   t_s = \frac{4}{\zeta\omega_n}
+   \]</span></p>
+<!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
+</section>
+<section id="steady-state-response" class="level3">
+<h3 class="anchored" data-anchor-id="steady-state-response">Steady-State Response</h3>
+<p>The steady-state response evaluates how well the system maintains its output at the desired value after transients have died out.</p>
+<p>For a standard second-order system:</p>
+<ul>
+<li><strong>For a Step Input</strong>: Zero steady-state error.</li>
+<li><strong>For a Unit Ramp Input</strong>: Steady-state error <span class="math display">\[ e_{ss} = \frac{2\zeta}{\omega_n} \]</span></li>
+</ul>
+</section>
+<section id="system-performance-specification" class="level2">
+<h2 class="anchored" data-anchor-id="system-performance-specification">System Performance Specification</h2>
+<section id="high-natural-frequency-_n" class="level3">
+<h3 class="anchored" data-anchor-id="high-natural-frequency-_n">High Natural Frequency ($ _n $):</h3>
+<p>The natural frequency, $ _n $, plays a pivotal role in determining the speed of response of a system. A higher $ _n $ leads to an improved speed of response, characterized by a lower rise time ($ t_r <span class="math inline">\() and reduced peak time (\)</span> t_p $). Additionally, a higher $ <em>n $ contributes to enhanced steady-state accuracy, denoted as $ e</em>{ss} $. However, it’s important to note that the value of $ _n $ is subject to limitations imposed by system bandwidth and hardware constraints. For instance, achieving a high $ _n $ may necessitate a significantly high amplifier gain, which can, in turn, lead to saturation issues. This highlights the necessity for careful hardware design, including the implementation of filters that can mitigate issues related to noise and hardware limitations.</p>
+</section>
+<section id="regulating-damping-ratio" class="level3">
+<h3 class="anchored" data-anchor-id="regulating-damping-ratio">Regulating Damping Ratio ($ $):</h3>
+<p>The damping ratio, $ $, is the other critical parameter to consider after $ _n $ has been decided. $ $ exerts a significant influence on the system’s rise time, overshoot, and steady-state error. A lower value of $ $ generally results in a faster rise time, although the impact might not be very pronounced within the range of values typically considered for $ $. Additionally, a lower $ $ leads to a reduced peak time and improves the steady-state error in response to ramp inputs. However, it’s crucial to recognize that a lower $ $ also results in a higher peak overshoot and brings the system closer to instability.</p>
+<p>The relationship between $ $ and the normalized settling time ($ _n t_s $) is complex and non-linear. The minimum $ _n t_s $ is achieved at $ = 0.68 $ for a 5% tolerance band, and $ = 0.8 $ for a 2% tolerance band. We observed that decreasing $ $ can lead to an increase in settling time. It’s essential to understand that rise time alone does not fully define the speed of response; the settling time is also a crucial factor. The trade-off between these parameters must be resolved based on the specific requirements of the application. It’s noteworthy that increasing $ $ beyond 0.68 for a 5% tolerance band, or beyond 0.8 for a 2% tolerance band, does not yield benefits, as it only results in a more sluggish system with reduced performance in both settling time and rise time. For a detailed analysis, refer to the ’Normalized Settling Time ($ _n t_s <span class="math inline">\() vs Damping Ratio (\)</span> $)’ plot in the notebook titled ‘19_Design_of_feedback_control’ and reported below.</p>
+<img src="./pics/19_Design_of_feedback_control_settling_time_vs_damping_ratio.png" alt="19_Design_of_feedback_control_settling_time_vs_damping_ratio" style="width:450px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+</section>
+<section id="summary" class="level3">
+<h3 class="anchored" data-anchor-id="summary">Summary</h3>
+<ul>
+<li><strong>High Natural Frequency (<span class="math inline">\(\omega_n\)</span>)</strong>:
+<ul>
+<li>Leads to faster response speed.</li>
+<li>Reduces rise time (<span class="math inline">\(t_r\)</span>) and peak time (<span class="math inline">\(t_p\)</span>).</li>
+<li>Improves steady-state accuracy (<span class="math inline">\(e_{ss}\)</span>).</li>
+<li>Limited by:
+<ul>
+<li>Bandwidth considerations.</li>
+<li>Hardware capabilities.</li>
+</ul></li>
+<li>Challenges:
+<ul>
+<li>High <span class="math inline">\(\omega_n\)</span> might require high amplifier gain.</li>
+<li>Potential issues: saturation problems.</li>
+</ul></li>
+<li>Solutions:
+<ul>
+<li>Appropriate hardware design.</li>
+<li>Use of filters to mitigate noise and hardware limitations.</li>
+</ul></li>
+</ul></li>
+<li><strong>Regulating Damping Ratio (<span class="math inline">\(\zeta\)</span>)</strong>:
+<ul>
+<li>Affects rise time, overshoot, and steady-state error.</li>
+<li>Lower <span class="math inline">\(\zeta\)</span> leads to:
+<ul>
+<li>Faster rise time (though not significantly over typical <span class="math inline">\(\zeta\)</span> ranges).</li>
+<li>Lower peak time.</li>
+<li>Improved steady-state error for ramp inputs.</li>
+<li>Higher peak overshoot and closer proximity to instability.</li>
+</ul></li>
+<li>Complex relationship with <span class="math inline">\(\omega_n t_s\)</span> (settling time):
+<ul>
+<li>Minimum <span class="math inline">\(\omega_n t_s\)</span> observed at:
+<ul>
+<li><span class="math inline">\(\zeta = 0.68\)</span> for 5% tolerance band.</li>
+<li><span class="math inline">\(\zeta = 0.8\)</span> for 2% tolerance band.</li>
+</ul></li>
+</ul></li>
+<li>Settling time considerations:
+<ul>
+<li>Decreasing <span class="math inline">\(\zeta\)</span> can increase settling time.</li>
+<li>Rise time is not the sole determinant of response speed; settling time is also crucial.</li>
+</ul></li>
+<li>Application-specific conflict resolution:
+<ul>
+<li>Choose <span class="math inline">\(\zeta\)</span> based on the application’s need to balance rise time and settling time.</li>
+</ul></li>
+<li>Beyond certain points (<span class="math inline">\(\zeta &gt; 0.68\)</span> for 5% tolerance, <span class="math inline">\(\zeta &gt; 0.8\)</span> for 2% tolerance):
+<ul>
+<li>Leads to a sluggish system.</li>
+<li>Negatively impacts both settling time and rise time.</li>
+<li>Refer to the ‘Normalized Settling Time (<span class="math inline">\(\omega_n t_n\)</span>) vs Damping Ratio (<span class="math inline">\(\zeta\)</span>)’ plot in notebook ‘19_Design_of_feedback_control’ for detailed insights.</li>
+</ul></li>
+</ul></li>
+</ul>
+</section>
+<section id="damping-ratio-zeta-range-and-key-considerations" class="level3">
+<h3 class="anchored" data-anchor-id="damping-ratio-zeta-range-and-key-considerations">Damping Ratio (<span class="math inline">\(\zeta\)</span>) Range and Key Considerations</h3>
+<section id="industry-norms-for" class="level4">
+<h4 class="anchored" data-anchor-id="industry-norms-for">Industry Norms for $ $:</h4>
+<ul>
+<li><strong>General Range</strong>: In standard industry practices, $ $ is usually set between 0.4 and 0.7, particularly when no specific quantitative performance criteria are provided by the user.</li>
+</ul>
+</section>
+<section id="tailoring-for-high-static-accuracy" class="level4">
+<h4 class="anchored" data-anchor-id="tailoring-for-high-static-accuracy">Tailoring for High Static Accuracy:</h4>
+<ul>
+<li><strong>Steady-State Error Relationship</strong>: Considering the equation $ e_{ss} = $, achieving high static accuracy involves:
+<ul>
+<li>**Maximizing $ _n $**: A higher $ _n $ is preferable, which may necessitate incorporating specialized hardware to handle the higher performance requirements.</li>
+<li><strong>Minimizing $ $</strong>: A smaller $ $ is desired. In certain specific applications, a value as low as $ = 0.1 $ may be considered acceptable. Although this leads to a system with high oscillations and poorer transient performance, it offers enhanced static accuracy. However, it’s crucial to note that such low values of $ $ edge the system closer to instability, making it more sensitive to parameter variations and affecting its robustness.</li>
+</ul></li>
+</ul>
+</section>
+<section id="specialized-applications" class="level4">
+<h4 class="anchored" data-anchor-id="specialized-applications">Specialized Applications:</h4>
+<ul>
+<li><strong>Example - Robotic Arm Control Systems</strong>: In applications like robotic arms, a higher $ $ value, approaching 1, might be more suitable. This ensures a slower but more controlled movement, preventing oscillations that could disrupt the arm’s path in its operating environment.</li>
+</ul>
+</section>
+<section id="typical-values-for-general-applications" class="level4">
+<h4 class="anchored" data-anchor-id="typical-values-for-general-applications">Typical $ $ Values for General Applications:</h4>
+<ul>
+<li><strong>Preferred Range</strong>: For most applications, the focus remains within the range $ 0.4 &lt; &lt; 0.7 $, though there can be slight deviations from these limits based on specific requirements.</li>
+</ul>
+</section>
+<section id="natural-frequency-_n-considerations" class="level4">
+<h4 class="anchored" data-anchor-id="natural-frequency-_n-considerations">Natural Frequency ($ _n $) Considerations:</h4>
+<ul>
+<li><strong>Dependence on System Hardware</strong>: The feasible range for $ _n $ is highly dependent on the system’s hardware and its configuration. Unlike $ $, there’s no standard range for $ _n $ as it varies significantly based on the physical and operational characteristics of the system.</li>
+</ul>
+</section>
+</section>
+</section>
+<section id="translating-performance-specifications" class="level2">
+<h2 class="anchored" data-anchor-id="translating-performance-specifications">Translating Performance Specifications</h2>
+<p>Translating performance specifications into closed-loop pole requirements is a critical step in control system design. This process involves determining where the poles of the closed-loop transfer function should be placed in the complex plane to meet the desired performance criteria like overshoot, rise time, settling time, and steady-state error.</p>
+<p>The closed-loop transfer function for a standard second-order system is given by:</p>
+<p><span class="math display">\[ T(s) = \frac{\omega_n^2}{s^2 + 2\zeta\omega_n s + \omega_n^2} \]</span></p>
+<p>where $ $ is the damping ratio and $ _n $) is the natural frequency.</p>
+<p>The poles of this transfer function are solutions to the characteristic equation:</p>
+<p><span class="math display">\[ s^2 + 2\zeta\omega_n s + \omega_n^2 = 0 \]</span></p>
+<p>which are:</p>
+<p><span class="math display">\[ s_{1,2} = -\zeta\omega_n \pm \omega_n\sqrt{\zeta^2 - 1} \]</span></p>
+<img src="./pics/19_Design_of_feedback_control_system_roots.png" alt="19_Design_of_feedback_control_system_roots
+" style="width:450px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<p><strong>Pop-up Question</strong>: What is the region in the s-plane for the closed loop poles given the requirements for <span class="math inline">\(\omega_n\)</span> and <span class="math inline">\(\zeta\)</span> that we have specified?</p>
+<p><strong>Answer</strong>:</p>
+<p>To determine the ideal region in the s-plane for closed-loop poles based on specified values of natural frequency ($ _n <span class="math inline">\() and damping ratio (\)</span> $), we need to consider both these parameters and how they influence the system’s response. Here’s a breakdown of the argument using the provided text:</p>
+<section id="establishing-a-range-for-natural-frequency-_n" class="level4">
+<h4 class="anchored" data-anchor-id="establishing-a-range-for-natural-frequency-_n">1. Establishing a Range for Natural Frequency ($ _n $):</h4>
+<ul>
+<li>**Minimum $ _n $**: There should be a minimum value for $ _n $ to prevent the rise time from becoming too large. This can be visualized as a circle in the s-plane with a radius equal to this minimum $ _n $ value, denoted as $ _n^1 $.</li>
+<li>**Maximum $ _n $**: The upper limit of $ _n $ is constrained by hardware capabilities and noise considerations. This can be represented by another circle with a radius of $ _n^2 $.</li>
+</ul>
+</section>
+<section id="considering-damping-ratio" class="level4">
+<h4 class="anchored" data-anchor-id="considering-damping-ratio">2. Considering Damping Ratio ($ $):</h4>
+<ul>
+<li><strong>Range of $ $</strong>: In this case, we consider $ $ values of 0.4 and 0.7. These values dictate the angle made by the line from the origin to the pole with the negative real axis. The angles can be calculated as $ ^{-1}(0.4) $ and $ ^{-1}(0.7) $.</li>
+</ul>
+</section>
+<section id="ideal-region-for-closed-loop-poles" class="level4">
+<h4 class="anchored" data-anchor-id="ideal-region-for-closed-loop-poles">3. Ideal Region for Closed-Loop Poles:</h4>
+<ul>
+<li>**Combining $ _n $ and $ $**: The ideal region for the closed-loop poles is where these two considerations intersect. Specifically, the poles should lie within a sector defined by the angles corresponding to $ = 0.4 $ and $ = 0.7 $ and between the circles representing the minimum and maximum $ _n $ values.</li>
+<li><strong>Symmetry in S-Plane</strong>: Given the symmetric nature of the s-plane, a corresponding point reflecting the pole position would exist in the lower half of the plane.</li>
+<li><strong>Region Characteristics</strong>: This region, bounded by the red curves (representing the natural frequency considerations) and the green curves (representing the damping considerations), is where the system’s closed-loop poles should ideally be located for a standard system with two poles.</li>
+</ul>
+<p>To summarise, for general applications, the closed-loop poles of a system should ideally be located within a specific region in the s-plane. This region is defined by the minimum and maximum values of the natural frequency ($ _n <span class="math inline">\() and within the angular bounds set by the specified damping ratios (\)</span> $). This placement ensures a balanced system response, considering both the speed of response (influenced by $ _n $) and the level of overshoot and stability (influenced by $ $). This is shown in the picture below.</p>
+<img src="./pics/19_Design_of_feedback_control_system_roots_2_b.png" alt="19_Design_of_feedback_control_system_roots_2_b
+" style="width:450px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+</section>
+</section>
+<section id="handling-non-standard-systems-in-control-engineering" class="level2">
+<h2 class="anchored" data-anchor-id="handling-non-standard-systems-in-control-engineering">Handling Non-Standard Systems in Control Engineering</h2>
+<p>So far, our discussion has been focused on a standard second-order system, represented by the transfer function:</p>
+<p><span class="math display">\[ Y(s) / R(s) = \frac{\omega_n^2}{s^2 + 2\zeta\omega_n s + \omega_n^2} \]</span></p>
+<p>However, real-world systems often deviate from this standard model. They may have more than two poles, introduce zeros, or have other complexities. The next part of our course will explore how to handle these variations.</p>
+<section id="handling-systems-with-a-zero" class="level3">
+<h3 class="anchored" data-anchor-id="handling-systems-with-a-zero">Handling Systems with a Zero</h3>
+<section id="introduction-of-a-zero-in-the-system" class="level4">
+<h4 class="anchored" data-anchor-id="introduction-of-a-zero-in-the-system">1. Introduction of a Zero in the System</h4>
+<ul>
+<li>In some systems, particularly those employing Proportional-Derivative (PD) control, a zero is introduced into the system dynamics.</li>
+<li>For instance, applying PD control to a second-order system adds a zero to the transfer function.</li>
+</ul>
+</section>
+<section id="modified-transfer-function" class="level4">
+<h4 class="anchored" data-anchor-id="modified-transfer-function">2. Modified Transfer Function</h4>
+<ul>
+<li><p>The new transfer function, in the presence of a zero, can be represented as: <span class="math display">\[ \frac{Y(s)}{R(s)} = \frac{\omega_n^2 (s + z)}{s^2 + 2\zeta\omega_n s + \omega_n^2} \]</span> where $ s=-z $ is the zero of the system.</p>
+<p>We want to understand the effects of the zero on the transient of the reponse.</p></li>
+</ul>
+</section>
+<section id="normalizing-the-transfer-function" class="level4">
+<h4 class="anchored" data-anchor-id="normalizing-the-transfer-function">3. Normalizing the Transfer Function</h4>
+<ul>
+<li><p>To facilitate analysis, we normalize the transfer function so the steady-state value of $ Y $ for a step input becomes 1. This is achieved by multiplying the transfer function by a factor of $ 1/z $. This does not affect the dynamics which we want to study.</p></li>
+<li><p>The normalized transfer function becomes: <span class="math display">\[ \frac{Y(s)}{R(s)} = \frac{\omega_n^2}{z} \cdot \frac{(s + z)}{s^2 + 2\zeta\omega_n s + \omega_n^2} \]</span></p>
+<p>we can re-write this as: <span class="math display">\[ Y(s) =  \frac{\omega_n^2}{s^2 + 2\zeta\omega_n s + \omega_n^2}R(s) + \frac{1}{z} \cdot \frac{s\omega_n^2}{s^2 + 2\zeta\omega_n s + \omega_n^2}R(s) \]</span></p>
+<p>We we write the transfer function in this way, we notice:</p>
+<ul>
+<li>the left part is the standard second-order transfer function</li>
+<li>the right part is the derivative of the second-order transfer function (multiplied by a scaling factor)</li>
+</ul></li>
+</ul>
+</section>
+<section id="effect-on-transient-response" class="level4">
+<h4 class="anchored" data-anchor-id="effect-on-transient-response">4. Effect on Transient Response</h4>
+<ul>
+<li>The introduction of a zero affects the transient response of the system.</li>
+<li>Initially, the derivative component (due to the zero) is large, significantly impacting the early part of the response.</li>
+<li>The overall effect is dependent on the position of the zero. A zero closer to the origin has a more pronounced effect compared to one further in the left-half plane.</li>
+</ul>
+<p>To illustrate the effect of adding a zero on the transient response of a control system, and to compare it with the standard second-order system response, we can use Python’s control systems library. Below is a Python code snippet that accomplishes this task. The code generates a plot showing the response of a standard second-order system and the modified system with an additional zero, both subjected to a unit step input.</p>
+<div id="473f3a39" class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">- 'omega_n' and 'zeta' are the natural frequency and damping ratio of the system, respectively.</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">- 'zero_position' is the position of the additional zero in the s-plane.</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">- 'system_standard' represents the standard second-order system.</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">- 'system_zero_added' is the system with an additional zero.</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">- The step responses of both systems are computed using ctl.step_response.</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">- The responses are then plotted for comparison.</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> control <span class="im">as</span> ctl</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># System Parameters</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>omega_n <span class="op">=</span> <span class="dv">1</span>  <span class="co"># Natural frequency</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>zeta <span class="op">=</span> <span class="fl">0.3</span>   <span class="co"># Damping ratio</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Position of the zero - change this to see the effects of the zero on the response</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>zero_position <span class="op">=</span> <span class="op">-</span><span class="fl">0.5</span>  </span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the standard second-order system</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>num_standard <span class="op">=</span> [omega_n<span class="op">**</span><span class="dv">2</span>]</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>den_standard <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span><span class="op">*</span>zeta<span class="op">*</span>omega_n, omega_n<span class="op">**</span><span class="dv">2</span>]</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>system_standard <span class="op">=</span> ctl.TransferFunction(num_standard, den_standard)</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(system_standard)</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the system with an additional zero</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>num_zero_added <span class="op">=</span> [<span class="dv">1</span>, <span class="op">-</span>zero_position]</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>den_zero_added <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>system_zero_added <span class="op">=</span> <span class="dv">1</span><span class="op">/</span>(<span class="op">-</span>zero_position)<span class="op">*</span>ctl.TransferFunction(num_zero_added, den_zero_added) <span class="op">*</span> system_standard</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(system_zero_added)</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Time range for the response</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">20</span>, <span class="dv">500</span>)</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the step responses</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>t_standard, y_standard <span class="op">=</span> ctl.step_response(system_standard, T<span class="op">=</span>t)</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>t_zero_added, y_zero_added <span class="op">=</span> ctl.step_response(system_zero_added, T<span class="op">=</span>t)</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="co"># Unit Step Reference (Constant value of 1 across the time range)</span></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>unit_step <span class="op">=</span> np.ones_like(t_standard)</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting</span></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>plt.plot(t_standard, y_standard, label<span class="op">=</span><span class="st">'Standard Second-Order System'</span>)</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>plt.plot(t_zero_added, y_zero_added, label<span class="op">=</span><span class="st">'System with Zero Added'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>plt.plot(t, unit_step, label<span class="op">=</span><span class="st">'Unit Step Input'</span>, color<span class="op">=</span><span class="st">'red'</span>, linestyle<span class="op">=</span><span class="st">'-'</span>, linewidth<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Comparison of Step Response with Unit Step Input'</span>)</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Time'</span>)</span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Response'</span>)</span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+       1
+---------------
+s^2 + 0.6 s + 1
+
+
+    2 s + 1
+---------------
+s^2 + 0.6 s + 1
+</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="20_Design_of_feedback_control_continued_files/figure-html/cell-2-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="understanding-transient-response-with-an-added-zero" class="level3">
+<h3 class="anchored" data-anchor-id="understanding-transient-response-with-an-added-zero">Understanding Transient Response with an Added Zero:</h3>
+<ol type="1">
+<li><strong>Standard Second-Order System Response</strong>:
+<ul>
+<li>The transient response of a standard second-order system (without a zero) typically shows a certain rise time, overshoot, and settling time, depending on its damping ratio ($ <span class="math inline">\() and natural frequency (\)</span> _n $).</li>
+</ul></li>
+<li><strong>Effect of Adding a Derivative Component (Zero)</strong>:
+<ul>
+<li>Adding a zero to the system effectively adds a derivative component to the response.</li>
+<li>Initially, when the response is changing rapidly, the derivative of the response (slope) is large. This leads to a significant effect on the initial part of the transient response due to the zero.</li>
+<li>As the response starts settling and the changes become less drastic, the derivative (slope) becomes smaller. Therefore, the influence of the zero diminishes in the later part of the response.</li>
+</ul></li>
+<li><strong>Visualizing the Effect of the Zero</strong>:
+<ul>
+<li>The transient response curve of the modified system gets ‘lifted up’ or altered primarily in the initial phase due to the significant derivative at the beginning.</li>
+<li>The scale factor $ 1/z $ (where $ z $ is the position of the zero) influences the magnitude of this effect. A zero closer to the origin (small $ z $) has a more pronounced impact, while a zero further into the left-half plane (large $ z $) has a negligible effect.</li>
+</ul></li>
+<li><strong>Impact of Zero on Decay of Response</strong>:
+<ul>
+<li>The decay of the response is primarily governed by the real part of the system’s poles, specifically by $ e^{-_n t} $.</li>
+<li>The added zero does not significantly change the decay rate dictated by the poles but alters the initial response dynamics.</li>
+</ul></li>
+</ol>
+</section>
+<section id="parameters-to-show-the-effect-of-zero" class="level3">
+<h3 class="anchored" data-anchor-id="parameters-to-show-the-effect-of-zero">Parameters to Show the Effect of Zero:</h3>
+<p>To better illustrate the impact of adding a zero, consider adjusting these parameters in the simulation above:</p>
+<ol type="1">
+<li><strong>Position of the Zero ($ z $)</strong>:
+<ul>
+<li>Varying the position of the zero closer or further from the origin will demonstrate its impact on the initial response.</li>
+</ul></li>
+<li><strong>Damping Ratio ($ $)</strong>:
+<ul>
+<li>Altering $ $ can show how the system’s inherent damping interacts with the effects introduced by the zero.</li>
+</ul></li>
+<li>**Natural Frequency ($ _n $)**:
+<ul>
+<li>Changing $ _n $ can help visualize how the system’s speed of response is affected by the zero.</li>
+</ul></li>
+</ol>
+<p>By adjusting these parameters in a simulation environment, you can vividly see how the presence of a zero in the system’s transfer function modifies its transient response, especially in the initial phase following a step input. This is essential for understanding the design implications of such modifications in control systems.</p>
+</section>
+<section id="guideline-on-the-influence-of-a-zero" class="level3">
+<h3 class="anchored" data-anchor-id="guideline-on-the-influence-of-a-zero">Guideline on the Influence of a Zero</h3>
+<ol type="1">
+<li><strong>Relative Position of Zero and Complex Conjugate Poles</strong>:
+<ul>
+<li>The effect of a zero on the transient response of a control system is significantly related to its position relative to the system’s complex conjugate poles.</li>
+<li>If a zero is approximately five times further away from the origin than the complex conjugate poles, its impact on the transient response is negligible.</li>
+</ul></li>
+</ol>
+</section>
+<section id="design-implications" class="level3">
+<h3 class="anchored" data-anchor-id="design-implications">Design Implications</h3>
+<ol type="1">
+<li><strong>Negligible Impact of Distant Zero</strong>:
+<ul>
+<li>When the zero is sufficiently far from the complex conjugate poles (five times further), you can design the system as if the zero doesn’t exist. This means the standard performance measures (like rise time, settling time, peak overshoot) applicable to a second-order system without a zero can still be used.</li>
+</ul></li>
+<li><strong>Adjusting Design Parameters</strong>:
+<ul>
+<li>If the zero is closer and significantly affects the response, adjustments in the system’s design parameters, particularly the damping ratio ($ $), may be necessary.</li>
+<li>For instance, if a system designed for a damping ratio of 0.4 experiences increased overshoot due to the zero, the designer might opt for a slightly higher damping ratio (like 0.5) to compensate for this effect.</li>
+</ul></li>
+<li><strong>Design Verification through Simulation</strong>:
+<ul>
+<li>The actual impact of the zero and the efficacy of any compensatory design changes should be verified through simulation.</li>
+<li>The simulation will confirm whether the chosen damping ratio achieves the desired performance, particularly in terms of peak overshoot.</li>
+</ul></li>
+</ol>
+</section>
+<section id="re-entering-the-design-cycle" class="level3">
+<h3 class="anchored" data-anchor-id="re-entering-the-design-cycle">Re-Entering the Design Cycle</h3>
+<ol type="1">
+<li><strong>Iterative Design Process</strong>:
+<ul>
+<li>The design process is iterative. If the initial design (with the adjusted damping ratio) does not meet the requirements, further adjustments and simulations are necessary.</li>
+<li>This iterative process continues until the design achieves the desired transient response characteristics.</li>
+</ul></li>
+<li><strong>Example Scenario</strong>:
+<ul>
+<li>If a design for $ = 0.4 $ leads to an overshoot of 25% due to the presence of a zero, the designer might increase $ $ to 0.5 to reduce the overshoot. However, this change is then tested through simulation to ensure it meets the overall system performance criteria.</li>
+</ul></li>
+</ol>
+<p>In summary, the text provides a practical guideline for control system designers on how to account for the presence of a zero in the system’s transfer function, particularly when it impacts transient response. The key takeaway is to assess the zero’s influence based on its relative position to the dominant poles and to adjust design parameters accordingly, verifying these changes through simulation to ensure they meet the desired system performance.</p>
+</section>
+<section id="right-half-plane-zeros-and-system-dead-times" class="level3">
+<h3 class="anchored" data-anchor-id="right-half-plane-zeros-and-system-dead-times">Right Half Plane Zeros and System Dead Times</h3>
+<p>Let’s now discuss the implications of having a zero in the right-half of the s-plane in a control system’s transfer function, particularly in relation to stability and system response.</p>
+<section id="zeros-in-the-right-half-plane" class="level4">
+<h4 class="anchored" data-anchor-id="zeros-in-the-right-half-plane">Zeros in the Right-Half Plane</h4>
+<ol type="1">
+<li><strong>Impact on Stability</strong>:
+<ul>
+<li>A zero in the right-half plane (RHP) does not directly affect the stability of a system. Stability is generally determined by the poles of the system, not the zeros. A system remains stable as long as all its poles are in the left-half plane (LHP).</li>
+</ul></li>
+<li><strong>Physical Occurrence</strong>:
+<ul>
+<li>In most physical systems, zeros in the RHP are uncommon. However, they can appear in certain scenarios, particularly in systems with dead time.</li>
+</ul></li>
+</ol>
+</section>
+<section id="dead-time-and-its-representation" class="level4">
+<h4 class="anchored" data-anchor-id="dead-time-and-its-representation">Dead Time and Its Representation</h4>
+<ol type="1">
+<li><strong>Modeling Dead Time</strong>:
+<ul>
+<li><p>Dead time in a system is a delay between the input and the output response. It is often denoted as $ e^{-s_D} $ in the Laplace domain, where $ _D $ is the dead time.</p></li>
+<li><p>A common approximation for dead time is $ e^{-s_D} $. This approximation introduces a zero in the RHP (at $ s = 2/_D $) and a pole in the LHP (at $ s = -2/_D $).</p></li>
+</ul></li>
+</ol>
+</section>
+<section id="effects-of-a-zero-in-the-rhp" class="level4">
+<h4 class="anchored" data-anchor-id="effects-of-a-zero-in-the-rhp">Effects of a Zero in the RHP</h4>
+<ol type="1">
+<li><strong>Influence on System Response</strong>:
+<ul>
+<li>A zero in the RHP can significantly alter the system’s response. Unlike a zero in the LHP, which typically enhances the system’s ability to track rapid changes in input (due to the derivative-like effect), a RHP zero can lead to undesirable characteristics in the response.</li>
+</ul></li>
+<li><strong>Reduced Overshoot and Increased Sluggishness</strong>:
+<ul>
+<li>The presence of a RHP zero tends to reduce peak overshoot in the system’s response. This is because the effect of the zero counteracts the rising action of the system’s response, akin to subtracting the derivative component rather than adding it.</li>
+<li>More significantly, a RHP zero can make the system response more sluggish. This means slower response times and potentially poorer performance in tracking inputs or recovering from disturbances.</li>
+</ul></li>
+<li><strong>Practical Consideration in Process Control</strong>:
+<ul>
+<li>In process control systems where dead time is common, dealing with the effects of a RHP zero is a practical challenge. Engineers must design controllers that can compensate for the delay and sluggishness introduced by the dead time, ensuring the system can still meet its performance requirements.</li>
+</ul></li>
+</ol>
+<p>In summary, while a zero in the RHP does not affect the stability of a control system, it can have a marked impact on the system’s transient response, often making it less responsive and reducing overshoot. These characteristics need to be carefully considered and addressed in control system design, especially in process control applications where dead time is a factor. Understanding and managing the effects of RHP zeros is crucial in ensuring that the system operates effectively despite these inherent challenges.</p>
+<div id="3a67b6f7" class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">- 'omega_n' and 'zeta' are the natural frequency and damping ratio of the system, respectively.</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">- 'zero_position' is the position of the additional zero in the s-plane.</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">- 'system_standard' represents the standard second-order system.</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">- 'system_zero_added' is the system with an additional zero.</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">- The step responses of both systems are computed using ctl.step_response.</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co">- The responses are then plotted for comparison.</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> control <span class="im">as</span> ctl</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co"># System Parameters</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>omega_n <span class="op">=</span> <span class="dv">1</span>  <span class="co"># Natural frequency</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>zeta <span class="op">=</span> <span class="fl">0.3</span>   <span class="co"># Damping ratio</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Position of the zero - change this to see the effects of the zero on the response</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>zero_position <span class="op">=</span> <span class="dv">1</span>  </span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the standard second-order system</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>num_standard <span class="op">=</span> [omega_n<span class="op">**</span><span class="dv">2</span>]</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>den_standard <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span><span class="op">*</span>zeta<span class="op">*</span>omega_n, omega_n<span class="op">**</span><span class="dv">2</span>]</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>system_standard <span class="op">=</span> ctl.TransferFunction(num_standard, den_standard)</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(system_standard)</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the system with an additional zero</span></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>num_zero_added <span class="op">=</span> [<span class="dv">1</span>, <span class="op">-</span>zero_position]</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>den_zero_added <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>system_zero_added <span class="op">=</span> <span class="dv">1</span><span class="op">/</span>(<span class="op">-</span>zero_position)<span class="op">*</span>ctl.TransferFunction(num_zero_added, den_zero_added) <span class="op">*</span> system_standard</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(system_zero_added)</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Time range for the response</span></span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">20</span>, <span class="dv">500</span>)</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the step responses</span></span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>t_standard, y_standard <span class="op">=</span> ctl.step_response(system_standard, T<span class="op">=</span>t)</span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>t_zero_added, y_zero_added <span class="op">=</span> ctl.step_response(system_zero_added, T<span class="op">=</span>t)</span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a><span class="co"># Unit Step Reference (Constant value of 1 across the time range)</span></span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>unit_step <span class="op">=</span> np.ones_like(t_standard)</span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting</span></span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>plt.plot(t_standard, y_standard, label<span class="op">=</span><span class="st">'Standard Second-Order System'</span>)</span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>plt.plot(t_zero_added, y_zero_added, label<span class="op">=</span><span class="st">'System with Zero Added'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>plt.plot(t, unit_step, label<span class="op">=</span><span class="st">'Unit Step Input'</span>, color<span class="op">=</span><span class="st">'red'</span>, linestyle<span class="op">=</span><span class="st">'-'</span>, linewidth<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Comparison of Step Response with Unit Step Input'</span>)</span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Time'</span>)</span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Response'</span>)</span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+       1
+---------------
+s^2 + 0.6 s + 1
+
+
+    -s + 1
+---------------
+s^2 + 0.6 s + 1
+</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="20_Design_of_feedback_control_continued_files/figure-html/cell-3-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="handling-higher-order-systems" class="level2">
+<h2 class="anchored" data-anchor-id="handling-higher-order-systems">Handling Higher Order Systems</h2>
+<p>We are now ready to discuss the complexities involved in designing higher-order control systems and to introduce the concept of the “dominance condition.”</p>
+<p>A standard second-order model, while useful, is often an oversimplification for real-world systems. In practice, systems are usually of higher order.</p>
+<p>A standard second-order system can be represented by the transfer function:</p>
+<p><span class="math display">\[ Y(s) / R(s) = \frac{\omega_n^2}{s^2 + 2\zeta\omega_n s + \omega_n^2} \]</span></p>
+<p>A real-system, of order higher than second might look like:</p>
+<p><span class="math display">\[ Y(s) / R(s) = \frac{p}{s+p}\frac{\omega_n^2}{s^2 + 2\zeta\omega_n s + \omega_n^2} \]</span></p>
+<p>where the <span class="math inline">\(p\)</span> at the numerator normalised the response to 1.</p>
+<section id="understanding-the-systems-modes" class="level4">
+<h4 class="anchored" data-anchor-id="understanding-the-systems-modes">Understanding the System’s Modes</h4>
+<p>In this third-order system, the system’s response is dictated by two modes:</p>
+<ol type="1">
+<li><strong>Mode Associated with the Original Second-Order System</strong>:
+<ul>
+<li>This mode follows the form $ e^{-_nt} $, which is characteristic of the original second-order system.</li>
+<li>Again, the residue at the system’s poles dictates the magnitude of this mode.</li>
+</ul></li>
+<li><strong>Mode Associated with the Pole</strong>:
+<ul>
+<li>This mode is represented by $ e^{-pt} $, where $ p $ is the position of the added pole in the system (if any).</li>
+<li>The residue at this pole will influence how much this mode contributes to the overall system response.</li>
+</ul></li>
+</ol>
+</section>
+<section id="designing-a-higher-order-system-dominance-condition" class="level3">
+<h3 class="anchored" data-anchor-id="designing-a-higher-order-system-dominance-condition">Designing a Higher-Order System: Dominance Condition</h3>
+<p>The concept of “dominance condition” implies that for a higher-order system, the transient response is primarily influenced by two poles closest to the imaginary axis if the other poles are sufficiently far away.</p>
+<p>This allows us to use the design principles of a second-order system for higher-order systems under certain conditions.</p>
+<ol type="1">
+<li><strong>Dominance Condition</strong>:
+<ul>
+<li><p>The dominance condition is introduced as an important concept to deal with high-order systems. It states that in a higher-order system, if certain poles (typically the ones closest to the imaginary axis in the s-plane) are dominant, the system’s transient response can be approximated by considering only these dominant poles.</p></li>
+<li><p>If other poles are sufficiently far into the left half-plane (more than five times farther from the origin than the dominant poles), their contribution to the transient response can be considered negligible.</p></li>
+</ul></li>
+<li><strong>Implication of Dominance Condition</strong>:
+<ul>
+<li>When the dominance condition is satisfied, the design and analysis of the higher-order system can be simplified to focus on the dominant poles. The parameters $ $ (damping ratio) and $ _n $ (natural frequency), which are only relevant for second-order systems, become relevant gain in this scenario.</li>
+</ul></li>
+</ol>
+<p>In a higher-order system, such as a tenth-order system, the design may have multiple poles. The dominance condition becomes critical here:</p>
+<ul>
+<li><p>If the non-dominant poles are significantly far from the dominant poles (say, more than five times the real part of the dominant poles), their contribution to the transient response is minor.</p></li>
+<li><p>This allows the designer to focus on the dominant poles (typically the ones closest to the imaginary axis) for designing the system’s transient response.</p></li>
+<li><p>Remember that <span class="math inline">\(\zeta\)</span> and <span class="math inline">\(\omega_n\)</span> are meaningless unless we are dealing with a second order system. It is our responsibility to verify that the dominance condition is satisfied.</p></li>
+<li><p>In cases where the dominance condition is not met, the design becomes more complex. The system may need to be analyzed and designed using a more detailed approach, considering the effects of all poles and zeros. In this case, an iterative design process, including simulation, is necessary to validate the system’s performance against the desired specifications. Adjustments are made based on simulation results until the system meets its performance criteria (trial and error design).</p></li>
+</ul>
+</section>
+<section id="example-pole-zero-cancellation" class="level3">
+<h3 class="anchored" data-anchor-id="example-pole-zero-cancellation">Example: Pole-Zero Cancellation</h3>
+<p>Consider a scenario where the system has a problematic pole configuration that determine performance.</p>
+<img src="./pics/19_Design_of_feedback_control_system_roots_third_order_system.png" alt="19_Design_of_feedback_control_system_roots_third_order_system
+" style="width:450px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<p>For this system, the performance are not driven by <span class="math inline">\(\zeta\)</span> and <span class="math inline">\(\omega_n\)</span>. Note that in this case, there are no dominant poles and the system must be evaluated as a complete third order system.</p>
+<p>The requirements are still expressed in terms of peak overshoot, rise time, etc. but we cannot simply use the approach we used so far.</p>
+<p>A method to minimize the impact of an undesirable pole is to introduce a zero near it, effectively canceling its impact. This is known as the pole-zero cancellation method.</p>
+<ul>
+<li><p><strong>Pole-Zero Cancellation</strong>: If a zero is placed exactly at the location of a pole, it cancels the pole’s effect (the residue at that pole becomes zero). We can design a PD controller that places the zero where we need it.</p></li>
+<li><p>For a third-order system, if this cancellation occurs, the system’s response might be effectively dictated by the remaining two poles, simplifying the design process.</p></li>
+<li><p>In mathematical terms, the pole-zero cancellation changes the residues at the canceled pole, thereby altering the system’s response. This can be particularly useful for managing complex poles or poles that adversely affect system performance.</p></li>
+<li><p>Note that this does not need to be a precise cancellation, placing the zero sufficiently close reduces the effect of the unwanted pole.</p></li>
+</ul>
+<div id="cbfdf136" class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> control <span class="im">as</span> ctl</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Change this to simulate parameter noise in the placement of the zero</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co"># You can try 0 (no noise), 1e-2, etc.</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>Delta <span class="op">=</span> <span class="dv">0</span> <span class="co">#1e-2</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co"># System parameters</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>omega_n <span class="op">=</span> <span class="dv">1</span>  <span class="co"># Natural frequency for complex conjugate poles</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>zeta <span class="op">=</span> <span class="fl">0.5</span>   <span class="co"># Damping ratio for complex conjugate poles</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>real_pole <span class="op">=</span> <span class="op">-</span><span class="dv">2</span>  <span class="co"># Location of the real pole</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Transfer function of the original third-order system</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Two complex conjugate poles and one real pole</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>num_original <span class="op">=</span> [<span class="op">-</span>real_pole<span class="op">*</span>omega_n<span class="op">**</span><span class="dv">2</span>]</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="co"># (s^2 + 2*zeta*omega_n s + omega_n**2)(s+real_pole)</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>den_original <span class="op">=</span> [<span class="dv">1</span>, </span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>                <span class="op">-</span>real_pole <span class="op">+</span> <span class="dv">2</span> <span class="op">*</span> zeta <span class="op">*</span> omega_n, </span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>                <span class="dv">2</span> <span class="op">*</span> zeta <span class="op">*</span> omega_n <span class="op">*</span> <span class="op">-</span>real_pole <span class="op">+</span> omega_n<span class="op">**</span><span class="dv">2</span>, </span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>                omega_n<span class="op">**</span><span class="dv">2</span> <span class="op">*</span> <span class="op">-</span>real_pole] </span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>system_original <span class="op">=</span> ctl.TransferFunction(num_original, den_original)</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Add a zero to cancel the real pole</span></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a><span class="co"># The zero is located at the position of the real pole</span></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>num_modified <span class="op">=</span> [<span class="dv">1</span>, <span class="op">-</span>real_pole<span class="op">+</span>Delta]</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>system_modified <span class="op">=</span> ctl.TransferFunction(num_modified, den_original)</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Standard second-order system</span></span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>num_second_order <span class="op">=</span> [omega_n<span class="op">**</span><span class="dv">2</span>]</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>den_second_oder <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span><span class="op">*</span>zeta<span class="op">*</span>omega_n, omega_n<span class="op">**</span><span class="dv">2</span>]</span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>system_second_order <span class="op">=</span> ctl.TransferFunction(num_second_order, den_second_oder)</span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a><span class="co"># Time range for the response</span></span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">500</span>)</span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the step responses</span></span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>t_original, y_original <span class="op">=</span> ctl.step_response(system_original, T<span class="op">=</span>t)</span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>t_modified, y_modified <span class="op">=</span> ctl.step_response(system_modified, T<span class="op">=</span>t)</span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>t_second_order, y_second_order <span class="op">=</span> ctl.step_response(system_second_order, T<span class="op">=</span>t)</span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting</span></span>
+<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a>plt.plot(t_original, y_original, label<span class="op">=</span><span class="st">'Original System (Third-Order)'</span>)</span>
+<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a>plt.plot(t_modified, y_modified, label<span class="op">=</span><span class="st">'System with Zero Canceling Real Pole'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, linewidth<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a>plt.plot(t_second_order, y_second_order, label<span class="op">=</span><span class="st">'Second-Order System'</span>, color<span class="op">=</span><span class="st">'green'</span>, linestyle<span class="op">=</span><span class="st">':'</span>, linewidth<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Comparison of Step Response: Original vs Modified System vs Second-Order'</span>)</span>
+<span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Time'</span>)</span>
+<span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Response'</span>)</span>
+<span id="cb5-52"><a href="#cb5-52" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb5-53"><a href="#cb5-53" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb5-54"><a href="#cb5-54" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="20_Design_of_feedback_control_continued_files/figure-html/cell-4-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="conclusion" class="level3">
+<h3 class="anchored" data-anchor-id="conclusion">Conclusion</h3>
+<p>In conclusion, transitioning from a standard second-order system to higher-order systems in control design involves careful consideration of poles and zeros’ contributions. Techniques like normalization and pole-zero cancellation become essential in managing the system’s transient response effectively.</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/andreamunafo\.github\.io\/principles-of-automatic-controls");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/andreamunafo/principles-of-automatic-controls/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

@@ -1,0 +1,1816 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.552">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>principles-of-automatic-controls - Sistemi di feedback e loro effetti</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+<meta property="og:title" content="principles-of-automatic-controls - Sistemi di feedback e loro effetti">
+<meta property="og:description" content="Course in feedback control for the University of Pisa">
+<meta property="og:site_name" content="principles-of-automatic-controls">
+<meta name="twitter:title" content="principles-of-automatic-controls - Sistemi di feedback e loro effetti">
+<meta name="twitter:description" content="Course in feedback control for the University of Pisa">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">principles-of-automatic-controls</span>
+    </a>
+  </div>
+        <div class="quarto-navbar-tools tools-end">
+</div>
+          <div id="quarto-search" class="" title="Search"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../IT_🇮🇹/faq_it.html">IT_🇮🇹</a></li><li class="breadcrumb-item"><a href="../IT_🇮🇹/feedback_systems_and_their_effects_it.html">Sistemi di feedback e loro effetti</a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Feedback Control</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../faq.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Frequently Asked Questions (FAQ)</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../syllabus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Syllabus for “Principles of Automatic Control”</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../toc.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Table of Contents</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../update_and_manage_local_changes_guide.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A Guide to Updating Your Local Repository with Git in Anaconda’s Virtual Environment</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../getting_started_with_python_and_jupyter_notebook.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Getting Started with Python and Jupyter Notebooks</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principles of Automatic Control</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../basics_of_feedback_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Feedback Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../introduction_to_control_problem.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to the control problem</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../dynamic_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modeling in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../dynamic_response.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Dynamic response of control systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../06_inverse_laplace_transform.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Inverse Laplace Transform: Partial fraction decomposition</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../modeling_dynamic_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Modeling of Dynamic Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../control_system_components.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Control System Components</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../models_of_control_devices_and_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Models of Controlled Devices</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../hardware_and_case_studies.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Hardware of Control Systems and Case Studies</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ac_hardware_and_case_studies.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">AC Motion Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../a_first_complete_application.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A Feedback Control System</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../principles_of_feedback_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principles of Feedback Control</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../feedback_systems_and_their_effects.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Feedback systems and their effects</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../introduction_to_control_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../stability.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Stability Analysis in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../stability_and_routh_criterion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Stability Analysis in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../performance_of_feedback_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Performance of Feedback Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../design_of_feedback_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Design Cycle for a Standard Second-Order System</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../20_Design_of_feedback_control_continued.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Understanding the Standard Second-Order System: Recap</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../steady_state_accuracy_and_design_principles.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Steady State Accuracy and Design Principles</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../compensator_design_using_root_locus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compensator Design</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../design_with_the_root_locus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Design with the Root Locus</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../compensators_and_root_locus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compensators and the Root Locus</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../introduction_to_frequency_domain_analysis_in_control_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Frequency Domain Analysis in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../application_of_nyquist_stability_criterion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Application of Nyquist Stability Criterion in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../the_nyquist_stability_criterion_and_relative_stability.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The Nyquist Stability Criterion and Relative Stability</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../bode_plots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Bode Plot Analysis</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../feedback_system_performance_based_on_frequency_response.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Feedback System Performance Based On Frequency Response</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../compensator_design_using_frequency_response_plots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principles of Automatic Control: Lead and Lag Compensation</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">IT_TCLab_🇮🇹</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/spacecraft_thermal_control_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Il Laboratorio di Controllo della Temperatura</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/tclab_exercises_report_template_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modello di report sugli esercizi TCLab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/tclab_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Il Laboratorio di Controllo della Temperatura</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/understanding_tclab_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Comprendere TCLab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/tclab_lab_1_coding_a_relay_controller_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 1: Codifica di un controller relè</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/system_model_and_identification_tclab_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modellazione del sistema</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/step_testing_tclab_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Passo Test</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/fitting_step_test_data_to_empirical_models_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Adattamento dei dati dei test di fase ai modelli empirici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/tclab_lab_2_model_identification_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 2: Identificazione del modello</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/tclab_lab_2_fitting_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Identificazione del modello: adattamento dei modelli ai dati</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/relay_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Controllo relè</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/pid_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Controllo PID</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/lab-assignment-pid-control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compito di laboratorio: Controllo PID</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/lab-assignment-pi-control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compito di laboratorio 4: Controllo PI</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">IT_🇮🇹</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/faq_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Domande frequenti (FAQ)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/syllabus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Programma del corso “Principi del controllo automatico”</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/update_and_manage_local_changes_guide_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Aggiornare il Proprio Repository Locale Mantenendo le Modifiche Locali</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/getting_started_with_python_and_jupyter_notebook_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Guida introduttiva ai notebook Python e Jupyter</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/intro_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principi di controllo automatico</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/basics_of_feedback_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione ai sistemi di controllo del feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/introduction_to_control_problem_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione al problema del controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/dynamic_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modellazione nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/dynamic_response_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Risposta dinamica dei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/06_inverse_laplace_transform_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Trasformata di Laplace inversa: scomposizione parziale di frazioni</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/modeling_dynamic_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione alla modellazione dei sistemi dinamici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/control_system_components_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Componenti del sistema di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/models_of_control_devices_and_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modelli di dispositivi controllati</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/hardware_and_case_studies_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Hardware dei sistemi di controllo e casi di studio</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/ac_hardware_and_case_studies_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sistemi di controllo del movimento CA</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/a_first_complete_application_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Un sistema di controllo del feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/principles_of_feedback_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principi di controllo del feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/feedback_systems_and_their_effects_it.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Sistemi di feedback e loro effetti</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/introduction_to_control_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione ai sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/stability_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analisi di stabilità nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/stability_and_routh_criterion_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analisi di stabilità nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/performance_of_feedback_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prestazioni dei sistemi di feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/design_of_feedback_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Ciclo di progettazione per un sistema standard del secondo ordine</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/20_Design_of_feedback_control_continued_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Comprensione del sistema standard del secondo ordine: riepilogo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/steady_state_accuracy_and_design_principles_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Precisione dello stato stazionario e principi di progettazione</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/compensator_design_using_root_locus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Progettazione del compensatore</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/design_with_the_root_locus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Progettare con il luogo delle radici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/compensators_and_root_locus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compensatori e luogo delle radici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/introduction_to_frequency_domain_analysis_in_control_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione all’analisi nel dominio della frequenza nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/application_of_nyquist_stability_criterion_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Applicazione del criterio di stabilità di Nyquist nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/the_nyquist_stability_criterion_and_relative_stability_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Il criterio di stabilità di Nyquist e la stabilità relativa</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/bode_plots_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analisi del diagramma di Bode</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/feedback_system_performance_based_on_frequency_response_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prestazioni del sistema di feedback basate sulla risposta in frequenza</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/index_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Syllabus - Fondamenti di Automatica</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">TCLab</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/spacecraft_thermal_control_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The Temperature Control Laboratory</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/tclab_exercises_report_template.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Exercises Report Template</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The Temperature Control Lab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/understanding_tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Understanding TCLab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/tclab_lab_1_coding_a_relay_controller-solution.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 1: Coding a relay controller</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/tclab_lab_1_coding_a_relay_controller.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 1: Coding a relay controller</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/system_model_and_identification_tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">System Modeling</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/step_testing_tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Step Testing</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/fitting_step_test_data_to_empirical_models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Fitting Step Test Data to Empirical Models</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/tclab_lab_2_model_identification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 2: Model Identification</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/tclab_lab_2_model_identification_solutions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 2: Model Identification</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/tclab_lab_2_fitting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Model Identification: Fitting models to data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/relay_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Relay Control</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/pid_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">PID Control</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/lab-assignment-pid-control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab Assignment: PID Control</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/lab-assignment-pi-control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab Assignment 4: PI Control</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#analisi-di-sensibilità" id="toc-analisi-di-sensibilità" class="nav-link active" data-scroll-target="#analisi-di-sensibilità">Analisi di sensibilità</a></li>
+  <li><a href="#compromessi-nel-controllo-del-feedback" id="toc-compromessi-nel-controllo-del-feedback" class="nav-link" data-scroll-target="#compromessi-nel-controllo-del-feedback">Compromessi nel controllo del feedback</a></li>
+  <li><a href="#rifiuto-del-disturbo" id="toc-rifiuto-del-disturbo" class="nav-link" data-scroll-target="#rifiuto-del-disturbo">Rifiuto del disturbo</a></li>
+  <li><a href="#filtraggio-del-rumore-e-sue-sfide" id="toc-filtraggio-del-rumore-e-sue-sfide" class="nav-link" data-scroll-target="#filtraggio-del-rumore-e-sue-sfide">Filtraggio del rumore e sue sfide</a></li>
+  <li><a href="#modellazione-della-risposta-dinamica-nei-sistemi-di-controllo-del-feedback" id="toc-modellazione-della-risposta-dinamica-nei-sistemi-di-controllo-del-feedback" class="nav-link" data-scroll-target="#modellazione-della-risposta-dinamica-nei-sistemi-di-controllo-del-feedback">Modellazione della risposta dinamica nei sistemi di controllo del feedback</a>
+  <ul class="collapse">
+  <li><a href="#modellare-la-risposta-dinamica" id="toc-modellare-la-risposta-dinamica" class="nav-link" data-scroll-target="#modellare-la-risposta-dinamica">Modellare la risposta dinamica</a></li>
+  <li><a href="#esempio" id="toc-esempio" class="nav-link" data-scroll-target="#esempio">Esempio</a></li>
+  <li><a href="#ruolo-del-feedback-nel-modellare-la-risposta-dinamica" id="toc-ruolo-del-feedback-nel-modellare-la-risposta-dinamica" class="nav-link" data-scroll-target="#ruolo-del-feedback-nel-modellare-la-risposta-dinamica">Ruolo del feedback nel modellare la risposta dinamica</a></li>
+  <li><a href="#problema-di-progettazione" id="toc-problema-di-progettazione" class="nav-link" data-scroll-target="#problema-di-progettazione">Problema di progettazione</a></li>
+  <li><a href="#i-limiti-del-controllo-ad-anello-aperto-nella-modellatura-dinamica" id="toc-i-limiti-del-controllo-ad-anello-aperto-nella-modellatura-dinamica" class="nav-link" data-scroll-target="#i-limiti-del-controllo-ad-anello-aperto-nella-modellatura-dinamica">I limiti del controllo ad anello aperto nella modellatura dinamica</a></li>
+  </ul></li>
+  <li><a href="#precisione-dello-stato-stazionario-nel-controllo-del-feedback" id="toc-precisione-dello-stato-stazionario-nel-controllo-del-feedback" class="nav-link" data-scroll-target="#precisione-dello-stato-stazionario-nel-controllo-del-feedback">Precisione dello stato stazionario nel controllo del feedback</a>
+  <ul class="collapse">
+  <li><a href="#teorema-del-valore-finale-ed-errore-a-regime" id="toc-teorema-del-valore-finale-ed-errore-a-regime" class="nav-link" data-scroll-target="#teorema-del-valore-finale-ed-errore-a-regime">Teorema del valore finale ed errore a regime</a></li>
+  <li><a href="#caso-di-studio-risposta-allinput-passo-passo" id="toc-caso-di-studio-risposta-allinput-passo-passo" class="nav-link" data-scroll-target="#caso-di-studio-risposta-allinput-passo-passo">Caso di studio: risposta all’input passo-passo</a></li>
+  <li><a href="#confronto-con-il-controllo-ad-anello-aperto" id="toc-confronto-con-il-controllo-ad-anello-aperto" class="nav-link" data-scroll-target="#confronto-con-il-controllo-ad-anello-aperto">Confronto con il controllo ad anello aperto</a></li>
+  <li><a href="#osservazioni-conclusive-sullaccuratezza-dello-stato-stazionario" id="toc-osservazioni-conclusive-sullaccuratezza-dello-stato-stazionario" class="nav-link" data-scroll-target="#osservazioni-conclusive-sullaccuratezza-dello-stato-stazionario">Osservazioni conclusive sull’accuratezza dello stato stazionario</a></li>
+  </ul></li>
+  <li><a href="#guadagno-ad-anello-elevato-vantaggi-e-sfide" id="toc-guadagno-ad-anello-elevato-vantaggi-e-sfide" class="nav-link" data-scroll-target="#guadagno-ad-anello-elevato-vantaggi-e-sfide">Guadagno ad anello elevato: vantaggi e sfide</a>
+  <ul class="collapse">
+  <li><a href="#necessità-di-andare-oltre-il-controllo-proporzionale" id="toc-necessità-di-andare-oltre-il-controllo-proporzionale" class="nav-link" data-scroll-target="#necessità-di-andare-oltre-il-controllo-proporzionale">Necessità di andare oltre il controllo proporzionale</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/andreamunafo/principles-of-automatic-controls/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../IT_🇮🇹/faq_it.html">IT_🇮🇹</a></li><li class="breadcrumb-item"><a href="../IT_🇮🇹/feedback_systems_and_their_effects_it.html">Sistemi di feedback e loro effetti</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Sistemi di feedback e loro effetti</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
+<p>Con questo notebook esploreremo più in profondità i principi base del controllo del feedback. Ricordiamo le nostre precedenti discussioni sui problemi di sensibilità e robustezza nei sistemi di controllo. Ora approfondiremo questo argomento con maggiore dettaglio.</p>
+<p><strong>Diagramma a blocchi di base</strong></p>
+<p>Dobbiamo prima tracciare lo schema a blocchi di base. Ecco una descrizione:</p>
+<ul>
+<li>Il <strong>Controller</strong> ha una funzione di trasferimento designata come <span class="math inline">\(D\)</span>.</li>
+<li><strong>Pianta</strong> è caratterizzata dalla sua funzione di trasferimento, <span class="math inline">\(G\)</span>.</li>
+<li>Il <strong>disturbo</strong> all’impianto è modellato attraverso una funzione di trasferimento <span class="math inline">\(N\)</span>, con un input <span class="math inline">\(w\)</span>.</li>
+<li><strong>L’output</strong> del sistema è <span class="math inline">\(y\)</span>.</li>
+<li>L’uscita <span class="math inline">\(y\)</span> viene restituita tramite un <strong>sensore</strong> con una funzione di trasferimento <span class="math inline">\(H\)</span>.</li>
+<li>Nel loop è presente un <strong>rilevatore di errori</strong>.</li>
+<li>L’<strong>input di riferimento</strong> del sistema è <span class="math inline">\(r\)</span>.</li>
+</ul>
+<p>Questo ci dà il segnale di errore $e$ e il segnale di controllo $u$.</p>
+<img src="../pics/13_Principles_of_Feedback_Control_feedback_loop_basic_1.png" alt="13_Principles_of_Feedback_Control_feedback_loop_basic_1" style="width:650px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<p>Il segnale di errore, indicato come <span class="math inline">\(e_{cap}\)</span>, e il segnale di controllo, rappresentato come <span class="math inline">\(u\)</span>, sono parti intrinseche di questo diagramma.</p>
+<p>La relazione tra l’output <span class="math inline">\(y\)</span> e l’input di riferimento <span class="math inline">\(r\)</span> può essere espressa come il rapporto <span class="math inline">\(\frac{Y(s)}{R(s)}\)</span>. Questa relazione è indicata con <span class="math inline">\(M(s)\)</span> ed è data dalla seguente equazione:</p>
+<p><span class="math display">\[
+M(s)=\frac{Y(s)}{R(s)} = \frac{D(s)G(s)}{1 + D(s)G(s)H(s)}
+\]</span></p>
+<p>Questa equazione rappresenta la funzione di trasferimento complessiva del sistema a circuito chiuso.</p>
+<section id="analisi-di-sensibilità" class="level3">
+<h3 class="anchored" data-anchor-id="analisi-di-sensibilità">Analisi di sensibilità</h3>
+<p>L’analisi della sensibilità in un sistema di controllo determina il modo in cui i diversi parametri influenzano le prestazioni del sistema. In sostanza, misura quanto sia sensibile la risposta del sistema ai cambiamenti nei parametri del sistema.</p>
+<section id="sensibilità-di-m-rispetto-a-g" class="level4">
+<h4 class="anchored" data-anchor-id="sensibilità-di-m-rispetto-a-g">Sensibilità di M rispetto a G</h4>
+<p>In precedenza abbiamo derivato che la sensibilità della funzione di trasferimento complessiva <span class="math inline">\(M\)</span> rispetto alla funzione di trasferimento dell’impianto <span class="math inline">\(G\)</span>, dove <span class="math inline">\(G\)</span> ha parametri che possono variare, è:</p>
+<p><span class="math display">\[ S^M_{G} = \frac{1}{1 + D(s)G(\theta_n, s)H(s)} \]</span></p>
+<p>Qui <span class="math inline">\(G(\theta_n, s)\)</span> implica che il parametro <span class="math inline">\(\theta\)</span> sottoposto a variazione appartiene alla pianta <span class="math inline">\(G\)</span>.</p>
+</section>
+<section id="sensibilità-di-m-rispetto-a-h" class="level4">
+<h4 class="anchored" data-anchor-id="sensibilità-di-m-rispetto-a-h">Sensibilità di M rispetto a H</h4>
+<p>Allo stesso modo, la funzione di sensibilità rispetto a <span class="math inline">\(H\)</span> è:</p>
+<p><span class="math display">\[ S^M_{H} = \frac{-D(s)G(s)H(\alpha_n, s)}{1 + D(s)G(s)H(\alpha_n, s)} \]</span></p>
+<p>Questa equazione fornisce la sensibilità della funzione complessiva relativa alla funzione di trasferimento del sensore, <span class="math inline">\(H\)</span>.</p>
+</section>
+<section id="conclusioni-dallanalisi-di-sensibilità" class="level4">
+<h4 class="anchored" data-anchor-id="conclusioni-dallanalisi-di-sensibilità">Conclusioni dall’analisi di sensibilità</h4>
+<p>Dai nostri quaderni precedenti (vedi <code>13_Principles_of_Feedback_Control</code>), sono state tratte alcune conclusioni:</p>
+<ol type="1">
+<li><p><strong>Guadagno del loop e sensibilità a G:</strong> Aumentando il guadagno del loop (che è il prodotto delle funzioni di trasferimento <span class="math inline">\(D\)</span>, <span class="math inline">\(G\)</span> e <span class="math inline">\(H\)</span>) si riduce la sensibilità di <span class="math inline">\(M\)</span> rispetto a $G $.</p></li>
+<li><p><strong>Sensibilità del sistema a circuito aperto:</strong> In un sistema a circuito aperto (quando il circuito è interrotto), la sensibilità è unitaria, indicando un’elevata sensibilità alle modifiche dei parametri nell’impianto.</p></li>
+</ol>
+<p><span class="math display">\[ S^M_{G} = 1 \]</span></p>
+</section>
+<section id="impatto-sulla-selezione-del-sensore" class="level4">
+<h4 class="anchored" data-anchor-id="impatto-sulla-selezione-del-sensore">Impatto sulla selezione del sensore</h4>
+<ul>
+<li>L’aumento del guadagno del circuito rende il sistema a circuito chiuso altamente sensibile alle modifiche dei parametri nel sensore ($H$).</li>
+<li><strong>Implicazioni progettuali:</strong> Selezionare sensori robusti e stabili (in grado di resistere a cambiamenti ambientali e di altro tipo).</li>
+</ul>
+</section>
+</section>
+<section id="compromessi-nel-controllo-del-feedback" class="level3">
+<h3 class="anchored" data-anchor-id="compromessi-nel-controllo-del-feedback">Compromessi nel controllo del feedback</h3>
+<p>È essenziale comprendere che, sebbene il controllo del feedback offra numerosi vantaggi, comporta anche dei compromessi.</p>
+<ul>
+<li>Guadagno del sistema ad anello aperto:</li>
+</ul>
+<p><span class="math display">\[
+\frac{Y(s)}{R(s)} = D(s)G(s)
+\]</span></p>
+<ul>
+<li>Guadagno del sistema a circuito chiuso:</li>
+</ul>
+<p><span class="math display">\[
+\frac{Y(s)}{R(s)} = \frac{D(s)G(s)}{1+D(s)G(s)H(s)}
+\]</span></p>
+<img src="../pics/13_Principles_of_Feedback_Control_open_loop_basic.png" alt="13_Principles_of_Feedback_Control_open_loop_basic" style="width:450px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<p><span class="math display">\[
+\frac{Y(s)}{R(s)} = D(s)G(s)
+\]</span></p>
+<p>Tuttavia, in un sistema a circuito chiuso, questo guadagno viene ridotto a causa dell’azione di feedback. Il vantaggio di utilizzare il controllo del feedback, principalmente per la robustezza o la riduzione della sensibilità, può talvolta portare a una riduzione delle prestazioni in termini di forma dinamica o precisione in condizioni stazionarie. È un equilibrio che i designer devono trovare.</p>
+<p><em>La riduzione del guadagno è un compromesso per una migliore sensibilità.</em></p>
+<p><strong>Implicazioni sulla progettazione</strong></p>
+<ul>
+<li><p>Data la perdita di guadagno nei sistemi di feedback, potrebbe esserci la tentazione di introdurre amplificatori o modificare componenti al di fuori del circuito di feedback. Tuttavia, ciò può introdurre altri problemi. Cambiamenti o effetti ambientali su questi componenti potrebbero avere un impatto diretto sull’output del sistema.</p></li>
+<li><p>Una strategia più efficace potrebbe essere quella di regolare il guadagno ad anello aperto dell’impianto per tenere conto di questa perdita (ad esempio, aumentare il guadagno degli attuatori nell’impianto) e ottenere un livello di uscita accettabile.</p></li>
+</ul>
+<img src="../pics/14_Feedback_systems_and_their_effects_adding_amplifiers.png" alt="14_Feedback_systems_and_their_effects_adding_amplifiers" style="width:450px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<ul>
+<li><p>In altre parole, un suggerimento potrebbe essere quello di utilizzare un amplificatore per compensare questa perdita. Ma cosa succede se cambiano i parametri di una qualsiasi unità esterna? Se un elemento, ad esempio la temperatura, cambia ed è al di fuori del ciclo di feedback, la strategia di feedback non terrà conto delle variazioni di questo componente. Ciò porta ad un impatto diretto sull’output del sistema.</p></li>
+<li><p>Per dirla semplicemente, anche se l’amplificazione potrebbe sembrare una soluzione semplice, non tiene conto delle complessità e delle variabilità dei sistemi del mondo reale. I cicli di feedback aiutano a garantire stabilità e coerenza di fronte a tali cambiamenti.</p></li>
+</ul>
+<p>Conclusioni - <em>È possibile regolare l’impianto $G$ per avere un elevato guadagno ad anello aperto per compensare la perdita indotta dal feedback.</em></p>
+<ul>
+<li>Se viene utilizzato un amplificatore esterno per compensare la perdita di guadagno, qualsiasi modifica dei parametri in questa unità (non nel circuito di feedback) influenzerà direttamente l’uscita del sistema. Ciò evidenzia l’importanza di regolare il guadagno ad anello aperto dell’impianto per garantire livelli di uscita accettabili dopo il feedback</li>
+</ul>
+<p>La robustezza o la riduzione della sensibilità è spesso l’obiettivo primario dell’azione di feedback.</p>
+<ul>
+<li>L’obiettivo principale dell’azione di feedback è la robustezza o la riduzione della sensibilità. È possibile ottenere le risposte dinamiche desiderate o la precisione stazionaria in un sistema a circuito aperto. Tuttavia, i problemi del mondo reale come la robustezza o la sensibilità non possono essere ignorati. Il feedback è quindi essenziale, anche se complica la progettazione.</li>
+</ul>
+<p>🤔 <strong>Domanda pop-up:</strong> Perché potrebbe essere svantaggioso introdurre un amplificatore al di fuori del circuito di feedback?</p>
+<p><strong>Risposta:</strong> Perché qualsiasi cambiamento o effetto ambientale sull’amplificatore avrà un impatto diretto sull’uscita del sistema poiché la strategia di feedback non terrà conto di queste variazioni.</p>
+<p>🤔 <strong>Domanda pop-up:</strong>: Qual è il vantaggio principale di un sistema a circuito chiuso rispetto a un sistema a circuito aperto?</p>
+<p><strong>Risposta</strong>: i sistemi a circuito chiuso sono più robusti e meno sensibili ai disturbi esterni e alle variazioni dei parametri rispetto ai sistemi a circuito aperto.</p>
+<p>🤔 <strong>Domanda pop-up</strong>: Come si confronta il controllo feedback con il controllo ad anello aperto in termini di precisione a stato stazionario e risposta dinamica?</p>
+<p><strong>Risposta</strong>: sebbene il controllo ad anello aperto possa talvolta offrire prestazioni migliori in termini di risposta dinamica e precisione in condizioni stazionarie, manca della robustezza e della riduzione della sensibilità fornite dal controllo del feedback.</p>
+</section>
+<section id="rifiuto-del-disturbo" class="level3">
+<h3 class="anchored" data-anchor-id="rifiuto-del-disturbo">Rifiuto del disturbo</h3>
+<p>In un sistema di feedback, i disturbi possono influenzare l’uscita. La capacità del sistema di respingere questi disturbi è cruciale.</p>
+<img src="../pics/14_Feedback_systems_and_their_effects_noise_rejection.png" alt="14_Feedback_systems_and_their_effects_noise_rejection" style="width:650px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<p>Considerando la funzione di trasferimento:</p>
+<p><span class="math display">\[ \frac{Y(s)}{W(s)} = M_W(s) \frac{N(s)}{1 + D(s) G(s) H(s)} \]</span></p>
+<p>Questa equazione chiarisce il comportamento del sistema in risposta ai disturbi.</p>
+<ul>
+<li><p>Se il guadagno d’anello <span class="math inline">\(D(s) G(s) H(s)\)</span> è elevato, gli effetti dei disturbi si riducono</p></li>
+<li><p>In sostanza, quanto più alto è il guadagno dell’anello, tanto più il sistema riesce a filtrare i disturbi. Tuttavia, l’aumento del guadagno del circuito presenta una serie di sfide, soprattutto se si considera il rumore nel sistema.</p></li>
+<li><p>Se <span class="math inline">\(H(s)=0\)</span> (nessun sensore), la reiezione dei disturbi non è possibile. Tutti i disturbi che entrano nell’impianto certamente manifesteranno i loro effetti sull’uscita.</p></li>
+</ul>
+<p>Si noti che in un sistema ad anello aperto (vedere il grafico sotto) il controller non ha informazioni sul disturbo e quindi non può contrastarlo.</p>
+<img src="../pics/14_Feedback_systems_and_their_effects_open_loop_disturbance_1.png?1" alt="14_Feedback_systems_and_their_effects_open_loop_disturbance_1" style="width:450px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<p>Poiché i disturbi sono sempre presenti, ciò significa anche che è necessario il feedback!</p>
+<p><strong>Commenti aggiuntivi</strong> - Il guadagno d’anello ha tre parti <span class="math inline">\(D(s) G(s) H(s)\)</span>. - Non è possibile aumentare il guadagno del loop aumentando il guadagno del sensore <span class="math inline">\(H(s)\)</span>. - Tieni presente che il sistema è sensibile ai parametri del sensore, quindi il sensore è fisso. - Inoltre, non possiamo modificare <span class="math inline">\(G(s)\)</span> perché questo è il piano. - L’unico grado di libertà è <span class="math inline">\(D(s)\)</span>. - Nei casi in cui abbiamo la libertà di cambiare <span class="math inline">\(G(s)\)</span> dobbiamo prestare particolare attenzione: - <span class="math inline">\(N(s)\)</span> è la funzione di trasferimento tra il disturbo e l’output dell’impianto (arriva alla sommatoria dell’incrocio con l’output del piano - vedi grafico sopra -). Ciò significa che in realtà <span class="math inline">\(N(s)\)</span> è una funzione della pianta <span class="math inline">\(G(s)\)</span>. Modificando il guadagno dell’anello tramite <span class="math inline">\(G\)</span> si potrebbe aumentare anche l’effetto del disturbo sull’impianto. - Per noi modificheremo solo il guadagno del loop attraverso il design del controller <span class="math inline">\(D(s)\)</span>.</p>
+</section>
+<section id="filtraggio-del-rumore-e-sue-sfide" class="level3">
+<h3 class="anchored" data-anchor-id="filtraggio-del-rumore-e-sue-sfide">Filtraggio del rumore e sue sfide</h3>
+<p>Il sistema di feedback introduce una potenziale sfida: il <strong>rumore</strong>, in particolare il rumore ad alta frequenza, spesso proveniente dai sensori.</p>
+<p>Consideriamo un sistema di feedback con: - Funzione di trasferimento del controller: $D(s)$ - Pianta: $G(s)$ - Risultato: $y$ - Segnale di rumore: $v$ (introdotto al sensore) - Unity Feedback per la semplificazione</p>
+<img src="../pics/14_Feedback_systems_and_their_effects_noise_rejection_1.png?1" alt="14_Feedback_systems_and_their_effects_noise_rejection_1" style="width:450px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<ul>
+<li>Introduciamo rumore non appena proviamo a misurare l’output <span class="math inline">\(y\)</span>.</li>
+<li><span class="math inline">\(v\)</span> è un segnale ad alta frequenza (rumore)</li>
+<li>I sensori sono la principale fonte di rumore ad alta frequenza nel circuito.</li>
+</ul>
+<p>La funzione di trasferimento $Y(s)/V(s)$ per il segnale di rumore $v$ all’uscita $y$ è:</p>
+<p><span class="math display">\[
+\frac{Y(s)}{V(s)} = \frac{-D(s)G(s)}{1 + D(s)G(s)}
+\]</span></p>
+<section id="scambia-la-sensibilitàriduzione-del-disturbo-e-la-reiezione-del-rumore" class="level4">
+<h4 class="anchored" data-anchor-id="scambia-la-sensibilitàriduzione-del-disturbo-e-la-reiezione-del-rumore">Scambia la sensibilità/riduzione del disturbo e la reiezione del rumore</h4>
+<ul>
+<li><p>Dall’equazione sopra, che rappresenta <span class="math inline">\(\frac{Y(s)}{V(s)}\)</span>, il guadagno del circuito è <span class="math inline">\(D G\)</span>.</p></li>
+<li><p>Ciò sta mostrando un chiaro compromesso nei sistemi di feedback.</p></li>
+<li><p>Aumentando il guadagno del circuito per la reiezione dei disturbi o la riduzione della sensibilità, aumentiamo anche la suscettibilità del sistema al rumore.</p></li>
+<li><p>Questo perché aumentare il guadagno dell’anello significa:</p></li>
+</ul>
+<p><span class="math display">\[
+\frac{Y(s)}{V(s)} = \frac{-D(s)G(s)}{1 + D(s)G(s)} \rightarrow 1
+\]</span></p>
+<ul>
+<li><p>Ciò significa che il segnale di rumore viene iniettato direttamente nel loop.</p></li>
+<li><p>Non possiamo raggiungere tutti i requisiti solo aumentando il guadagno del loop.</p></li>
+</ul>
+</section>
+<section id="aggiunta-di-filtri-antirumore-ad-alta-frequenza" class="level4">
+<h4 class="anchored" data-anchor-id="aggiunta-di-filtri-antirumore-ad-alta-frequenza">Aggiunta di filtri antirumore ad alta frequenza</h4>
+<ul>
+<li>Un approccio comune per affrontare questo problema è l’introduzione di un filtro antirumore ad alta frequenza. Questo filtro garantisce il passaggio solo dei segnali rilevanti filtrando i rumori ad alta frequenza indesiderati.</li>
+<li>È necessario studiare le frequenze in gioco, l’ambiente in cui è installato il sensore e l’effetto dell’ambiente sul sensore per poi progettare o scegliere un filtro sensore adeguato.</li>
+</ul>
+<p>🤔 <strong>Domanda pop-up:</strong>: In che modo l’aumento del guadagno del loop influisce sul rumore nel sistema?</p>
+<p><strong>Risposta</strong>: Aumentando il guadagno del loop è possibile amplificare il rumore, rendendolo più prominente nell’output.</p>
+</section>
+</section>
+<section id="modellazione-della-risposta-dinamica-nei-sistemi-di-controllo-del-feedback" class="level2">
+<h2 class="anchored" data-anchor-id="modellazione-della-risposta-dinamica-nei-sistemi-di-controllo-del-feedback">Modellazione della risposta dinamica nei sistemi di controllo del feedback</h2>
+<p>Ricordare che quando si parla di modellazione della risposta dinamica si stabiliscono i requisiti sulla risposta in stato transitorio e stazionario del sistema.</p>
+<p>Ad esempio, nel notebook <code>13_Principles_of_Feedback_Control</code>, abbiamo visto che potremmo desiderare una risposta oscillatoria o una risposta sovrasmorzata (a seconda dell’applicazione):</p>
+<img src="../pics/13_Principles_of_Feedback_Control_shaping_dynamic_response.png" alt="13_Principles_of_Feedback_Control_shaping_dynamic_response" style="width:650px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<section id="modellare-la-risposta-dinamica" class="level3">
+<h3 class="anchored" data-anchor-id="modellare-la-risposta-dinamica">Modellare la risposta dinamica</h3>
+<p>Consideriamo la funzione di trasferimento di un sistema ad anello chiuso:</p>
+<p><span class="math display">\[
+\frac{Y(s)}{R(s)} = \frac{D(s)G(s)}{1+D(s)G(s)H(s)}
+\]</span></p>
+<p>La risposta dinamica di un sistema è influenzata in modo significativo dai suoi poli e dai suoi zeri.</p>
+<p>Ricordiamo, i poli di un sistema determinano la natura della risposta del sistema, come il comportamento oscillatorio o non oscillatorio, mentre gli zeri influenzano l’entità di queste risposte.</p>
+<section id="funzione-di-trasferimento-e-poli-e-zeri-del-sistema" class="level4">
+<h4 class="anchored" data-anchor-id="funzione-di-trasferimento-e-poli-e-zeri-del-sistema">Funzione di trasferimento e poli e zeri del sistema</h4>
+<ul>
+<li><strong>Poli</strong>: determinano la natura della risposta del sistema (oscillatoria, non oscillatoria, di primo ordine, di secondo ordine, ecc.).</li>
+<li><strong>Zeri</strong>: influenza l’entità della risposta. Ad esempio, gli zeri influenzano solo il residuo dell’espansione della frazione parziale.</li>
+</ul>
+<p><strong>Esempio:</strong> - Un polo del primo ordine (ad esempio, $$) influisce sulla velocità di risposta del sistema. - Uno zero influenza l’ampiezza (<span class="math inline">\(A_1\)</span>) di una modalità specifica nella risposta.</p>
+</section>
+</section>
+<section id="esempio" class="level3">
+<h3 class="anchored" data-anchor-id="esempio">Esempio</h3>
+<p>Consideriamo due risposte all’impulso:</p>
+<ol type="1">
+<li><strong>Risposta rapida</strong>: se <span class="math inline">\(\tau\)</span> è piccolo, la risposta si stabilizza rapidamente.</li>
+<li><strong>Risposta lenta</strong>: se <span class="math inline">\(\tau\)</span> è grande, la risposta richiede più tempo per stabilizzarsi.</li>
+</ol>
+<p>Possiamo creare grafici per mostrare l’impatto della variazione dei valori di polo e zero sulla risposta di un sistema utilizzando Python, in particolare con librerie come Matplotlib e SciPy.</p>
+<p>Ecco uno schema concettuale di come potremmo strutturare il nostro codice Python per generare questi grafici:</p>
+<ul>
+<li><strong>Configura l’ambiente</strong>: importa le librerie necessarie.</li>
+<li><strong>Definisci le funzioni di trasferimento</strong>: crea funzioni per rappresentare funzioni di trasferimento con poli e zeri variabili.</li>
+<li><strong>Simula la risposta</strong>: utilizza la funzione di risposta al gradino per simulare il modo in cui il sistema risponde nel tempo.</li>
+<li><strong>Traccia le risposte</strong>: utilizza Matplotlib per creare grafici che mostrano la risposta del sistema.</li>
+</ul>
+<div id="f3ff02a3" class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.signal <span class="im">import</span> TransferFunction, impulse, step</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_responses(systems, title):</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> sys, label, color <span class="kw">in</span> systems:</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>        t_imp, y_imp <span class="op">=</span> impulse(sys)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>        t_step, y_step <span class="op">=</span> step(sys)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>        plt.plot(t_imp, y_imp, label<span class="op">=</span><span class="ss">f'Impulse - </span><span class="sc">{</span>label<span class="sc">}</span><span class="ss">'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, color<span class="op">=</span>color)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>        <span class="co">#plt.plot(t_step, y_step, label=f'Step - {label}', linestyle='-', color=color)</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    plt.title(title)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="st">'Time (seconds)'</span>)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    plt.ylabel(<span class="st">'Response'</span>)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    plt.legend()</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    plt.grid(<span class="va">True</span>)</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    plt.show()</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> print_transfer_function(sys, label):</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    num, den <span class="op">=</span> sys.num, sys.den</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    tf_expression <span class="op">=</span> <span class="st">' + '</span>.join([<span class="ss">f'</span><span class="sc">{</span>n<span class="sc">}</span><span class="ss">s^</span><span class="sc">{</span><span class="bu">len</span>(num)<span class="op">-</span>i<span class="op">-</span><span class="dv">1</span><span class="sc">}</span><span class="ss">'</span> <span class="cf">for</span> i, n <span class="kw">in</span> <span class="bu">enumerate</span>(num)])</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    tf_expression <span class="op">+=</span> <span class="st">' / '</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    tf_expression <span class="op">+=</span> <span class="st">' + '</span>.join([<span class="ss">f'</span><span class="sc">{</span>d<span class="sc">}</span><span class="ss">s^</span><span class="sc">{</span><span class="bu">len</span>(den)<span class="op">-</span>i<span class="op">-</span><span class="dv">1</span><span class="sc">}</span><span class="ss">'</span> <span class="cf">for</span> i, d <span class="kw">in</span> <span class="bu">enumerate</span>(den)])</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'</span><span class="sc">{</span>label<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>tf_expression<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="co"># User specified poles and zeros for first order systems</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Example 1</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>pole1 <span class="op">=</span> [<span class="op">-</span><span class="dv">3</span>]</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>zero1 <span class="op">=</span> []  <span class="co"># No zero</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>pole2 <span class="op">=</span> [<span class="op">-</span><span class="dv">5</span>]</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>zero2 <span class="op">=</span> []  <span class="co"># No zero</span></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="co"># Example 2</span></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="co"># Compare what happens to the impulse response when we have the same pole but different zeros.</span></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="co"># pole1 = [-5]</span></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="co"># zero1 = [-1]  # Zero in -1</span></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="co"># pole2 = [-5]</span></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="co"># zero2 = [-2]  # Zero in -2</span></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating transfer function systems</span></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>system1 <span class="op">=</span> TransferFunction(np.poly(zero1), np.poly(pole1))</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>system2 <span class="op">=</span> TransferFunction(np.poly(zero2), np.poly(pole2))</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>print_transfer_function(system1, <span class="st">'System 1'</span>)</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>print_transfer_function(system2, <span class="st">'System 2'</span>)</span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting</span></span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>plot_responses([</span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>    (system1, <span class="st">'System with Pole at s=-3'</span>, <span class="st">'blue'</span>),</span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>    (system2, <span class="st">'System with Pole at s=-5 and Zero at s=0'</span>, <span class="st">'red'</span>)</span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>], <span class="st">'Comparison of First Order Systems'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>System 1: 1.0s^0 / 1.0s^1 + 3.0s^0
+System 2: 1.0s^0 / 1.0s^1 + 5.0s^0</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="14_Feedback_systems_and_their_effects_it_files/figure-html/cell-2-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<section id="barra-laterale---effetto-degli-zeri-sulla-risposta-allimpulso" class="level4">
+<h4 class="anchored" data-anchor-id="barra-laterale---effetto-degli-zeri-sulla-risposta-allimpulso">Barra laterale - Effetto degli zeri sulla risposta all’impulso</h4>
+<p>Il comportamento della risposta all’impulso in un sistema con zeri è strettamente legato alla funzione di trasferimento del sistema, in particolare al modo in cui interagiscono gli zeri e i poli. Parliamo del motivo per cui la risposta all’impulso inizia da un numero negativo quando si ha uno zero e di come la posizione dello zero influisce su questo comportamento.</p>
+<ol type="1">
+<li><strong>Impatto degli zeri sulla risposta all’impulso</strong>:
+<ul>
+<li>In una funzione di trasferimento, uno zero introduce essenzialmente un termine al numeratore che può cambiare la fase della risposta del sistema. Quando viene applicato un impulso, la risposta immediata del sistema è influenzata dal numeratore della funzione di trasferimento.</li>
+<li>Se uno zero è posto sulla metà sinistra del piano s (parte reale negativa), tende a introdurre uno sfasamento che può far sì che la risposta all’impulso parta da un valore negativo.</li>
+</ul></li>
+<li><strong>Posizione dello zero e della risposta</strong>:
+<ul>
+<li>L’effetto di uno zero sulla risposta all’impulso non riguarda solo la sua presenza ma anche la sua posizione rispetto ai poli.</li>
+<li>Più lo zero è vicino all’origine (o al polo), più significativo è il suo impatto sulla risposta iniziale. Tuttavia, il segno dello zero (che sia -1 o 1) non cambia la direzione iniziale della risposta. Ciò che conta di più è la posizione relativa dello zero rispetto ai poli.</li>
+</ul></li>
+<li><strong>Risposta positiva all’impulso iniziale</strong>:
+<ul>
+<li>Per avere una risposta all’impulso che parta da un numero positivo, è necessario posizionare lo zero in modo tale che non domini la risposta iniziale del sistema. Ciò significa tipicamente posizionare lo zero più lontano dall’origine rispetto a qualsiasi polo, in particolare in un sistema del primo ordine.</li>
+</ul></li>
+<li><strong>Comprensione attraverso la sperimentazione</strong>:
+<ul>
+<li>Puoi sperimentare il posizionamento dello zero nella tua funzione di trasferimento per osservare come influisce sulla risposta all’impulso. Spostare lo zero ulteriormente nel semipiano sinistro (più negativo) spesso riduce il suo impatto immediato sulla risposta all’impulso.</li>
+</ul></li>
+</ol>
+<p>Ecco un rapido esperimento Python che puoi provare per osservare questi effetti. Regola il valore “zero2” nel seguente frammento di codice per vedere come i diversi posizionamenti influenzano la risposta all’impulso:</p>
+<div id="de75732b" class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.signal <span class="im">import</span> TransferFunction, impulse</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> create_system(pole, zero):</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> zero:  <span class="co"># If zero list is not empty</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>        numerator <span class="op">=</span> np.poly(zero)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:  <span class="co"># If zero list is empty, use a gain of 1</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>        numerator <span class="op">=</span> [<span class="dv">1</span>]</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    denominator <span class="op">=</span> np.poly(pole)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> TransferFunction(numerator, denominator)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>pole <span class="op">=</span> [<span class="op">-</span><span class="dv">3</span>]</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Place zeros at different locations and observe</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>zero1 <span class="op">=</span> []  <span class="co"># Zero at -1</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>zero2 <span class="op">=</span> [<span class="op">-</span><span class="dv">10</span>]    <span class="co"># No zero</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating transfer function systems</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>system1 <span class="op">=</span> create_system(pole, zero1)</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>system2 <span class="op">=</span> create_system(pole, zero2)</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Generating impulse responses</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>t1, y1 <span class="op">=</span> impulse(system1)</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>t2, y2 <span class="op">=</span> impulse(system2)</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting</span></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>plt.plot(t1, y1, label<span class="op">=</span><span class="ss">f'System with Zero at </span><span class="sc">{</span>zero1<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>plt.plot(t2, y2, label<span class="op">=</span><span class="ss">f'System with Zero at </span><span class="sc">{</span>zero2<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Impulse Response of Systems with Different Zero Locations'</span>)</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Time'</span>)</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Response'</span>)</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="14_Feedback_systems_and_their_effects_it_files/figure-html/cell-3-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>— FINE DELLA BARRA LATERALE</p>
+</section>
+</section>
+<section id="ruolo-del-feedback-nel-modellare-la-risposta-dinamica" class="level3">
+<h3 class="anchored" data-anchor-id="ruolo-del-feedback-nel-modellare-la-risposta-dinamica">Ruolo del feedback nel modellare la risposta dinamica</h3>
+<p>Consideriamo la funzione di trasferimento di un sistema ad anello chiuso:</p>
+<p><span class="math display">\[
+\frac{Y(s)}{R(s)} = \frac{D(s)G(s)}{1+D(s)G(s)H(s)}
+\]</span></p>
+<p>Consideriamo $D(s)$, $G(s)$ e $H(s)$ come rapporti di due polinomi:</p>
+<p><span class="math display">\[
+D(s) = \frac{D_1}{D_2}, \quad G(s) = \frac{G_1}{G_2}, \quad H(s) = \frac{H_1}{H_2}
+\]</span></p>
+<p>Sostituendoli nella nostra funzione di trasferimento <span class="math inline">\(M(s)\)</span>:</p>
+<p><span class="math display">\[
+M(s) = \frac{D_1 G_1 H_1}{D_2 G_2 H_2 + D_1 G_1 H_1}
+\]</span></p>
+<ul>
+<li>Modellare la risposta dinamica significa renderla diversa da quella in anello aperto.</li>
+<li>La risposta ad anello aperto è guidata da <span class="math inline">\(G_2(s)\)</span>, ovvero i poli di <span class="math inline">\(G\)</span>. Ciò significa che i poli di <span class="math inline">\(G\)</span> non sono accettabili date le tue esigenze.</li>
+</ul>
+<section id="progettare-il-controller-per-la-dinamica-desiderata" class="level4">
+<h4 class="anchored" data-anchor-id="progettare-il-controller-per-la-dinamica-desiderata">Progettare il controller per la dinamica desiderata</h4>
+<ul>
+<li><strong>Obiettivo</strong>: modificare i poli del sistema a circuito chiuso per ottenere una risposta dinamica specifica.</li>
+<li><strong>Strategia</strong>: regola il controller ($D_1$ e $D_2$) per ottenere la posizione dei poli desiderata per $M(s)$.</li>
+</ul>
+<p>Possiamo modificare $D_1$ e $D_2$ in modo che le radici del denominatore <span class="math inline">\(D_2 G_2 H_2 + D_1 G_1 H_1\)</span> si trovino in posizioni adatte nel piano <span class="math inline">\(s\)</span>.</p>
+</section>
+</section>
+<section id="problema-di-progettazione" class="level3">
+<h3 class="anchored" data-anchor-id="problema-di-progettazione">Problema di progettazione</h3>
+<p><strong>Obiettivo</strong>: tradurre la risposta dinamica desiderata in specifiche posizioni dei poli.</p>
+<p><strong>Passaggi</strong>: 1. Determinare le posizioni dei poli corrispondenti alla risposta dinamica desiderata. 2. Progettare $D_1$ e $D_2$ nel controller per realizzare queste posizioni dei poli nel sistema a circuito chiuso.</p>
+<p>Supponiamo che desideri avere questa risposta dinamica:</p>
+<img src="../pics/14_Feedback_systems_and_their_effects_requirement.png" alt="14_Feedback_systems_and_their_effects_requirement" style="width:650px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<p>La strategia progettuale sarebbe quella di posizionare i poli dove possiamo ottenere la risposta desiderata. Attraverso la progettazione di <span class="math inline">\(D(s)\)</span> del controller, saremo in grado di spostare i poli del sistema ad anello chiuso nella posizione desiderata in modo che la risposta dinamica sia quella che desideriamo.</p>
+<p>È possibile modellare la risposta dinamica progettando opportunamente il controllore (e quindi il numeratore e il denominatore) in modo che i poli in anello chiuso di <span class="math inline">\(M(s)\)</span> siano quelli della forma dinamica richiesta.</p>
+<p>🤔 <strong>Domanda pop-up</strong>: Perché non possiamo ottenere la dinamica desiderata attraverso il controllo a circuito aperto? <strong>Risposta</strong>: Sebbene il controllo ad anello aperto possa teoricamente ottenere la dinamica desiderata (posizionando i poli dove vorremmo), non ha la capacità di adattarsi ai cambiamenti dei parametri del sistema nel tempo, portando a potenziale instabilità e prestazioni degradate.</p>
+</section>
+<section id="i-limiti-del-controllo-ad-anello-aperto-nella-modellatura-dinamica" class="level3">
+<h3 class="anchored" data-anchor-id="i-limiti-del-controllo-ad-anello-aperto-nella-modellatura-dinamica">I limiti del controllo ad anello aperto nella modellatura dinamica</h3>
+<img src="../pics/14_Feedback_systems_and_their_effects_open_loop_disturbance_1.png" alt="14_Feedback_systems_and_their_effects_open_loop_disturbance_1" style="width:450px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<p>I poli di <span class="math inline">\(G(s)\)</span> non sono accettabili, non ci danno la risposta desiderata. Vorremmo spostare i poli là dove ci danno la risposta che vogliamo.</p>
+<section id="strategia-di-controllo-ad-anello-aperto" class="level4">
+<h4 class="anchored" data-anchor-id="strategia-di-controllo-ad-anello-aperto">Strategia di controllo ad anello aperto</h4>
+<ul>
+<li><strong>Idea</strong>: cancella i poli di $G(s)$ e sostituiscili con i poli desiderati.</li>
+<li><strong>Implementazione</strong>: Progettare $D(s)$ in modo tale da annullare i poli di $G(s)$ e introdurre i poli prescritti.</li>
+</ul>
+<p><span class="math display">\[
+D(s) = \frac{1}{G(s)} \times \hat{D}(s)
+\]</span></p>
+<p>Dove <span class="math inline">\(\hat{D}(s)\)</span> ha i poli desiderati, ad esempio:</p>
+<p><span class="math display">\[
+\hat{D}(s) = \frac{1}{s^2 + 2\xi\omega_n s + \omega_n^2}
+\]</span></p>
+<p>In questo caso,</p>
+<p><span class="math display">\[
+\frac{Y(s)}{R(s)} = \frac{1}{s^2 + 2\xi\omega_n s + \omega_n^2}
+\]</span></p>
+<p>Che è esattamente ciò che vogliamo.</p>
+<p>Questo è il modo più ovvio per raggiungere il nostro obiettivo. Tuttavia, non scegliamo mai questa soluzione… perché?</p>
+</section>
+<section id="sfide-con-il-controllo-a-circuito-aperto" class="level4">
+<h4 class="anchored" data-anchor-id="sfide-con-il-controllo-a-circuito-aperto">Sfide con il controllo a circuito aperto</h4>
+<ol type="1">
+<li><p><strong>Gap modello-impianto</strong>: Il controller progettato sulla base di $G(s)$ potrebbe non annullare in modo efficace la dinamica dell’impianto fisico reale. Possiamo utilizzare solo un modello e quindi abbiamo delle imprecisioni, quindi la dinamica dell’impianto non verrà mai annullata. La cancellazione è possibile solo rispetto al modello e non alla pianta. Inoltre, poiché non c’è feedback, il controller non viene a conoscenza di questo errore.</p></li>
+<li><p><strong>Mancanza di adattabilità</strong>: il controller non si adatta ai cambiamenti dei parametri di sistema nel tempo. Se l’impianto cambia nel tempo (e cambierà) questo potrebbe non essere catturato nel modello, il che significa che le prestazioni si deteriorano nel tempo.</p></li>
+<li><p><strong>Problemi di robustezza</strong>: il controllo ad anello aperto è sensibile ai disturbi e agli errori di modellazione, che portano a potenziale instabilità.</p></li>
+</ol>
+<p>Nonostante la complessità, il controllo del feedback è preferito per la sua capacità di gestire la robustezza e la reiezione dei disturbi. La regolazione dei poli a circuito chiuso, sebbene impegnativa, è fondamentale per garantire la stabilità del sistema e le prestazioni desiderate nel tempo.</p>
+<p>🤔 <strong>Domanda popup</strong>: Perché un controller a circuito aperto, nonostante sembri semplice, non viene spesso utilizzato per la modellazione dinamica? <strong>Risposta</strong>: i controller a circuito aperto non possono adattarsi ai parametri mutevoli dell’impianto reale nel tempo e qualsiasi divario tra il modello dell’impianto e l’impianto reale può portare a problemi di prestazioni e instabilità.</p>
+</section>
+</section>
+</section>
+<section id="precisione-dello-stato-stazionario-nel-controllo-del-feedback" class="level2">
+<h2 class="anchored" data-anchor-id="precisione-dello-stato-stazionario-nel-controllo-del-feedback">Precisione dello stato stazionario nel controllo del feedback</h2>
+<p>Consideriamo un sistema di controllo con feedback unitario, in cui il fattore di feedback è 1. In questo sistema, il segnale di errore, indicato come $e$, gioca un ruolo critico nel determinare le prestazioni del sistema.</p>
+<img src="../pics/14_Feedback_systems_and_their_effects_closed_loop.png" alt="14_Feedback_systems_and_their_effects_closed_loop" style="width:650px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<section id="funzione-di-trasferimento-e-segnale-di-errore" class="level4">
+<h4 class="anchored" data-anchor-id="funzione-di-trasferimento-e-segnale-di-errore">Funzione di trasferimento e segnale di errore</h4>
+<p>La funzione di trasferimento $Y(s)/R(s)$ per il nostro sistema è data da:</p>
+<p><span class="math display">\[
+\frac{Y(s)}{R(s)} = \frac{D(s)G(s)}{1 + D(s)G(s)}
+\]</span></p>
+<p>E la funzione di trasferimento del segnale di errore $E(s)/R(s)$ è:</p>
+<p><span class="math display">\[
+\frac{E(s)}{R(s)} = \frac{1}{1 + D(s)G(s)}
+\]</span></p>
+<p>Questa relazione è cruciale in quanto getta le basi per comprendere l’errore di stato stazionario.</p>
+</section>
+<section id="teorema-del-valore-finale-ed-errore-a-regime" class="level3">
+<h3 class="anchored" data-anchor-id="teorema-del-valore-finale-ed-errore-a-regime">Teorema del valore finale ed errore a regime</h3>
+<p>Utilizzando il teorema del valore finale, l’errore di stato stazionario $e_{ss}$ è determinato da:</p>
+<p><span class="math display">\[
+e_{ss} = \lim_{s \to 0} sE(s) = \lim_{s \to 0} \frac{sR(s)}{1 + D(s)G(s)} = \lim_{ t \to \infty} e(t)
+\]</span></p>
+<p>Questa equazione mostra come l’errore in stato stazionario è correlato all’input $R(s)$ e alla funzione di trasferimento del sistema.</p>
+</section>
+<section id="caso-di-studio-risposta-allinput-passo-passo" class="level3">
+<h3 class="anchored" data-anchor-id="caso-di-studio-risposta-allinput-passo-passo">Caso di studio: risposta all’input passo-passo</h3>
+<p>Analizziamo un caso specifico in cui $R(s) = $ (un passo in ingresso).</p>
+<p>Per un input a gradini, l’errore di stato stazionario $e_{ss}$ diventa:</p>
+<p><span class="math display">\[
+e_{ss} = \frac{1}{1 + D(0)G(0)}
+\]</span></p>
+<p>Qui, $D(0)G(0)$ rappresenta il guadagno DC del loop. Questo è il guadagno del loop alle basse frequenze.</p>
+<ul>
+<li><p><strong>Progettando il controller <span class="math inline">\(D(s)\)</span> in modo appropriato, possiamo manipolare questo guadagno per ridurre l’errore in stato stazionario, migliorando così la precisione in stato stazionario.</strong></p></li>
+<li><p>Aumentando il guadagno dell’anello si ottiene una migliore precisione a regime.</p></li>
+</ul>
+</section>
+<section id="confronto-con-il-controllo-ad-anello-aperto" class="level3">
+<h3 class="anchored" data-anchor-id="confronto-con-il-controllo-ad-anello-aperto">Confronto con il controllo ad anello aperto</h3>
+<p>In un sistema a circuito aperto, l’errore è: <span class="math display">\[
+E(s) = R(s) - Y(s) = R(s) - D(s)G(s)R(s) = R(s)\Big[ 1 - D(s)G(s) \Big]
+\]</span></p>
+<p>e quindi l’errore a regime per un ingresso a gradino (<span class="math inline">\(R(s) = 1/s\)</span>) può essere espresso come:</p>
+<p><span class="math display">\[
+e_{ss} = 1 - D(0)G(0)
+\]</span></p>
+<p>dove abbiamo nuovamente applicato il Teorema del Valore Finale.</p>
+<p>È interessante notare che, nel controllo ad anello aperto, è possibile eliminare completamente l’errore di stato stazionario impostando $D(0)G(0) = 1$. Tuttavia, questo approccio manca di robustezza e di capacità di reiezione dei disturbi.</p>
+<p>In anello chiuso possiamo ottenere un errore stazionario nullo solo al limite.</p>
+</section>
+<section id="osservazioni-conclusive-sullaccuratezza-dello-stato-stazionario" class="level3">
+<h3 class="anchored" data-anchor-id="osservazioni-conclusive-sullaccuratezza-dello-stato-stazionario">Osservazioni conclusive sull’accuratezza dello stato stazionario</h3>
+<p>Abbiamo visto che il controllo del feedback, utilizzato principalmente per la sua robustezza e qualità di reiezione dei disturbi, ci consente anche di ottimizzare la precisione dello stato stazionario. Tuttavia, il raggiungimento del perfetto equilibrio tra robustezza, precisione e stabilità richiede un’attenta progettazione e la considerazione di tutti gli aspetti del sistema.</p>
+</section>
+</section>
+<section id="guadagno-ad-anello-elevato-vantaggi-e-sfide" class="level2">
+<h2 class="anchored" data-anchor-id="guadagno-ad-anello-elevato-vantaggi-e-sfide">Guadagno ad anello elevato: vantaggi e sfide</h2>
+<p>Il guadagno di anello elevato è uno strumento di progettazione fondamentale nel controllo automatico, ma presenta una serie di vantaggi e sfide.</p>
+<p>Vantaggi dell’elevato guadagno del loop</p>
+<ul>
+<li><strong>Riduzione della sensibilità</strong>: l’elevato guadagno del loop riduce la sensibilità del sistema alle variazioni dei parametri.</li>
+<li><strong>Rifiuto disturbi</strong>: migliora la capacità del sistema di respingere i disturbi esterni.</li>
+<li><strong>Precisione allo stato stazionario</strong>: l’aumento del guadagno del circuito può migliorare la precisione allo stato stazionario del sistema.</li>
+</ul>
+<p>Sfide e compromessi</p>
+<ul>
+<li><strong>Problemi di rumore</strong>: un guadagno del loop elevato può amplificare il rumore ad alta frequenza, riducendo il rapporto segnale/rumore.</li>
+<li><strong>Vincoli di saturazione e ampiezza di ingresso</strong>: un guadagno eccessivo potrebbe causare la saturazione dei componenti del sistema.</li>
+<li><strong>Problemi di stabilità</strong>: un guadagno del loop più elevato può rendere il sistema più oscillatorio e incline all’instabilità.</li>
+</ul>
+<p>Questi compromessi evidenziano la complessità della progettazione del sistema di controllo. Raggiungere il giusto equilibrio tra questi fattori è essenziale per ottenere prestazioni ottimali del sistema.</p>
+<p>🤔 <strong>Domanda pop-up:</strong> Perché non possiamo sempre utilizzare un guadagno del circuito elevato per migliorare le prestazioni del sistema?</p>
+<p><strong>Risposta</strong>: sebbene un guadagno di anello elevato migliori la sensibilità, la reiezione dei disturbi e la precisione dello stato stazionario, può introdurre problemi come l’amplificazione del rumore, la saturazione del sistema e problemi di stabilità. Pertanto, è necessario trovare un equilibrio nel design.</p>
+<section id="necessità-di-andare-oltre-il-controllo-proporzionale" class="level3">
+<h3 class="anchored" data-anchor-id="necessità-di-andare-oltre-il-controllo-proporzionale">Necessità di andare oltre il controllo proporzionale</h3>
+<p>Una semplice amplificazione (guadagno) potrebbe non soddisfare tutti i requisiti di controllo (ad esempio, aumentando semplicemente il guadagno dell’amplificatore nel controller $D(s)$), potrebbe non soddisfare tutti i requisiti di controllo. Pertanto, dobbiamo esplorare ulteriori azioni di controllo, vale a dire, per esempio, azioni derivate e integrali.</p>
+<section id="controllo-derivato-e-integrale" class="level4">
+<h4 class="anchored" data-anchor-id="controllo-derivato-e-integrale">Controllo derivato e integrale</h4>
+<ul>
+<li><strong>Controllo derivativo</strong>: comporta l’iniezione di un segnale proporzionale alla derivata dell’errore nel loop.</li>
+<li><strong>Controllo integrale</strong>: implica l’utilizzo dell’integrale del segnale di errore.</li>
+</ul>
+<p>Queste strategie di controllo aiutano a superare i limiti del controllo proporzionale, portando a un sistema di controllo più robusto e versatile.</p>
+
+
+</section>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/andreamunafo\.github\.io\/principles-of-automatic-controls");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/andreamunafo/principles-of-automatic-controls/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

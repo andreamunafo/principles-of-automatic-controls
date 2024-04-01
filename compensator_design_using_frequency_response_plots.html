@@ -1,0 +1,2175 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.552">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>principles-of-automatic-controls - Principles of Automatic Control: Lead and Lag Compensation</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+<script src="https://unpkg.com/@jupyter-widgets/html-manager@*/dist/embed-amd.js" crossorigin="anonymous"></script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+<meta property="og:title" content="principles-of-automatic-controls - Principles of Automatic Control: Lead and Lag Compensation">
+<meta property="og:description" content="Course in feedback control for the University of Pisa">
+<meta property="og:site_name" content="principles-of-automatic-controls">
+<meta name="twitter:title" content="principles-of-automatic-controls - Principles of Automatic Control: Lead and Lag Compensation">
+<meta name="twitter:description" content="Course in feedback control for the University of Pisa">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">principles-of-automatic-controls</span>
+    </a>
+  </div>
+        <div class="quarto-navbar-tools tools-end">
+</div>
+          <div id="quarto-search" class="" title="Search"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./compensator_design_using_frequency_response_plots.html">Principles of Automatic Control: Lead and Lag Compensation</a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Feedback Control</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./faq.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Frequently Asked Questions (FAQ)</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./syllabus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Syllabus for “Principles of Automatic Control”</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./toc.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Table of Contents</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./update_and_manage_local_changes_guide.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A Guide to Updating Your Local Repository with Git in Anaconda’s Virtual Environment</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./getting_started_with_python_and_jupyter_notebook.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Getting Started with Python and Jupyter Notebooks</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principles of Automatic Control</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./basics_of_feedback_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Feedback Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./introduction_to_control_problem.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to the control problem</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dynamic_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modeling in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dynamic_response.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Dynamic response of control systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06_inverse_laplace_transform.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Inverse Laplace Transform: Partial fraction decomposition</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./modeling_dynamic_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Modeling of Dynamic Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./control_system_components.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Control System Components</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./models_of_control_devices_and_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Models of Controlled Devices</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./hardware_and_case_studies.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Hardware of Control Systems and Case Studies</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ac_hardware_and_case_studies.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">AC Motion Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./a_first_complete_application.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A Feedback Control System</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./principles_of_feedback_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principles of Feedback Control</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./feedback_systems_and_their_effects.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Feedback systems and their effects</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./introduction_to_control_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./stability.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Stability Analysis in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./stability_and_routh_criterion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Stability Analysis in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./performance_of_feedback_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Performance of Feedback Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./design_of_feedback_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Design Cycle for a Standard Second-Order System</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./20_Design_of_feedback_control_continued.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Understanding the Standard Second-Order System: Recap</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./steady_state_accuracy_and_design_principles.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Steady State Accuracy and Design Principles</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./compensator_design_using_root_locus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compensator Design</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./design_with_the_root_locus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Design with the Root Locus</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./compensators_and_root_locus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compensators and the Root Locus</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./introduction_to_frequency_domain_analysis_in_control_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Frequency Domain Analysis in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./application_of_nyquist_stability_criterion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Application of Nyquist Stability Criterion in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./the_nyquist_stability_criterion_and_relative_stability.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The Nyquist Stability Criterion and Relative Stability</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./bode_plots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Bode Plot Analysis</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./feedback_system_performance_based_on_frequency_response.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Feedback System Performance Based On Frequency Response</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./compensator_design_using_frequency_response_plots.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Principles of Automatic Control: Lead and Lag Compensation</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">IT_TCLab_🇮🇹</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/spacecraft_thermal_control_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Il Laboratorio di Controllo della Temperatura</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/tclab_exercises_report_template_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modello di report sugli esercizi TCLab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/tclab_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Il Laboratorio di Controllo della Temperatura</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/understanding_tclab_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Comprendere TCLab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/tclab_lab_1_coding_a_relay_controller_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 1: Codifica di un controller relè</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/system_model_and_identification_tclab_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modellazione del sistema</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/step_testing_tclab_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Passo Test</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/fitting_step_test_data_to_empirical_models_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Adattamento dei dati dei test di fase ai modelli empirici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/tclab_lab_2_model_identification_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 2: Identificazione del modello</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/tclab_lab_2_fitting_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Identificazione del modello: adattamento dei modelli ai dati</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/relay_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Controllo relè</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/pid_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Controllo PID</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/lab-assignment-pid-control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compito di laboratorio: Controllo PID</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/lab-assignment-pi-control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compito di laboratorio 4: Controllo PI</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">IT_🇮🇹</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/faq_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Domande frequenti (FAQ)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/syllabus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Programma del corso “Principi del controllo automatico”</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/update_and_manage_local_changes_guide_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Aggiornare il Proprio Repository Locale Mantenendo le Modifiche Locali</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/getting_started_with_python_and_jupyter_notebook_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Guida introduttiva ai notebook Python e Jupyter</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/intro_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principi di controllo automatico</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/basics_of_feedback_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione ai sistemi di controllo del feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/introduction_to_control_problem_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione al problema del controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/dynamic_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modellazione nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/dynamic_response_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Risposta dinamica dei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/06_inverse_laplace_transform_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Trasformata di Laplace inversa: scomposizione parziale di frazioni</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/modeling_dynamic_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione alla modellazione dei sistemi dinamici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/control_system_components_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Componenti del sistema di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/models_of_control_devices_and_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modelli di dispositivi controllati</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/hardware_and_case_studies_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Hardware dei sistemi di controllo e casi di studio</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/ac_hardware_and_case_studies_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sistemi di controllo del movimento CA</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/a_first_complete_application_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Un sistema di controllo del feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/principles_of_feedback_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principi di controllo del feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/feedback_systems_and_their_effects_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sistemi di feedback e loro effetti</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/introduction_to_control_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione ai sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/stability_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analisi di stabilità nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/stability_and_routh_criterion_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analisi di stabilità nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/performance_of_feedback_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prestazioni dei sistemi di feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/design_of_feedback_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Ciclo di progettazione per un sistema standard del secondo ordine</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/20_Design_of_feedback_control_continued_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Comprensione del sistema standard del secondo ordine: riepilogo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/steady_state_accuracy_and_design_principles_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Precisione dello stato stazionario e principi di progettazione</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/compensator_design_using_root_locus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Progettazione del compensatore</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/design_with_the_root_locus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Progettare con il luogo delle radici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/compensators_and_root_locus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compensatori e luogo delle radici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/introduction_to_frequency_domain_analysis_in_control_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione all’analisi nel dominio della frequenza nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/application_of_nyquist_stability_criterion_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Applicazione del criterio di stabilità di Nyquist nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/the_nyquist_stability_criterion_and_relative_stability_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Il criterio di stabilità di Nyquist e la stabilità relativa</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/bode_plots_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analisi del diagramma di Bode</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/feedback_system_performance_based_on_frequency_response_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prestazioni del sistema di feedback basate sulla risposta in frequenza</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/index_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Syllabus - Fondamenti di Automatica</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">TCLab</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/spacecraft_thermal_control_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The Temperature Control Laboratory</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/tclab_exercises_report_template.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Exercises Report Template</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The Temperature Control Lab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/understanding_tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Understanding TCLab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/tclab_lab_1_coding_a_relay_controller-solution.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 1: Coding a relay controller</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/tclab_lab_1_coding_a_relay_controller.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 1: Coding a relay controller</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/system_model_and_identification_tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">System Modeling</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/step_testing_tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Step Testing</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/fitting_step_test_data_to_empirical_models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Fitting Step Test Data to Empirical Models</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/tclab_lab_2_model_identification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 2: Model Identification</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/tclab_lab_2_model_identification_solutions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 2: Model Identification</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/tclab_lab_2_fitting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Model Identification: Fitting models to data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/relay_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Relay Control</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/pid_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">PID Control</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/lab-assignment-pid-control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab Assignment: PID Control</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/lab-assignment-pi-control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab Assignment 4: PI Control</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction-to-compensator-design" id="toc-introduction-to-compensator-design" class="nav-link active" data-scroll-target="#introduction-to-compensator-design">Introduction to Compensator Design</a>
+  <ul class="collapse">
+  <li><a href="#the-concept-of-lead-and-lag-compensators" id="toc-the-concept-of-lead-and-lag-compensators" class="nav-link" data-scroll-target="#the-concept-of-lead-and-lag-compensators">The Concept of Lead and Lag Compensators</a></li>
+  <li><a href="#frequency-domain-analysis-of-lead-compensators" id="toc-frequency-domain-analysis-of-lead-compensators" class="nav-link" data-scroll-target="#frequency-domain-analysis-of-lead-compensators">Frequency Domain Analysis of Lead Compensators</a></li>
+  <li><a href="#calculating-phi_m" id="toc-calculating-phi_m" class="nav-link" data-scroll-target="#calculating-phi_m">Calculating <span class="math inline">\(\phi_m\)</span></a></li>
+  <li><a href="#determining-compensator-magnitude" id="toc-determining-compensator-magnitude" class="nav-link" data-scroll-target="#determining-compensator-magnitude">Determining Compensator Magnitude</a></li>
+  <li><a href="#asymptotic-approximation" id="toc-asymptotic-approximation" class="nav-link" data-scroll-target="#asymptotic-approximation">Asymptotic Approximation</a></li>
+  <li><a href="#application-to-a-specific-frequency" id="toc-application-to-a-specific-frequency" class="nav-link" data-scroll-target="#application-to-a-specific-frequency">Application to a Specific Frequency</a></li>
+  </ul></li>
+  <li><a href="#designing-with-specific-requirements" id="toc-designing-with-specific-requirements" class="nav-link" data-scroll-target="#designing-with-specific-requirements">Designing with Specific Requirements</a>
+  <ul class="collapse">
+  <li><a href="#adding-the-controller" id="toc-adding-the-controller" class="nav-link" data-scroll-target="#adding-the-controller">Adding the Controller</a></li>
+  <li><a href="#strategic-placement-of-maximum-phase-lead-omega_m" id="toc-strategic-placement-of-maximum-phase-lead-omega_m" class="nav-link" data-scroll-target="#strategic-placement-of-maximum-phase-lead-omega_m">Strategic Placement of Maximum Phase Lead (<span class="math inline">\(\omega_m\)</span>)</a></li>
+  <li><a href="#the-challenge-of-achieving-the-desired-phase-margin" id="toc-the-challenge-of-achieving-the-desired-phase-margin" class="nav-link" data-scroll-target="#the-challenge-of-achieving-the-desired-phase-margin">The Challenge of Achieving the Desired Phase Margin</a></li>
+  <li><a href="#the-problem-explained" id="toc-the-problem-explained" class="nav-link" data-scroll-target="#the-problem-explained">The Problem Explained</a></li>
+  <li><a href="#solution-adjusting-for-safety-margin" id="toc-solution-adjusting-for-safety-margin" class="nav-link" data-scroll-target="#solution-adjusting-for-safety-margin">Solution: Adjusting for Safety Margin</a></li>
+  <li><a href="#calculating-compensator-parameters" id="toc-calculating-compensator-parameters" class="nav-link" data-scroll-target="#calculating-compensator-parameters">Calculating Compensator Parameters</a></li>
+  <li><a href="#comments" id="toc-comments" class="nav-link" data-scroll-target="#comments">Comments</a></li>
+  <li><a href="#determining-the-time-constant-tau" id="toc-determining-the-time-constant-tau" class="nav-link" data-scroll-target="#determining-the-time-constant-tau">Determining the Time Constant (<span class="math inline">\(\tau\)</span>)</a></li>
+  <li><a href="#the-concept-of-gain-crossover-frequency" id="toc-the-concept-of-gain-crossover-frequency" class="nav-link" data-scroll-target="#the-concept-of-gain-crossover-frequency">The Concept of Gain Crossover Frequency</a></li>
+  <li><a href="#adjusting-for-the-new-gain-crossover-frequency" id="toc-adjusting-for-the-new-gain-crossover-frequency" class="nav-link" data-scroll-target="#adjusting-for-the-new-gain-crossover-frequency">Adjusting for the New Gain Crossover Frequency</a></li>
+  <li><a href="#calculating-tau" id="toc-calculating-tau" class="nav-link" data-scroll-target="#calculating-tau">Calculating <span class="math inline">\(\tau\)</span></a></li>
+  <li><a href="#optimization-and-verification" id="toc-optimization-and-verification" class="nav-link" data-scroll-target="#optimization-and-verification">Optimization and Verification</a></li>
+  <li><a href="#importance-of-verification" id="toc-importance-of-verification" class="nav-link" data-scroll-target="#importance-of-verification">Importance of Verification</a></li>
+  <li><a href="#adjusting-for-safety-margin-epsilon" id="toc-adjusting-for-safety-margin-epsilon" class="nav-link" data-scroll-target="#adjusting-for-safety-margin-epsilon">Adjusting for Safety Margin (<span class="math inline">\(\epsilon\)</span>)</a></li>
+  <li><a href="#iterative-design-process" id="toc-iterative-design-process" class="nav-link" data-scroll-target="#iterative-design-process">Iterative Design Process</a></li>
+  <li><a href="#comment" id="toc-comment" class="nav-link" data-scroll-target="#comment">Comment</a></li>
+  <li><a href="#the-design-cycle-and-adjustments" id="toc-the-design-cycle-and-adjustments" class="nav-link" data-scroll-target="#the-design-cycle-and-adjustments">The Design Cycle and Adjustments</a></li>
+  <li><a href="#iterative-refinements-based-on-outcomes" id="toc-iterative-refinements-based-on-outcomes" class="nav-link" data-scroll-target="#iterative-refinements-based-on-outcomes">Iterative Refinements Based on Outcomes</a></li>
+  <li><a href="#sidebar---bandwidth-and-bode-plots" id="toc-sidebar---bandwidth-and-bode-plots" class="nav-link" data-scroll-target="#sidebar---bandwidth-and-bode-plots">SIDEBAR - Bandwidth and Bode Plots</a></li>
+  <li><a href="#definition-of-bandwidth" id="toc-definition-of-bandwidth" class="nav-link" data-scroll-target="#definition-of-bandwidth">1. <strong>Definition of Bandwidth</strong>:</a></li>
+  <li><a href="#feedback-effects" id="toc-feedback-effects" class="nav-link" data-scroll-target="#feedback-effects">2. <strong>Feedback Effects</strong>:</a></li>
+  <li><a href="#stability-and-performance" id="toc-stability-and-performance" class="nav-link" data-scroll-target="#stability-and-performance">3. <strong>Stability and Performance</strong>:</a></li>
+  <li><a href="#real-world-relevance" id="toc-real-world-relevance" class="nav-link" data-scroll-target="#real-world-relevance">4. <strong>Real-world Relevance</strong>:</a></li>
+  <li><a href="#misinterpretation-risk" id="toc-misinterpretation-risk" class="nav-link" data-scroll-target="#misinterpretation-risk">5. <strong>Misinterpretation Risk</strong>:</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion:</a></li>
+  <li><a href="#questions-for-reinforcement" id="toc-questions-for-reinforcement" class="nav-link" data-scroll-target="#questions-for-reinforcement">Questions for Reinforcement</a></li>
+  </ul></li>
+  <li><a href="#chapter-on-lag-compensators" id="toc-chapter-on-lag-compensators" class="nav-link" data-scroll-target="#chapter-on-lag-compensators">Chapter on Lag Compensators</a></li>
+  <li><a href="#the-principle-of-lag-compensation" id="toc-the-principle-of-lag-compensation" class="nav-link" data-scroll-target="#the-principle-of-lag-compensation">The Principle of Lag Compensation</a>
+  <ul class="collapse">
+  <li><a href="#frequency-domain-analysis-of-lag-compensators" id="toc-frequency-domain-analysis-of-lag-compensators" class="nav-link" data-scroll-target="#frequency-domain-analysis-of-lag-compensators">Frequency Domain Analysis of Lag Compensators</a></li>
+  <li><a href="#design-considerations-and-application" id="toc-design-considerations-and-application" class="nav-link" data-scroll-target="#design-considerations-and-application">Design Considerations and Application</a></li>
+  <li><a href="#design-example-enhancing-phase-margin-and-bandwidth" id="toc-design-example-enhancing-phase-margin-and-bandwidth" class="nav-link" data-scroll-target="#design-example-enhancing-phase-margin-and-bandwidth">Design Example: Enhancing Phase Margin and Bandwidth</a></li>
+  <li><a href="#step-3.-incorporating-the-lag-compensator" id="toc-step-3.-incorporating-the-lag-compensator" class="nav-link" data-scroll-target="#step-3.-incorporating-the-lag-compensator">Step 3. Incorporating the Lag Compensator</a></li>
+  <li><a href="#selecting-the-corner-frequency" id="toc-selecting-the-corner-frequency" class="nav-link" data-scroll-target="#selecting-the-corner-frequency">Selecting the Corner Frequency</a></li>
+  <li><a href="#strategy-for-addressing-phase-lag" id="toc-strategy-for-addressing-phase-lag" class="nav-link" data-scroll-target="#strategy-for-addressing-phase-lag">Strategy for Addressing Phase Lag</a></li>
+  <li><a href="#practical-considerations" id="toc-practical-considerations" class="nav-link" data-scroll-target="#practical-considerations">Practical Considerations</a></li>
+  <li><a href="#choosing-the-corner-frequency" id="toc-choosing-the-corner-frequency" class="nav-link" data-scroll-target="#choosing-the-corner-frequency">Choosing the Corner Frequency</a></li>
+  <li><a href="#bandwidth-considerations" id="toc-bandwidth-considerations" class="nav-link" data-scroll-target="#bandwidth-considerations">Bandwidth Considerations</a></li>
+  <li><a href="#integrating-a-lead-compensator" id="toc-integrating-a-lead-compensator" class="nav-link" data-scroll-target="#integrating-a-lead-compensator">Integrating a Lead Compensator</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/andreamunafo/principles-of-automatic-controls/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Principles of Automatic Control: Lead and Lag Compensation</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
+<section id="introduction-to-compensator-design" class="level2">
+<h2 class="anchored" data-anchor-id="introduction-to-compensator-design">Introduction to Compensator Design</h2>
+<p>After gaining a thorough understanding of feedback performance characteristics, it’s time to address the design aspects of control systems. An efficient way to delve into this topic is through the exploration of lead and lag compensators, employing examples for a comprehensive understanding. Previously, you have been introduced to the root locus method, which serves as a foundational concept for this discussion.</p>
+<section id="the-concept-of-lead-and-lag-compensators" class="level3">
+<h3 class="anchored" data-anchor-id="the-concept-of-lead-and-lag-compensators">The Concept of Lead and Lag Compensators</h3>
+<p>Lead and lag compensators are integral to modifying the dynamic response of control systems. They are characterized by a pole-zero configuration. In a <strong>lead compensator</strong>, a zero precedes a pole, enhancing the system’s transient response by introducing a phase lead. Conversely, in a <strong>lag compensator</strong>, a pole precedes a zero, primarily used to improve steady-state accuracy without significantly affecting the transient response.</p>
+<section id="lead-compensator-configuration" class="level4">
+<h4 class="anchored" data-anchor-id="lead-compensator-configuration">Lead Compensator Configuration</h4>
+<p>A lead compensator consists of a zero followed by a pole, particularly in the left-half plane, to ensure system stability. The general transfer function of a lead compensator, denoted as (D(s)), can be expressed as:</p>
+<p><span class="math display">\[D(s) = \frac{s + \frac{1}{\tau}}{s + \frac{1}{\alpha \tau}}\]</span></p>
+<p>where <span class="math inline">\(\tau &gt; 0\)</span> is the time constant of the zero, and <span class="math inline">\(\alpha\)</span> is a constant less than 1 (<span class="math inline">\(\alpha &lt; 1\)</span>), dictating the distance between the pole and the zero. The closer <span class="math inline">\(\alpha\)</span> is to zero, the further apart the pole and zero are, which enhances the compensator’s phase-lead characteristics.</p>
+
+
+
+<img src="./pics/30_Compensator_Design_Using_Frequency_Response_Plots_lead_compensator.png" alt="30_Compensator_Design_Using_Frequency_Response_Plots_lead_compensator" style="width:350px;">
+
+
+
+</section>
+<section id="example-design-considerations-for-a-lead-compensator" class="level4">
+<h4 class="anchored" data-anchor-id="example-design-considerations-for-a-lead-compensator">Example: Design Considerations for a Lead Compensator</h4>
+<p>Let’s consider the design process for a lead compensator, where our goal is to adjust transient performance criteria such as settling time and overshoot. The design revolves around the strategic placement of the zero and pole to achieve a desired phase margin or equivalently, to ensure certain frequency domain specifications like bandwidth (<span class="math inline">\(\omega_b\)</span>) and phase margin (<span class="math inline">\(M_r\)</span>) are met.</p>
+<p><strong>Design Parameters and Flexibility</strong></p>
+<p>In addition to <span class="math inline">\(\tau\)</span> and <span class="math inline">\(\alpha\)</span>, the gain <span class="math inline">\(K_c\)</span> plays a pivotal role in the compensator’s effectiveness. This introduces three degrees of freedom in the design process: <span class="math inline">\(K_c\)</span>, <span class="math inline">\(\tau\)</span>, and <span class="math inline">\(\alpha\)</span>. For simplicity, during the initial design stages, <span class="math inline">\(K_c\)</span> is often merged with the gain of the uncompensated system (and we call it <span class="math inline">\(K\)</span>).</p>
+</section>
+</section>
+<section id="frequency-domain-analysis-of-lead-compensators" class="level3">
+<h3 class="anchored" data-anchor-id="frequency-domain-analysis-of-lead-compensators">Frequency Domain Analysis of Lead Compensators</h3>
+<p>The effectiveness of a lead compensator is predominantly evaluated through its frequency response. The transfer function in the frequency domain, <span class="math inline">\(D(j\omega)\)</span>, is given by:</p>
+<p><span class="math display">\[D(j\omega) = K_c \cdot \frac{\tau j\omega + 1}{\alpha \tau j\omega + 1}\]</span></p>
+<p>To understand the impact of the compensator on the system’s frequency response, let’s examine the Bode plot characteristics of <span class="math inline">\(D(j\omega)\)</span>.</p>
+
+
+
+<img src="./pics/30_Compensator_Design_Using_Frequency_Response_Plots_lead_compensator_block_diagram.png" alt="30_Compensator_Design_Using_Frequency_Response_Plots_lead_compensator_block_diagram" style="width:350px;">
+
+
+
+<p>I want to find the values of <span class="math inline">\(K\)</span>, <span class="math inline">\(\tau\)</span>, and <span class="math inline">\(\alpha\)</span> so that the requirements on phase margin, bandwidth and velocity constant (or any other constant) are satisfied.</p>
+<section id="magnitude-and-phase-characteristics" class="level4">
+<h4 class="anchored" data-anchor-id="magnitude-and-phase-characteristics">Magnitude and Phase Characteristics</h4>
+<p>Let’s start from the compensator in the frequency domain; we would like to understand what contribution it gives to the Bode plot of the uncompensated system.</p>
+<p><span class="math display">\[D(j\omega) = \frac{\tau j\omega + 1}{\alpha \tau j\omega + 1}\]</span></p>
+<p>The magnitude plot of a lead compensator showcases a key feature: it starts at 0 dB, increases at +20 dB/decade after the zero’s corner frequency (<span class="math inline">\(\frac{1}{\tau}\)</span>), and flattens after the pole’s corner frequency (<span class="math inline">\(\frac{1}{\alpha \tau}\)</span>). This characteristic is important for increasing the system’s gain margin and phase margin.</p>
+<p>The phase plot reveals the compensator’s ability to add a leading phase to the system. The maximum phase lead occurs between the zero and the pole’s corner frequencies, providing a valuable tool for shaping the system’s response to meet design specifications.</p>
+<p>We can plot the Bode Plots of the Lead Compensator.</p>
+<p>Note that the phase is</p>
+<p><span class="math display">\[
+\Phi = \tan^{-1}(\omega\tau) - \tan^{-1}(\omega\alpha\tau)
+\]</span></p>
+<div id="c7da7228" class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Import necessary libraries</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy <span class="im">import</span> signal</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ipywidgets <span class="im">import</span> interact, FloatSlider</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to plot the Bode plot of the lead compensator with annotations</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_lead_compensator_with_annotations(tau<span class="op">=</span><span class="fl">1.0</span>, alpha<span class="op">=</span><span class="fl">0.5</span>):</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Define the transfer function of the lead compensator</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    numerator <span class="op">=</span> [tau, <span class="dv">1</span>]</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    denominator <span class="op">=</span> [alpha<span class="op">*</span>tau, <span class="dv">1</span>]</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    system <span class="op">=</span> signal.TransferFunction(numerator, denominator)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Generate Bode plot data</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    frequencies <span class="op">=</span> np.logspace(<span class="op">-</span><span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">400</span>)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    w, mag, phase <span class="op">=</span> signal.bode(system, w<span class="op">=</span>frequencies)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Calculate corner frequencies</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    corner_freq_zero <span class="op">=</span> <span class="dv">1</span><span class="op">/</span>tau</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    corner_freq_pole <span class="op">=</span> <span class="dv">1</span><span class="op">/</span>(alpha<span class="op">*</span>tau)</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Plotting</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    plt.figure(figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">6</span>))</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    <span class="co">## Magnitude plot</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    plt.subplot(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>)</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>    plt.semilogx(w, mag) <span class="co"># Bode magnitude plot</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="st">'Magnitude Plot'</span>)</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="st">'Frequency [rad/s]'</span>)</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>    plt.ylabel(<span class="st">'Magnitude [dB]'</span>)</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>    plt.grid(which<span class="op">=</span><span class="st">'both'</span>, axis<span class="op">=</span><span class="st">'both'</span>)</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Annotations for magnitude plot</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>    plt.axvline(x<span class="op">=</span>corner_freq_zero, color<span class="op">=</span><span class="st">'r'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>    plt.axvline(x<span class="op">=</span>corner_freq_pole, color<span class="op">=</span><span class="st">'g'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>    plt.text(corner_freq_zero, <span class="bu">min</span>(mag), <span class="vs">r'$\frac</span><span class="sc">{1}</span><span class="vs">{\tau}$'</span>, horizontalalignment<span class="op">=</span><span class="st">'right'</span>, color<span class="op">=</span><span class="st">'red'</span>)</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>    plt.text(corner_freq_pole, <span class="bu">min</span>(mag), <span class="vs">r'$\frac</span><span class="sc">{1}</span><span class="vs">{\alpha\tau}$'</span>, horizontalalignment<span class="op">=</span><span class="st">'right'</span>, color<span class="op">=</span><span class="st">'green'</span>)</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>    <span class="co">## Phase plot</span></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>    plt.subplot(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>)</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>    plt.semilogx(w, phase) <span class="co"># Bode phase plot</span></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="st">'Phase Plot'</span>)</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="st">'Frequency [rad/s]'</span>)</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>    plt.ylabel(<span class="st">'Phase [degrees]'</span>)</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>    plt.grid(which<span class="op">=</span><span class="st">'both'</span>, axis<span class="op">=</span><span class="st">'both'</span>)</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Annotations for phase plot</span></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>    plt.axvline(x<span class="op">=</span>corner_freq_zero, color<span class="op">=</span><span class="st">'r'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>    plt.axvline(x<span class="op">=</span>corner_freq_pole, color<span class="op">=</span><span class="st">'g'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>    plt.text(corner_freq_zero, <span class="bu">min</span>(phase), <span class="vs">r'$\frac</span><span class="sc">{1}</span><span class="vs">{\tau}$'</span>, horizontalalignment<span class="op">=</span><span class="st">'right'</span>, color<span class="op">=</span><span class="st">'red'</span>)</span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>    plt.text(corner_freq_pole, <span class="bu">min</span>(phase), <span class="vs">r'$\frac</span><span class="sc">{1}</span><span class="vs">{\alpha\tau}$'</span>, horizontalalignment<span class="op">=</span><span class="st">'right'</span>, color<span class="op">=</span><span class="st">'green'</span>)</span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>    plt.show()</span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a><span class="co"># Interactive widget</span></span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>interact(plot_lead_compensator_with_annotations, </span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>         tau<span class="op">=</span>FloatSlider(value<span class="op">=</span><span class="fl">7.5</span>, <span class="bu">min</span><span class="op">=</span><span class="fl">0.1</span>, <span class="bu">max</span><span class="op">=</span><span class="fl">10.0</span>, step<span class="op">=</span><span class="fl">0.1</span>, description<span class="op">=</span><span class="st">'Tau (τ)'</span>),</span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>         alpha<span class="op">=</span>FloatSlider(value<span class="op">=</span><span class="fl">0.01</span>, <span class="bu">min</span><span class="op">=</span><span class="fl">0.01</span>, <span class="bu">max</span><span class="op">=</span><span class="fl">1.0</span>, step<span class="op">=</span><span class="fl">0.05</span>, description<span class="op">=</span><span class="st">'Alpha (α)'</span>))<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"7f0d7283f7cb4e16a057e1f4ced0a311","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+</script>
+</div>
+</div>
+<p><strong>Calculating Maximum Phase Lead in Compensator Design</strong></p>
+<p>A critical step in the design process involves determining the frequency (<span class="math inline">\(\omega_m\)</span>) at which the maximum phase lead (<span class="math inline">\(\phi_m\)</span>) occurs. This is achieved by differentiating the phase angle with respect to <span class="math inline">\(\omega\)</span> and setting the derivative to zero.</p>
+<p><span class="math display">\[\frac{d\phi}{d\omega} = 0\]</span></p>
+<p>The phase lead <span class="math inline">\(\phi\)</span> of a compensator is given by the difference between the phase angles due to its zero and its pole:</p>
+<p><span class="math display">\[\phi = \tan^{-1}(\omega\tau) - \tan^{-1}(\omega\alpha\tau)\]</span></p>
+<p>where: - <span class="math inline">\(\omega\)</span> is the frequency, - <span class="math inline">\(\tau\)</span> is the time constant associated with the zero, - <span class="math inline">\(\alpha\tau\)</span> (with <span class="math inline">\(\alpha &lt; 1\)</span>) is the time constant associated with the pole.</p>
+<p><strong>Calculating <span class="math inline">\(\omega_m\)</span></strong></p>
+<p><span class="math display">\[
+\tan(\phi) = \tan\left( \tan^{-1}(\omega\tau) - \tan^{-1}(\omega\alpha\tau) \right)
+\]</span></p>
+<p>The phase angle <span class="math inline">\(\phi\)</span> for the lead compensator is the difference between the arctan of the zero’s frequency response (<span class="math inline">\(\tan^{-1}(\omega\tau)\)</span>) and the pole’s frequency response (<span class="math inline">\(\tan^{-1}(\omega\alpha\tau)\)</span>).</p>
+<p>To simplify this expression, we use the identity for the tangent of a difference, <span class="math inline">\(\tan(a - b)\)</span>, which is given by:</p>
+<p><span class="math display">\[
+\tan(a - b) = \frac{\tan(a) - \tan(b)}{1 + \tan(a)\tan(b)}
+\]</span></p>
+<p>Applying this identity to our problem where <span class="math inline">\(a = \tan^{-1}(\omega\tau)\)</span> and <span class="math inline">\(b = \tan^{-1}(\omega\alpha\tau)\)</span>, we get:</p>
+<p><span class="math display">\[
+\tan(\phi) = \frac{\omega\tau - \omega\alpha\tau}{1 + \omega^2\tau^2\alpha}
+\]</span></p>
+<p>Here, <span class="math inline">\(\tan(a) = \omega\tau\)</span> and <span class="math inline">\(\tan(b) = \omega\alpha\tau\)</span> are the tangents of the arctan expressions, simplifying to <span class="math inline">\(\omega\tau\)</span> and <span class="math inline">\(\omega\alpha\tau\)</span>, respectively. The denominator reflects the product of the tangents.</p>
+<p>Thus, the final expression becomes:</p>
+<p><span class="math display">\[
+\tan(\phi) = \frac{\omega\tau(1 - \alpha)}{1 + \omega^2\tau^2\alpha}
+\]</span></p>
+<p>This formula calculates the tangent of the phase difference introduced by the lead compensator. It reflects how the phase difference varies with frequency (<span class="math inline">\(\omega\)</span>), the time constant (<span class="math inline">\(\tau\)</span>), and the ratio (<span class="math inline">\(\alpha\)</span>) between the pole and zero time constants.</p>
+<p>Solving this equation, we find that:</p>
+<p><span class="math display">\[\omega_m = \sqrt{\frac{1}{\tau}\cdot\frac{1}{ \alpha \tau}}\]</span></p>
+<p>This shows that <span class="math inline">\(\omega_m\)</span> is the geometric mean of the inverse of the time constants of the pole and zero.</p>
+</section>
+</section>
+<section id="calculating-phi_m" class="level3">
+<h3 class="anchored" data-anchor-id="calculating-phi_m">Calculating <span class="math inline">\(\phi_m\)</span></h3>
+<p>Substituting <span class="math inline">\(\omega_m\)</span> back into the equation for <span class="math inline">\(\phi\)</span> gives us <span class="math inline">\(\phi_m\)</span>, the maximum phase lead. By rearranging the terms, we find that:</p>
+<p><span class="math display">\[\sin(\phi_m) = \frac{1-\alpha}{1+\alpha}\]</span></p>
+<p>From this, we can calculate <span class="math inline">\(\alpha\)</span> given a desired <span class="math inline">\(\phi_m\)</span>, using the formula:</p>
+<p><span class="math display">\[\alpha = \frac{1 - \sin(\phi_m)}{1 + \sin(\phi_m)}\]</span></p>
+<p>This equation is important for designing our compensator, as it directly relates the maximum phase lead we aim to achieve to the parameter <span class="math inline">\(\alpha\)</span> of our compensator.</p>
+</section>
+<section id="determining-compensator-magnitude" class="level3">
+<h3 class="anchored" data-anchor-id="determining-compensator-magnitude">Determining Compensator Magnitude</h3>
+<p>For the design process, it’s also useful to know the compensator’s magnitude at the frequency <span class="math inline">\(\omega_m\)</span>.</p>
+<p>For a lead compensator, the magnitude (in dB) due to a factor like <span class="math inline">\(1 + j\omega\tau\)</span> can be calculated using the formula:</p>
+<p><span class="math display">\[ \text{Magnitude (dB)} = 20 \log \left| 1 + j\omega\tau \right| = 20 \log \sqrt{1+\omega^2\tau^2}\]</span></p>
+<p>This involves calculating the magnitude of the complex number <span class="math inline">\(1 + j\omega\tau\)</span> and then converting it to decibels (dB) using <span class="math inline">\(20 \log_{10}(\cdot)\)</span>.</p>
+</section>
+<section id="asymptotic-approximation" class="level3">
+<h3 class="anchored" data-anchor-id="asymptotic-approximation">Asymptotic Approximation</h3>
+<p>As the frequency <span class="math inline">\(\omega\)</span> increases, the term <span class="math inline">\(j\omega\tau\)</span> becomes much larger than 1, especially when <span class="math inline">\(\omega\tau &gt; 1\)</span>. In this scenario, the ‘1’ can be neglected for an asymptotic approximation, simplifying our magnitude formula to:</p>
+<p><span class="math display">\[ \text{Magnitude (dB)} \approx 20 \log \left| j\omega\tau \right| = 20 \log (\omega\tau) \]</span></p>
+<p>This approximation simplifies calculations and is often used in asymptotic Bode plot sketches.</p>
+</section>
+<section id="application-to-a-specific-frequency" class="level3">
+<h3 class="anchored" data-anchor-id="application-to-a-specific-frequency">Application to a Specific Frequency</h3>
+<p>When analyzing at a specific frequency related to the compensator’s pole, say <span class="math inline">\(\omega = \frac{1}{\alpha\tau}\)</span>, we substitute this into our magnitude formula. Let’s see how this plays out:</p>
+<ol type="1">
+<li><p><strong>Initial Formula</strong>: <span class="math inline">\(20 \log (\omega\tau)\)</span></p></li>
+<li><p><strong>Substitute <span class="math inline">\(\omega = \frac{1}{\alpha\tau}\)</span></strong>: This leads to <span class="math inline">\(20 \log \left( \frac{1}{\alpha\tau} \cdot \tau \right) = 20 \log \left( \frac{1}{\alpha} \right)\)</span></p></li>
+</ol>
+<p>This calculation gives us the magnitude in dB at the specific frequency where the compensator’s effect is analyzed (<span class="math inline">\(\omega = \frac{1}{\alpha\tau}\)</span>).</p>
+<p>The magnitude at the frequency of maximum phase lead (<span class="math inline">\(\omega_m\)</span>) can then be calculated. Assuming <span class="math inline">\(\omega_m\)</span> corresponds to the geometric mean of the zero and pole frequencies (as previously derived in discussions of <span class="math inline">\(\omega_m\)</span>), and substituting <span class="math inline">\(\omega_m\)</span> back into the magnitude formula we obtain <strong>the magnitude at <span class="math inline">\(\omega_m\)</span></strong>, which simplifies to: <span class="math display">\[10 \log (1/\alpha)\]</span></p>
+
+
+
+<img src="./pics/30_Compensator_Design_Using_Frequency_Response_Plots_lead_compensator_bode_plot.png" alt="30_Compensator_Design_Using_Frequency_Response_Plots_lead_compensator_bode_plot" style="width:350px;">
+
+
+
+</section>
+</section>
+<section id="designing-with-specific-requirements" class="level2">
+<h2 class="anchored" data-anchor-id="designing-with-specific-requirements">Designing with Specific Requirements</h2>
+<p>Let’s now focus on a design scenario where we aim to meet certain specifications with our control system. Imagine an uncompensated system represented by b <span class="math display">\[G(s) = \frac{K}{s(s+1)}\]</span></p>
+<p>with design requirements of a velocity error constant <span class="math inline">\(K_v = 12\)</span> and a phase margin <span class="math inline">\(\phi_{pm}=40^\circ\)</span>.</p>
+<ol type="1">
+<li><strong>Step One</strong>: Determine <span class="math inline">\(K\)</span> to satisfy <span class="math inline">\(K_v\)</span>. For <span class="math inline">\(K_v = 12\)</span>, we deduce <span class="math inline">\(K\)</span> must also equal 12, given the direct relationship in this system setup:</li>
+</ol>
+<p>For a given system with a transfer function <span class="math inline">\(G(s)\)</span>, the velocity error constant <span class="math inline">\(K_v\)</span> is defined as:</p>
+<p><span class="math display">\[ K_v = \lim_{s \to 0} sG(s) \]</span></p>
+<p>and we can substitute <span class="math inline">\(G(s)\)</span> into the formula for <span class="math inline">\(K_v\)</span>:</p>
+<p><span class="math display">\[ K_v = \lim_{s \to 0} s \left( \frac{K}{s(s+1)} \right) = \lim_{s \to 0} \frac{K}{s+1} \]</span></p>
+<p>As <span class="math inline">\(s\)</span> approaches 0, the expression simplifies to:</p>
+<p><span class="math display">\[ K_v = \frac{K}{0+1} = K = 12 \]</span></p>
+<ol start="2" type="1">
+<li><strong>Step Two</strong>: Incorporate <span class="math inline">\(D(s)\)</span>, ensuring it does not alter <span class="math inline">\(K_v\)</span>. The compensator <span class="math inline">\(D(s) = \frac{\tau s + 1}{\alpha \tau s + 1}\)</span> is structured to enhance phase margin without affecting <span class="math inline">\(K_v\)</span>.</li>
+</ol>
+<p>With <span class="math inline">\(K_v\)</span> now established, we turn our attention to the system’s phase margin.</p>
+<p>To do this, we need to understand the uncompensated system first.</p>
+<p>Consider our system represented by the transfer function in the frequency domain:</p>
+<p><span class="math display">\[ G(j\omega) = \frac{12}{j\omega(j\omega + 1)} \]</span></p>
+<div id="7a681c84" class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> control.matlab <span class="im">as</span> control</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the transfer function G(s) = 12 / (s*(s + 1))</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>numerator <span class="op">=</span> [<span class="dv">12</span>]</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>denominator <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>]</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>G_s <span class="op">=</span> control.TransferFunction(numerator, denominator)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate Bode plot with margins</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>mag, phase, omega <span class="op">=</span> control.bode(G_s, dB<span class="op">=</span><span class="va">True</span>, Plot<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate margins for annotation</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>gm, pm, sm, gc <span class="op">=</span> control.margin(G_s)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>pm_deg <span class="op">=</span> pm <span class="cf">if</span> pm <span class="op">&gt;</span> <span class="dv">0</span> <span class="cf">else</span> pm <span class="op">+</span> <span class="dv">360</span>  <span class="co"># Ensure phase margin is positive for display</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert magnitude from absolute to dB</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>mag_dB <span class="op">=</span> <span class="dv">20</span> <span class="op">*</span> np.log10(mag)</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting magnitude</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>plt.semilogx(omega, mag_dB)</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>plt.axhline(y<span class="op">=</span><span class="dv">0</span>, color<span class="op">=</span><span class="st">'g'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)  <span class="co"># 0 dB line</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>plt.axvline(x<span class="op">=</span>gc, color<span class="op">=</span><span class="st">'r'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)  <span class="co"># Gain crossover frequency line</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Magnitude Plot with 0 dB Crossover'</span>)</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Frequency (rad/s)'</span>)</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Magnitude (dB)'</span>)</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting phase</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>plt.semilogx(omega, phase <span class="op">*</span> (<span class="dv">180</span><span class="op">/</span>np.pi))  <span class="co"># Convert phase from radians to degrees</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>plt.axvline(x<span class="op">=</span>gc, color<span class="op">=</span><span class="st">'r'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)  <span class="co"># Gain crossover frequency line</span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>plt.axhline(y <span class="op">=</span> <span class="op">-</span><span class="dv">180</span> <span class="op">+</span> pm_deg, color <span class="op">=</span> <span class="st">'g'</span>, linestyle <span class="op">=</span> <span class="st">'--'</span>)  <span class="co"># Phase Margin line</span></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>plt.text(gc, <span class="op">-</span><span class="dv">180</span> <span class="op">+</span> pm_deg, <span class="ss">f'PM = </span><span class="sc">{</span>pm_deg<span class="sc">:.2f}</span><span class="ss">° at ω = </span><span class="sc">{</span>gc<span class="sc">:.2f}</span><span class="ss"> rad/s'</span>, va<span class="op">=</span><span class="st">'bottom'</span>)</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Phase Plot with Phase Margin'</span>)</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Frequency (rad/s)'</span>)</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Phase (degrees)'</span>)</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="31_Compensator_Design_Using_Frequency_Response_Plots_files/figure-html/cell-3-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="31_Compensator_Design_Using_Frequency_Response_Plots_files/figure-html/cell-3-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li><p>To grasp the system’s behavior, we sketch the Bode plot, focusing first on the magnitude plot. The term <span class="math inline">\(\frac{12}{j\omega}\)</span> indicates a slope of <span class="math inline">\(-20\)</span> dB per decade starting from the origin, representing the system’s initial roll-off due to the single integrator term.</p></li>
+<li><p>The additional term, <span class="math inline">\(j\omega + 1\)</span>, introduces a pole at <span class="math inline">\(\omega = 1\)</span>, further steepening the slope to <span class="math inline">\(-40\)</span> dB per decade beyond this corner frequency.</p></li>
+<li><p>For the phase angle plot, our system exhibits characteristic shifts due to its pole at <span class="math inline">\(\omega = 1\)</span>. Initially, the phase begins at <span class="math inline">\(-90^\circ\)</span> (due to the integrator), and the introduction of the pole at <span class="math inline">\(\omega = 1\)</span> further decreases the phase, approaching <span class="math inline">\(-180^\circ\)</span>.</p></li>
+<li><p>This behavior is typical of a Type-1 system, which shows a phase transition from <span class="math inline">\(-90^\circ\)</span> to <span class="math inline">\(-180^\circ\)</span> as the frequency increases.</p></li>
+<li><p>Upon analyzing the system’s phase behavior, we note that our current setup yields a phase margin of approximately <span class="math inline">\(15^\circ\)</span>.</p></li>
+<li><p>However, our design specification requires a phase margin of <span class="math inline">\(40^\circ\)</span>, indicating that we are currently <span class="math inline">\(25^\circ\)</span> short of our target. This discrepancy highlights the need for compensatory measures to enhance the system’s phase margin to the desired level.</p></li>
+</ul>
+<section id="adding-the-controller" class="level3">
+<h3 class="anchored" data-anchor-id="adding-the-controller">Adding the Controller</h3>
+<p>When you cascade (or combine) two systems, such as adding a lead compensator to an existing system, the resulting Bode plot is effectively the sum of the individual Bode plots of those systems. This additive property is particularly useful in the logarithmic scale used in Bode plots, where the multiplication of transfer functions (as in cascading systems) translates into the addition of their magnitudes and phases.</p>
+</section>
+<section id="strategic-placement-of-maximum-phase-lead-omega_m" class="level3">
+<h3 class="anchored" data-anchor-id="strategic-placement-of-maximum-phase-lead-omega_m">Strategic Placement of Maximum Phase Lead (<span class="math inline">\(\omega_m\)</span>)</h3>
+<p>We can then leverage the lead compensator to achieve a desired phase margin. The phase lead provided by the compensator peaks at a specific frequency, denoted <span class="math inline">\(\omega_m\)</span>.</p>
+<p>By aligning this peak phase lead (<span class="math inline">\(\phi_m\)</span>) with the critical point on the system’s frequency response where we want to enhance the phase margin, the compensator can effectively improve the system’s stability.</p>
+<ul>
+<li><p><strong>Phase Lead Placement</strong>: The goal is to position the phase lead (<span class="math inline">\(\phi_m\)</span>) provided by the lead compensator at a frequency where it can most effectively increase the system’s phase margin. This involves adjusting the compensator’s parameters so that <span class="math inline">\(\omega_m\)</span> aligns with the frequency at which the system needs increased phase support.</p></li>
+<li><p><strong>Achieving Desired Phase Margin</strong>: The phase margin (<span class="math inline">\(\phi_{pm}\)</span>) of a system is a measure of its stability, with larger margins generally indicating greater stability. By adding the lead compensator and correctly positioning its <span class="math inline">\(\omega_m\)</span>, we can ensure that the system achieves a specific target phase margin, in this case, <span class="math inline">\(25^\circ\)</span>, thereby enhancing the system’s robustness against oscillations and ensuring better performance.</p></li>
+</ul>
+</section>
+<section id="the-challenge-of-achieving-the-desired-phase-margin" class="level3">
+<h3 class="anchored" data-anchor-id="the-challenge-of-achieving-the-desired-phase-margin">The Challenge of Achieving the Desired Phase Margin</h3>
+<p>In our control system design, we aim to achieve a specific phase margin through the strategic use of a lead compensator. We’ve decided that the compensator should provide a phase lead (<span class="math inline">\(\phi_m\)</span>) of 25 degrees to meet our phase margin requirements. However, careful consideration reveals potential challenges with this approach.</p>
+<p>By integrating a lead compensator to add a phase lead of 25 degrees at a particular frequency (<span class="math inline">\(\omega_m\)</span>), we intend to increase the system’s phase margin to 40 degrees. But, there’s a catch. When we add the lead compensator, not only does it contribute to the phase, but it also affects the system’s gain. This interaction can inadvertently shift the gain crossover frequency towards higher frequencies.</p>
+</section>
+<section id="the-problem-explained" class="level3">
+<h3 class="anchored" data-anchor-id="the-problem-explained">The Problem Explained</h3>
+<ul>
+<li><p><strong>Gain and Phase Addition</strong>: Introducing a lead compensator influences both the phase and gain of the system. Ideally, we want to place the maximum phase lead exactly where it’s needed. However, this addition also brings an increase in gain at the corresponding frequency.</p></li>
+<li><p><strong>Shift in Crossover Frequency</strong>: The increased gain at the target frequency might push the gain crossover frequency to the right (towards higher frequencies). This shift is crucial because it can alter the phase margin we aim to achieve.</p></li>
+<li><p><strong>Impact on Phase Margin</strong>: Suppose the original system provided a phase of 15 degrees at the gain crossover frequency, and we anticipated that adding 25 degrees of phase lead would suffice. Due to the shift in crossover frequency, the actual contribution from the original system may decrease, potentially leaving us short of the desired 40 degrees of phase margin.</p></li>
+</ul>
+</section>
+<section id="solution-adjusting-for-safety-margin" class="level3">
+<h3 class="anchored" data-anchor-id="solution-adjusting-for-safety-margin">Solution: Adjusting for Safety Margin</h3>
+<p>To counteract this potential shortfall, we introduce a safety margin by adjusting our target phase lead upwards. Instead of aiming for 25 degrees, we target a higher phase lead (<span class="math inline">\(\phi_m\)</span>) of 30 degrees, accounting for 5 degrees of safety margin. This adjustment helps ensure that even with the shift in crossover frequency, we can still achieve or surpass our desired phase margin of 40 degrees.</p>
+</section>
+<section id="calculating-compensator-parameters" class="level3">
+<h3 class="anchored" data-anchor-id="calculating-compensator-parameters">Calculating Compensator Parameters</h3>
+<p>With this revised target, the required phase lead <span class="math inline">\(\phi_m\)</span> is not just based on the desired phase margin (<span class="math inline">\(\phi_{pm}\)</span>) but also includes a buffer (<span class="math inline">\(\epsilon\)</span>), resulting from potential phase reduction due to the gain crossover shift.</p>
+<p>Hence, we calculate <span class="math inline">\(\phi_m\)</span> (the required phase lead) as:</p>
+<p><span class="math display">\[ \phi_m = \phi_{pm} - \phi_{uncompensated} + \epsilon \]</span></p>
+<p>Given <span class="math inline">\(\phi_{pm} = 40^\circ\)</span>, <span class="math inline">\(\phi_{uncompensated} = 15^\circ\)</span>, and <span class="math inline">\(\epsilon = 5^\circ\)</span>, we find <span class="math inline">\(\phi_m = 30^\circ\)</span>. This calculation guides us in setting the compensator parameters, specifically <span class="math inline">\(\alpha\)</span>, to achieve the necessary phase lead.</p>
+<p>In thi case:</p>
+<p><span class="math display">\[
+\alpha = \frac{1-\sin(30)}{1+\sin(30)} = 0.334
+\]</span></p>
+</section>
+<section id="comments" class="level3">
+<h3 class="anchored" data-anchor-id="comments">Comments</h3>
+<ul>
+<li>This approach underlines the iterative nature of control system design, blending theoretical calculations with practical considerations to navigate the complexities of achieving desired system behavior.</li>
+<li>The example illustrates the importance of flexibility and adjustment in design parameters to meet specific performance criteria, showcasing the adaptability required in effective control system design.</li>
+</ul>
+</section>
+<section id="determining-the-time-constant-tau" class="level3">
+<h3 class="anchored" data-anchor-id="determining-the-time-constant-tau">Determining the Time Constant (<span class="math inline">\(\tau\)</span>)</h3>
+<p>After deciding on the phase lead (<span class="math inline">\(\phi_m\)</span>) provided by the compensator, the next step is to determine the appropriate time constant (<span class="math inline">\(\tau\)</span>) for the compensator. This is crucial because <span class="math inline">\(\tau\)</span> influences the frequency (<span class="math inline">\(\omega_m\)</span>) at which the compensator provides the maximum phase lead.</p>
+</section>
+<section id="the-concept-of-gain-crossover-frequency" class="level3">
+<h3 class="anchored" data-anchor-id="the-concept-of-gain-crossover-frequency">The Concept of Gain Crossover Frequency</h3>
+<p>The gain crossover frequency (<span class="math inline">\(\omega_{gc}\)</span>) is the frequency at which the system’s gain crosses the 0 dB line. Ideally, after adding the lead compensator, <span class="math inline">\(\omega_m\)</span> should align with a new gain crossover frequency, enhancing the system’s phase margin to the desired level.</p>
+<p>However, an important consideration is how the addition of gain from the compensator affects the system’s gain crossover frequency, potentially shifting it. This shift is important because it directly impacts the system’s phase margin.</p>
+</section>
+<section id="adjusting-for-the-new-gain-crossover-frequency" class="level3">
+<h3 class="anchored" data-anchor-id="adjusting-for-the-new-gain-crossover-frequency">Adjusting for the New Gain Crossover Frequency</h3>
+<p>In the scenario where we aim for a phase margin increase, it’s noted that the compensator will also add gain at <span class="math inline">\(\omega_m\)</span>.</p>
+<p>Specifically, the compensator adds a magnitude of <span class="math inline">\(4.8\)</span> dB at <span class="math inline">\(\omega_m\)</span>, calculated as <span class="math inline">\(10 \log \frac{1}{\alpha}\)</span> (see picture above).</p>
+<p>To accommodate this, we anticipate that the new gain crossover frequency (<span class="math inline">\(\omega_{gc}'\)</span>) will be where the original, uncompensated system’s gain is <span class="math inline">\(-4.8\)</span> dB.</p>
+<p>This adjustment ensures that when the compensator’s gain is added, the total system gain at <span class="math inline">\(\omega_{gc}'\)</span> will cross the 0 dB threshold, achieving the new gain crossover frequency.</p>
+</section>
+<section id="calculating-tau" class="level3">
+<h3 class="anchored" data-anchor-id="calculating-tau">Calculating <span class="math inline">\(\tau\)</span></h3>
+<p>To find <span class="math inline">\(\tau\)</span>, we consider that <span class="math inline">\(\omega_m\)</span> (where we place the compensator’s maximum phase lead) should ideally be at <span class="math inline">\(\omega_{gc}'\)</span>. Given the relationship between <span class="math inline">\(\omega_m\)</span> and <span class="math inline">\(\tau\)</span>, and knowing the desired new crossover frequency from our adjustments, we can solve for <span class="math inline">\(\tau\)</span>.</p>
+<p>Given a gain adjustment of <span class="math inline">\(4.8\)</span> db, the new the new crossover frequency is determined to be <span class="math inline">\(4.6\)</span> radians per second.</p>
+<p>Finally, we use the formula relating <span class="math inline">\(\omega_m\)</span> and <span class="math inline">\(\tau\)</span> to calculate the exact value of <span class="math inline">\(\tau\)</span>:</p>
+<p><span class="math display">\[\omega_m = \sqrt{\frac{1}{\tau} \frac{1}{\alpha \tau}} = 4.6\]</span></p>
+
+
+
+<img src="./pics/30_Compensator_Design_Using_Frequency_Response_Plots_lead_compensator_bode_plot_1.png" alt="30_Compensator_Design_Using_Frequency_Response_Plots_lead_compensator_bode_plot_1" style="width:550px;">
+
+
+
+<p>and the controller is:</p>
+<p><span class="math display">\[
+D(s) = \frac{0.376s+1}{0.128s+1}
+\]</span></p>
+</section>
+<section id="optimization-and-verification" class="level3">
+<h3 class="anchored" data-anchor-id="optimization-and-verification">Optimization and Verification</h3>
+<p>It is important to verify that the compensator meets the phase margin requirement without unduly sacrificing system bandwidth.</p>
+<p>Optimizing the control system design is an iterative process. After implementing the compensator, we need to re-evaluate the system’s phase margin and gain crossover frequency.</p>
+<p>If the phase margin achieved is slightly above or below the target, minor adjustments might be necessary. This iterative refinement ensures the system meets design specifications while maintaining a balance between performance and stability.</p>
+<p>The system we need to verify is now the open-loop transfer function of the compensated system:</p>
+<p><span class="math display">\[
+KG(s)D(s) = \frac{12}{s(s+1)}\frac{0.376s+1}{0.128s+1}
+\]</span></p>
+<div id="72fa250d" class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> control.matlab <span class="im">as</span> control</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the transfer function G(s) = 12 / (s(s + 1))</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>numerator_G <span class="op">=</span> [<span class="dv">12</span>]</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>denominator_G <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>]</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>G_s <span class="op">=</span> control.TransferFunction(numerator_G, denominator_G)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the transfer function D(s) = (0.376s + 1) / (0.128s + 1)</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>numerator_D <span class="op">=</span> [<span class="fl">0.376</span>, <span class="dv">1</span>]</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>denominator_D <span class="op">=</span> [<span class="fl">0.128</span>, <span class="dv">1</span>]</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>D_s <span class="op">=</span> control.TransferFunction(numerator_D, denominator_D)</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Combine G(s) and D(s) to get the overall open-loop transfer function KG(s)D(s)</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>KGD_s <span class="op">=</span> G_s <span class="op">*</span> D_s</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate Bode plot with margins</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate Bode plot with margins for the combined transfer function</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="co"># mag, phase, omega = control.bode(KGD_s, dB=True)</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>mag, phase, omega <span class="op">=</span> control.bode(KGD_s, dB<span class="op">=</span><span class="va">True</span>, Plot<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate margins for annotation</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>gm, pm, sm, gc <span class="op">=</span> control.margin(KGD_s)</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>pm_deg <span class="op">=</span> pm <span class="cf">if</span> pm <span class="op">&gt;</span> <span class="dv">0</span> <span class="cf">else</span> pm <span class="op">+</span> <span class="dv">360</span>  <span class="co"># Ensure phase margin is positive for display</span></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert magnitude from absolute to dB</span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>mag_dB <span class="op">=</span> <span class="dv">20</span> <span class="op">*</span> np.log10(mag)</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting magnitude</span></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>plt.semilogx(omega, mag_dB)</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>plt.axhline(y<span class="op">=</span><span class="dv">0</span>, color<span class="op">=</span><span class="st">'g'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)  <span class="co"># 0 dB line</span></span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>plt.axvline(x<span class="op">=</span>gc, color<span class="op">=</span><span class="st">'r'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)  <span class="co"># Gain crossover frequency line</span></span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Magnitude Plot with 0 dB Crossover'</span>)</span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Frequency (rad/s)'</span>)</span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Magnitude (dB)'</span>)</span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting phase</span></span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>plt.semilogx(omega, phase <span class="op">*</span> (<span class="dv">180</span><span class="op">/</span>np.pi))  <span class="co"># Convert phase from radians to degrees</span></span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>plt.axvline(x<span class="op">=</span>gc, color<span class="op">=</span><span class="st">'r'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)  <span class="co"># Gain crossover frequency line</span></span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>plt.axhline(y <span class="op">=</span> <span class="op">-</span><span class="dv">180</span> <span class="op">+</span> pm_deg, color <span class="op">=</span> <span class="st">'g'</span>, linestyle <span class="op">=</span> <span class="st">'--'</span>)  <span class="co"># Phase Margin line</span></span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>plt.text(gc, <span class="op">-</span><span class="dv">180</span> <span class="op">+</span> pm_deg, <span class="ss">f'PM = </span><span class="sc">{</span>pm_deg<span class="sc">:.2f}</span><span class="ss">° at ω = </span><span class="sc">{</span>gc<span class="sc">:.2f}</span><span class="ss"> rad/s'</span>, va<span class="op">=</span><span class="st">'bottom'</span>)</span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Phase Plot with Phase Margin'</span>)</span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Frequency (rad/s)'</span>)</span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Phase (degrees)'</span>)</span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="31_Compensator_Design_Using_Frequency_Response_Plots_files/figure-html/cell-4-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="31_Compensator_Design_Using_Frequency_Response_Plots_files/figure-html/cell-4-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="importance-of-verification" class="level3">
+<h3 class="anchored" data-anchor-id="importance-of-verification">Importance of Verification</h3>
+<p>Once you’ve calculated the compensator’s parameters, including the time constant (<span class="math inline">\(\tau\)</span>) and adjusted for the new gain crossover frequency (<span class="math inline">\(\omega_{gc}'\)</span>), a thorough check of the system’s performance is necessary. This step is to validate whether the adjustments have indeed realized the target phase margin.</p>
+</section>
+<section id="adjusting-for-safety-margin-epsilon" class="level3">
+<h3 class="anchored" data-anchor-id="adjusting-for-safety-margin-epsilon">Adjusting for Safety Margin (<span class="math inline">\(\epsilon\)</span>)</h3>
+<p>During the design, a safety margin (<span class="math inline">\(\epsilon\)</span>) is considered to account for uncertainties or approximations in calculations. If, upon verification, the actual phase margin achieved deviates from the target, adjustments may be needed.</p>
+<ul>
+<li><p><strong>If the phase margin is higher</strong> than the target (for example, achieving 42 or 43 degrees when the target is 40 degrees), this is generally acceptable. It indicates the system is potentially more stable than initially required, which is often beneficial.</p></li>
+<li><p><strong>If the phase margin is slightly lower</strong> (say, 38 or 39 degrees instead of 40 degrees), while not ideal, it might still be acceptable depending on the system’s overall performance and stability requirements.</p></li>
+</ul>
+<p>This flexibility in the design process acknowledges that while we strive to meet specific targets, practical considerations and the inherent complexity of dynamic systems may lead to slight deviations from these ideals.</p>
+</section>
+<section id="iterative-design-process" class="level3">
+<h3 class="anchored" data-anchor-id="iterative-design-process">Iterative Design Process</h3>
+<p>The design and optimization of a control system, especially when integrating components like lead compensators, is inherently iterative. After initial calculations and system adjustments:</p>
+<ol type="1">
+<li><p><strong>Perform simulations</strong> or generate Bode plots to assess how the compensator influences the system’s phase margin and bandwidth.</p></li>
+<li><p><strong>Evaluate the results</strong> against the desired specifications. If the system’s phase margin is within a reasonable range of the target, consider whether further adjustments are necessary.</p></li>
+<li><p><strong>Consider adjusting <span class="math inline">\(\epsilon\)</span></strong>, the safety margin, if initial results are not satisfactory. Increasing <span class="math inline">\(\epsilon\)</span> may provide additional buffer to achieve the desired phase margin, especially if initial assumptions were too conservative or if the system response varies from theoretical predictions.</p></li>
+</ol>
+</section>
+<section id="comment" class="level3">
+<h3 class="anchored" data-anchor-id="comment">Comment</h3>
+<ul>
+<li>If a phase margin of 40 degrees is required, why not aim for a larger margin, like 50 or 60 degrees, to increase system stability?</li>
+</ul>
+<section id="understanding-phase-margin-and-its-impact" class="level4">
+<h4 class="anchored" data-anchor-id="understanding-phase-margin-and-its-impact">Understanding Phase Margin and Its Impact</h4>
+<p>The phase margin is a measure of system stability, with a higher phase margin generally indicating a more stable system. However, increasing the phase margin beyond certain limits comes with trade-offs:</p>
+<ol type="1">
+<li><p><strong>Shift in Crossover Frequency</strong>: Increasing the phase margin typically involves shifting the gain crossover frequency ((_{gc})). The gain crossover frequency is a critical parameter that influences the system’s bandwidth. As the phase margin increases, the crossover frequency tends to decrease, which can reduce the system’s bandwidth.</p></li>
+<li><p><strong>Bandwidth Limitations</strong>: The system’s bandwidth determines how quickly it can respond to changes. A larger bandwidth allows for faster response but can also introduce more noise into the system, potentially affecting performance. There’s often a practical limit to how much bandwidth is beneficial or necessary for a given application.</p></li>
+<li><p><strong>Noise Filtering Considerations</strong>: High-bandwidth systems are more susceptible to noise, necessitating additional noise filtering measures. This can complicate the system design and potentially introduce more points of failure or inefficiency.</p></li>
+<li><p><strong>Trade-offs with Other Requirements</strong>: Designing a control system involves balancing various requirements, including stability, responsiveness, and noise immunity. Increasing the phase margin significantly may compromise other aspects of system performance, such as responsiveness or noise handling.</p></li>
+</ol>
+</section>
+<section id="design-philosophy-meeting-specifications-on-the-boundary" class="level4">
+<h4 class="anchored" data-anchor-id="design-philosophy-meeting-specifications-on-the-boundary">Design Philosophy: Meeting Specifications on the Boundary</h4>
+<ul>
+<li><p>In practice, when design specifications are given, the goal is usually to meet these specifications as closely as possible without exceeding them unnecessarily. This approach ensures that the system is optimized for the intended application without over-engineering for stability at the expense of other performance metrics. By designing to meet specifications on the boundary, engineers can provide adequate safety margins for stability while preserving system performance and efficiency.</p></li>
+<li><p>While aiming for a higher phase margin than required might seem like an effective way to ensure system stability, it’s essential to consider the associated trade-offs. The optimal design balances stability with performance, ensuring the system meets its intended function efficiently and effectively without unnecessary compromises. In cases where stability and bandwidth are both critical, a nuanced approach to system design is necessary to achieve the best overall performance.</p></li>
+</ul>
+</section>
+<section id="understanding-bandwidth-from-bode-and-nichols-charts" class="level4">
+<h4 class="anchored" data-anchor-id="understanding-bandwidth-from-bode-and-nichols-charts">Understanding Bandwidth from Bode and Nichols Charts</h4>
+<p><strong>Bandwidth and Bode Plot</strong>: The Bode plot is a fundamental tool in control system analysis, offering insights into how the system responds across different frequencies. While the gain crossover frequency (where the gain crosses the 0 dB line) hints at the system’s bandwidth, it doesn’t provide a complete picture. Bandwidth, which is the range of frequencies over which the system effectively operates, is influenced by how quickly the gain drops off beyond the crossover point.</p>
+<p><strong>Nichols Chart for Detailed Bandwidth Analysis</strong>: For a more precise determination of bandwidth, the Nichols chart is invaluable. It plots the system’s gain and phase together, allowing you to identify the -3 dB contour. The intersection of the system’s response curve with this -3 dB line gives a clear indication of the bandwidth. This method is particularly useful because it considers both gain and phase, offering a comprehensive view of the system’s frequency response.</p>
+</section>
+</section>
+<section id="the-design-cycle-and-adjustments" class="level3">
+<h3 class="anchored" data-anchor-id="the-design-cycle-and-adjustments">The Design Cycle and Adjustments</h3>
+<p>Designing a control system, such as incorporating a lead compensator, is an iterative process. It involves making initial calculations, implementing changes, and then verifying if those adjustments meet the design requirements.</p>
+<ul>
+<li><p><strong>Initial Adjustments and Verifications</strong>: After setting the compensator parameters, you should first verify if the phase margin meets the design goals. The phase margin is critical because it indicates the system’s stability margin. If it’s around the target value (e.g., 40 degrees), even if slightly higher or lower, the system is generally considered stable.</p></li>
+<li><p><strong>Nichols Chart for Bandwidth Verification</strong>: If the design also specifies a bandwidth requirement, translating the compensated system’s data onto the Nichols chart helps verify if the design meets this criterion. If the actual bandwidth differs from the requirement, you might need to adjust the compensator’s parameters.</p></li>
+</ul>
+</section>
+<section id="iterative-refinements-based-on-outcomes" class="level3">
+<h3 class="anchored" data-anchor-id="iterative-refinements-based-on-outcomes">Iterative Refinements Based on Outcomes</h3>
+<ul>
+<li><p><strong>Adjusting Safety Margin (<span class="math inline">\(\epsilon\)</span>)</strong>: The safety margin in the design accounts for uncertainties. If the phase margin or bandwidth isn’t satisfactory, consider adjusting this margin. For instance, increasing <span class="math inline">\(\epsilon\)</span> might provide a larger buffer to achieve the desired phase margin, but it’s essential to balance this against potential impacts on bandwidth.</p></li>
+<li><p><strong>Balancing Stability and Performance</strong>: It’s important to balance achieving a high phase margin with maintaining adequate bandwidth. A very high phase margin could unnecessarily restrict bandwidth, affecting the system’s responsiveness. Thus, aiming for specifications that meet the system’s operational requirements without excessive conservatism is key.</p></li>
+<li><p><strong>Feedback and Next Steps</strong>: Should the design not meet all requirements after initial adjustments, the process entails revisiting the design parameters. This might involve a more nuanced adjustment of the compensator parameters or even considering additional compensatory measures, like a lag compensator, to satisfy all criteria.</p></li>
+</ul>
+<hr>
+</section>
+<section id="sidebar---bandwidth-and-bode-plots" class="level3">
+<h3 class="anchored" data-anchor-id="sidebar---bandwidth-and-bode-plots">SIDEBAR - Bandwidth and Bode Plots</h3>
+<p>Using the Bode plot of the open-loop transfer function to determine the bandwidth of a control system can be misleading due to the fundamental differences between open-loop and closed-loop behaviors. Here’s why the open-loop Bode plot isn’t typically used to determine bandwidth:</p>
+</section>
+<section id="definition-of-bandwidth" class="level3">
+<h3 class="anchored" data-anchor-id="definition-of-bandwidth">1. <strong>Definition of Bandwidth</strong>:</h3>
+<p>Bandwidth is conventionally defined as the range of frequencies over which the closed-loop system maintains a certain level of performance, often measured as the frequency range within which the system’s gain stays within 3 dB of its low-frequency value. This concept inherently applies to how the system responds when it’s operating in a closed-loop configuration because it’s about the system’s ability to follow its input.</p>
+</section>
+<section id="feedback-effects" class="level3">
+<h3 class="anchored" data-anchor-id="feedback-effects">2. <strong>Feedback Effects</strong>:</h3>
+<p>Feedback significantly alters the system’s frequency response. An open-loop system might show a certain gain and phase characteristic that changes drastically once feedback is applied. The closed-loop response can exhibit reduced gain at high frequencies, improved stability margins, and altered resonance characteristics, none of which are apparent in the open-loop Bode plot.</p>
+</section>
+<section id="stability-and-performance" class="level3">
+<h3 class="anchored" data-anchor-id="stability-and-performance">3. <strong>Stability and Performance</strong>:</h3>
+<p>Closed-loop stability and performance metrics such as phase margin and gain margin are directly visible and measurable on the closed-loop Bode plot. These metrics are critical for understanding the system’s robustness and its ability to reject disturbances or handle variations in system dynamics. The open-loop Bode plot provides some predictive insight into these metrics, but it doesn’t show the actual closed-loop behavior.</p>
+</section>
+<section id="real-world-relevance" class="level3">
+<h3 class="anchored" data-anchor-id="real-world-relevance">4. <strong>Real-world Relevance</strong>:</h3>
+<p>The closed-loop configuration is what is actually implemented in most control systems to achieve desired performance and stability. Therefore, analyzing the Bode plot of the closed-loop system gives a more accurate and relevant depiction of how the system will perform in real-world conditions, including its bandwidth.</p>
+</section>
+<section id="misinterpretation-risk" class="level3">
+<h3 class="anchored" data-anchor-id="misinterpretation-risk">5. <strong>Misinterpretation Risk</strong>:</h3>
+<p>Relying solely on the open-loop Bode plot might lead to misinterpretations about the system’s ability to process signals across different frequencies. For example, an open-loop system might appear to have a wide bandwidth because of high gain at higher frequencies. However, once feedback is considered, the effective bandwidth (where the system accurately follows the input) might be significantly narrower due to the gain reduction introduced by feedback.</p>
+</section>
+<section id="conclusion" class="level3">
+<h3 class="anchored" data-anchor-id="conclusion">Conclusion:</h3>
+<p>While the open-loop Bode plot is valuable for designing and understanding certain aspects of control systems, such as potential stability and the general shape of the frequency response, it cannot accurately determine closed-loop bandwidth. Closed-loop analysis is essential for an accurate representation of system performance, making the closed-loop Bode plot the preferred tool for bandwidth determination and overall system analysis.</p>
+<p>— END OF SIDEBAR</p>
+<hr>
+</section>
+<section id="questions-for-reinforcement" class="level3">
+<h3 class="anchored" data-anchor-id="questions-for-reinforcement">Questions for Reinforcement</h3>
+<ol type="1">
+<li><strong>Pop-up Question</strong>: What is the primary purpose of a lead compensator in control system design?
+<ul>
+<li><strong>Answer</strong>: To improve the transient response of a system by introducing a phase lead, which can help meet desired performance specifications such as reduced overshoot and improved settling time.</li>
+</ul></li>
+<li><strong>Pop-up Question</strong>: How does the parameter <span class="math inline">\(\alpha\)</span> affect the performance of a lead compensator?
+<ul>
+<li><strong>Answer</strong>: The parameter <span class="math inline">\(\alpha\)</span> controls the separation between the pole and zero of the compensator. A smaller <span class="math inline">\(\alpha\)</span> value increases the distance between the pole and zero, enhancing the compensator’s phase-lead characteristic and its impact on system performance.</li>
+</ul></li>
+</ol>
+<hr>
+</section>
+</section>
+<section id="chapter-on-lag-compensators" class="level2">
+<h2 class="anchored" data-anchor-id="chapter-on-lag-compensators">Chapter on Lag Compensators</h2>
+<p>After having discussed the lead compensators, we now turn our attention to their counterparts: lag compensators. While lead compensators are designed to improve the transient response by adding phase lead, lag compensators serve a different purpose. <strong>They are primarily used to enhance the steady-state accuracy of a control system without significantly degrading its transient performance.</strong></p>
+</section>
+<section id="the-principle-of-lag-compensation" class="level2">
+<h2 class="anchored" data-anchor-id="the-principle-of-lag-compensation">The Principle of Lag Compensation</h2>
+<p>Lag compensators are characterized by a transfer function that introduces a phase lag over a specific frequency range. This is achieved by adding a pole-zero pair to the system, where the pole is placed closer to the origin on the s-plane than the zero. The general form of a lag compensator’s transfer function can be represented as:</p>
+<p><span class="math display">\[ D(s) = \frac{\tau s + 1}{\beta \tau s + 1} \]</span></p>
+<p>where <span class="math inline">\(\tau &gt; 0\)</span> and <span class="math inline">\(\beta &gt; 1\)</span>. The factor <span class="math inline">\(\beta\)</span> determines the distance between the pole and the zero, with larger values indicating a greater separation.</p>
+
+
+
+<img src="./pics/30_Compensator_Design_Using_Frequency_Response_Plots_lag_compensator.png" alt="30_Compensator_Design_Using_Frequency_Response_Plots_lag_compensator" style="width:550px;">
+
+
+
+<section id="frequency-domain-analysis-of-lag-compensators" class="level3">
+<h3 class="anchored" data-anchor-id="frequency-domain-analysis-of-lag-compensators">Frequency Domain Analysis of Lag Compensators</h3>
+<div id="fc1aee9a" class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Import necessary libraries</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy <span class="im">import</span> signal</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ipywidgets <span class="im">import</span> interact, FloatSlider</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to plot the Bode plot of the lag compensator with annotations</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_lag_compensator_with_annotations(tau<span class="op">=</span><span class="fl">1.0</span>, beta<span class="op">=</span><span class="fl">2.0</span>):</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Define the transfer function of the lag compensator</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    numerator <span class="op">=</span> [tau, <span class="dv">1</span>]</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    denominator <span class="op">=</span> [tau<span class="op">*</span>beta, <span class="dv">1</span>]</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    system <span class="op">=</span> signal.TransferFunction(numerator, denominator)</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Generate Bode plot data</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    frequencies <span class="op">=</span> np.logspace(<span class="op">-</span><span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">400</span>)</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    w, mag, phase <span class="op">=</span> signal.bode(system, w<span class="op">=</span>frequencies)</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Calculate corner frequencies</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    corner_freq_zero <span class="op">=</span> <span class="dv">1</span><span class="op">/</span>tau</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>    corner_freq_pole <span class="op">=</span> <span class="dv">1</span><span class="op">/</span>(tau<span class="op">*</span>beta)</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Plotting</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    plt.figure(figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">6</span>))</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>    <span class="co">## Magnitude plot</span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>    plt.subplot(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>)</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>    plt.semilogx(w, mag) <span class="co"># Bode magnitude plot</span></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="st">'Magnitude Plot of Lag Compensator'</span>)</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="st">'Frequency [rad/s]'</span>)</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>    plt.ylabel(<span class="st">'Magnitude [dB]'</span>)</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>    plt.grid(which<span class="op">=</span><span class="st">'both'</span>, axis<span class="op">=</span><span class="st">'both'</span>)</span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Annotations for magnitude plot</span></span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>    plt.axvline(x<span class="op">=</span>corner_freq_zero, color<span class="op">=</span><span class="st">'r'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>    plt.axvline(x<span class="op">=</span>corner_freq_pole, color<span class="op">=</span><span class="st">'g'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>    plt.text(corner_freq_zero, <span class="bu">min</span>(mag), <span class="vs">r'$\frac</span><span class="sc">{1}</span><span class="vs">{\tau}$'</span>, horizontalalignment<span class="op">=</span><span class="st">'right'</span>, color<span class="op">=</span><span class="st">'red'</span>)</span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>    plt.text(corner_freq_pole, <span class="bu">min</span>(mag), <span class="vs">r'$\frac</span><span class="sc">{1}</span><span class="vs">{\beta\tau}$'</span>, horizontalalignment<span class="op">=</span><span class="st">'right'</span>, color<span class="op">=</span><span class="st">'green'</span>)</span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>    <span class="co">## Phase plot</span></span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>    plt.subplot(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>)</span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>    plt.semilogx(w, phase) <span class="co"># Bode phase plot</span></span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="st">'Phase Plot of Lag Compensator'</span>)</span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="st">'Frequency [rad/s]'</span>)</span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>    plt.ylabel(<span class="st">'Phase [degrees]'</span>)</span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>    plt.grid(which<span class="op">=</span><span class="st">'both'</span>, axis<span class="op">=</span><span class="st">'both'</span>)</span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Annotations for phase plot</span></span>
+<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>    plt.axvline(x<span class="op">=</span>corner_freq_zero, color<span class="op">=</span><span class="st">'r'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span>
+<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>    plt.axvline(x<span class="op">=</span>corner_freq_pole, color<span class="op">=</span><span class="st">'g'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span>
+<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>    plt.text(corner_freq_zero, <span class="bu">min</span>(phase), <span class="vs">r'$\frac</span><span class="sc">{1}</span><span class="vs">{\tau}$'</span>, horizontalalignment<span class="op">=</span><span class="st">'right'</span>, color<span class="op">=</span><span class="st">'red'</span>)</span>
+<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>    plt.text(corner_freq_pole, <span class="bu">min</span>(phase), <span class="vs">r'$\frac</span><span class="sc">{1}</span><span class="vs">{\beta\tau}$'</span>, horizontalalignment<span class="op">=</span><span class="st">'right'</span>, color<span class="op">=</span><span class="st">'green'</span>)</span>
+<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a>    plt.show()</span>
+<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a><span class="co"># Interactive widget</span></span>
+<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a>interact(plot_lag_compensator_with_annotations, </span>
+<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a>         tau<span class="op">=</span>FloatSlider(value<span class="op">=</span><span class="fl">1.0</span>, <span class="bu">min</span><span class="op">=</span><span class="fl">0.1</span>, <span class="bu">max</span><span class="op">=</span><span class="fl">10.0</span>, step<span class="op">=</span><span class="fl">0.1</span>, description<span class="op">=</span><span class="st">'Tau (τ)'</span>),</span>
+<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a>         beta<span class="op">=</span>FloatSlider(value<span class="op">=</span><span class="fl">2.0</span>, <span class="bu">min</span><span class="op">=</span><span class="fl">1.01</span>, <span class="bu">max</span><span class="op">=</span><span class="fl">10.0</span>, step<span class="op">=</span><span class="fl">0.05</span>, description<span class="op">=</span><span class="st">'Beta (β)'</span>))<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"7ba857eff16046b290f8d4ddd58ea5c8","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+</script>
+</div>
+</div>
+<section id="magnitude-response" class="level4">
+<h4 class="anchored" data-anchor-id="magnitude-response">Magnitude Response</h4>
+<p>The Bode plot for a lag compensator reveals how it affects the system’s frequency response.</p>
+<p>The first corner frequency occurs at <span class="math inline">\(\omega = \frac{1}{\beta \tau}\)</span>, corresponding to the pole, and results in a decrease in magnitude.</p>
+<p>The second corner frequency, at <span class="math inline">\(\omega = \frac{1}{\tau}\)</span>, corresponds to the zero, partially compensating for the decrease. However, the net effect over the entire frequency range is minimal, except for the phase lag introduced.</p>
+</section>
+<section id="phase-response" class="level4">
+<h4 class="anchored" data-anchor-id="phase-response">Phase Response</h4>
+<p>The phase plot of a lag compensator showcases its primary characteristic: the introduction of phase lag within a certain frequency range. This lagging effect is most pronounced between the pole and zero frequencies, after which the system’s phase response begins to normalize.</p>
+<p><strong>Pop-up Question</strong>: What is the main use of a lag compensator in control systems? - <strong>Answer</strong>: A lag compensator is mainly used to improve the steady-state error of a control system without significantly affecting its transient response. It introduces a phase lag that is carefully managed to avoid negative impacts on the system’s overall performance.</p>
+</section>
+</section>
+<section id="design-considerations-and-application" class="level3">
+<h3 class="anchored" data-anchor-id="design-considerations-and-application">Design Considerations and Application</h3>
+<p>When designing a lag compensator, one must carefully select the values of <span class="math inline">\(\tau\)</span> and <span class="math inline">\(\beta\)</span> to achieve the desired steady-state performance without compromising the system’s stability or responsiveness. The goal is to enhance the system’s gain at low frequencies (for improved steady-state accuracy) while maintaining an acceptable phase margin.</p>
+<p>In practice this means that we will not be using the lag part to be important for our compensation. For this reason, we do not need to understand exactly when the maximum lag will occur.</p>
+</section>
+<section id="design-example-enhancing-phase-margin-and-bandwidth" class="level3">
+<h3 class="anchored" data-anchor-id="design-example-enhancing-phase-margin-and-bandwidth">Design Example: Enhancing Phase Margin and Bandwidth</h3>
+<p>Consider a system with a transfer function</p>
+<p><span class="math display">\[G(s) = \frac{K}{s(s+1)(s+4)}\]</span></p>
+<p>that we can re-write as:</p>
+<p><span class="math display">\[G(j\omega) = \frac{K/4}{j\omega(j\omega + 1)(0.25j\omega + 1)}\]</span></p>
+<p>where the design objectives include a phase margin of <span class="math inline">\(\phi_{pm}=43^\circ\)</span>, a bandwidth of <span class="math inline">\(\omega_b=1.02\)</span> radians per second, and a velocity error constant <span class="math inline">\(K_v \geq 5\)</span>.</p>
+<p><strong>Step 1: Satisfying <span class="math inline">\(K_v\)</span> Requirement</strong></p>
+<p>The first step involves adjusting the system gain <span class="math inline">\(K\)</span> to meet the <span class="math inline">\(K_v\)</span> requirement. For instance, if <span class="math inline">\(K_v = 5\)</span> dictates <span class="math inline">\(K = 20\)</span>, the modified transfer function becomes:</p>
+<p><span class="math display">\[G(j\omega) = \frac{5}{j\omega(j\omega + 1)(0.25j\omega + 1)}\]</span></p>
+<p><strong>Step 2: Asymptotic Sketch and Phase Margin Adjustment</strong></p>
+<p>An asymptotic sketch of the uncompensated system helps visualize the necessary adjustments.</p>
+<p>It is easy to draw the Bode plots (corner frequencies are <span class="math inline">\(\omega=1\)</span> and <span class="math inline">\(\omega=4\)</span>.</p>
+<div id="b39e53d5" class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the polynomials as sequences of coefficients</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># For s, the polynomial is s, represented as [1, 0]</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># For s + 1, the polynomial is represented as [1, 1]</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co"># For 0.25s + 1, the polynomial is represented as [0.25, 1]</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Perform polynomial multiplication</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>result_poly <span class="op">=</span> np.polymul([<span class="dv">1</span>, <span class="dv">0</span>], [<span class="dv">1</span>, <span class="dv">1</span>])  <span class="co"># Multiply s and (s + 1)</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>result_poly <span class="op">=</span> np.polymul(result_poly, [<span class="fl">0.25</span>, <span class="dv">1</span>])  <span class="co"># Multiply the result by (0.25s + 1)</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the resulting polynomial</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"The resulting polynomial coefficients are:"</span>, result_poly)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>The resulting polynomial coefficients are: [0.25 1.25 1.   0.  ]</code></pre>
+</div>
+</div>
+<div id="aed7bd35" class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> control</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the transfer function G(s) = 5 / (s(s + 1)(0.25s + 1))</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>numerator <span class="op">=</span> [<span class="dv">5</span>]</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>denominator <span class="op">=</span> [<span class="fl">0.25</span>, <span class="fl">1.25</span>, <span class="fl">1.</span>,   <span class="fl">0.</span>]  <span class="co"># Corresponds to 0.25s^3 + 1.25s^2 + s</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>G_s <span class="op">=</span> control.TransferFunction(numerator, denominator)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate Bode plot with margins</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>mag, phase, omega <span class="op">=</span> control.bode(G_s, dB<span class="op">=</span><span class="va">True</span>, Plot<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate margins for annotation</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>gm, pm, sm, gc <span class="op">=</span> control.margin(G_s)</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>pm_deg <span class="op">=</span> pm <span class="cf">if</span> pm <span class="op">&gt;</span> <span class="dv">0</span> <span class="cf">else</span> pm <span class="op">+</span> <span class="dv">360</span>  <span class="co"># Ensure phase margin is positive for display</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">7</span>))</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="co">## Magnitude plot</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>)</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>plt.semilogx(omega, <span class="dv">20</span><span class="op">*</span>np.log10(mag))</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Magnitude Plot'</span>)</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Frequency (rad/s)'</span>)</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Magnitude (dB)'</span>)</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a><span class="co">## Phase plot</span></span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>)</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>plt.semilogx(omega, np.rad2deg(phase))</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Phase Plot'</span>)</span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Frequency (rad/s)'</span>)</span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Phase (degrees)'</span>)</span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the phase margin on the plot</span></span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>plt.axhline(y <span class="op">=</span> <span class="op">-</span><span class="dv">180</span> <span class="op">+</span> pm_deg, color <span class="op">=</span> <span class="st">'r'</span>, linestyle <span class="op">=</span> <span class="st">'--'</span>)</span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>plt.text(gc, <span class="op">-</span><span class="dv">180</span> <span class="op">+</span> pm_deg <span class="op">+</span> <span class="dv">5</span>, <span class="ss">f'Phase Margin: </span><span class="sc">{</span>pm_deg<span class="sc">:.2f}</span><span class="ss">° at ω = </span><span class="sc">{</span>gc<span class="sc">:.2f}</span><span class="ss"> rad/s'</span>, color <span class="op">=</span> <span class="st">'red'</span>)</span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the phase margin value</span></span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Phase Margin: </span><span class="sc">{</span>pm_deg<span class="sc">:.2f}</span><span class="ss">° at ω = </span><span class="sc">{</span>gc<span class="sc">:.2f}</span><span class="ss"> rad/s"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="31_Compensator_Design_Using_Frequency_Response_Plots_files/figure-html/cell-7-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Phase Margin: 0.00° at ω = 2.00 rad/s</code></pre>
+</div>
+</div>
+<p>where the phase angle curve is:</p>
+<p><span class="math display">\[
+\phi = -90 - tan^{-1}(\omega) - tan^{-1}(0.25\omega)
+\]</span></p>
+<p>To increase the phase margin to the required <span class="math inline">\(43^\circ\)</span>, one might consider shifting the low-frequency region of the Bode plot downwards. This approach hints at utilizing a lag compensator to pull the gain crossover frequency to the left, thereby increasing the phase margin.</p>
+<p><strong>Pop-up Question</strong>: Why is it preferable to place the maximum attenuation of a lag compensator at the low-frequency region? - <strong>Answer</strong>: Placing the maximum attenuation at the low frequency ensures that the steady-state gain of the system is increased without significantly affecting the high-frequency gain. This strategy improves the system’s phase margin by ensuring that the gain crossover frequency shifts leftward, aligning with the desired phase margin improvement.</p>
+<p>Note that the phase margin means that the system, with the selected <span class="math inline">\(K\)</span>, has become unstable.</p>
+</section>
+<section id="step-3.-incorporating-the-lag-compensator" class="level3">
+<h3 class="anchored" data-anchor-id="step-3.-incorporating-the-lag-compensator">Step 3. Incorporating the Lag Compensator</h3>
+<p>The crux of lag compensation lies in strategically introducing phase lag at low frequencies without excessively diminishing the bandwidth.</p>
+<p>This is accomplished by ensuring the compensator’s corner frequency is positioned judiciously relative to the desired phase margin frequency.</p>
+<p>The <strong>crossover frequency</strong> is where the system’s gain crosses a certain threshold, typically the 0 dB line. This frequency is a cornerstone in determining the system’s phase margin and bandwidth.</p>
+<section id="lag-compensator-reducing-bandwidth" class="level4">
+<h4 class="anchored" data-anchor-id="lag-compensator-reducing-bandwidth">Lag Compensator: Reducing Bandwidth</h4>
+<p>A lag compensator is employed to improve the system’s steady-state error without significantly degrading its transient response. However, it introduces a phase lag and decreases the system’s gain at higher frequencies. This decrease in gain at higher frequencies causes the gain crossover frequency to shift left (towards lower frequencies), inherently reducing the system’s bandwidth.</p>
+<p><strong>Key Points</strong>: - <strong>Phase Lag</strong>: Lag compensators introduce a phase lag, predominantly affecting lower frequency ranges. - <strong>Decrease in Bandwidth</strong>: By pulling down the low-frequency region of the gain plot, the gain crossover frequency decreases, leading to a reduction in bandwidth. This also makes it possible to improve the phase margin.</p>
+</section>
+<section id="lead-compensator-increasing-bandwidth" class="level4">
+<h4 class="anchored" data-anchor-id="lead-compensator-increasing-bandwidth">Lead Compensator: Increasing Bandwidth</h4>
+<p>Conversely, a lead compensator aims to improve the transient response by introducing a phase lead. This compensator increases the system’s gain at higher frequencies, causing the gain crossover frequency to shift right (towards higher frequencies), effectively increasing the system’s bandwidth.</p>
+<p><strong>Key Points</strong>: - <strong>Phase Lead</strong>: Lead compensators introduce a phase lead, beneficial for improving system stability. - <strong>Increase in Bandwidth</strong>: Elevating the gain in the high-frequency region shifts the crossover frequency rightward, enhancing the bandwidth.</p>
+</section>
+<section id="a-general-guideline-to-choose-the-compensators" class="level4">
+<h4 class="anchored" data-anchor-id="a-general-guideline-to-choose-the-compensators">A General Guideline to Choose the Compensators</h4>
+<p>When faced with a design problem, choosing between a lag or lead compensator depends on the existing system characteristics and the desired outcomes:</p>
+<ul>
+<li><strong>Evaluating the Uncompensated System</strong>: Begin by analyzing the uncompensated system’s bandwidth. If it’s significantly higher or lower than required, this analysis will guide the choice between adding a lag or lead compensator.</li>
+<li><strong>Balancing Phase Margin and Bandwidth</strong>: In scenarios where both the phase margin and bandwidth do not meet the design criteria, a dual approach is adopted—first employing a lag compensator to adjust the phase margin, followed by a lead compensator to rectify the bandwidth.</li>
+</ul>
+<section id="a-dual-compensator-approach" class="level5">
+<h5 class="anchored" data-anchor-id="a-dual-compensator-approach">A Dual-Compensator Approach</h5>
+<p>For comprehensive system tuning, it’s feasible to divide the phase margin requirement into two segments—addressed by both lag and lead compensators. This dual-compensator approach allows for a nuanced tuning process, ensuring both stability (through phase margin adjustment) and responsiveness (through bandwidth optimization) are achieved.</p>
+<p>In this case: - We start from the design of the lag compensator, which meets the phase margin requirements - Add lead section to increase the bandwidth</p>
+<ul>
+<li><strong>Split Phase Margin Requirement</strong>: If a total phase margin of 60 degrees is needed, you might use a lag compensator to achieve the first 30 degrees, adjusting the gain crossover frequency and slightly impacting the bandwidth. Subsequently, a lead compensator can be employed to attain the remaining 30 degrees, ideally restoring or enhancing the bandwidth to meet the system requirements.</li>
+</ul>
+</section>
+</section>
+</section>
+<section id="selecting-the-corner-frequency" class="level3">
+<h3 class="anchored" data-anchor-id="selecting-the-corner-frequency">Selecting the Corner Frequency</h3>
+
+
+
+<img src="./pics/30_Compensator_Design_Using_Frequency_Response_Plots_lag_compensator_1.png" alt="30_Compensator_Design_Using_Frequency_Response_Plots_lag_compensator_1" style="width:550px;">
+
+
+
+<ul>
+<li>We want to new crossover frequency where the lag compensator provides the maximum attentuation (it is possible to verify that the maximum attenuation is: <span class="math inline">\(20\log{\beta})\)</span>.</li>
+<li>The region of maximum attenuator however extends from <span class="math inline">\(\frac{1}{\tau}\)</span> to infinity. So what point should we take?</li>
+</ul>
+<p>Lag compensators inherently introduce a phase lag, particularly noticeable at the corner frequency where the compensator’s effect transitions from minimal to significant. This phase lag can detract from the system’s overall phase margin, leading to less stability than intended. For example, aiming directly for a 43-degree phase margin without accounting for this phase lag could result in an actual margin lower than anticipated, such as 35 degrees, due to the negative contribution of the compensator.</p>
+</section>
+<section id="strategy-for-addressing-phase-lag" class="level3">
+<h3 class="anchored" data-anchor-id="strategy-for-addressing-phase-lag">Strategy for Addressing Phase Lag</h3>
+<p>To counteract the unexpected reduction in phase margin due to the compensator’s phase lag, the design process involves considering an additional safety margin (denoted as epsilon, <span class="math inline">\(\epsilon\)</span>) on top of the desired phase margin. This approach means aiming for a higher phase margin during the design phase to ensure that, even after accounting for the phase lag introduced by the compensator, the system achieves the intended phase margin.</p>
+<section id="example-implementation" class="level4">
+<h4 class="anchored" data-anchor-id="example-implementation">Example Implementation</h4>
+<p>In the given scenario, to achieve an effective phase margin of 43 degrees, the designer considers a safety margin of 12 degrees, leading to a target phase margin of 55 degrees before compensator effects. This adjusted target compensates for the phase lag introduced by the compensator, ensuring the final design meets the original stability requirements.</p>
+</section>
+</section>
+<section id="practical-considerations" class="level3">
+<h3 class="anchored" data-anchor-id="practical-considerations">Practical Considerations</h3>
+<ul>
+<li><strong>Realization Challenges</strong>: Additionally there are practical challenge of realizing specific compensator values, particularly <span class="math inline">\(1/\tau\)</span> and <span class="math inline">\(1/\beta\tau\)</span>, using real components (like resistors and capacitors). Extreme values for these parameters could complicate the physical implementation of the compensator and this limits in practice their maximum value.</li>
+</ul>
+</section>
+<section id="choosing-the-corner-frequency" class="level3">
+<h3 class="anchored" data-anchor-id="choosing-the-corner-frequency">Choosing the Corner Frequency</h3>
+<p>A strategic decision involves setting the corner frequency for the compensator’s effect.</p>
+<p>The guideline is to place this frequency approximately two octaves below the frequency associated with the desired phase margin, based on a qualitative assessment rather than a strict formula. This rule of thumb helps balance between achieving the necessary phase margin adjustment and maintaining practical component values for the compensator.</p>
+<p>The guideline suggests positioning this frequency approximately two octaves below the frequency where a phase margin of <span class="math inline">\(43^\circ + \epsilon\)</span> is desired (<strong>each octave provides a frequency ratio of 2:1</strong>), with <span class="math inline">\(\epsilon\)</span> representing a safety margin to account for the inherent phase lag introduced by the compensator.</p>
+<p>In our example, aiming for a phase margin of <span class="math inline">\(55^\circ\)</span> (i.e., <span class="math inline">\(43^\circ + 12^\circ\)</span>) leads to identifying <span class="math inline">\(0.52\)</span> radians per second as the critical frequency. Consequently, the corner frequency is set to <span class="math inline">\(\frac{1}{\tau} = \frac{0.52}{4} = 0.13\)</span> radians per second, fulfilling our qualitative guideline.</p>
+<p>Trial and error might be required.</p>
+<section id="choosing-beta" class="level4">
+<h4 class="anchored" data-anchor-id="choosing-beta">Choosing <span class="math inline">\(\beta\)</span></h4>
+<p>With the corner frequency established, the next step involves calculating the compensator’s parameters, <span class="math inline">\(\tau\)</span> and <span class="math inline">\(\beta\)</span>, to achieve the desired attenuation at the specified frequency. In this context, achieving a <span class="math inline">\(20\)</span> dB attenuation dictates that <span class="math inline">\(\beta = 10\)</span>:</p>
+<ul>
+<li>The second parameter of the compensator comes from the maximum attenuation: <span class="math inline">\(20\log{\beta}\)</span>.</li>
+<li>We want that at point <span class="math inline">\(0.13\)</span> the gain plot attenuates approximately <span class="math inline">\(20\)</span> db</li>
+</ul>
+<p><span class="math display">\[20\log{\beta} = 20 \rightarrow \beta = 10\]</span></p>
+
+
+
+<img src="./pics/30_Compensator_Design_Using_Frequency_Response_Plots_lag_compensator_2a.png" alt="30_Compensator_Design_Using_Frequency_Response_Plots_lag_compensator_2" style="width:550px;">
+
+
+
+<p>And hence the compensator parameters are:</p>
+<ul>
+<li><span class="math inline">\(\tau = 1/0.13=7.7\)</span></li>
+<li><span class="math inline">\(\beta\tau = 10 \cdot 7.7 = 77\)</span></li>
+</ul>
+<p><span class="math display">\[D(s) = \frac{7.7s + 1}{77s + 1}\]</span></p>
+</section>
+<section id="step-4.-validation-and-iteration" class="level4">
+<h4 class="anchored" data-anchor-id="step-4.-validation-and-iteration">Step 4. Validation and Iteration</h4>
+<p>The final design phase entails validating the compensator’s effectiveness by integrating <span class="math inline">\(D(s)\)</span> with the original system and analyzing the combined system’s Bode plot. This step verifies whether the adjusted phase margin and bandwidth meet the design specifications.</p>
+<section id="evaluating-the-impact-of-phase-lag" class="level5">
+<h5 class="anchored" data-anchor-id="evaluating-the-impact-of-phase-lag">Evaluating the Impact of Phase Lag</h5>
+<ul>
+<li><strong>Assessing Phase Margin</strong>: A key outcome of this analysis is observing the effect of the lag compensator on the system’s phase margin. The phase lag introduced by <span class="math inline">\(D(s)\)</span> can potentially reduce the phase margin, which is critical for system stability. An adequate safety margin (<span class="math inline">\(\epsilon\)</span>) is considered to ensure that the desired phase margin (e.g., 43 degrees) is achieved despite the inherent phase lag of the lag compensator.</li>
+<li><strong>Adjusting <span class="math inline">\(\epsilon\)</span></strong>: The value of <span class="math inline">\(\epsilon\)</span> is finely tuned based on the Bode plot analysis to ensure that the actual phase margin closely aligns with the target phase margin. This process might require iterative adjustments based on observed outcomes.</li>
+</ul>
+</section>
+</section>
+</section>
+<section id="bandwidth-considerations" class="level3">
+<h3 class="anchored" data-anchor-id="bandwidth-considerations">Bandwidth Considerations</h3>
+<ul>
+<li><strong>Analyzing Bandwidth</strong>: Another significant aspect checked after incorporating <span class="math inline">\(D(s)\)</span> is the system’s bandwidth, particularly how it’s affected by the lag compensator. The gain crossover frequency, where the system’s gain crosses 0 dB, helps determine the bandwidth.</li>
+<li><strong>Making Adjustments</strong>: If the resulting bandwidth slightly deviates from the desired bandwidth, minor adjustments to <span class="math inline">\(\epsilon\)</span> or other compensator parameters might suffice to align the bandwidth with the requirements.</li>
+<li><strong>Addressing Significant Discrepancies</strong>: A substantial gap between the achieved and desired bandwidth may indicate the need for additional compensatory measures. This scenario suggests that the system, even with <span class="math inline">\(D(s)\)</span> incorporated, might still lack the required performance, prompting the design to be treated as if it were “uncompensated” or in need of further compensation.</li>
+</ul>
+</section>
+<section id="integrating-a-lead-compensator" class="level3">
+<h3 class="anchored" data-anchor-id="integrating-a-lead-compensator">Integrating a Lead Compensator</h3>
+<ul>
+<li><strong>Expanding the Compensatory Approach</strong>: For cases where the lag compensator alone doesn’t meet all performance criteria, particularly bandwidth, introducing a lead compensator might be necessary. This addition aims to complement the lag compensator by enhancing the system’s bandwidth, thus achieving a balanced performance that meets both phase margin and bandwidth requirements.</li>
+</ul>
+<p><strong>Pop-up Question</strong>: Why is it crucial to add a safety margin (<span class="math inline">\(\epsilon\)</span>) when designing a lag compensator? - <strong>Answer</strong>: The safety margin accounts for uncertainties and non-idealities in the system’s response, ensuring the compensator achieves the desired phase margin even when unforeseen variations occur.</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script type="application/vnd.jupyter.widget-state+json">
+{"state":{},"version_major":2,"version_minor":0}
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/andreamunafo\.github\.io\/principles-of-automatic-controls");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/andreamunafo/principles-of-automatic-controls/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

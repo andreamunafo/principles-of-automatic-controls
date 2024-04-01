@@ -1,0 +1,2124 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.552">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>principles-of-automatic-controls - Precisione dello stato stazionario e principi di progettazione</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+<script src="https://unpkg.com/@jupyter-widgets/html-manager@*/dist/embed-amd.js" crossorigin="anonymous"></script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+<meta property="og:title" content="principles-of-automatic-controls - Precisione dello stato stazionario e principi di progettazione">
+<meta property="og:description" content="Course in feedback control for the University of Pisa">
+<meta property="og:site_name" content="principles-of-automatic-controls">
+<meta name="twitter:title" content="principles-of-automatic-controls - Precisione dello stato stazionario e principi di progettazione">
+<meta name="twitter:description" content="Course in feedback control for the University of Pisa">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">principles-of-automatic-controls</span>
+    </a>
+  </div>
+        <div class="quarto-navbar-tools tools-end">
+</div>
+          <div id="quarto-search" class="" title="Search"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../IT_🇮🇹/faq_it.html">IT_🇮🇹</a></li><li class="breadcrumb-item"><a href="../IT_🇮🇹/steady_state_accuracy_and_design_principles_it.html">Precisione dello stato stazionario e principi di progettazione</a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Feedback Control</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../faq.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Frequently Asked Questions (FAQ)</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../syllabus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Syllabus for “Principles of Automatic Control”</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../toc.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Table of Contents</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../update_and_manage_local_changes_guide.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A Guide to Updating Your Local Repository with Git in Anaconda’s Virtual Environment</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../getting_started_with_python_and_jupyter_notebook.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Getting Started with Python and Jupyter Notebooks</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principles of Automatic Control</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../basics_of_feedback_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Feedback Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../introduction_to_control_problem.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to the control problem</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../dynamic_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modeling in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../dynamic_response.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Dynamic response of control systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../06_inverse_laplace_transform.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Inverse Laplace Transform: Partial fraction decomposition</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../modeling_dynamic_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Modeling of Dynamic Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../control_system_components.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Control System Components</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../models_of_control_devices_and_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Models of Controlled Devices</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../hardware_and_case_studies.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Hardware of Control Systems and Case Studies</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ac_hardware_and_case_studies.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">AC Motion Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../a_first_complete_application.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A Feedback Control System</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../principles_of_feedback_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principles of Feedback Control</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../feedback_systems_and_their_effects.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Feedback systems and their effects</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../introduction_to_control_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../stability.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Stability Analysis in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../stability_and_routh_criterion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Stability Analysis in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../performance_of_feedback_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Performance of Feedback Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../design_of_feedback_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Design Cycle for a Standard Second-Order System</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../20_Design_of_feedback_control_continued.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Understanding the Standard Second-Order System: Recap</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../steady_state_accuracy_and_design_principles.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Steady State Accuracy and Design Principles</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../compensator_design_using_root_locus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compensator Design</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../design_with_the_root_locus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Design with the Root Locus</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../compensators_and_root_locus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compensators and the Root Locus</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../introduction_to_frequency_domain_analysis_in_control_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Frequency Domain Analysis in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../application_of_nyquist_stability_criterion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Application of Nyquist Stability Criterion in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../the_nyquist_stability_criterion_and_relative_stability.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The Nyquist Stability Criterion and Relative Stability</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../bode_plots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Bode Plot Analysis</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../feedback_system_performance_based_on_frequency_response.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Feedback System Performance Based On Frequency Response</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../compensator_design_using_frequency_response_plots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principles of Automatic Control: Lead and Lag Compensation</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">IT_TCLab_🇮🇹</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/spacecraft_thermal_control_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Il Laboratorio di Controllo della Temperatura</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/tclab_exercises_report_template_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modello di report sugli esercizi TCLab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/tclab_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Il Laboratorio di Controllo della Temperatura</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/understanding_tclab_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Comprendere TCLab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/tclab_lab_1_coding_a_relay_controller_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 1: Codifica di un controller relè</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/system_model_and_identification_tclab_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modellazione del sistema</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/step_testing_tclab_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Passo Test</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/fitting_step_test_data_to_empirical_models_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Adattamento dei dati dei test di fase ai modelli empirici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/tclab_lab_2_model_identification_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 2: Identificazione del modello</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/tclab_lab_2_fitting_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Identificazione del modello: adattamento dei modelli ai dati</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/relay_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Controllo relè</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/pid_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Controllo PID</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/lab-assignment-pid-control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compito di laboratorio: Controllo PID</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/lab-assignment-pi-control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compito di laboratorio 4: Controllo PI</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">IT_🇮🇹</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/faq_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Domande frequenti (FAQ)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/syllabus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Programma del corso “Principi del controllo automatico”</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/update_and_manage_local_changes_guide_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Aggiornare il Proprio Repository Locale Mantenendo le Modifiche Locali</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/getting_started_with_python_and_jupyter_notebook_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Guida introduttiva ai notebook Python e Jupyter</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/intro_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principi di controllo automatico</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/basics_of_feedback_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione ai sistemi di controllo del feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/introduction_to_control_problem_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione al problema del controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/dynamic_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modellazione nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/dynamic_response_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Risposta dinamica dei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/06_inverse_laplace_transform_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Trasformata di Laplace inversa: scomposizione parziale di frazioni</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/modeling_dynamic_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione alla modellazione dei sistemi dinamici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/control_system_components_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Componenti del sistema di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/models_of_control_devices_and_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modelli di dispositivi controllati</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/hardware_and_case_studies_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Hardware dei sistemi di controllo e casi di studio</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/ac_hardware_and_case_studies_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sistemi di controllo del movimento CA</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/a_first_complete_application_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Un sistema di controllo del feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/principles_of_feedback_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principi di controllo del feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/feedback_systems_and_their_effects_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sistemi di feedback e loro effetti</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/introduction_to_control_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione ai sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/stability_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analisi di stabilità nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/stability_and_routh_criterion_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analisi di stabilità nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/performance_of_feedback_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prestazioni dei sistemi di feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/design_of_feedback_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Ciclo di progettazione per un sistema standard del secondo ordine</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/20_Design_of_feedback_control_continued_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Comprensione del sistema standard del secondo ordine: riepilogo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/steady_state_accuracy_and_design_principles_it.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Precisione dello stato stazionario e principi di progettazione</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/compensator_design_using_root_locus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Progettazione del compensatore</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/design_with_the_root_locus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Progettare con il luogo delle radici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/compensators_and_root_locus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compensatori e luogo delle radici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/introduction_to_frequency_domain_analysis_in_control_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione all’analisi nel dominio della frequenza nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/application_of_nyquist_stability_criterion_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Applicazione del criterio di stabilità di Nyquist nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/the_nyquist_stability_criterion_and_relative_stability_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Il criterio di stabilità di Nyquist e la stabilità relativa</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/bode_plots_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analisi del diagramma di Bode</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/feedback_system_performance_based_on_frequency_response_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prestazioni del sistema di feedback basate sulla risposta in frequenza</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/index_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Syllabus - Fondamenti di Automatica</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">TCLab</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/spacecraft_thermal_control_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The Temperature Control Laboratory</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/tclab_exercises_report_template.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Exercises Report Template</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The Temperature Control Lab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/understanding_tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Understanding TCLab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/tclab_lab_1_coding_a_relay_controller-solution.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 1: Coding a relay controller</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/tclab_lab_1_coding_a_relay_controller.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 1: Coding a relay controller</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/system_model_and_identification_tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">System Modeling</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/step_testing_tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Step Testing</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/fitting_step_test_data_to_empirical_models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Fitting Step Test Data to Empirical Models</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/tclab_lab_2_model_identification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 2: Model Identification</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/tclab_lab_2_model_identification_solutions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 2: Model Identification</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/tclab_lab_2_fitting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Model Identification: Fitting models to data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/relay_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Relay Control</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/pid_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">PID Control</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/lab-assignment-pid-control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab Assignment: PID Control</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/lab-assignment-pi-control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab Assignment 4: PI Control</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#precisione-allo-stato-stazionario" id="toc-precisione-allo-stato-stazionario" class="nav-link active" data-scroll-target="#precisione-allo-stato-stazionario">Precisione allo stato stazionario</a>
+  <ul class="collapse">
+  <li><a href="#dinamica-degli-errori" id="toc-dinamica-degli-errori" class="nav-link" data-scroll-target="#dinamica-degli-errori">Dinamica degli errori</a></li>
+  </ul></li>
+  <li><a href="#rivisitazione-del-teorema-del-valore-finale" id="toc-rivisitazione-del-teorema-del-valore-finale" class="nav-link" data-scroll-target="#rivisitazione-del-teorema-del-valore-finale">Rivisitazione del teorema del valore finale</a></li>
+  <li><a href="#espressione-generale-della-funzione-di-trasferimento" id="toc-espressione-generale-della-funzione-di-trasferimento" class="nav-link" data-scroll-target="#espressione-generale-della-funzione-di-trasferimento">Espressione generale della funzione di trasferimento</a>
+  <ul class="collapse">
+  <li><a href="#comprensione-del-ruolo-dei-poli-a-s-0-nellanalisi-dello-stato-stazionario" id="toc-comprensione-del-ruolo-dei-poli-a-s-0-nellanalisi-dello-stato-stazionario" class="nav-link" data-scroll-target="#comprensione-del-ruolo-dei-poli-a-s-0-nellanalisi-dello-stato-stazionario">Comprensione del ruolo dei poli a $ s = 0 $ nell’analisi dello stato stazionario</a></li>
+  </ul></li>
+  <li><a href="#classificazione-del-sistema-e-comportamento-in-stato-stazionario-basati-su-n" id="toc-classificazione-del-sistema-e-comportamento-in-stato-stazionario-basati-su-n" class="nav-link" data-scroll-target="#classificazione-del-sistema-e-comportamento-in-stato-stazionario-basati-su-n">Classificazione del sistema e comportamento in stato stazionario basati su <span class="math inline">\(N\)</span></a>
+  <ul class="collapse">
+  <li><a href="#classificazione-dei-sistemi-in-base-a-n-e-considerazione-dei-tipi-di-input" id="toc-classificazione-dei-sistemi-in-base-a-n-e-considerazione-dei-tipi-di-input" class="nav-link" data-scroll-target="#classificazione-dei-sistemi-in-base-a-n-e-considerazione-dei-tipi-di-input">Classificazione dei sistemi in base a $ N $ e considerazione dei tipi di input:</a></li>
+  <li><a href="#influenza-del-controller-e-gestione-dei-diversi-input" id="toc-influenza-del-controller-e-gestione-dei-diversi-input" class="nav-link" data-scroll-target="#influenza-del-controller-e-gestione-dei-diversi-input">Influenza del controller e gestione dei diversi input</a></li>
+  <li><a href="#digitare-il-numero-del-sistema" id="toc-digitare-il-numero-del-sistema" class="nav-link" data-scroll-target="#digitare-il-numero-del-sistema">Digitare il numero del sistema</a></li>
+  </ul></li>
+  <li><a href="#esplorazione-dei-tipi-di-sistema-e-dei-loro-comportamenti-in-base-a-n" id="toc-esplorazione-dei-tipi-di-sistema-e-dei-loro-comportamenti-in-base-a-n" class="nav-link" data-scroll-target="#esplorazione-dei-tipi-di-sistema-e-dei-loro-comportamenti-in-base-a-n">Esplorazione dei tipi di sistema e dei loro comportamenti in base a $ N $</a>
+  <ul class="collapse">
+  <li><a href="#analisi-dellerrore-allo-stato-stazionario-nei-sistemi-di-tipo-0" id="toc-analisi-dellerrore-allo-stato-stazionario-nei-sistemi-di-tipo-0" class="nav-link" data-scroll-target="#analisi-dellerrore-allo-stato-stazionario-nei-sistemi-di-tipo-0">Analisi dell’errore allo stato stazionario nei sistemi di tipo 0</a></li>
+  <li><a href="#analisi-dellerrore-allo-stato-stazionario-nei-sistemi-di-tipo-1" id="toc-analisi-dellerrore-allo-stato-stazionario-nei-sistemi-di-tipo-1" class="nav-link" data-scroll-target="#analisi-dellerrore-allo-stato-stazionario-nei-sistemi-di-tipo-1">Analisi dell’errore allo stato stazionario nei sistemi di tipo 1</a></li>
+  <li><a href="#comprensione-dellerrore-allo-stato-stazionario-nei-sistemi-di-tipo-1" id="toc-comprensione-dellerrore-allo-stato-stazionario-nei-sistemi-di-tipo-1" class="nav-link" data-scroll-target="#comprensione-dellerrore-allo-stato-stazionario-nei-sistemi-di-tipo-1">Comprensione dell’errore allo stato stazionario nei sistemi di tipo 1</a></li>
+  <li><a href="#analisi-dellerrore-allo-stato-stazionario-nei-sistemi-di-tipo-2" id="toc-analisi-dellerrore-allo-stato-stazionario-nei-sistemi-di-tipo-2" class="nav-link" data-scroll-target="#analisi-dellerrore-allo-stato-stazionario-nei-sistemi-di-tipo-2">Analisi dell’errore allo stato stazionario nei sistemi di tipo 2</a></li>
+  <li><a href="#commento-sui-sistemi-di-tipo-3" id="toc-commento-sui-sistemi-di-tipo-3" class="nav-link" data-scroll-target="#commento-sui-sistemi-di-tipo-3">Commento sui sistemi di tipo 3</a></li>
+  <li><a href="#illustrare-le-risposte-dei-sistemi-di-tipo-0-tipo-1-e-tipo-2" id="toc-illustrare-le-risposte-dei-sistemi-di-tipo-0-tipo-1-e-tipo-2" class="nav-link" data-scroll-target="#illustrare-le-risposte-dei-sistemi-di-tipo-0-tipo-1-e-tipo-2">Illustrare le risposte dei sistemi di tipo 0, tipo 1 e tipo 2</a></li>
+  <li><a href="#ulteriori-commenti" id="toc-ulteriori-commenti" class="nav-link" data-scroll-target="#ulteriori-commenti">Ulteriori commenti</a></li>
+  </ul></li>
+  <li><a href="#esempio-di-progettazione-uno-schema-di-controllo-pid" id="toc-esempio-di-progettazione-uno-schema-di-controllo-pid" class="nav-link" data-scroll-target="#esempio-di-progettazione-uno-schema-di-controllo-pid">Esempio di progettazione: uno schema di controllo PID</a>
+  <ul class="collapse">
+  <li><a href="#progettazione-di-un-sistema-di-controllo-della-posizione-con-un-controller-proporzionale" id="toc-progettazione-di-un-sistema-di-controllo-della-posizione-con-un-controller-proporzionale" class="nav-link" data-scroll-target="#progettazione-di-un-sistema-di-controllo-della-posizione-con-un-controller-proporzionale">Progettazione di un sistema di controllo della posizione con un controller proporzionale</a></li>
+  <li><a href="#selezionare-k_a-per-ridurre-il-rapporto-di-smorzamento-zeta." id="toc-selezionare-k_a-per-ridurre-il-rapporto-di-smorzamento-zeta." class="nav-link" data-scroll-target="#selezionare-k_a-per-ridurre-il-rapporto-di-smorzamento-zeta.">Selezionare <span class="math inline">\(K_A\)</span> per ridurre il rapporto di smorzamento <span class="math inline">\(\zeta\)</span>.</a></li>
+  <li><a href="#simulazione-python-del-sistema-criticamente-smorzato" id="toc-simulazione-python-del-sistema-criticamente-smorzato" class="nav-link" data-scroll-target="#simulazione-python-del-sistema-criticamente-smorzato">Simulazione Python del sistema criticamente smorzato</a></li>
+  <li><a href="#miglioramento-delle-prestazioni-progettazione-migliorata-del-sistema-di-controllo-con-controller-pd-e-pi" id="toc-miglioramento-delle-prestazioni-progettazione-migliorata-del-sistema-di-controllo-con-controller-pd-e-pi" class="nav-link" data-scroll-target="#miglioramento-delle-prestazioni-progettazione-migliorata-del-sistema-di-controllo-con-controller-pd-e-pi">Miglioramento delle prestazioni: progettazione migliorata del sistema di controllo con controller PD e PI</a></li>
+  <li><a href="#progettazione-avanzata-di-controllori-metodi-del-luogo-delle-radici-e-della-risposta-in-frequenza" id="toc-progettazione-avanzata-di-controllori-metodi-del-luogo-delle-radici-e-della-risposta-in-frequenza" class="nav-link" data-scroll-target="#progettazione-avanzata-di-controllori-metodi-del-luogo-delle-radici-e-della-risposta-in-frequenza">Progettazione avanzata di controllori: metodi del luogo delle radici e della risposta in frequenza</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/andreamunafo/principles-of-automatic-controls/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../IT_🇮🇹/faq_it.html">IT_🇮🇹</a></li><li class="breadcrumb-item"><a href="../IT_🇮🇹/steady_state_accuracy_and_design_principles_it.html">Precisione dello stato stazionario e principi di progettazione</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Precisione dello stato stazionario e principi di progettazione</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
+<p>Nei notebook precedenti abbiamo approfondito le prestazioni dei sistemi di feedback. Questo notebook si concentra su due aree chiave: precisione in condizioni stazionarie e un esempio di progettazione completo.</p>
+<p>Il nostro obiettivo è consolidare la tua comprensione di questi concetti attraverso un approccio pratico.</p>
+<section id="precisione-allo-stato-stazionario" class="level2">
+<h2 class="anchored" data-anchor-id="precisione-allo-stato-stazionario">Precisione allo stato stazionario</h2>
+<p>La precisione allo stato stazionario è un aspetto cruciale dei sistemi di controllo, poiché indica la capacità del sistema di mantenere un output costante quando sottoposto a un input costante. Abbiamo già esaminato questo concetto e ora lo rivisiteremo, aggiungendo una prospettiva quantitativa.</p>
+<img src="../pics/21_Steady_State_Accuracy_And_Design_Principles_block_diagram.png" alt="21_Steady_State_Accuracy_And_Design_Principles_block_diagram
+" style="width:450px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<p>Approfondiamo la descrizione quantitativa dell’accuratezza in stato stazionario utilizzando il diagramma a blocchi.</p>
+<p>Ci concentreremo sulla relazione tra il modello dell’impianto $ G(s) $, il controller $ D(s) $ e come interagiscono con l’input del comando $ R $, l’output $ Y $ e l’errore $ E $.</p>
+<p>La presenza di un disturbo può essere analizzata in modo simile.</p>
+<p>Come abbiamo già visto più volte:</p>
+<ol type="1">
+<li><strong>Modello impianto $ G(s) $</strong>:
+<ul>
+<li>Rappresenta la funzione di trasferimento del sistema che stiamo controllando. È un modello matematico del comportamento dinamico del sistema.</li>
+</ul></li>
+<li><strong>Controller $ D(s) $</strong>:
+<ul>
+<li>$ D(s) $ è la funzione di trasferimento del controller nel sistema. Definisce come il controller agirà sul segnale di errore per regolare il comportamento del sistema.</li>
+</ul></li>
+<li><strong>Configurazione del sistema di feedback</strong>:
+<ul>
+<li>Il sistema è configurato in un circuito di feedback in cui l’uscita viene confrontata con l’ingresso per generare un segnale di errore $ E $.</li>
+</ul></li>
+<li><strong>Segnale di errore $ E(s) $</strong>:
+<ul>
+<li>Questa è una parte fondamentale del ciclo di feedback. $ E(s) $ rappresenta la differenza tra l’output desiderato (ingresso di comando $ R(s) $) e l’output effettivo $ Y(s) $ del sistema.</li>
+</ul></li>
+<li><strong>Input di comando $ R(s) $</strong>:</li>
+</ol>
+<ul>
+<li>Questo è l’output del sistema desiderato nel dominio di Laplace. Potrebbe essere un gradino, una rampa o qualsiasi altro modulo di input.</li>
+</ul>
+<ol start="6" type="1">
+<li><strong>Uscita del sistema $ Y(s) $</strong>:</li>
+</ol>
+<ul>
+<li>L’output effettivo del sistema, rappresentato anche nel dominio di Laplace.</li>
+</ul>
+<section id="dinamica-degli-errori" class="level3">
+<h3 class="anchored" data-anchor-id="dinamica-degli-errori">Dinamica degli errori</h3>
+<p>In un sistema di controllo, spesso esprimiamo l’errore $ E(s) $ come $ E(s) = R(s) - Y(s) $. In un ciclo di feedback, questo diventa $ E(s) = R(s) - G(s)D(s)E(s) $.</p>
+<p><strong>Riorganizzazione per $ E(s) $</strong>: Riorganizzando l’equazione di cui sopra, otteniamo</p>
+<p><span class="math display">\[ E(s) = \frac{R(s)}{1 + D(s)G(s)} \]</span></p>
+<p>Qui, $D(s)G(s) $ rappresenta il guadagno totale del circuito del sistema.</p>
+<section id="perché-dividere-gs-e-ds" class="level4">
+<h4 class="anchored" data-anchor-id="perché-dividere-gs-e-ds">Perché dividere $ G(s) $ e $ D(s) $?</h4>
+<ul>
+<li><p>Considerando separatamente $ G(s) $ e $ D(s) $, possiamo studiare il sistema in modo più flessibile, soprattutto quando si considerano diversi tipi di controllori (PD, PI, PID).</p></li>
+<li><p>Questa separazione consente un approccio modulare alla progettazione del sistema, in cui l’impianto e il controller possono essere progettati e analizzati in modo indipendente prima di essere combinati.</p></li>
+</ul>
+</section>
+<section id="implicazioni-pratiche" class="level4">
+<h4 class="anchored" data-anchor-id="implicazioni-pratiche">Implicazioni pratiche</h4>
+<ul>
+<li><strong>Flessibilità di progettazione</strong>: diversi controllori (PD, PI, PID) possono essere modellati e testati semplicemente modificando $ D(s) $ senza alterare il modello dell’impianto $ G(s) $.</li>
+<li><strong>Analisi del sistema</strong>: è possibile valutare facilmente l’impatto delle modifiche del controller sulle prestazioni del sistema, tra cui stabilità, risposta ai transitori ed errore stazionario.</li>
+<li><strong>Ottimizzazione del controller</strong>: manipolando $ D(s) $, il controller può essere ottimizzato per ottenere le specifiche prestazionali desiderate come errore minimo in stato stazionario, risposta transitoria desiderata e margini di stabilità.</li>
+</ul>
+</section>
+</section>
+</section>
+<section id="rivisitazione-del-teorema-del-valore-finale" class="level2">
+<h2 class="anchored" data-anchor-id="rivisitazione-del-teorema-del-valore-finale">Rivisitazione del teorema del valore finale</h2>
+<p>Il teorema del valore finale è uno strumento che usiamo per calcolare l’errore stazionario di un sistema. Ricordiamo il teorema:</p>
+<p><span class="math display">\[ e_{ss} = \lim_{s \to 0} sE(s) \]</span></p>
+<p>Dove $ E(s) $ è il segnale di errore nel dominio di Laplace.</p>
+<p>Nel nostro caso:</p>
+<p><span class="math display">\[ e_{ss} = \lim_{s \to 0} \frac{sR(s)}{(1 + D(s)G(s))} \]</span></p>
+<section id="errore-di-stato-stazionario-per-ingressi-standard" class="level5">
+<h5 class="anchored" data-anchor-id="errore-di-stato-stazionario-per-ingressi-standard">Errore di stato stazionario per ingressi standard</h5>
+<p>Consideriamo tre input standard: gradino, rampa e parabola.</p>
+<p>Analizzeremo ogni caso:</p>
+<ol type="1">
+<li><p><strong>Inserimento passo-passo</strong> $ R(s) = $:</p>
+<p><span class="math display">\[ e_{ss} = \lim_{s \to 0} \frac{s}{s(1 + D(s)G(s))} = \lim_{s \to 0} \frac{1}{ 1 + D(s)G(s)} = \frac{1}{1 + \lim_{s \to 0} D(s)G(s)}\]</span></p>
+<p>Questo si semplifica in <span class="math display">\[ e_{ss} = \frac{1}{1 + K_p} \]</span></p>
+<p>dove $ K_p $ è chiamato <em>costante errore di posizione</em>.</p>
+<p>Invece di specificare l’errore di stato stazionario del sistema su un ingresso di passo unitario, è possibile fare riferimento in modo equivalente alla costante dell’errore di posizione.</p></li>
+</ol>
+<p>È importante sottolineare che nell’ambito dei sistemi di controllo della posizione, un ingresso a gradino è sinonimo di un ingresso di posizione. Questo concetto, tuttavia, non si limita ai soli scenari di controllo della posizione. Il principio può essere esteso a vari tipi di sistemi di controllo. Ad esempio, nei sistemi di controllo della temperatura o di controllo del livello del liquido, l’ingresso della fase può rappresentare un cambiamento improvviso della temperatura o del livello desiderati. La costante di errore di posizione diventa quindi uno strumento versatile, fornendo una metrica universale per quantificare e confrontare la precisione a regime di diversi sistemi di controllo in diverse applicazioni.</p>
+<ol start="2" type="1">
+<li><p><strong>Ingresso rampa</strong> $ R(s) = $:</p>
+<p><span class="math display">\[ e_{ss} = \lim_{s \to 0} \frac{s}{s^2(1 + D(s)G(s))} = \lim_{s \to 0} \frac{1 }{s(1 + D(s)G(s))} \]</span></p>
+<p><span class="math display">\[ e_{ss} = \lim_{s \to 0} \frac{1}{sD(s)G(s)} \]</span></p>
+<p>Ciò porta a <span class="math display">\[ e_{ss} = \frac{1}{K_v} \]</span></p>
+<p>dove $ K_v = _{s } sD(s)G(s)$ è la <em>costante di errore di velocità</em>.</p>
+<p>Nei sistemi di controllo della posizione, un ingresso di rampa equivale a un comando di velocità. Quando si parla della costante dell’errore di velocità, resta inteso che il sistema sta rispondendo a un ingresso di rampa.</p></li>
+<li><p><strong>Ingresso parabolico</strong> $ R(s) = $:</p></li>
+</ol>
+<p><span class="math display">\[ e_{ss} = \lim_{s \to 0} \frac{s}{s^3(1 + D(s)G(s))} = \lim_{s \to 0} \frac{1 }{s^2(1 + D(s)G(s))} \]</span></p>
+<p>$ e_{ss} = _{s } $</p>
+<p>Il risultato è <span class="math display">\[ e_{ss} = \frac{1}{K_a} \]</span></p>
+<p>dove $ K_a = _{s }s^2D(s)G(s)$ è la <em>costante di errore di accelerazione</em>.</p>
+<p>Nei sistemi di controllo della posizione, un ingresso di rampa equivale a un comando di accelerazione. Quando si discute della costante di errore di accelerazione, resta inteso che il sistema sta rispondendo a un input parabolico.</p>
+<p>La conclusione della nostra discussione sull’accuratezza in stato stazionario è piuttosto significativa. Esistono due modi principali per descrivere la precisione a regime di un sistema:</p>
+<ol type="1">
+<li><p><strong>Errore in stato stazionario con un ingresso specificato:</strong> questo approccio prevede la specifica diretta dell’errore in stato stazionario per un dato tipo di segnale di ingresso.</p></li>
+<li><p><strong>Costanti di errore $ K_p, K_v, $ e $ K_a $:</strong> In alternativa, possiamo descrivere la precisione a regime stazionario del sistema utilizzando costanti di errore:</p>
+<ul>
+<li>$ K_p $ per la costante dell’errore di posizione,</li>
+<li>$ K_v $ per la costante dell’errore di velocità,</li>
+<li>$ K_a $ per la costante dell’errore di accelerazione.</li>
+</ul></li>
+</ol>
+<p>Queste costanti di errore sono definite specificamente per i tipi di ingresso standard: <strong>gradino unitario</strong>, <strong>rampa unitaria</strong>, <strong>parabola unitaria</strong>.</p>
+<p>Tuttavia, è importante comprendere che se l’input nel sistema differisce da questi moduli standard, sarà necessario applicare un ridimensionamento appropriato alle costanti di errore. Questa messa in scala è necessaria per rappresentare accuratamente l’errore a regime per ingressi non standard. In questo modo, è possibile estendere l’applicazione di queste costanti di errore a una gamma più ampia di segnali di ingresso, mantenendo la pertinenza e l’accuratezza della descrizione dell’accuratezza dello stato stazionario del sistema. Il processo di ridimensionamento, una volta compreso, diventa semplice, consentendo un adattamento flessibile a vari tipi di input.</p>
+</section>
+</section>
+<section id="espressione-generale-della-funzione-di-trasferimento" class="level2">
+<h2 class="anchored" data-anchor-id="espressione-generale-della-funzione-di-trasferimento">Espressione generale della funzione di trasferimento</h2>
+<p>La funzione di trasferimento di un sistema di controllo, sia esso il modello di impianto $ G(s) $ o il sistema combinato $ D(s)G(s) $, può generalmente essere rappresentata come</p>
+<p><span class="math display">\[ \frac{\prod_i (s - z_i)}{s^N \prod_j (s - p_j)} \]</span></p>
+<p>In questa rappresentazione, $ z_i $ e $ p_j $ indicano rispettivamente gli zeri e i poli della funzione di trasferimento.</p>
+<p>Il termine $ s^N $ è particolarmente importante poiché indica la presenza di poli nell’origine (s = 0) sul piano s.</p>
+<p>Per la nostra analisi, ci concentriamo sui casi in cui $ N $, il che non implica potenze negative di $ s $ al denominatore.</p>
+<p>Eventuali zeri nell’origine possono essere rappresentati tramite $ z_i = 0 $. Tuttavia, in questa rappresentazione tutte le potenziali cancellazioni dei poli zero all’origine sono già prese in considerazione.</p>
+<section id="comprensione-del-ruolo-dei-poli-a-s-0-nellanalisi-dello-stato-stazionario" class="level3">
+<h3 class="anchored" data-anchor-id="comprensione-del-ruolo-dei-poli-a-s-0-nellanalisi-dello-stato-stazionario">Comprensione del ruolo dei poli a $ s = 0 $ nell’analisi dello stato stazionario</h3>
+<section id="approfondimenti-chiave-su-sn-nella-funzione-di-trasferimento-del-sistema" class="level4">
+<h4 class="anchored" data-anchor-id="approfondimenti-chiave-su-sn-nella-funzione-di-trasferimento-del-sistema">Approfondimenti chiave su $ s^N $ nella funzione di trasferimento del sistema:</h4>
+<p>Il termine $ s^N $ nella funzione di trasferimento $ D(s)G(s) $ è fondamentale nel modellare il comportamento stazionario di un sistema di controllo. Influisce direttamente sul modo in cui il sistema risponde a vari input, determinati dal valore di $ N $, il numero di poli nell’origine.</p>
+<ol type="1">
+<li><strong>Analizzare l’impatto quando $ s $ si avvicina allo zero:</strong>
+<ul>
+<li>L’attenzione qui è sul comportamento del sistema in una condizione stazionaria.</li>
+<li>Quando $ s $ si avvicina allo zero, ogni termine nella funzione di trasferimento, come $ (s - z_i) $ e $ (s - p_j) $, mantiene un valore definito.</li>
+<li>Il comportamento di $ D(s)G(s) $ dipende in gran parte da $ N $, il numero di poli in $ s = 0 $. Nello specifico, valori diversi di $ N $ possono far sì che alcuni termini della funzione diventino infiniti quando $ s = 0 $. Questo è cruciale perché determina se il sistema può raggiungere uno stato stazionario per determinati input. Ad esempio, un sistema di tipo 0 (con $ N = 0 $) ha un errore finito per gli ingressi a gradino ma errori infiniti per gli ingressi a rampa e parabolici.</li>
+<li>L’importanza di $ s^N $ risiede nella sua influenza primaria sul comportamento in stato stazionario del sistema, decidendo essenzialmente se il sistema presenterà errori in stato stazionario finiti o infiniti per vari tipi di input.</li>
+</ul></li>
+<li><strong>Considerando valori negativi di $ N $:</strong>
+<ul>
+<li>Negli scenari in cui $ N $ è negativo, indicando uno zero all’origine, l’analisi rimane priva di problemi. Questo perché qualsiasi termine che coinvolga $ s $ risulterebbe in una grandezza zero in tali casi, portando a un comportamento definito e prevedibile nella funzione di trasferimento.</li>
+</ul></li>
+</ol>
+<p>In sostanza, il termine $ s^N $ è un determinante chiave nella funzione di trasferimento, modellando la precisione dello stato stazionario del sistema di controllo. Comprendere come si comporta questo termine, in particolare quando $ s $ converge a zero, è fondamentale per ottenere informazioni sulla capacità del sistema di mantenere uno stato stazionario in diverse condizioni di input.</p>
+</section>
+</section>
+</section>
+<section id="classificazione-del-sistema-e-comportamento-in-stato-stazionario-basati-su-n" class="level2">
+<h2 class="anchored" data-anchor-id="classificazione-del-sistema-e-comportamento-in-stato-stazionario-basati-su-n">Classificazione del sistema e comportamento in stato stazionario basati su <span class="math inline">\(N\)</span></h2>
+<section id="classificazione-dei-sistemi-in-base-a-n-e-considerazione-dei-tipi-di-input" class="level3">
+<h3 class="anchored" data-anchor-id="classificazione-dei-sistemi-in-base-a-n-e-considerazione-dei-tipi-di-input">Classificazione dei sistemi in base a $ N $ e considerazione dei tipi di input:</h3>
+<p>I sistemi di controllo sono classificati in base al valore di $ N $, che indica il numero di poli nell’origine. Questo è equivalente al numero di integratori nel percorso di andata del sistema. In questa classificazione:</p>
+<ul>
+<li>Un sistema di tipo 0, dove $ N = 0 $, non ha integratori all’origine.</li>
+<li>Un sistema di tipo 1 ha un integratore, che indica un singolo polo all’origine, e questo modello continua per tipi di sistema superiori.</li>
+</ul>
+<p>È fondamentale comprendere, tuttavia, che l’influenza di $ N $ sulla risposta del sistema non è assoluta ma varia a seconda del tipo di input. Se il numeratore del sistema ha termini che contrastano l’effetto $ s^N $ nel denominatore, il sistema potrebbe non mostrare un comportamento infinito per determinati input.</p>
+<p>Il valore di $ N $ è generalmente un forte indicatore del potenziale di precisione del sistema in condizioni stazionarie. Tuttavia, l’effettivo comportamento in condizioni stazionarie dipende anche dalla natura dell’input. In alcuni casi, tipi di input specifici possono portare a cancellazioni nella funzione di trasferimento, alterando l’errore di stato stazionario atteso indipendentemente da $ N $. Quindi, la risposta in stato stazionario del sistema è determinata non solo da $ N $, ma anche dall’interazione di $ N $ con la particolare funzione di input $ R(s) $. Questa comprensione sfumata è vitale per prevedere e progettare con precisione le risposte del sistema.</p>
+</section>
+<section id="influenza-del-controller-e-gestione-dei-diversi-input" class="level3">
+<h3 class="anchored" data-anchor-id="influenza-del-controller-e-gestione-dei-diversi-input">Influenza del controller e gestione dei diversi input</h3>
+<p>Il controller $ D(s) $ ha la capacità di modificare il conteggio degli integratori nel percorso di andata di un sistema, modellando così in modo significativo il suo comportamento in stato stazionario.</p>
+<p>Ad esempio, l’utilizzo di un controller PI è un modo strategico per integrare un integratore aggiuntivo nel percorso in avanti. Questa aggiunta deliberata è fondamentale per ottimizzare le prestazioni del sistema per allinearlo a requisiti operativi specifici.</p>
+<p>Anche la natura del segnale di ingresso, che sia a gradino, a rampa o di tipo parabolico, gioca un ruolo fondamentale nell’influenzare la reazione del sistema. Nel caso di un sistema di tipo 1 (un integratore), ci si può aspettare un errore finito a regime quando si ha a che fare con un ingresso a gradino. Tuttavia, la risposta potrebbe avere un errore infinito per un ingresso a rampa o parabolico, a meno che non vi sia una cancellazione nella funzione di trasferimento che altera questo comportamento.</p>
+</section>
+<section id="digitare-il-numero-del-sistema" class="level3">
+<h3 class="anchored" data-anchor-id="digitare-il-numero-del-sistema">Digitare il numero del sistema</h3>
+<p>La tabella seguente illustra la relazione tra il valore di <span class="math inline">\(N\)</span> e la corrispondente tipologia di sistema di controllo:</p>
+<table class="table">
+<colgroup>
+<col style="width: 39%">
+<col style="width: 34%">
+<col style="width: 26%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Valore di $ N $</th>
+<th>Tipo di sistema</th>
+<th>Descrizione</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>Sistema di tipo 0</td>
+<td>Il sistema non ha integratori nel percorso in avanti, il che significa che non ci sono poli all’origine.</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>Sistema di tipo 1</td>
+<td>Il sistema include un integratore nel percorso in avanti, equivalente ad un singolo polo all’origine.</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>Sistema di tipo 2</td>
+<td>Il sistema contiene due integratori nel percorso in avanti, che indicano due poli nell’origine.</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>Sistema di tipo 3</td>
+<td>Il sistema ha tre integratori nel percorso in avanti, corrispondenti a tre poli nell’origine.</td>
+</tr>
+<tr class="odd">
+<td>…</td>
+<td>…</td>
+<td>All’aumentare di $ N $, il numero di integratori nel percorso in avanti aumenta di conseguenza.</td>
+</tr>
+</tbody>
+</table>
+<p>Questa tabella classifica i sistemi di controllo in base al numero di integratori (poli all’origine), che è un fattore chiave nel determinare la loro risposta in stato stazionario a diversi tipi di segnali di ingresso.</p>
+<p>Il sistema caratterizzato dalla funzione di trasferimento</p>
+<p><span class="math display">\[ \frac{s}{s^2} = \frac{1}{s} \]</span></p>
+<p>è identificato come un sistema di Tipo 1.</p>
+<p>Questo sistema agisce effettivamente come un integratore, ma è anche importante riconoscere che questo comportamento deriva da un’imperfetta cancellazione del polo zero.</p>
+<p>Sebbene i suoi effetti operativi imitino da vicino quelli di un integratore ideale, la presenza di imperfezioni pratiche significa che non raggiunge l’esatto comportamento di un integratore perfetto. Questa distinzione evidenzia i limiti del sistema nel mondo reale rispetto all’ideale teorico che rappresentiamo matematicamente.</p>
+</section>
+</section>
+<section id="esplorazione-dei-tipi-di-sistema-e-dei-loro-comportamenti-in-base-a-n" class="level2">
+<h2 class="anchored" data-anchor-id="esplorazione-dei-tipi-di-sistema-e-dei-loro-comportamenti-in-base-a-n">Esplorazione dei tipi di sistema e dei loro comportamenti in base a $ N $</h2>
+<p>La funzione di trasferimento di un sistema di controllo, sia esso il modello di impianto $ G(s) $ o il sistema combinato $ D(s)G(s) $, può tipicamente essere rappresentata come:</p>
+<p><span class="math display">\[
+D(s)G(s) = \frac{K \prod_{i}(s - z_i)}{(s^N \prod_{j}(s - p_j))}
+\]</span></p>
+<p>Ecco una tabella che delinea diversi tipi di sistema in base al valore di $ N$, insieme ad esempi e caratteristiche chiave:</p>
+<table class="table">
+<colgroup>
+<col style="width: 29%">
+<col style="width: 25%">
+<col style="width: 20%">
+<col style="width: 24%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Valore di $ N $</th>
+<th>Tipo di sistema</th>
+<th>Descrizione</th>
+<th>Esempio</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>Sistema di tipo 0</td>
+<td>Nessun integratore nel percorso in avanti. Tipicamente, errore stazionario finito per ingressi a gradino ma errore infinito per ingressi a rampa o parabolici.</td>
+<td>Sistemi di controllo della temperatura modellati come $ $, Sistemi di controllo del livello di liquidi.</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>Sistema di tipo 1</td>
+<td>Un integratore nel percorso in avanti. Errore stazionario zero per gli ingressi a gradino, finito per gli ingressi a rampa, ma infinito per gli ingressi parabolici.</td>
+<td>Sistemi di controllo motore in applicazioni di controllo della velocità, modellati come $ $.</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>Sistema di tipo 2</td>
+<td>Due integratori nel percorso in avanti. Errore stazionario zero sia per gli ingressi a gradino che per quelli a rampa, finito per gli ingressi parabolici.</td>
+<td>Controllo dell’assetto di un satellite, modellato come $ $.</td>
+</tr>
+<tr class="even">
+<td>≥3</td>
+<td>Sistema di tipo 3</td>
+<td>Tre o più integratori nel percorso in avanti. Applicazioni altamente specializzate che richiedono precisione statica avanzata.</td>
+<td>Sistemi avanzati di controllo radar o antenna che tracciano bersagli in rapido movimento.</td>
+</tr>
+</tbody>
+</table>
+<p>Questa tabella fornisce una panoramica di come il numero di integratori nel percorso in avanti, indicato da $ N$, classifica il sistema e influenza la sua risposta a vari input.</p>
+<section id="analisi-dellerrore-allo-stato-stazionario-nei-sistemi-di-tipo-0" class="level3">
+<h3 class="anchored" data-anchor-id="analisi-dellerrore-allo-stato-stazionario-nei-sistemi-di-tipo-0">Analisi dell’errore allo stato stazionario nei sistemi di tipo 0</h3>
+<p>In un sistema di tipo 0, la costante di errore di posizione $ K_p $ è data da:</p>
+<p><span class="math display">\[ K_p = \frac{K \prod_{i}(s - z_i)}{\prod_{j}(s - p_j)}\Big|_{s=0} \]</span></p>
+<p>Per questo tipo di sistema, l’errore stazionario ( e_{ss} ) in risposta a un ingresso passo viene calcolato come:</p>
+<p><span class="math display">\[ e_{ss} = \frac{1}{1 + K_p} \]</span></p>
+<p>Questo valore è finito, indicando che i sistemi di tipo 0 possono gestire efficacemente gli input di gradini con un errore finito allo stato stazionario.</p>
+<p>Tuttavia, quando si tratta di ingressi a rampa e parabolici, lo scenario cambia radicalmente:</p>
+<ul>
+<li><p><strong>Per ingressi rampa:</strong> <span class="math display">\[ e_{ss}^{rampa} = \lim_{s \to 0} \frac{1}{sD(s)G(s)} = \frac{1}{K_v} = \infty \]</span> Il sistema presenta un errore infinito in stato stazionario, dimostrando la sua incapacità di mantenere la precisione con gli ingressi a rampa.</p></li>
+<li><p><strong>Per ingressi parabolici:</strong> <span class="math display">\[ e_{ss}^{parabola} = \lim_{s \to 0} \frac{1}{s^2D(s)G(s)} = \frac{1}{K_a} = \infty \]</span> Analogamente agli ingressi a rampa, anche per gli ingressi parabolici l’errore è infinito.</p></li>
+</ul>
+<section id="implicazioni-per-i-sistemi-di-tipo-0" class="level4">
+<h4 class="anchored" data-anchor-id="implicazioni-per-i-sistemi-di-tipo-0">Implicazioni per i sistemi di tipo 0</h4>
+<p>Questa analisi rivela che i sistemi di tipo 0 sono limitati nella loro capacità di raggiungere un’elevata precisione in condizioni stazionarie, in particolare per ingressi a rampa e parabolici. Sebbene possano fornire prestazioni ragionevoli per gli input a gradini, la loro utilità è limitata quando si confrontano con tipi di input più complessi.</p>
+<p>Per migliorare il comportamento in condizioni stazionarie e soddisfare requisiti di precisione più elevati, è necessario introdurre intenzionalmente degli integratori nella progettazione del controller. L’aggiunta di integratori aumenta effettivamente il tipo del sistema, migliorando così la sua capacità di gestire una gamma più ampia di tipi di input con una migliore precisione in condizioni stazionarie.</p>
+</section>
+</section>
+<section id="analisi-dellerrore-allo-stato-stazionario-nei-sistemi-di-tipo-1" class="level3">
+<h3 class="anchored" data-anchor-id="analisi-dellerrore-allo-stato-stazionario-nei-sistemi-di-tipo-1">Analisi dell’errore allo stato stazionario nei sistemi di tipo 1</h3>
+</section>
+<section id="comprensione-dellerrore-allo-stato-stazionario-nei-sistemi-di-tipo-1" class="level3">
+<h3 class="anchored" data-anchor-id="comprensione-dellerrore-allo-stato-stazionario-nei-sistemi-di-tipo-1">Comprensione dell’errore allo stato stazionario nei sistemi di tipo 1</h3>
+<p>Nei sistemi di tipo 1, caratterizzati da un integratore nel cammino diretto, la funzione di trasferimento <span class="math inline">\(D(s)G(s)\)</span> è:</p>
+<p><span class="math display">\[
+D(s)G(s) = \frac{K \prod_{i}(s - z_i)}{s\prod_{j}(s - p_j)}
+\]</span></p>
+<p>la costante di errore di posizione $ K_p $ diventa infinita:</p>
+<p><span class="math display">\[ K_p = \infty \]</span></p>
+<p>A causa di questa caratteristica, l’errore di stato stazionario $ e_{ss} $ per un input a gradino è:</p>
+<p><span class="math display">\[ e_{ss} = \frac{1}{1 + K_p} = 0 \]</span></p>
+<p>Ciò si traduce in un errore di stato stazionario pari a zero per gli input di gradino, a significare un tracciamento perfetto di tali input.</p>
+<section id="risposte-agli-ingressi-rampa-e-parabolici" class="level4">
+<h4 class="anchored" data-anchor-id="risposte-agli-ingressi-rampa-e-parabolici">Risposte agli ingressi rampa e parabolici:</h4>
+<ul>
+<li><p><strong>Per ingressi rampa:</strong> La costante dell’errore di velocità $ K_v $ è finita e l’errore a regime per un ingresso di rampa viene calcolato come:</p>
+<p><span class="math display">\[ e_{ss}^{rampa} = \lim_{s \to 0} \frac{1}{sD(s)G(s)} = \frac{1}{K_v} \]</span></p>
+<p>E</p>
+<p><span class="math display">\[
+K_v = \lim_{s \to 0} s \frac{K \prod_{i}(s - z_i)}{s\prod_{j}(s - p_j)} = \frac{K \prod_{i}( s - z_i)}{\prod_{j}(s - p_j)} \Big|_{s=0}
+\]</span></p>
+<p>In questo caso, $ e_{ss}^{ramp} $ è finito, indicando che i sistemi di tipo 1 possono gestire input di rampa con un errore finito in stato stazionario.</p></li>
+<li><p><strong>Per ingressi parabolici:</strong> La costante di errore di accelerazione $ K_a $ è zero per i sistemi di tipo 1, il che porta a:</p>
+<p><span class="math display">\[ e_{ss}^{parabola} = \lim_{s \to 0} \frac{1}{s^2D(s)G(s)} = \frac{1}{K_a} = \infty \]</span></p>
+<p>Pertanto, l’errore in stato stazionario per gli input parabolici è infinito, dimostrando che i sistemi di tipo 1 non possono tracciare accuratamente tali input in stato stazionario.</p></li>
+</ul>
+</section>
+<section id="implicazioni-pratiche-per-i-sistemi-di-tipo-1" class="level4">
+<h4 class="anchored" data-anchor-id="implicazioni-pratiche-per-i-sistemi-di-tipo-1">Implicazioni pratiche per i sistemi di tipo 1</h4>
+<p>I sistemi di tipo 1 eccellono nel tracciare perfettamente gli input di gradino con un errore di stato stazionario pari a zero e offrono prestazioni ragionevoli per input di rampa con errore finito. Tuttavia, non riescono a tracciare gli input parabolici, come indicato dall’infinito errore stazionario.</p>
+<p>Questa analisi sottolinea che i sistemi di tipo 1 sono adatti per applicazioni in cui prevalgono gli ingressi a gradino o a rampa, ma potrebbero non essere adeguati per scenari che richiedono un tracciamento accurato di tipi di ingresso più complessi come i segnali parabolici. In tali casi, potrebbero essere necessarie ulteriori modifiche o un tipo di sistema diverso per ottenere prestazioni ottimali.</p>
+</section>
+</section>
+<section id="analisi-dellerrore-allo-stato-stazionario-nei-sistemi-di-tipo-2" class="level3">
+<h3 class="anchored" data-anchor-id="analisi-dellerrore-allo-stato-stazionario-nei-sistemi-di-tipo-2">Analisi dell’errore allo stato stazionario nei sistemi di tipo 2</h3>
+<p>I sistemi di tipo 2 sono caratterizzati dall’avere due integratori nel percorso in avanti. Questa caratteristica influenza in modo significativo la loro risposta a diversi tipi di input.</p>
+<section id="errore-di-stato-stazionario-per-diversi-ingressi" class="level4">
+<h4 class="anchored" data-anchor-id="errore-di-stato-stazionario-per-diversi-ingressi">Errore di stato stazionario per diversi ingressi:</h4>
+<ul>
+<li><strong>Inserimento passo:</strong>
+<ul>
+<li>Per un input a gradini, l’errore a regime $ e_{ss} $ è dato da: <span class="math display">\[ e_{ss} = \frac{1}{1 + K_p} \]</span> Poiché $ K_p = <span class="math inline">\(, l'errore a regime per un input a gradino è:\)</span>$ e_{ss} = = 0 $$ Ciò indica un errore di stato stazionario pari a zero per gli input di passaggio, dimostrando una perfetta capacità di tracciamento.</li>
+</ul></li>
+<li><strong>Ingresso rampa:</strong>
+<ul>
+<li>Per un ingresso a rampa, anche la costante dell’errore di velocità $ K_v $ è infinita per un sistema di tipo 2. L’errore a regime per un ingresso di rampa viene calcolato come: <span class="math display">\[ e_{ss}^{rampa} = \lim_{s \to 0} \frac{1}{sD(s)G(s)} \]</span> Dato che $ K_v = <span class="math inline">\(, l'errore a regime per un ingresso a rampa diventa:\)</span>$ e_{ss}^{rampa} = = = 0 $$ Pertanto, i sistemi di tipo 2 presentano anche un errore di stato stazionario pari a zero per gli ingressi di rampa.</li>
+</ul></li>
+<li><strong>Ingresso parabolico:</strong>
+<ul>
+<li>Per gli ingressi parabolici, consideriamo la costante di errore di accelerazione $ K_a $. In un sistema di tipo 2, $ K_a $ è finito. L’errore a regime per un ingresso parabolico è dato da: <span class="math display">\[ e_{ss}^{parabola} = \lim_{s \to 0} \frac{1}{s^2D(s)G(s)} \]</span> Ciò produce un valore finito per $ e_{ss}^{parabola} $, il che implica che i sistemi di tipo 2 hanno un errore a stato stazionario finito per gli input parabolici.</li>
+</ul></li>
+</ul>
+</section>
+<section id="riepilogo-e-implicazioni-per-i-sistemi-di-tipo-2" class="level4">
+<h4 class="anchored" data-anchor-id="riepilogo-e-implicazioni-per-i-sistemi-di-tipo-2">Riepilogo e implicazioni per i sistemi di tipo 2</h4>
+<p>I sistemi di tipo 2 sono altamente capaci in termini di prestazioni stazionarie. Dimostrano un errore in stato stazionario pari a zero sia per gli ingressi a gradino che per quelli a rampa, indicando eccellenti capacità di tracciamento per questi tipi di ingresso. Per gli ingressi parabolici, i sistemi di tipo 2 mantengono un errore a stato stazionario finito, rendendoli adatti per applicazioni in cui è richiesto il tracciamento preciso di tali ingressi.</p>
+<p>In sintesi, i sistemi di tipo 2 offrono un livello avanzato di controllo, in particolare in scenari in cui gli input possono variare da semplici passaggi a forme paraboliche più complesse. I loro doppi integratori nel percorso in avanti forniscono loro la capacità di gestire una gamma più ampia di tipi di input in modo efficace rispetto ai sistemi di tipo 0 e tipo 1. <strong>Tuttavia, due integratori nel percorso successivo renderanno il sistema più vicino all’instabilità.</strong> C’è un compromesso progettuale da fare.</p>
+</section>
+</section>
+<section id="commento-sui-sistemi-di-tipo-3" class="level3">
+<h3 class="anchored" data-anchor-id="commento-sui-sistemi-di-tipo-3">Commento sui sistemi di tipo 3</h3>
+<p>I sistemi di tipo 3 sono caratterizzati dall’avere tre integratori nel percorso in avanti. Sebbene meno comuni dei sistemi di tipo 0, tipo 1 o tipo 2, sono significativi in ​​alcune applicazioni di controllo avanzato.</p>
+<p>La necessità di un sistema di tipo 3 nasce quando l’applicazione richiede un errore di stato stazionario pari a zero anche per ingressi di tipo accelerazione. Ciò è fondamentale negli scenari in cui l’input subisce rapidi cambiamenti, come nei sistemi radar militari che tracciano gli aerei in rapido movimento.</p>
+<section id="quando-potrebbe-essere-necessario-un-sistema-di-tipo-3" class="level4">
+<h4 class="anchored" data-anchor-id="quando-potrebbe-essere-necessario-un-sistema-di-tipo-3">Quando potrebbe essere necessario un sistema di tipo 3?</h4>
+<ul>
+<li><strong>Requisiti ad alte prestazioni:</strong> I sistemi di tipo 3 sono generalmente richiesti in scenari che richiedono un controllo estremamente preciso e livelli elevati di accuratezza in stato stazionario per una varietà di tipi di input, inclusi ingressi a gradino, a rampa e parabolici.</li>
+<li><strong>Monitoraggio degli obiettivi in ​​rapido movimento:</strong> Sono particolarmente utili in applicazioni come radar avanzati o sistemi di controllo di antenne, dove è fondamentale tracciare bersagli in rapido movimento con elevata precisione. In queste applicazioni, gli input possono essere piuttosto complessi e comportare cambiamenti rapidi e imprevedibili.</li>
+<li><strong>Applicazioni industriali sofisticate:</strong> Alcuni sistemi di automazione di fascia alta o controlli robotici potrebbero anche utilizzare sistemi di tipo 3 per ottenere caratteristiche di risposta dinamica superiori e ridurre al minimo gli errori in un’ampia gamma di condizioni operative.</li>
+</ul>
+</section>
+<section id="potenziali-problemi-con-i-sistemi-di-tipo-3" class="level4">
+<h4 class="anchored" data-anchor-id="potenziali-problemi-con-i-sistemi-di-tipo-3">Potenziali problemi con i sistemi di tipo 3</h4>
+<ul>
+<li><strong>Complessità nel design e nella messa a punto:</strong> La presenza di più integratori aumenta la complessità della progettazione del sistema di controllo. La messa a punto di un sistema di tipo 3 per ottenere le prestazioni desiderate senza compromettere la stabilità può essere impegnativa.</li>
+<li><strong>Preoccupazioni per la stabilità:</strong> Uno dei problemi significativi con i sistemi di tipo 3 è l’aumento del rischio di instabilità. Maggiore è il numero di integratori, più difficile diventa mantenere la stabilità del sistema, soprattutto in condizioni operative variabili.</li>
+<li><strong>Limitazioni pratiche:</strong> L’implementazione di un sistema di tipo 3 può incontrare vincoli pratici. Questi includono i limiti fisici dei componenti del sistema, i fattori ambientali, il rumore intrinseco e le non linearità presenti nei sistemi del mondo reale.</li>
+</ul>
+<p>Sebbene i sistemi di tipo 3 offrano capacità di controllo avanzate e possano gestire un’ampia gamma di tipi di input con elevata precisione, la loro progettazione, implementazione e manutenzione richiedono una comprensione sofisticata della teoria del controllo e considerazioni pratiche. Sono generalmente riservati ad applicazioni specializzate in cui le loro caratteristiche avanzate sono essenziali e giustificano la complessità aggiuntiva e i rischi potenziali.</p>
+</section>
+<section id="riepilogo" class="level4">
+<h4 class="anchored" data-anchor-id="riepilogo">Riepilogo</h4>
+<p>La risposta del sistema ai vari input (gradino, rampa, parabolico) dipende dalla sua tipologia.</p>
+<ul>
+<li><p>Un sistema di tipo 0 avrà un errore a regime finito per un ingresso a gradino, ma un errore infinito per un ingresso a rampa o parabolico.</p></li>
+<li><p>Un sistema di tipo 1 ha un errore stazionario pari a zero per un ingresso a gradino, ma finito per un ingresso a rampa e infinito per un ingresso parabolico.</p></li>
+</ul>
+</section>
+</section>
+<section id="illustrare-le-risposte-dei-sistemi-di-tipo-0-tipo-1-e-tipo-2" class="level3">
+<h3 class="anchored" data-anchor-id="illustrare-le-risposte-dei-sistemi-di-tipo-0-tipo-1-e-tipo-2">Illustrare le risposte dei sistemi di tipo 0, tipo 1 e tipo 2</h3>
+<p>Per illustrare le risposte dei sistemi Type-0, Type-1 e Type-2 a diversi input, possiamo usare Python con librerie come <code>matplotlib</code> per la stampa e <code>scipy</code> per l’analisi del sistema di controllo.</p>
+<div id="885bf8ec" class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> control <span class="im">as</span> ctrl</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the time range for simulation</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">2000</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Open-loop transfer functions</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Type-0 system: K/(s + 0.8)</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>K_0 <span class="op">=</span> <span class="dv">10</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>type_0_ol <span class="op">=</span> ctrl.TransferFunction([K_0], [<span class="dv">1</span>, <span class="fl">0.8</span>])</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Type-1 system: K/(s(s + 1))</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>K_1 <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>type_1_ol <span class="op">=</span> ctrl.TransferFunction([K_1], [<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>])</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Type-2 system: Double Integrator with damping (1/s^2)</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Adding a small damping factor to stabilize the response</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>K_2 <span class="op">=</span> <span class="dv">10</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>damping_factor <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>type_2_ol <span class="op">=</span> ctrl.TransferFunction([K_2, <span class="dv">1</span>], [<span class="dv">1</span>, damping_factor, <span class="dv">0</span>, <span class="dv">0</span>]) <span class="co"># note that we are adding a zero.</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Closed-loop transfer functions</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>type_0_sys <span class="op">=</span> ctrl.feedback(type_0_ol)</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>type_1_sys <span class="op">=</span> ctrl.feedback(type_1_ol)</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>type_2_sys <span class="op">=</span> ctrl.feedback(type_2_ol)</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to plot system responses, input signal, and tracking error</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_responses_and_errors(systems, t, input_signal, input_type):</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>    plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">6</span>))</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Plotting system responses and errors</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i, sys <span class="kw">in</span> <span class="bu">enumerate</span>(systems):</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>        t_out, y_out <span class="op">=</span> ctrl.forced_response(sys, T<span class="op">=</span>t, U<span class="op">=</span>input_signal)</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>        error <span class="op">=</span> input_signal <span class="op">-</span> y_out</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Plotting response</span></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>        plt.subplot(<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>        plt.plot(t_out, y_out, label<span class="op">=</span><span class="ss">f'</span><span class="sc">{</span>[<span class="st">"Type-0"</span>, <span class="st">"Type-1"</span>, <span class="st">"Type-2"</span>][i]<span class="sc">}</span><span class="ss"> System Response'</span>)</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>        plt.title(<span class="ss">f'Response of Systems to </span><span class="sc">{</span>input_type<span class="sc">}</span><span class="ss"> Input'</span>)</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>        plt.ylabel(<span class="st">'Response/Signal Value'</span>)</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>        plt.grid(<span class="va">True</span>)</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Plotting error</span></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>        plt.subplot(<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">2</span>)</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>        plt.plot(t_out, error, label<span class="op">=</span><span class="ss">f'</span><span class="sc">{</span>[<span class="st">"Type-0"</span>, <span class="st">"Type-1"</span>, <span class="st">"Type-2"</span>][i]<span class="sc">}</span><span class="ss"> Error'</span>)</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>        plt.title(<span class="ss">f'Tracking Error of Systems for </span><span class="sc">{</span>input_type<span class="sc">}</span><span class="ss"> Input'</span>)</span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>        plt.xlabel(<span class="st">'Time (seconds)'</span>)</span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>        plt.ylabel(<span class="st">'Error'</span>)</span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>        plt.grid(<span class="va">True</span>)</span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Adding the input signal plot to the response subplot</span></span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>    plt.subplot(<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>    plt.plot(t, input_signal, label<span class="op">=</span><span class="st">'Input Signal'</span>, color<span class="op">=</span><span class="st">'black'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>    plt.legend()</span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Adding the input signal plot to the error subplot (as zero line)</span></span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>    plt.subplot(<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">2</span>)</span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>    plt.plot(t, np.zeros_like(t), label<span class="op">=</span><span class="st">'Zero Error'</span>, color<span class="op">=</span><span class="st">'grey'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a>    plt.legend()</span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a>    plt.tight_layout()</span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a>    plt.show()</span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a><span class="co"># Input signals: unit step, unit ramp, and unit parabola</span></span>
+<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a>step_input <span class="op">=</span> np.ones_like(t)</span>
+<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a>ramp_input <span class="op">=</span> t</span>
+<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a>parabola_input <span class="op">=</span> <span class="fl">0.5</span> <span class="op">*</span> t<span class="op">**</span><span class="dv">2</span></span>
+<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a><span class="co"># Systems list and plotting responses with errors</span></span>
+<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a>systems <span class="op">=</span> [type_0_sys, type_1_sys, type_2_sys]</span>
+<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a>plot_responses_and_errors(systems, t, step_input, <span class="st">'Step'</span>)</span>
+<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a>plot_responses_and_errors(systems, t, ramp_input, <span class="st">'Ramp'</span>)</span>
+<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a>plot_responses_and_errors(systems, t, parabola_input, <span class="st">'Parabola'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="21_Steady_State_Accuracy_And_Design_Principles_it_files/figure-html/cell-2-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="21_Steady_State_Accuracy_And_Design_Principles_it_files/figure-html/cell-2-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="21_Steady_State_Accuracy_And_Design_Principles_it_files/figure-html/cell-2-output-3.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="ulteriori-commenti" class="level3">
+<h3 class="anchored" data-anchor-id="ulteriori-commenti">Ulteriori commenti</h3>
+<ul>
+<li><p>Generalmente, i requisiti del sistema di controllo presuppongono l’obiettivo di raggiungere un errore di stato stazionario pari a zero per gli ingressi di gradino dell’unità e di mantenere errori finiti per gli ingressi di rampa, a meno che non vengano fornite altre specifiche.</p></li>
+<li><p>Nella scelta dei controllori, le caratteristiche intrinseche del sistema guidano la scelta:</p>
+<ul>
+<li>Se il sistema include naturalmente un integratore, spesso è appropriato utilizzare un controller proporzionale-derivativo (PD). Questa scelta mantiene la tipologia esistente del sistema, migliorandone il controllo senza alterarne il comportamento fondamentale.</li>
+<li>Al contrario, per i sistemi privi di integratore integrato, un controller Proporzionale-Integrale (PI) è in genere più efficace. Un controller PI introduce un integratore aggiuntivo, aumentando di fatto il numero di tipo del sistema e migliorando così la sua capacità di gestire una gamma più ampia di tipi di input, soprattutto in termini di precisione a regime.</li>
+</ul></li>
+</ul>
+</section>
+</section>
+<section id="esempio-di-progettazione-uno-schema-di-controllo-pid" class="level2">
+<h2 class="anchored" data-anchor-id="esempio-di-progettazione-uno-schema-di-controllo-pid">Esempio di progettazione: uno schema di controllo PID</h2>
+<p>Applichiamo la nostra conoscenza per progettare un controller PID per un dato impianto. Esamineremo passo dopo passo il processo di progettazione.</p>
+<img src="../pics/21_Steady_State_Accuracy_And_Design_Principles_design_example.png" alt="21_Steady_State_Accuracy_And_Design_Principles_design_example
+" style="width:450px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<section id="progettazione-di-un-sistema-di-controllo-della-posizione-con-un-controller-proporzionale" class="level3">
+<h3 class="anchored" data-anchor-id="progettazione-di-un-sistema-di-controllo-della-posizione-con-un-controller-proporzionale">Progettazione di un sistema di controllo della posizione con un controller proporzionale</h3>
+<p>In un problema di controllo di posizione, il nostro obiettivo è progettare un controllore adeguato $ D(s) $ che garantisca le prestazioni desiderate del sistema. Dato che l’impianto incorpora già un integratore, possiamo iniziare il nostro processo di progettazione con un semplice controllore proporzionale rappresentato come $ D(s) = K_A $.</p>
+<section id="analisi-del-sistema-combinato" class="level4">
+<h4 class="anchored" data-anchor-id="analisi-del-sistema-combinato">Analisi del sistema combinato</h4>
+<p>Per un controllore proporzionale $ D(s) = K_A $, la funzione di trasferimento del sistema combinato (controllore e impianto) è:</p>
+<p><span class="math display">\[ D(s)G(s) = \frac{4500 K_A}{s(s+361,2)} \]</span></p>
+</section>
+<section id="equazione-caratteristica" class="level4">
+<h4 class="anchored" data-anchor-id="equazione-caratteristica">Equazione caratteristica</h4>
+<p>L’equazione caratteristica di questo sistema a circuito chiuso è:</p>
+<p><span class="math display">\[ s^2 + 361,2 s + 4500 K_A = 0 \]</span></p>
+<p>Da questa equazione caratteristica possiamo ricavare importanti parametri di sistema come funzioni di $ K_A $:</p>
+<ul>
+<li>Frequenza naturale ($ _n $): $ _n = $</li>
+<li>Rapporto di smorzamento ($ $): $ = $</li>
+<li>Poli del sistema: $ s_{1,2} = -180,6 j $</li>
+<li>Errore a regime per l’ingresso della rampa unitaria: $ e_{ss} = $</li>
+</ul>
+<p>Per un ingresso a gradino unitario, l’errore a regime è zero a causa della presenza dell’integratore nell’impianto.</p>
+</section>
+<section id="selezione-di-k_a-per-lo-smorzamento-critico" class="level4">
+<h4 class="anchored" data-anchor-id="selezione-di-k_a-per-lo-smorzamento-critico">Selezione di $ K_A $ per lo smorzamento critico</h4>
+<p>Per ottenere uno smorzamento critico ($ = 1 $), scegliamo:</p>
+<p><span class="math display">\[ K_A = 7.247 \]</span></p>
+<p>Questo valore specifico di $ K_A $ si traduce in una risposta criticamente smorzata, ideale per il controllo della posizione poiché garantisce una risposta rapida senza oscillazioni.</p>
+<p>Scegliere un guadagno tale che $ = 1 $ potrebbe portare ad un tempo di assestamento elevato. Si noti inoltre che il tempo di salita è infinito (il sistema arriva a 1 solo quando <span class="math inline">\(t\)</span> va all’infinito).</p>
+<p>Per calcolare il tempo di assestamento ricordiamo che l’approssimazione che abbiamo ricavato era valida quando <span class="math inline">\(0&lt;\zeta&lt;0.7\)</span>.</p>
+</section>
+</section>
+<section id="selezionare-k_a-per-ridurre-il-rapporto-di-smorzamento-zeta." class="level3">
+<h3 class="anchored" data-anchor-id="selezionare-k_a-per-ridurre-il-rapporto-di-smorzamento-zeta.">Selezionare <span class="math inline">\(K_A\)</span> per ridurre il rapporto di smorzamento <span class="math inline">\(\zeta\)</span>.</h3>
+<p>Per ottenere uno smorzamento critico ($ = 0,707 $), scegliamo:</p>
+<p><span class="math display">\[ K_A = 14,5 \]</span></p>
+<p>Il che porta ad un superamento massimo:</p>
+<p><span class="math display">\[
+M_p = 4,3\%
+\]</span></p>
+<p>Il tempo di salita in questo caso è inferiore rispetto a prima, e in effetti potrebbe essere il più basso (non ho fatto i calcoli formali).</p>
+<p><span class="math inline">\(M_p = 4,3\%\)</span> è il prezzo che stiamo pagando per un tempo di salita inferiore e potrebbe essere accettabile.</p>
+<p>Ricordati che <span class="math display">\[
+   M_p = y(t_p) - 1 = e^{-\zeta\omega_n(\pi/\omega_d)}.
+   \]</span></p>
+<p>L’errore a regime è:</p>
+<p><span class="math display">\[
+e_{ss} = \frac{0,0803}{K_A}
+\]</span></p>
+<p>il che significa che se vogliamo ridurlo dobbiamo ridurre il valore di <span class="math inline">\(\zeta\)</span> e il picco di superamento aumenta.</p>
+<p>Supponiamo ora che la tua esigenza sia:</p>
+<p><span class="math display">\[M_p\le25\%\]</span></p>
+<p>Ciò corrisponde ad un rapporto di smorzamento minimo di:</p>
+<p><span class="math display">\[
+\zeta= 0,4
+\]</span></p>
+<p>per cui si ottiene</p>
+<p><span class="math display">\[
+K_A = 45,3
+\]</span></p>
+<p>Ciò riduce l’errore di stato stazionario, ma stiamo anche spostando il sistema verso l’instabilità.</p>
+<p>Non c’è nient’altro che possiamo fare con un controller proporzionale senza violare i nostri requisiti.</p>
+</section>
+<section id="simulazione-python-del-sistema-criticamente-smorzato" class="level3">
+<h3 class="anchored" data-anchor-id="simulazione-python-del-sistema-criticamente-smorzato">Simulazione Python del sistema criticamente smorzato</h3>
+<p>Ora simuleremo questo sistema criticamente smorzato in Python per visualizzare la sua risposta a un input di passaggio:</p>
+<p>Questo script simula e traccia la risposta al gradino del sistema di controllo della posizione con un controller proporzionale impostato per lo smorzamento critico. Il valore scelto di $ K_A $ garantisce che il sistema venga smorzato in modo critico, ottenendo così una risposta rapida e stabile ai cambiamenti nell’input senza overshooting.</p>
+<p>Usa il codice qui sotto per provare:</p>
+<ul>
+<li><span class="math inline">\(K_A = 7.247\)</span></li>
+<li><span class="math inline">\(K_A = 14.5\)</span></li>
+</ul>
+<p>verificare qual è il tempo di salita associato, l’errore di stato stazionario e il superamento massimo.</p>
+<div id="b78fe46d" class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> control <span class="im">as</span> ctrl</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> ipywidgets <span class="im">as</span> widgets</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> display</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to plot the step response for a given K_A</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_step_response(K_A):</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Transfer function of the system</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    G_s <span class="op">=</span> ctrl.TransferFunction([<span class="dv">4500</span> <span class="op">*</span> K_A], [<span class="dv">1</span>, <span class="fl">361.2</span>, <span class="dv">4500</span> <span class="op">*</span> K_A])</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Time range for simulation</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    t <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="fl">0.4</span>, <span class="dv">500</span>)</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Simulate step response</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    t, y <span class="op">=</span> ctrl.step_response(G_s, T<span class="op">=</span>t)</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># steady state error</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    e_ss <span class="op">=</span> <span class="fl">0.0803</span><span class="op">/</span>K_A</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Peak overshoot</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    omega_n <span class="op">=</span> np.sqrt(<span class="dv">4500</span><span class="op">*</span>K_A)</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>    zeta <span class="op">=</span> <span class="fl">2.692</span><span class="op">/</span>np.sqrt(K_A)</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>    omega_d <span class="op">=</span> omega_n <span class="op">*</span> np.sqrt(<span class="dv">1</span> <span class="op">-</span> zeta<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    <span class="co">#M_p = np.exp(-zeta*omega_n*np.pi/omega_d)</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    M_p <span class="op">=</span> np.exp(<span class="op">-</span>np.pi<span class="op">*</span>zeta<span class="op">/</span>(np.sqrt(<span class="dv">1</span><span class="op">-</span>zeta<span class="op">**</span><span class="dv">2</span>)))</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Plotting</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>    plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>    plt.plot(t, y)</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="ss">f'Step Response with Proportional Gain K_A = </span><span class="sc">{</span>K_A<span class="sc">:.2f}</span><span class="ss">, e_ss = </span><span class="sc">{</span>e_ss<span class="sc">:.4f}</span><span class="ss">, M_p % = </span><span class="sc">{</span>M_p<span class="op">*</span><span class="dv">100</span><span class="sc">:.1f}</span><span class="ss">'</span>)</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="st">'Time (seconds)'</span>)</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>    plt.ylabel(<span class="st">'Response'</span>)</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>    plt.grid()</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>    plt.show()</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a slider for K_A</span></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>K_A_slider <span class="op">=</span> widgets.FloatSlider(</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>    value<span class="op">=</span><span class="fl">7.247</span>,</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>    <span class="bu">min</span><span class="op">=</span><span class="fl">0.1</span>,</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>    <span class="bu">max</span><span class="op">=</span><span class="fl">47.0</span>,</span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>    step<span class="op">=</span><span class="fl">0.1</span>,</span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>    description<span class="op">=</span><span class="st">'K_A Slider:'</span>,</span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>    continuous_update<span class="op">=</span><span class="va">False</span></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a text box for K_A</span></span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>K_A_text <span class="op">=</span> widgets.FloatText(</span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>    value<span class="op">=</span><span class="fl">7.247</span>,</span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>    description<span class="op">=</span><span class="st">'K_A Text:'</span>,</span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to synchronize slider and text box values</span></span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> on_value_change(change):</span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>    K_A_slider.value <span class="op">=</span> change.new</span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>    K_A_text.value <span class="op">=</span> change.new</span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>K_A_slider.observe(on_value_change, names<span class="op">=</span><span class="st">'value'</span>)</span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>K_A_text.observe(on_value_change, names<span class="op">=</span><span class="st">'value'</span>)</span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a><span class="co"># Use `interactive` to bind the plot function to both the slider and the text box</span></span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a>display(widgets.interactive(plot_step_response, K_A<span class="op">=</span>K_A_slider))</span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a>display(K_A_text)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"37c4387ab9be4a2083c27b18472ee2c7","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+</script>
+</div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"cf7891ff54944fc9822bf9e6ec64363b","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+</script>
+</div>
+</div>
+</section>
+<section id="miglioramento-delle-prestazioni-progettazione-migliorata-del-sistema-di-controllo-con-controller-pd-e-pi" class="level3">
+<h3 class="anchored" data-anchor-id="miglioramento-delle-prestazioni-progettazione-migliorata-del-sistema-di-controllo-con-controller-pd-e-pi">Miglioramento delle prestazioni: progettazione migliorata del sistema di controllo con controller PD e PI</h3>
+<ol type="1">
+<li><strong>Controllo PD:</strong>
+<ul>
+<li><strong>Panoramica:</strong> L’aggiunta di un termine derivato nel controllo PD influenza in modo significativo le caratteristiche di smorzamento del sistema. Anche se non riduce direttamente l’errore in stato stazionario, l’azione derivativa gioca un ruolo cruciale nel migliorare la stabilità e la risposta del sistema.</li>
+<li><strong>Impatto sulla progettazione:</strong> Incorporando un termine derivato, il controllo PD consente un aumento del guadagno proporzionale $ K_A $ senza violare i vincoli di superamento massimo. Nello specifico, lo smorzamento potenziato fornito dal termine derivato consente al sistema di tollerare un $ K_A $ più elevato, consentendo di mantenere l’overshoot entro il limite desiderato del 25%.</li>
+<li><strong>Formula del controller:</strong> $ D(s) = K_C + K_Ds $, dove $ K_C $ è il guadagno proporzionale e $ K_D $ è il guadagno derivativo.</li>
+</ul></li>
+<li><strong>Controllo PI:</strong>
+<ul>
+<li><strong>Panoramica:</strong> Il controllo PI introduce un integratore nello schema di controllo, mirato direttamente alla riduzione dell’errore in stato stazionario, particolarmente efficace nell’eliminare gli errori di offset in varie applicazioni di controllo.</li>
+<li><strong>Bilanciamento delle prestazioni transitorie e stazionarie:</strong> sebbene un controller PI sia in grado di ridurre al minimo l’errore allo stato stazionario, è necessaria un’attenta regolazione per garantire che siano soddisfatti anche i criteri delle prestazioni transitorie, come il tempo di assestamento e il superamento.</li>
+<li>Per il caso di controllo PI (proporzionale-integrale), il controller $ D(s) $ è tipicamente formulato come una combinazione di un termine proporzionale e di un termine integrale. La forma generale di un controller PI nel dominio di Laplace è:</li>
+</ul></li>
+</ol>
+<p><span class="math display">\[ D(s) = K_P + \frac{K_I}{s} \]</span></p>
+<p>Dove: - $ K_P $ è il guadagno proporzionale. - $ K_I $ è il guadagno integrale.</p>
+<p>Il termine proporzionale $ K_P $ fornisce un’azione di controllo proporzionale al segnale di errore, offrendo una risposta immediata ai cambiamenti nel sistema. Il termine integrale $ $ accumula l’errore nel tempo, con l’obiettivo di eliminare l’errore a regime. La combinazione di queste due azioni consente al controller PI di reagire tempestivamente ai cambiamenti del sistema e di ridurre metodicamente qualsiasi errore persistente.</p>
+<p>In un sistema di controllo pratico, la regolazione dei valori di $ K_P $ e $ K_I $ è fondamentale per raggiungere l’equilibrio desiderato tra risposta rapida e precisione a regime, garantendo che il sistema soddisfi effettivamente le specifiche prestazionali.</p>
+</section>
+<section id="progettazione-avanzata-di-controllori-metodi-del-luogo-delle-radici-e-della-risposta-in-frequenza" class="level3">
+<h3 class="anchored" data-anchor-id="progettazione-avanzata-di-controllori-metodi-del-luogo-delle-radici-e-della-risposta-in-frequenza">Progettazione avanzata di controllori: metodi del luogo delle radici e della risposta in frequenza</h3>
+<p>Nelle nostre prossime discussioni, approfondiremo metodi più formalizzati per la progettazione dei controller, vale a dire il metodo del luogo delle radici e il metodo della risposta in frequenza. Queste tecniche forniscono potenti strumenti per analizzare e progettare sistemi di controllo, permettendoci di:</p>
+<ul>
+<li>Modella con precisione la risposta del sistema regolando i parametri del controller.</li>
+<li>Valutare visivamente i compromessi in termini di stabilità e prestazioni.</li>
+<li>Ottimizzare i controller per ottenere un equilibrio desiderabile tra risposta ai transitori e precisione allo stato stazionario.</li>
+</ul>
+<p>Attraverso questi metodi, possiamo sviluppare una comprensione più profonda della dinamica dei sistemi di controllo e progettare controller che si adattano in modo ottimale ai requisiti specifici delle nostre applicazioni.</p>
+<section id="pd-control" class="level4">
+<h4 class="anchored" data-anchor-id="pd-control">PD control</h4>
+<p>Per modificare il codice per utilizzare un controller descritto da $ D(s) = K_C + K_Ds $, che è un controller proporzionale-derivativo (PD), dobbiamo aggiornare di conseguenza la funzione di trasferimento del sistema combinato (controller e impianto).</p>
+<p>Supponendo che la funzione di trasferimento dell’impianto rimanga la stessa dell’esempio precedente, la funzione di trasferimento combinata del sistema con il controllore PD sarà:</p>
+<p><span class="math display">\[ D(s)G(s) = \frac{(K_C + K_Ds) \cdot 4500K_A}{s(s+361.2)} \]</span></p>
+<p>Aggiorniamo lo script Python per incorporare questo controller PD. Aggiungeremo cursori sia per $ K_C $ (guadagno proporzionale) che per $ K_D $ (guadagno derivativo) per osservare in modo interattivo la risposta del sistema.</p>
+<p>Lo script seguente consente di regolare dinamicamente il guadagno proporzionale $ K_C $ e il guadagno derivativo $ K_D $ del controller PD utilizzando i cursori. La risposta al gradino del sistema si aggiornerà in base a questi valori, aiutandoti a visualizzare come il controller PD influisce sul comportamento del sistema. Ricorda, questa funzionalità interattiva funziona in un ambiente notebook Jupyter.</p>
+<div id="191590d9" class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> control <span class="im">as</span> ctrl</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> ipywidgets <span class="im">as</span> widgets</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> display</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to plot the step response for given K_C and K_D</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_step_response(K_C, K_D):</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># PD controller transfer function</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    D_s <span class="op">=</span> ctrl.TransferFunction([K_D, K_C], [<span class="dv">1</span>])</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Plant transfer function</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    G_s <span class="op">=</span> ctrl.TransferFunction([<span class="dv">4500</span>], [<span class="dv">1</span>, <span class="fl">361.2</span>, <span class="dv">0</span>])</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Combined system transfer function</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    system <span class="op">=</span> ctrl.series(D_s, G_s)</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    closed_loop_system <span class="op">=</span> ctrl.feedback(system)</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Time range for simulation</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    t <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">500</span>)</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Simulate step response</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>    t, y <span class="op">=</span> ctrl.step_response(closed_loop_system, T<span class="op">=</span>t)</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Peak overshoot (M_p) and steady-state error (e_ss) calculations</span></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>    e_ss <span class="op">=</span> <span class="fl">0.0803</span> <span class="op">/</span> K_C  <span class="co"># Assuming K_C is dominant for steady-state error</span></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>    peak <span class="op">=</span> np.<span class="bu">max</span>(y)</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>    M_p <span class="op">=</span> ((peak <span class="op">-</span> <span class="dv">1</span>) <span class="op">/</span> <span class="dv">1</span>) <span class="op">*</span> <span class="dv">100</span>  <span class="co"># Peak overshoot in percentage</span></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Plotting</span></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>    plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>    plt.plot(t, y)</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="ss">f'Step Response with K_C = </span><span class="sc">{</span>K_C<span class="sc">:.2f}</span><span class="ss">, K_D = </span><span class="sc">{</span>K_D<span class="sc">:.2f}</span><span class="ss">, e_ss = </span><span class="sc">{</span>e_ss<span class="sc">:.4f}</span><span class="ss">, M_p % = </span><span class="sc">{</span>M_p<span class="sc">:.1f}</span><span class="ss">'</span>)</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="st">'Time (seconds)'</span>)</span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>    plt.ylabel(<span class="st">'Response'</span>)</span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>    plt.grid()</span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>    plt.show()</span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a><span class="co"># Sliders for K_C and K_D</span></span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>K_C_slider <span class="op">=</span> widgets.FloatSlider(value<span class="op">=</span><span class="fl">1.0</span>, <span class="bu">min</span><span class="op">=</span><span class="fl">0.1</span>, <span class="bu">max</span><span class="op">=</span><span class="dv">10</span>, step<span class="op">=</span><span class="fl">0.1</span>, description<span class="op">=</span><span class="st">'K_C:'</span>)</span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a><span class="co"># K_D_slider = widgets.FloatSlider(value=1.0, min=0.1, max=10, step=0.1, description='K_D:')</span></span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>K_D_slider <span class="op">=</span> widgets.FloatSlider(value<span class="op">=</span><span class="fl">.1</span>, <span class="bu">min</span><span class="op">=</span><span class="dv">0</span>, <span class="bu">max</span><span class="op">=</span><span class="dv">2</span>, step<span class="op">=</span><span class="fl">0.1</span>, description<span class="op">=</span><span class="st">'K_D:'</span>)</span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a><span class="co"># Interactive plot</span></span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>widgets.interactive(plot_step_response, K_C<span class="op">=</span>K_C_slider, K_D<span class="op">=</span>K_D_slider)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"bcf7111db3184e9aa59306fdd2b0245e","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+</script>
+</div>
+</div>
+</section>
+<section id="controllo-pi" class="level4">
+<h4 class="anchored" data-anchor-id="controllo-pi">Controllo PI</h4>
+<p>Per modificare il codice per un controllo PI, dobbiamo cambiare la funzione di trasferimento del controller per rappresentare un controller PI e regolare i calcoli di conseguenza. Il controller PI ha la forma $ D(s) = K_P + $, dove $ K_P $ è il guadagno proporzionale e $ K_I $ è il guadagno integrale.</p>
+<p>Per semplicità, supponiamo che $ K_P $ e $ K_I $ siano uguali e rappresentati dalla stessa variabile $ K_A $ nello script. La funzione di trasferimento del controller PI sarà quindi $ D(s) = K_A + $. Dobbiamo anche aggiornare la funzione di trasferimento del sistema combinato e regolare i calcoli per l’errore di stato stazionario e il superamento del picco.</p>
+<p>L’errore a regime per un ingresso a gradino è zero a causa dell’integratore nel controller PI. Il calcolo analitico del superamento del picco per un controller PI può essere complesso e viene spesso eseguito utilizzando metodi numerici o graficamente dal grafico della risposta. Lo script ora utilizza cursori interattivi per consentire di regolare $ K_A $ e osservare la risposta del sistema.</p>
+<p>Ecco lo script modificato:</p>
+<div id="5b67ac4d" class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> control <span class="im">as</span> ctrl</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> ipywidgets <span class="im">as</span> widgets</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> display</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to plot the step response for a given K_A</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_step_response(K_A):</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># PI controller transfer function: D(s) = K_A + K_A/s</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    D_s <span class="op">=</span> ctrl.TransferFunction([K_A, K_A], [<span class="dv">1</span>, <span class="dv">0</span>])</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Plant transfer function: G(s) = 4500/(s(s+361.2))</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    G_s <span class="op">=</span> ctrl.TransferFunction([<span class="dv">4500</span>], [<span class="dv">1</span>, <span class="fl">361.2</span>, <span class="dv">0</span>])</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Combined system transfer function</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    system <span class="op">=</span> ctrl.series(D_s, G_s)</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    closed_loop_system <span class="op">=</span> ctrl.feedback(system)</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Time range for simulation</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>    t <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">500</span>)</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Simulate step response</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    t, y <span class="op">=</span> ctrl.step_response(closed_loop_system, T<span class="op">=</span>t)</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Steady-state error is zero for a step input due to the integrator in PI controller</span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>    e_ss <span class="op">=</span> <span class="fl">0.0</span></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Peak overshoot calculation is not straightforward for a PI controller</span></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>    <span class="co"># and typically requires numerical methods or graphically from the plot</span></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Plotting</span></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>    plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>    plt.plot(t, y)</span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="ss">f'Step Response with PI Gain K_A = </span><span class="sc">{</span>K_A<span class="sc">:.2f}</span><span class="ss">, e_ss = </span><span class="sc">{</span>e_ss<span class="sc">:.4f}</span><span class="ss">'</span>)</span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="st">'Time (seconds)'</span>)</span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>    plt.ylabel(<span class="st">'Response'</span>)</span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>    plt.grid()</span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>    plt.show()</span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a slider for K_A</span></span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>K_A_slider <span class="op">=</span> widgets.FloatSlider(</span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>    value<span class="op">=</span><span class="fl">1.0</span>,</span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>    <span class="bu">min</span><span class="op">=</span><span class="fl">0.1</span>,</span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>    <span class="bu">max</span><span class="op">=</span><span class="fl">10.0</span>,</span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>    step<span class="op">=</span><span class="fl">0.1</span>,</span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>    description<span class="op">=</span><span class="st">'K_A Slider:'</span>,</span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>    continuous_update<span class="op">=</span><span class="va">False</span></span>
+<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a text box for K_A</span></span>
+<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>K_A_text <span class="op">=</span> widgets.FloatText(</span>
+<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>    value<span class="op">=</span><span class="fl">1.0</span>,</span>
+<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a>    description<span class="op">=</span><span class="st">'K_A Text:'</span>,</span>
+<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to synchronize slider and text box values</span></span>
+<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> on_value_change(change):</span>
+<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a>    K_A_slider.value <span class="op">=</span> change.new</span>
+<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a>    K_A_text.value <span class="op">=</span> change.new</span>
+<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a>K_A_slider.observe(on_value_change, names<span class="op">=</span><span class="st">'value'</span>)</span>
+<span id="cb4-62"><a href="#cb4-62" aria-hidden="true" tabindex="-1"></a>K_A_text.observe(on_value_change, names<span class="op">=</span><span class="st">'value'</span>)</span>
+<span id="cb4-63"><a href="#cb4-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-64"><a href="#cb4-64" aria-hidden="true" tabindex="-1"></a><span class="co"># Use `interactive` to bind the plot function to both the slider and the text box</span></span>
+<span id="cb4-65"><a href="#cb4-65" aria-hidden="true" tabindex="-1"></a>display(widgets.interactive(plot_step_response, K_A<span class="op">=</span>K_A_slider))</span>
+<span id="cb4-66"><a href="#cb4-66" aria-hidden="true" tabindex="-1"></a>display(K_A_text)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"74e3dd5d2d64402493efc77a906a8cc0","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+</script>
+</div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"793dfc67bf804b6d9bf122573a6da93f","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+</script>
+</div>
+</div>
+
+
+</section>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script type="application/vnd.jupyter.widget-state+json">
+{"state":{},"version_major":2,"version_minor":0}
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/andreamunafo\.github\.io\/principles-of-automatic-controls");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/andreamunafo/principles-of-automatic-controls/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

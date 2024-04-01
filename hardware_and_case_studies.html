@@ -1,0 +1,2075 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.552">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>principles-of-automatic-controls - Hardware of Control Systems and Case Studies</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+<meta property="og:title" content="principles-of-automatic-controls - Hardware of Control Systems and Case Studies">
+<meta property="og:description" content="Course in feedback control for the University of Pisa">
+<meta property="og:site_name" content="principles-of-automatic-controls">
+<meta name="twitter:title" content="principles-of-automatic-controls - Hardware of Control Systems and Case Studies">
+<meta name="twitter:description" content="Course in feedback control for the University of Pisa">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">principles-of-automatic-controls</span>
+    </a>
+  </div>
+        <div class="quarto-navbar-tools tools-end">
+</div>
+          <div id="quarto-search" class="" title="Search"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./hardware_and_case_studies.html">Hardware of Control Systems and Case Studies</a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Feedback Control</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./faq.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Frequently Asked Questions (FAQ)</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./syllabus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Syllabus for “Principles of Automatic Control”</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./toc.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Table of Contents</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./update_and_manage_local_changes_guide.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A Guide to Updating Your Local Repository with Git in Anaconda’s Virtual Environment</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./getting_started_with_python_and_jupyter_notebook.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Getting Started with Python and Jupyter Notebooks</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principles of Automatic Control</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./basics_of_feedback_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Feedback Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./introduction_to_control_problem.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to the control problem</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dynamic_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modeling in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dynamic_response.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Dynamic response of control systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06_inverse_laplace_transform.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Inverse Laplace Transform: Partial fraction decomposition</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./modeling_dynamic_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Modeling of Dynamic Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./control_system_components.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Control System Components</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./models_of_control_devices_and_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Models of Controlled Devices</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./hardware_and_case_studies.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Hardware of Control Systems and Case Studies</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ac_hardware_and_case_studies.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">AC Motion Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./a_first_complete_application.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A Feedback Control System</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./principles_of_feedback_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principles of Feedback Control</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./feedback_systems_and_their_effects.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Feedback systems and their effects</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./introduction_to_control_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./stability.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Stability Analysis in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./stability_and_routh_criterion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Stability Analysis in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./performance_of_feedback_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Performance of Feedback Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./design_of_feedback_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Design Cycle for a Standard Second-Order System</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./20_Design_of_feedback_control_continued.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Understanding the Standard Second-Order System: Recap</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./steady_state_accuracy_and_design_principles.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Steady State Accuracy and Design Principles</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./compensator_design_using_root_locus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compensator Design</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./design_with_the_root_locus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Design with the Root Locus</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./compensators_and_root_locus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compensators and the Root Locus</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./introduction_to_frequency_domain_analysis_in_control_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Frequency Domain Analysis in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./application_of_nyquist_stability_criterion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Application of Nyquist Stability Criterion in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./the_nyquist_stability_criterion_and_relative_stability.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The Nyquist Stability Criterion and Relative Stability</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./bode_plots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Bode Plot Analysis</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./feedback_system_performance_based_on_frequency_response.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Feedback System Performance Based On Frequency Response</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./compensator_design_using_frequency_response_plots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principles of Automatic Control: Lead and Lag Compensation</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">IT_TCLab_🇮🇹</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/spacecraft_thermal_control_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Il Laboratorio di Controllo della Temperatura</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/tclab_exercises_report_template_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modello di report sugli esercizi TCLab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/tclab_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Il Laboratorio di Controllo della Temperatura</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/understanding_tclab_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Comprendere TCLab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/tclab_lab_1_coding_a_relay_controller_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 1: Codifica di un controller relè</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/system_model_and_identification_tclab_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modellazione del sistema</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/step_testing_tclab_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Passo Test</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/fitting_step_test_data_to_empirical_models_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Adattamento dei dati dei test di fase ai modelli empirici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/tclab_lab_2_model_identification_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 2: Identificazione del modello</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/tclab_lab_2_fitting_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Identificazione del modello: adattamento dei modelli ai dati</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/relay_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Controllo relè</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/pid_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Controllo PID</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/lab-assignment-pid-control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compito di laboratorio: Controllo PID</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/lab-assignment-pi-control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compito di laboratorio 4: Controllo PI</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">IT_🇮🇹</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/faq_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Domande frequenti (FAQ)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/syllabus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Programma del corso “Principi del controllo automatico”</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/update_and_manage_local_changes_guide_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Aggiornare il Proprio Repository Locale Mantenendo le Modifiche Locali</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/getting_started_with_python_and_jupyter_notebook_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Guida introduttiva ai notebook Python e Jupyter</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/intro_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principi di controllo automatico</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/basics_of_feedback_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione ai sistemi di controllo del feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/introduction_to_control_problem_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione al problema del controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/dynamic_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modellazione nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/dynamic_response_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Risposta dinamica dei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/06_inverse_laplace_transform_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Trasformata di Laplace inversa: scomposizione parziale di frazioni</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/modeling_dynamic_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione alla modellazione dei sistemi dinamici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/control_system_components_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Componenti del sistema di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/models_of_control_devices_and_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modelli di dispositivi controllati</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/hardware_and_case_studies_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Hardware dei sistemi di controllo e casi di studio</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/ac_hardware_and_case_studies_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sistemi di controllo del movimento CA</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/a_first_complete_application_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Un sistema di controllo del feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/principles_of_feedback_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principi di controllo del feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/feedback_systems_and_their_effects_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sistemi di feedback e loro effetti</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/introduction_to_control_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione ai sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/stability_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analisi di stabilità nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/stability_and_routh_criterion_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analisi di stabilità nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/performance_of_feedback_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prestazioni dei sistemi di feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/design_of_feedback_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Ciclo di progettazione per un sistema standard del secondo ordine</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/20_Design_of_feedback_control_continued_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Comprensione del sistema standard del secondo ordine: riepilogo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/steady_state_accuracy_and_design_principles_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Precisione dello stato stazionario e principi di progettazione</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/compensator_design_using_root_locus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Progettazione del compensatore</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/design_with_the_root_locus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Progettare con il luogo delle radici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/compensators_and_root_locus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compensatori e luogo delle radici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/introduction_to_frequency_domain_analysis_in_control_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione all’analisi nel dominio della frequenza nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/application_of_nyquist_stability_criterion_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Applicazione del criterio di stabilità di Nyquist nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/the_nyquist_stability_criterion_and_relative_stability_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Il criterio di stabilità di Nyquist e la stabilità relativa</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/bode_plots_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analisi del diagramma di Bode</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/feedback_system_performance_based_on_frequency_response_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prestazioni del sistema di feedback basate sulla risposta in frequenza</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/index_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Syllabus - Fondamenti di Automatica</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">TCLab</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/spacecraft_thermal_control_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The Temperature Control Laboratory</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/tclab_exercises_report_template.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Exercises Report Template</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The Temperature Control Lab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/understanding_tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Understanding TCLab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/tclab_lab_1_coding_a_relay_controller-solution.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 1: Coding a relay controller</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/tclab_lab_1_coding_a_relay_controller.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 1: Coding a relay controller</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/system_model_and_identification_tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">System Modeling</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/step_testing_tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Step Testing</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/fitting_step_test_data_to_empirical_models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Fitting Step Test Data to Empirical Models</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/tclab_lab_2_model_identification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 2: Model Identification</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/tclab_lab_2_model_identification_solutions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 2: Model Identification</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/tclab_lab_2_fitting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Model Identification: Fitting models to data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/relay_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Relay Control</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/pid_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">PID Control</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/lab-assignment-pid-control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab Assignment: PID Control</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/lab-assignment-pi-control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab Assignment 4: PI Control</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#case-study-speed-control-system" id="toc-case-study-speed-control-system" class="nav-link active" data-scroll-target="#case-study-speed-control-system">Case Study: Speed Control System</a>
+  <ul class="collapse">
+  <li><a href="#system-overview" id="toc-system-overview" class="nav-link" data-scroll-target="#system-overview">System Overview:</a></li>
+  </ul></li>
+  <li><a href="#analyzing-the-motor-block" id="toc-analyzing-the-motor-block" class="nav-link" data-scroll-target="#analyzing-the-motor-block">Analyzing the Motor Block</a>
+  <ul class="collapse">
+  <li><a href="#motors-components" id="toc-motors-components" class="nav-link" data-scroll-target="#motors-components">Motor’s Components</a></li>
+  <li><a href="#armature-controlled-motor-model" id="toc-armature-controlled-motor-model" class="nav-link" data-scroll-target="#armature-controlled-motor-model">Armature controlled motor model</a></li>
+  <li><a href="#revisiting-the-original-system" id="toc-revisiting-the-original-system" class="nav-link" data-scroll-target="#revisiting-the-original-system">Revisiting the Original System</a></li>
+  </ul></li>
+  <li><a href="#position-control-system" id="toc-position-control-system" class="nav-link" data-scroll-target="#position-control-system">Position Control System</a>
+  <ul class="collapse">
+  <li><a href="#understanding-the-block-diagram" id="toc-understanding-the-block-diagram" class="nav-link" data-scroll-target="#understanding-the-block-diagram">Understanding the block diagram</a>
+  <ul class="collapse">
+  <li><a href="#gear-train-in-the-motor-system" id="toc-gear-train-in-the-motor-system" class="nav-link" data-scroll-target="#gear-train-in-the-motor-system">Gear Train in the Motor System</a></li>
+  <li><a href="#deriving-the-relationship-between-torque-and-speed" id="toc-deriving-the-relationship-between-torque-and-speed" class="nav-link" data-scroll-target="#deriving-the-relationship-between-torque-and-speed">Deriving the Relationship Between Torque and Speed</a></li>
+  <li><a href="#examining-torque-dynamics" id="toc-examining-torque-dynamics" class="nav-link" data-scroll-target="#examining-torque-dynamics">Examining Torque Dynamics</a></li>
+  <li><a href="#integrating-gear-effects-into-the-system" id="toc-integrating-gear-effects-into-the-system" class="nav-link" data-scroll-target="#integrating-gear-effects-into-the-system">Integrating Gear Effects into the System</a></li>
+  <li><a href="#block-diagram" id="toc-block-diagram" class="nav-link" data-scroll-target="#block-diagram">Block Diagram</a></li>
+  </ul></li>
+  <li><a href="#some-additional-comments-on-the-dc-position-controlled-system" id="toc-some-additional-comments-on-the-dc-position-controlled-system" class="nav-link" data-scroll-target="#some-additional-comments-on-the-dc-position-controlled-system">Some additional comments on the DC Position Controlled System</a>
+  <ul class="collapse">
+  <li><a href="#block-diagram-model" id="toc-block-diagram-model" class="nav-link" data-scroll-target="#block-diagram-model">Block Diagram Model</a></li>
+  <li><a href="#sidebar---deeper-dive-into-the-correlation-between-k_t-and-k_b" id="toc-sidebar---deeper-dive-into-the-correlation-between-k_t-and-k_b" class="nav-link" data-scroll-target="#sidebar---deeper-dive-into-the-correlation-between-k_t-and-k_b">Sidebar - Deeper Dive into the Correlation Between <span class="math inline">\(K_T\)</span> and <span class="math inline">\(K_b\)</span></a></li>
+  </ul></li>
+  <li><a href="#field-controlled-motors" id="toc-field-controlled-motors" class="nav-link" data-scroll-target="#field-controlled-motors">Field Controlled Motors</a></li>
+  </ul></li>
+  <li><a href="#making-a-motor-selection-factors-to-consider" id="toc-making-a-motor-selection-factors-to-consider" class="nav-link" data-scroll-target="#making-a-motor-selection-factors-to-consider">Making a Motor Selection: Factors to Consider</a>
+  <ul class="collapse">
+  <li><a href="#additional-comments" id="toc-additional-comments" class="nav-link" data-scroll-target="#additional-comments">Additional comments:</a></li>
+  </ul></li>
+  <li><a href="#feedback-control-using-operational-amplifiers-op-amps" id="toc-feedback-control-using-operational-amplifiers-op-amps" class="nav-link" data-scroll-target="#feedback-control-using-operational-amplifiers-op-amps">Feedback Control using Operational Amplifiers (Op-Amps)</a>
+  <ul class="collapse">
+  <li><a href="#defining-the-variables" id="toc-defining-the-variables" class="nav-link" data-scroll-target="#defining-the-variables">Defining the Variables</a>
+  <ul class="collapse">
+  <li><a href="#potentiometer" id="toc-potentiometer" class="nav-link" data-scroll-target="#potentiometer">Potentiometer</a></li>
+  <li><a href="#from-voltage-to-position-control" id="toc-from-voltage-to-position-control" class="nav-link" data-scroll-target="#from-voltage-to-position-control">From Voltage to Position Control</a></li>
+  <li><a href="#incorporating-tachogenerator-feedback" id="toc-incorporating-tachogenerator-feedback" class="nav-link" data-scroll-target="#incorporating-tachogenerator-feedback">Incorporating Tachogenerator Feedback</a></li>
+  <li><a href="#breaking-the-loops" id="toc-breaking-the-loops" class="nav-link" data-scroll-target="#breaking-the-loops">Breaking the loops</a></li>
+  </ul></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/andreamunafo/principles-of-automatic-controls/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Hardware of Control Systems and Case Studies</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
+<p>In this notebook, we’ll introduce the hardware components commonly found in control systems, particularly in the industrial sector. While we won’t delve into exhaustive detail about each component, our goal is to provide a clear understanding of their basic characteristics and how they influence a given control system’s behavior.</p>
+<section id="case-study-speed-control-system" class="level2">
+<h2 class="anchored" data-anchor-id="case-study-speed-control-system">Case Study: Speed Control System</h2>
+<p>To kickstart our exploration, let’s consider a <strong>speed control system</strong>. In this system, the primary objective is to control the speed of a load. We’ll use this example to showcase the various components involved and their interactions.</p>
+<section id="system-overview" class="level3">
+<h3 class="anchored" data-anchor-id="system-overview">System Overview:</h3>
+<p>Imagine a scenario where you wish to control the speed of a specific load, represented by parameters <span class="math inline">\(J\)</span> (moment of inertia) and <span class="math inline">\(B\)</span> (viscous friction). This load is subjected to a disturbance torque, <span class="math inline">\(T_w\)</span>.</p>
+<p><strong>Our goal is to ensure that the load maintains a specified speed, <span class="math inline">\(\omega\)</span>, even in the presence of disturbances.</strong></p>
+<table>
+<tbody><tr>
+<td>
+<img src="./pics/10_hardware_and_case_studies_speed_control.png" alt="10_hardware_and_case_studies_speed_control" style="width: 850px;">
+</td></tr>
+</tbody></table>
+<section id="components-and-their-roles" class="level4">
+<h4 class="anchored" data-anchor-id="components-and-their-roles">Components and their Roles:</h4>
+<ol type="1">
+<li><p><strong>Actuator (Motor and Power Amplifier)</strong>:</p>
+<ul>
+<li>The actuator provides the necessary torque to drive the load at the desired speed, <span class="math inline">\(\omega\)</span>.</li>
+<li>It comprises a motor combined with a power amplifier.</li>
+<li>The actuator receives a control signal, <span class="math inline">\(u\)</span>, from a controller.</li>
+</ul></li>
+<li><p><strong>Controller (Amplifier)</strong>:</p>
+<ul>
+<li>In this basic setup, the controller is a simple amplifier. However, in more advanced configurations, it could be a complex system involving the derivative or integral of an error signal.</li>
+<li>The controller’s primary role is to process the error signal and produce an appropriate control signal, <span class="math inline">\(u\)</span>.</li>
+<li>We will see how to design controllers later</li>
+</ul></li>
+<li><p><strong>Reference Input Elements (Potentiometer)</strong>:</p>
+<ul>
+<li>This component provides the reference signal, <span class="math inline">\(e_r\)</span>, which corresponds to the required commanded speed, <span class="math inline">\(\omega_r\)</span> (not shown in the diagram). We would like <span class="math inline">\(\omega \rightarrow \omega_r\)</span></li>
+<li>By adjusting the position of the potentiometer’s wiper arm, one can change the reference signal, thereby commanding a different speed.</li>
+</ul></li>
+<li><p><strong>Feedback Element (Tachogenerator)</strong>:</p>
+<ul>
+<li>The tachogenerator senses the actual speed, <span class="math inline">\(\omega_r\)</span>, and produces a feedback signal, <span class="math inline">\(e_t\)</span>, that’s proportional to this speed.</li>
+<li>This feedback signal is essential to compare the actual speed with the desired speed and generate an error signal.</li>
+<li>The difference between <span class="math inline">\(e_r\)</span> (proportional to controlled variable) and <span class="math inline">\(e_t\)</span> (proportional to commanded variable) provides the actuating error signal <span class="math inline">\(\hat{e}\)</span>.</li>
+<li>The actuating error signal <span class="math inline">\(\hat{e}\)</span> is amplified through the controller to generate the control signal <span class="math inline">\(u\)</span> and provided to the actuator that runs the load.</li>
+</ul></li>
+</ol>
+<p>Keep in mind that the primary goal of controller design is to adjust it appropriately to meet specific objectives. While other components, like the motor, remain constant and may not be easily modified, it’s more practical and efficient to alter the controller settings.</p>
+</section>
+<section id="block-diagram-representation" class="level4">
+<h4 class="anchored" data-anchor-id="block-diagram-representation">Block Diagram Representation:</h4>
+<p>The physical system can be abstracted into a block diagram to visualize the feedback structure and the fundamental elements in a more structured manner.</p>
+<table>
+<tbody><tr>
+<td>
+<img src="./pics/10_hardware_and_case_studies_speed_control_block_diagram.png" alt="10_hardware_and_case_studies_speed_control_block_diagram" style="width: 850px;">
+</td></tr>
+</tbody></table>
+<ul>
+<li><p>The feedback element, such as the tachogenerator (with constant <span class="math inline">\(K_T\)</span>), provides real-time information about the system’s current state (in this case, the actual speed). This feedback allows the controller to compare the actual speed with the desired speed and make necessary adjustments to reduce any discrepancies.</p></li>
+<li><p>Compare the control structure with the feedback control loops that we discussed before (from <span class="math inline">\(e_r\)</span> to <span class="math inline">\(\omega\)</span>). This is a <strong>non-unity feedback structure</strong>.</p></li>
+<li><p>The transfer function of the sensor (the tachogenerator) is <span class="math inline">\(K_T\)</span>.</p></li>
+<li><p>This configuration can be <em>converted</em> into a unity-feedback format to facilitate analysis and design, all while preserving the vital details of the system. For this conversion to be effective, the block bridging $ _r $ and $ e_r $ should possess a transfer function equivalent to $ K_T $. Or in other words, the potentiometer’s constant, <span class="math inline">\(K_P\)</span>, should be set equal to the tachogenerator’s constant, <span class="math inline">\(K_T\)</span>.</p></li>
+<li><p>The actuation error signal is <span class="math inline">\(\hat{e} = e_r - e_t\)</span>. This is a voltage signal. The unit is <em>Volts</em>, not radians per seconds. These Volts will be proportional to the error in speed if and only if <span class="math inline">\(K_P=K_T\)</span>. This is the job of the control engineer! You can set the constant of the potentiometer.</p></li>
+<li><p>The reference input element might not be physically present in the system (like the tachogenerator) but I still have the block in the diagram because it explains the working of the system!</p></li>
+</ul>
+<p>We can now re-write the block diagram as the equivalent unity feedback</p>
+<table>
+<tbody><tr>
+<td>
+<img src="./pics/10_hardware_and_case_studies_speed_control_block_diagram_unity_feedback.png" alt="10_hardware_and_case_studies_speed_control_block_diagram_unity_feedback" style="width: 850px;">
+</td></tr>
+</tbody></table>
+<ul>
+<li><p>This diagram has the same equations of the previous one. This is an equivalent block diagram representation which holds the same mathematical relationship as the original block diagram between <span class="math inline">\(\omega\)</span> and <span class="math inline">\(\omega_r\)</span>.</p></li>
+<li><p>For this block diagram, <span class="math inline">\(e\)</span> represents the system error — the difference between the commanded and the actual speed.</p></li>
+<li><p>A unity feedback system turns out to be more convenient for analysis and design.</p></li>
+</ul>
+</section>
+</section>
+</section>
+<section id="analyzing-the-motor-block" class="level2">
+<h2 class="anchored" data-anchor-id="analyzing-the-motor-block">Analyzing the Motor Block</h2>
+<p>Let’s delve deeper into the dynamics of the motor and its representation in block diagrams to complete the previous block diagram.</p>
+<p>The armature-controlled motor is a specific type of motor where the speed is controlled by varying the voltage across its armature. A schematic is reported in the picture below:</p>
+<table>
+<tbody><tr>
+<td>
+<img src="./pics/10_hardware_and_case_studies_DC_Motor_Diagram.png" alt="10_hardware_and_case_studies_DC-Motor-Diagram.jpg" style="width: 550px;">
+</td></tr>
+</tbody></table>
+<p><em>Figure from Control Systems Principles and Design</em></p>
+<ul>
+<li>The non-turning part (called the stator) has magnets which establish a field across the turning part (called the rotor).</li>
+<li>The magnets may be electromagnets or, for small motors, permanent magnets. In an electromagnet motor, the stator is wound with wire and current is forced through this winding (called the field winding). For a constant field current <span class="math inline">\(i_f\)</span>, the magnetic flux <span class="math inline">\(\phi\)</span> is constant, and the magnetic flux may be varied by varying the field current.</li>
+<li>The rotor is wound with wire and through this winding (called the armature winding) a current <span class="math inline">\(i_a\)</span> is forced through the (stationary) brushes and the (rotating) commutator. The reaction of the magnetic flux <span class="math inline">\(\phi\)</span> with the armature current <span class="math inline">\(i_a\)</span> produces a torque <span class="math inline">\(T_M\)</span> that forces the armature to rotate. The relationship among the developed torque <span class="math inline">\(T_M\)</span> (newton-m), flux (webers) and current <span class="math inline">\(i_a\)</span> (amps) is:</li>
+</ul>
+<p><span class="math display">\[
+T_M = K_T i_a
+\]</span></p>
+<ul>
+<li>As the armature rotates in the magnetic field, a voltage is induced into the armature winding.</li>
+<li>This voltage is 180° out of phase with the applied armature voltage and is therefore called <strong>back emf</strong>.</li>
+<li>The relationship among the back emf <span class="math inline">\(e_b\)</span>, (volts), rotor velocity <span class="math inline">\(\omega\)</span> (rad/sec) and flux <span class="math inline">\(\phi\)</span> (webers) is:</li>
+</ul>
+<p><span class="math display">\[
+e_b = K_b\phi\omega
+\]</span></p>
+<p>In a permanent-magnet motor the flux <span class="math inline">\(\phi\)</span> is constant; the torque exerted on the motor roto can therefore be controlled by varying the armature current (through <span class="math inline">\(T_M = K_T i_a\)</span>). If the direction of the armature current is reversed, the torque is reversed.</p>
+<p>In a wound-field motor (electromagnet motor), the torque can be controlled by varying the armature current and/or the field current. In this case,</p>
+<p><span class="math display">\[
+T_M = K_{Tf} i_f i_a
+\]</span></p>
+<p>For a wound-field motor, the back emf is:</p>
+<p><span class="math display">\[
+e_b = K_{bf}i_f\omega
+\]</span></p>
+<p>In general one of these is varied and the other is held constant. In the armature control mode, the field current is held constant, and <span class="math inline">\(i_a\)</span> (armature current) is used to control the torque. In the field-control mode, the armature current is held constant, and <span class="math inline">\(i_f\)</span> (field current) is used to control the torque.</p>
+<table>
+<tbody><tr>
+<td>
+<img src="./pics/10_hardware_and_case_studies_armature_controlled_motor.png" alt="10_hardware_and_case_studies_armature_controlled_motor" style="width: 550px;">
+</td></tr>
+</tbody></table>
+<section id="motors-components" class="level3">
+<h3 class="anchored" data-anchor-id="motors-components">Motor’s Components</h3>
+<ol type="1">
+<li><p><strong>Armature</strong>: The armature is the primary rotating component of the motor. It carries the current (often referred to as the armature current, <span class="math inline">\(i_a\)</span>, which interacts with the magnetic field produced by the field windings. This interaction between the current and the magnetic field results in a torque that causes the armature to rotate. The voltage across the armature (<span class="math inline">\(e_a\)</span>) and the current through it (<span class="math inline">\(i_a\)</span>) determine the speed and torque of the motor.</p></li>
+<li><p><strong>Field Windings</strong>: These are coils wrapped around the motor’s stator, which produce a magnetic field when energized. When current passes through the field windings, it produces a magnetic field. In an armature-controlled motor, the field current (<span class="math inline">\(i_f\)</span>) is typically held constant, ensuring a consistent magnetic field.</p></li>
+</ol>
+<ul>
+<li>The strength of the magnetic field generated by the field windings affects the motor’s torque and speed.</li>
+<li>By varying the field current, one can control the motor’s characteristics, especially in field-controlled motors.</li>
+</ul>
+<ol start="3" type="1">
+<li><strong>Back EMF (<span class="math inline">\(e_b\)</span>), (Electromotive Force)</strong>: As the armature rotates, it induces a voltage that opposes the applied armature voltage. This induced voltage is called the back EMF (<span class="math inline">\(e_b\)</span>).</li>
+</ol>
+<ul>
+<li><p>It acts as a natural feedback mechanism: as the motor speed increases, the back EMF increases, which in turn reduces the net voltage across the armature and thus limits the speed.</p></li>
+<li><p>It’s directly proportional to the motor’s speed.</p></li>
+<li><p>The back EMF plays a crucial role in stabilizing the motor’s speed. Understanding its dynamics is essential for designing controllers that can efficiently regulate motor speed, especially in armature-controlled motors.</p></li>
+</ul>
+<p>The motor in our control system is characterized by:</p>
+<ul>
+<li>applied armature voltage, <span class="math inline">\(e_a\)</span></li>
+<li>its armature resistance, <span class="math inline">\(R_a\)</span></li>
+<li>and current <span class="math inline">\(i_a\)</span>.</li>
+</ul>
+<p>When it runs, it produces a torque <span class="math inline">\(T_M\)</span>. This torque, along with a disturbance torque <span class="math inline">\(T_W\)</span>, acts on the motor shaft.</p>
+<ol start="4" type="1">
+<li><p><strong>Commutator</strong> A commutator is essential in a direct current (DC) motor because it serves the function of switching the direction of current through the motor’s windings as the armature rotates. This switching is necessary to maintain a continuous rotational motion.</p>
+<ol type="1">
+<li><p><strong>Rotation Principle</strong>: In a DC motor, the armature (the rotating part) is placed within a magnetic field created by the stator (the stationary part). When electric current flows through the armature windings, it generates a force (as described by Lorentz’s law) that acts perpendicular to both the magnetic field and the current, causing the armature to rotate.</p></li>
+<li><p><strong>Continuous Rotation</strong>: For continuous rotation, the direction of the current in the armature windings must be reversed every half turn (180 degrees). Without this reversal, the armature would stop moving when it aligns with the magnetic field because the forces on both sides of the armature would balance out.</p></li>
+<li><p><strong>Function of the Commutator</strong>: The commutator, attached to the armature’s shaft, rotates with the armature. It consists of segments connected to different parts of the armature windings. Brushes, stationary conductive contacts, supply current to the commutator. As the commutator rotates, the connections between the windings and the external electrical circuit are reversed at the precise moment necessary to maintain the rotation direction of the motor. This ensures that the torque direction remains constant, allowing for continuous rotation.</p></li>
+</ol></li>
+</ol>
+</section>
+<section id="armature-controlled-motor-model" class="level3">
+<h3 class="anchored" data-anchor-id="armature-controlled-motor-model">Armature controlled motor model</h3>
+<p>Let’s slightly revised the previous diagram to explicit the presence of the Back EMF.</p>
+<table>
+<tbody><tr>
+<td>
+<img src="./pics/10_hardware_and_case_studies_armature_controlled_motor_with_back_emf_and_if.png" alt="10_hardware_and_case_studies_armature_controlled_motor_with_back_emf_and_if" style="width: 550px;">
+</td></tr>
+</tbody></table>
+<p>We can also notice that in a simplified model, the <strong>armature inductance can be neglected</strong>. In many scenarios, especially at steady state, the effects of armature resistance and back EMF dominate over the transient effects of armature inductance. Also, the armature inductance (<span class="math inline">\(L_a\)</span>), and resistance (<span class="math inline">\(R_a\)</span>), together define an electrical time constant for the motor, given by <span class="math inline">\(\tau_e=\frac{L_a}{R_a}\)</span>. For many motors, especially smaller ones, this electrical time constant is much smaller than the mechanical time constant (defined by parameters like the motor’s inertia and friction). If the system’s response or the control strategy doesn’t operate on a timescale where this electrical time constant is significant, it can be neglected.</p>
+<p>In this case, <strong>we can establish the following key relationships:</strong></p>
+<ol type="1">
+<li>The armature current is influenced by the difference between the applied voltage and the back EMF, divided by the armature resistance:</li>
+</ol>
+<p><span class="math display">\[
+\begin{align}
+i_a = \frac{e_a-e_b}{R_a}
+\end{align}
+\]</span></p>
+<ol start="2" type="1">
+<li>The field current <span class="math inline">\(i_f\)</span> is constant, and <span class="math inline">\(i_a\)</span> depends on the applied voltage <span class="math inline">\(e_a\)</span>. However, the torque produced by the motor (<span class="math inline">\(T_M\)</span>) is proportional to the product of the two fluxes, and hence of the two currents. Since the <span class="math inline">\(i_f\)</span> is kept constant, we can say that the torque produced by the motor is proportional to armature current:</li>
+</ol>
+<p><span class="math display">\[
+\begin{align}
+T_M = K_T \times i_a
+\end{align}
+\]</span></p>
+<p>Where <span class="math inline">\(K_T\)</span> is the torque constant of the motor.</p>
+<p><strong>The motor is called armatured controlled because we are controlling the armature current <span class="math inline">\(i_a\)</span> through the applied voltage <span class="math inline">\(e_a\)</span>, and this makes it possible to control the speed of the motor.</strong></p>
+<ol start="3" type="1">
+<li>The back EMF is proportional to the speed of the motor:</li>
+</ol>
+<p><span class="math display">\[
+\begin{align}
+e_b = K_b \times \omega
+\end{align}
+\]</span></p>
+<p>Where <span class="math inline">\(K_b\)</span> is the back EMF constant.</p>
+<ol start="4" type="1">
+<li>Factor in External Forces and Torques</li>
+</ol>
+<p>The torque <span class="math inline">\(T_m\)</span> is driving the load and we can write a force balance equastion, accounting for external influences like the disturbance torque <span class="math inline">\(T_W\)</span>, the inertial torque due to the motor’s inertia <span class="math inline">\(J\)</span>, and frictional torque due to viscous friction <span class="math inline">\(B\)</span>:</p>
+<p><span class="math display">\[
+\begin{align}
+T_M = J\dot{\omega} + B\omega + T_W
+\end{align}
+\]</span></p>
+<section id="representing-in-a-block-diagram" class="level4">
+<h4 class="anchored" data-anchor-id="representing-in-a-block-diagram">Representing in a Block Diagram</h4>
+<p>Having understood the relationships and equations governing the motor’s dynamics, we can represent these in a block diagram.</p>
+<p>The input signal is <span class="math inline">\(e_a\)</span>, which we can transform to <span class="math inline">\(E_a(s)\)</span>.</p>
+<table>
+<tbody><tr>
+<td>
+<img src="./pics/10_hardware_and_case_studies_armature_controlled_motor_block_diagram.png" alt="10_hardware_and_case_studies_armature_controlled_motor_block_diagram" style="width: 650px;">
+</td></tr>
+</tbody></table>
+<ul>
+<li><p>The feedback loop is inherent in the motor operation, and an important characteristic of the armature controlled motors. It provides damping.</p></li>
+<li><p>The back EMF opposes the applied armature voltage, affecting the armature current and, consequently, the speed and torque of the motor. It also introduces an inherent feedback loop in armature-controlled motors, influencing the motor’s dynamic response.</p></li>
+</ul>
+</section>
+<section id="derive-the-transfer-function" class="level4">
+<h4 class="anchored" data-anchor-id="derive-the-transfer-function">Derive the Transfer Function</h4>
+<p>Combining the above relationships and equations, we derive the transfer function for the motor, relating the output speed <span class="math inline">\(\omega\)</span> to the input armature voltage <span class="math inline">\(e_a\)</span>. If we set the <span class="math inline">\(T_W=0\)</span>, we obtain:</p>
+<p><span class="math display">\[
+\begin{align}
+\frac{\omega(s)}{E_a(s)} = \frac{\frac{K_T/R_a}{Js+B}}{1+\frac{K_bK_T/R_a}{Js+B}} = \frac{K_T/R_a}{Js + B + K_bK_T/R_a}
+\end{align}
+\]</span></p>
+<p>This transfer function is crucial as it gives us a mathematical model of the motor’s dynamics, which can be used for analysis and design purposes.</p>
+<p>We can port this transfer function into a standard first-order form:</p>
+<p><span class="math display">\[
+\begin{align}
+\frac{\omega(s)}{E_a(s)} = \frac{K_m}{\tau_m s + 1}
+\end{align}
+\]</span></p>
+<p>where:</p>
+<p><span class="math display">\[
+\tau_m = \frac{J}{B+K_bK_T/R_a}
+\]</span></p>
+<p><span class="math display">\[
+K_m = \frac{K_T/R_a}{B+K_bK_T/R_a}
+\]</span></p>
+</section>
+<section id="comments-on-the-motor-inherent-feedback" class="level4">
+<h4 class="anchored" data-anchor-id="comments-on-the-motor-inherent-feedback">Comments on the Motor Inherent Feedback</h4>
+<p>One of the unique features of the armature-controlled motor is the inherent feedback loop due to <span class="math inline">\(K_b\)</span>.</p>
+<ul>
+<li><p>The back EMF <span class="math inline">\(e_b\)</span> is a voltage that’s generated in the armature windings of a motor when it is turning. It opposes the applied voltage <span class="math inline">\(e_a\)</span>, and its magnitude is proportional to the speed of the motor. The constant of proportionality is often denoted as <span class="math inline">\(K_b\)</span>.</p></li>
+<li><p><span class="math inline">\(K_b\)</span> increases the value of <span class="math inline">\(B\)</span> and hence increases the effective damping of the motor. When the motor speeds up, the back EMF increases. This increased back EMF opposes the applied voltage more strongly, effectively reducing the net voltage across the armature. This, in turn, reduces the armature current, which then decreases the torque produced by the motor. This behavior acts as a natural damping mechanism, slowing the motor down when it tries to run too fast.</p></li>
+<li><p><strong>This inherent feedback provides the required damping, ensuring quick damping of oscillations and faster steady-state response.</strong></p></li>
+<li><p>This is not available in all the motors (e.g., the field controlled motors).</p></li>
+<li><p><strong>Note also that the time constant of the motor decreases when <span class="math inline">\(K_b\)</span> increases, leading to a faster response (i.e., gets to its state value quicker).</strong></p></li>
+</ul>
+<section id="sidebar---how-does-the-back-emf-affect-damping" class="level5">
+<h5 class="anchored" data-anchor-id="sidebar---how-does-the-back-emf-affect-damping">Sidebar - how does the back EMF affect damping</h5>
+<p>Remember the motor’s equations:</p>
+<p><span class="math display">\[
+\begin{align}
+i_a = \frac{e_a-e_b}{R_a}
+\end{align}
+\]</span></p>
+<p><span class="math display">\[
+\begin{align}
+T_M = K_T \times i_a
+\end{align}
+\]</span></p>
+<p><span class="math display">\[
+\begin{align}
+e_b = K_b \times \omega
+\end{align}
+\]</span></p>
+<p><span class="math display">\[
+\begin{align}
+T_M = J\dot{\omega} + B\omega + T_W
+\end{align}
+\]</span></p>
+<p>Substituing in equation (2), the expression for <span class="math inline">\(i_a\)</span> from (1) and then the expression for <span class="math inline">\(e_b\)</span> from (3):</p>
+<p><span class="math display">\[
+\begin{align}
+T_M = K_T \times \frac{e_a-e_b}{R_a} = K_T \times \frac{e_a-(K_b\omega)}{R_a}
+\end{align}
+\]</span></p>
+<p>The torque produced by the motor must balance out the torques resisting the motor’s motion, which we can now write as:</p>
+<p><span class="math display">\[
+K_T \times \frac{e_a-(K_b\omega)}{R_a} = T_M = J\dot{\omega} + B\omega + T_W
+\]</span></p>
+<p>The back EMF does not directly entes the torque equation, it affects the armature current, which in turn affects the torque produced by the motor. The back EMF’s influence on the torque is indirect, through its influence on the armature current.</p>
+<p>– END OF SIDEBAR</p>
+<p><strong>Pop-up Question</strong>: If the constant <span class="math inline">\(K_b\)</span> were to increase (meaning the motor generates more back EMF for a given speed), would the motor be more damped or less damped?</p>
+<p><strong>Answer</strong>: The motor would be more damped. An increase in <span class="math inline">\(K_b\)</span> means that for any given speed, the back EMF would be larger, opposing the applied voltage more strongly, and thus increasing the damping effect in the system.</p>
+</section>
+</section>
+</section>
+<section id="revisiting-the-original-system" class="level3">
+<h3 class="anchored" data-anchor-id="revisiting-the-original-system">Revisiting the Original System</h3>
+<p>Let’s return to the primary system where we integrate the motor and derive the overall transfer function.</p>
+<table>
+<tbody><tr>
+<td>
+<img src="./pics/10_hardware_and_case_studies_armature_controlled_motor_block_diagram_final.png" alt="10_hardware_and_case_studies_armature_controlled_motor_block_diagram_final" style="width: 750px;">
+</td>
+</tr>
+</tbody></table>
+<p>Using block diagram reduction methods (e.g., signal flow graphs or directly) it becomes easy to obtain the overall transfer function between any signal of interest.</p>
+<p>In general:</p>
+<p><span class="math display">\[
+\omega(s) = M(s)\omega_r(s) + M_W(s)T_W(s)
+\]</span></p>
+<p><strong>Question (Popup)</strong>: Why do we use <span class="math inline">\(\omega_r\)</span> instead of <span class="math inline">\(e_r\)</span> in our block diagram representation?</p>
+<p><strong>Answer:</strong> <span class="math inline">\(\omega_r\)</span> is used because, for the purpose of analysis and design in the block diagram, it provides an equivalent representation. It’s about mathematical equivalency rather than physical connection.</p>
+</section>
+</section>
+<section id="position-control-system" class="level1">
+<h1>Position Control System</h1>
+<p>While the speed control system focuses on maintaining a specific speed, the position control system aims to ensure that the load or the motor shaft reaches and maintains a desired position. This system is crucial in applications where precision in positioning is paramount.</p>
+<p>The primary objective of the position control system is to command the position of the load. It’s fundamentally different from the speed control system we’ve previously discussed.</p>
+<table>
+<tbody><tr>
+<td>
+<img src="./pics/10_hardware_and_case_studies_position_control.png" alt="10_hardware_and_case_studies_position_control" style="width: 750px;">
+</td>
+</tr>
+</tbody></table>
+<p>In the position control system:</p>
+<ul>
+<li>The reference input <span class="math inline">\(e_r\)</span> is given again in terms of voltage.</li>
+<li>However, this voltage <span class="math inline">\(e_r\)</span> now represents the desired position.</li>
+<li>The goal is for the actual load position <span class="math inline">\(\theta_L\)</span> to follow the commanded position <span class="math inline">\(\theta_r\)</span>.</li>
+</ul>
+<section id="understanding-the-block-diagram" class="level2">
+<h2 class="anchored" data-anchor-id="understanding-the-block-diagram">Understanding the block diagram</h2>
+<ul>
+<li><p>The reference input <span class="math inline">\(e_r\)</span> represents the desired position, which can be set on a potentiometer. Thus, <span class="math inline">\(e_r = K_p \theta_r\)</span>, where <span class="math inline">\(K_p\)</span> is the potentiometric constant.</p></li>
+<li><p>The feedback signal at this stage is the load position <span class="math inline">\(\theta_L\)</span>. This position is also converted into a voltage signal, represented as <span class="math inline">\(e_0 = K_p \theta_L\)</span>.</p></li>
+</ul>
+<p>For simplicity and to facilitate a unity-feedback block diagram representation, we assume that the potentiometric constants for the commanded and actual positions are identical. If the two constants are not equal we would not get a unity feedback block diagram.</p>
+<ul>
+<li><p>The error detector captures the difference between the desired and actual positions. It outputs a voltage proportional to this difference, <span class="math inline">\(e_r - e_o\)</span>. Note that the input of the op-amp is <span class="math inline">\(e_r - e_o\)</span> because the sign of the two potentiometers are reversed.</p></li>
+<li><p>The second op-amp is an inverting amplifier to reverse the sign of the signal.</p></li>
+<li><p>The output from the amplifier, <span class="math inline">\(u\)</span>, serves as the input to the power amplifier, resulting in the voltage <span class="math inline">\(e_a\)</span>. This voltage drives the armature-controlled motor.</p></li>
+<li><p>The torque generated by the motor, after considering external disturbances, drives the load.</p></li>
+<li><p>Observe that a gear train is present, serving as an intermediary between the motor shaft and the load. This is often essential when there’s a necessity for torque amplification to move the load, which simultaneously results in a reduction in speed.</p></li>
+<li><p>The gear train is essential to provide the necessary torque amplification, especially when dealing with a heavier load.</p></li>
+<li><p>Finally, the load position <span class="math inline">\(\theta_L\)</span> is sensed by the potentiometer and fed back.</p></li>
+</ul>
+<section id="gear-train-in-the-motor-system" class="level3">
+<h3 class="anchored" data-anchor-id="gear-train-in-the-motor-system">Gear Train in the Motor System</h3>
+<ul>
+<li><p>The gear train plays a crucial role in amplifying torque and decreasing speed, tailored to the demands of the load.</p></li>
+<li><p>Our focus will be on modeling two gears. If the system involves more than two gears, a corresponding model must be formulated.</p></li>
+</ul>
+<table>
+<tbody><tr>
+<td>
+<img src="./pics/10_hardware_and_case_studies_position_control_train_gear.png" alt="10_hardware_and_case_studies_position_control_train_gear" style="width: 350px;">
+</td>
+</tr>
+</tbody></table>
+<ul>
+<li><p><span class="math inline">\(\theta_M\)</span> signifies the motor’s position, while <span class="math inline">\(\theta_L\)</span> denotes the load’s position. Their directions are reversed due to the mechanics of the gear train.</p></li>
+<li><p><span class="math inline">\(T_W\)</span> is the disturbance torque, which, as illustrated, counteracts the load’s motion direction. However, it’s important to remember that this is an algebraic value.</p></li>
+</ul>
+</section>
+<section id="deriving-the-relationship-between-torque-and-speed" class="level3">
+<h3 class="anchored" data-anchor-id="deriving-the-relationship-between-torque-and-speed">Deriving the Relationship Between Torque and Speed</h3>
+<p>Let’s begin by deriving an equation that relates the torque and speeds of two connected gears.</p>
+<table>
+<tbody><tr>
+<td>
+<img src="./pics/10_hardware_and_case_studies_position_control_train_gear_1.png" alt="10_hardware_and_case_studies_position_control_train_gear_1" style="width: 350px;">
+</td>
+</tr>
+</tbody></table>
+<p>Consider two gears, Gear 1 and Gear 2. The radii of these gears are <span class="math inline">\(r_1\)</span> and <span class="math inline">\(r_2\)</span>, respectively.</p>
+<p>As the gears rotate, the number of revolutions of the two gears is different: the linear distance covered by their surfaces remains constant, leading to the relation:</p>
+<p><span class="math display">\[
+\theta_Mr_1 = \theta_Lr_1
+\]</span></p>
+<p><strong>Pop-up Question</strong>: Why do the linear distances traveled by the two gears have to be the same? <strong>Answer</strong>: The gears are in contact, so for every revolution of one gear, the corresponding part of the other gear also travels the same linear distance.</p>
+<p>Assuming the radii and number of teeth are proportional, we can write:</p>
+<p><span class="math display">\[
+\begin{align}
+\frac{N_1}{N_2} = \frac{\theta_L}{\theta_M}  \;\;\;\;\text{(1)}
+\end{align}
+\]</span></p>
+<p>This becomes our first fundamental equation. But there’s more to this story. If we differentiate the above equation <span class="math inline">\(\theta_Mr_1 = \theta_Lr_1\)</span> with respect to time, we get the relationship between the angular velocities of the two gears:</p>
+<p><span class="math display">\[
+\begin{align}
+\frac{N_1}{N_2} = \frac{\dot{\theta}_L}{\dot{\theta}_M}  \;\;\;\;\text{(1a)}
+\end{align}
+\]</span></p>
+<p>The ratio <span class="math inline">\(\frac{N_1}{N_2}\)</span> is often termed as the gear ratio, denoted by <span class="math inline">\(n\)</span>.</p>
+</section>
+<section id="examining-torque-dynamics" class="level3">
+<h3 class="anchored" data-anchor-id="examining-torque-dynamics">Examining Torque Dynamics</h3>
+<p>Now, let’s shift our focus to the torques involved.</p>
+<table>
+<tbody><tr>
+<td>
+<img src="./pics/10_hardware_and_case_studies_position_control_train_gear_2.png" alt="10_hardware_and_case_studies_position_control_train_gear_2" style="width: 350px;">
+</td>
+</tr>
+</tbody></table>
+<ul>
+<li><p>The torque generated by the motor is represented by <span class="math inline">\(T_M\)</span>.</p></li>
+<li><p>The torque transmitted through the gear train to the load shaft is <span class="math inline">\(T_{21}\)</span>. This torque <span class="math inline">\(T_{21}\)</span> is responsible to drive the load inertia against the disturbance torque <span class="math inline">\(T_W\)</span>.</p></li>
+<li><p>Another torque to consider is <span class="math inline">\(T_{12}\)</span>, which signifies the load due to Gear 2 (and the connected load) on the motor shaft. We can intuitively understand this because the load on the motor shaft when we have the Gear 2 and when we do not have it is different.</p></li>
+</ul>
+<p>At the point of contact between the gears, the <strong>forces</strong> developed by the two gears should equate. Therefore:</p>
+<p><span class="math display">\[
+\frac{T_{12}}{r_1} = \frac{T_{21}}{r_2}
+\]</span></p>
+<p><span class="math display">\[
+\frac{T_{12}}{T_{21}} = \frac{N_{1}}{N_2} = \frac{\dot{\theta}_L}{\dot{\theta}_M}
+\]</span></p>
+<ul>
+<li><p>If <span class="math inline">\(n &lt; 1\)</span>, the gear ration amplifies the torque (and reduces the speed).</p></li>
+<li><p>Typical value is <span class="math inline">\(n=\frac{1}{30}\)</span>. Depending on the characteristics of the motor and of the load you design the needed gear ratio.</p></li>
+</ul>
+</section>
+<section id="integrating-gear-effects-into-the-system" class="level3">
+<h3 class="anchored" data-anchor-id="integrating-gear-effects-into-the-system">Integrating Gear Effects into the System</h3>
+<p>One of the intriguing outcomes of our discussion so far is that we can represent the combined effects of the motor and gear train as if they were a single entity. Mathematically, the entire system behaves as if there is a motor directly driving a load with an “equivalent” moment of inertia and friction. Let’s see work this out.</p>
+<table>
+<tbody><tr>
+<td>
+<img src="./pics/10_hardware_and_case_studies_position_control_train_gear_3.png" alt="10_hardware_and_case_studies_position_control_train_gear_3" style="width: 450px;">
+</td>
+</tr>
+</tbody></table>
+<p>For the second gear, the equation at the load shaft, is:</p>
+<p><span class="math display">\[
+T_{21} = J_L\ddot{\theta_L} + B_L\dot{\theta_L} + T_W
+\]</span></p>
+<p>For the first gear, the equation at the motor shaft, is:</p>
+<p><span class="math display">\[
+T_M = J_M\ddot{\theta_M} + B_M\dot{\theta_M} + T_{12}
+\]</span></p>
+<p>where <span class="math inline">\(T_{12}\)</span> represents the opposition of the load and second gear to the motor shaft.</p>
+<p>Since <span class="math inline">\(\frac{T_{12}}{T_{21}} = \frac{N_{1}}{N_2}\)</span>, the combined effects can be expressed as:</p>
+<p><span class="math display">\[
+T_M = J_M\ddot{\theta_M} + B_M\dot{\theta_M} + \frac{N_{1}}{N_2}\Big[J_L\ddot{\theta_L} + B_L\dot{\theta_L} + T_W\Big]
+\]</span></p>
+<p>Since <span class="math inline">\(n = \frac{N_1}{N_2} = \frac{\theta_L}{\theta_M}\)</span> we can re-write the equation as a function of <span class="math inline">\(\theta_M\)</span>:</p>
+<p><span class="math display">\[
+T_M = J_M\ddot{\theta_M} + B_M\dot{\theta_M} + \Big(\frac{N_{1}}{N_2}\Big)^2J_L\ddot{\theta_M} + \Big(\frac{N_{1}}{N_2}\Big)^2B_L\dot{\theta_M} + \frac{N_{1}}{N_2}T_W
+\]</span></p>
+<p>We can finally group things together:</p>
+<p><span class="math display">\[
+T_M = \Big(J_M+n^2J_L\Big)\ddot{\theta_M} + \Big(B_M+n^2B_L\Big)\dot{\theta_M}+ nT_W
+\]</span></p>
+<p>Mathematically, the position control system is equivalent to the following:</p>
+<p><span class="math display">\[
+T_M = J_{eq}\ddot{\theta_M} + B_{eq}\dot{\theta_M}+ nT_W
+\]</span></p>
+<p>where: - <span class="math inline">\(J_{eq} = \Big(J_M+n^2J_L\Big)\)</span> - <span class="math inline">\(B_{eq} = \Big(B_M+n^2B_L\Big)\)</span> - <span class="math inline">\(nT_W\)</span>, is the equivalent disturbance acting on the motor shaft (the disturbance is acting on the load in reality).</p>
+<p>With new representation we have reported the control problem to the same one we had with the speed control.</p>
+</section>
+<section id="block-diagram" class="level3">
+<h3 class="anchored" data-anchor-id="block-diagram">Block Diagram</h3>
+<table>
+<tbody><tr>
+<td>
+<img src="./pics/10_hardware_and_case_studies_position_control_train_gear_4.png" alt="10_hardware_and_case_studies_position_control_train_gear_4" style="width: 750px;">
+</td>
+</tr>
+</tbody></table>
+<ul>
+<li>The motor’s dynamics (including the effects of the gear train) is represented by the previously derived equations (see for example Section <code>Revisiting the Original System</code>).</li>
+<li>Feedback loops are introduced to account for back EMF and the position control mechanism.</li>
+</ul>
+</section>
+</section>
+<section id="some-additional-comments-on-the-dc-position-controlled-system" class="level2">
+<h2 class="anchored" data-anchor-id="some-additional-comments-on-the-dc-position-controlled-system">Some additional comments on the DC Position Controlled System</h2>
+<p>In our previous discussions, we dived deep into the intricacies of the DC position controlled system. We can revisit this system further, exploring its significance in control systems and understanding its foundational components.</p>
+<p>DC motors actuate many loads, making the DC position controlled system a pivotal element in automatic control. This system has several components and we saw the equivalence when we report the load and the gear train onto the motor shaft:</p>
+<table>
+<tbody><tr>
+<td>
+<img src="./pics/10_hardware_and_case_studies_position_control_train_gear_equivalence.png" alt="10_hardware_and_case_studies_position_control_train_gear_equivalence" style="width: 750px;">
+</td>
+</tr>
+</tbody></table>
+<p><em>Figure: Left: Motor, gear train and load. Right: Equivalent representation.</em></p>
+<p>From our previous discussions, we deduced that the load parameters could be mirrored onto the motor shaft. This realization allows us to mathematically represent the system in a simplified manner, without involving the gear train explicitly. For clarity, consider a system where a motor drives a load through a gear train. This system can be equivalently represented as a motor driving a direct load, provided we adjust the load’s parameters appropriately to account for the gear train’s effects.</p>
+<ul>
+<li><strong>Equivalent Moment of Inertia on the Motor Shaft</strong> <span class="math display">\[J_{eq} = \Big(J_M+n^2J_L\Big)\]</span></li>
+<li><strong>Equivalent Viscous Frictional Coefficient</strong> <span class="math display">\[B_{eq} = \Big(B_M+n^2B_L\Big)\]</span></li>
+</ul>
+<p>Here, <span class="math inline">\(J_M\)</span> and <span class="math inline">\(B_M\)</span> represent the inertia due to the rotor, gears, etc., and the frictional coefficient on the motor shaft respectively. <span class="math inline">\(n\)</span> is the gear ratio defined as the ratio of the number of teeth on the two gears, <span class="math inline">\(N_1\)</span> and <span class="math inline">\(N_2\)</span>.</p>
+<ul>
+<li><strong>The Core Motor Equation:</strong></li>
+</ul>
+<p><span class="math display">\[
+T_M = J_{eq}\ddot{\theta_M} + B_{eq}\dot{\theta_M}+ nT_W
+\]</span></p>
+<p>Please note, <span class="math inline">\(T_W\)</span> is the disturbance on the load shaft and <span class="math inline">\(n\)</span> reflects this disturbance onto the motor shaft.</p>
+<p>To model our system, we start by considering the armature controlled motor. The control variable here is the armature voltage <span class="math inline">\(e_a\)</span>, while the opposing back EMF is <span class="math inline">\(e_b\)</span>. We are neglecting the armature inductance as previously discussed.</p>
+<p>Here, for the motor loaded through a gear train, the load directly connected to it has parameters <span class="math inline">\(J\)</span> and <span class="math inline">\(B\)</span> reflected from the original load via the gear train. If the load is connected through a gear train <span class="math inline">\(J\)</span> and <span class="math inline">\(B\)</span> will include this directly. The disturbance in this context is <span class="math inline">\(nT_W\)</span>.</p>
+<table>
+<tbody><tr>
+<td>
+<img src="./pics/10_hardware_and_case_studies_position_control_train_gear_equivalence_1.png" alt="10_hardware_and_case_studies_position_control_train_gear_equivalence_1" style="width: 650px;">
+</td></tr>
+</tbody></table>
+<section id="block-diagram-model" class="level3">
+<h3 class="anchored" data-anchor-id="block-diagram-model">Block Diagram Model</h3>
+<p>From the previous picture we can generate the following block diagram, starting from the input <span class="math inline">\(e_a\)</span> to the output <span class="math inline">\(\theta_M\)</span>.</p>
+<table>
+<tbody><tr>
+<td>
+<img src="./pics/10_hardware_and_case_studies_position_control_train_gear_equivalence_2.png" alt="10_hardware_and_case_studies_position_control_train_gear_equivalence_2" style="width: 750px;">
+</td>
+</tr>
+</tbody></table>
+<p><em>Figure: Block diagram showcasing the entire system, from the error detector comparing the armature voltage and back EMF, to the gear train and load parameters, and finally to the output</em></p>
+<p>Based on this diagram, applying the superposition principle (and hence setting <span class="math inline">\(T_W=0\)</span>), the transfer function relating output speed <span class="math inline">\(\omega\)</span> to input <span class="math inline">\(e_a\)</span> is:</p>
+<p><span class="math display">\[
+\frac{\omega(s)}{E_a(s)} = \frac{\frac{K_T/R_a}{Js+B}}{\Big(1+\frac{K_bK_T/R_a}{Js+B}\Big)} = \frac{K_T/R_a}{Js+B+K_bK_T/R_a}
+\]</span></p>
+<p>Note from the equation above how the back EMF constant <span class="math inline">\(K_b\)</span> adds to the mechanical friction in the system (the <span class="math inline">\(B\)</span> term), thereby providing additional damping, stabilizing the system, and making it less susceptible to oscillations (almost providing <strong>‘electric friction’</strong>)</p>
+<p>Our previously derived transfer function can be interpreted in its standard form for first-order systems as:</p>
+<p><span class="math display">\[
+\frac{\omega(s)}{E_a(s)} = \frac{K_m}{\tau_m s + 1}
+\]</span></p>
+<p>where:</p>
+<ul>
+<li><span class="math inline">\(K_m\)</span> is the system’s gain.</li>
+<li><span class="math inline">\(\tau_m\)</span> is the <strong>mechanical time constant</strong>, which can be computed as:</li>
+</ul>
+<p><span class="math display">\[
+\tau_m = \frac{J}{B+\frac{K_TK_b}{R_a}}
+\]</span></p>
+<p>If we’re more interested in the relationship between position <span class="math inline">\(\theta_M\)</span> and the input voltage <span class="math inline">\(e_a\)</span>, the transfer function becomes to:</p>
+<p><span class="math display">\[
+\frac{\theta_M(s)}{E_a(s)} = \frac{K_m}{s\Big(\tau_m s + 1\Big)}
+\]</span></p>
+<hr>
+</section>
+<section id="sidebar---deeper-dive-into-the-correlation-between-k_t-and-k_b" class="level3">
+<h3 class="anchored" data-anchor-id="sidebar---deeper-dive-into-the-correlation-between-k_t-and-k_b">Sidebar - Deeper Dive into the Correlation Between <span class="math inline">\(K_T\)</span> and <span class="math inline">\(K_b\)</span></h3>
+<p>The interrelation between the torque constant <span class="math inline">\(K_T\)</span> and the back EMF constant <span class="math inline">\(K_b\)</span> is a foundational aspect of DC motor dynamics. These constants are intrinsic properties of the motor, governing its electrical and mechanical behaviors. To truly appreciate their significance and relationship, it’s essential to understand them in detail.</p>
+<section id="what-are-k_t-and-k_b" class="level4">
+<h4 class="anchored" data-anchor-id="what-are-k_t-and-k_b">What are <span class="math inline">\(K_T\)</span> and <span class="math inline">\(K_b\)</span>?</h4>
+<ol type="1">
+<li><p><strong>Torque Constant <span class="math inline">\(K_T\)</span></strong>: It signifies the torque produced per unit current. In simple terms, it provides a measure of how effective the motor is in converting electrical current into mechanical torque. A higher <span class="math inline">\(K_T\)</span> implies that the motor can generate more torque for the same current. Its unit is Newton meter per ampere (Nm/A).</p></li>
+<li><p><strong>Back EMF Constant <span class="math inline">\(K_b\)</span></strong>: The back EMF constant determines the voltage produced per unit speed. When a motor rotates, it inherently generates an EMF opposing the driving voltage; this is called the back EMF. <span class="math inline">\(K_b\)</span> quantifies this effect, essentially indicating how much voltage the motor generates for every radian/second it rotates. Its unit is volts per radian per second (V/(rad/s)).</p></li>
+</ol>
+</section>
+<section id="mathematical-derivation-of-their-relationship" class="level4">
+<h4 class="anchored" data-anchor-id="mathematical-derivation-of-their-relationship">Mathematical Derivation of Their Relationship:</h4>
+<p>Considering the power developed in the motor due to the back EMF:</p>
+<p><span class="math display">\[
+\begin{align}
+P &amp;= e_b \times i_a\;\;\;\; \text{watts} \\
+  &amp;= K_bw \times i_a\;\;\;\; \frac{\text{volts}}{\text{rad/s}}\text{rad/s} \times \text{amp}
+\end{align}
+\]</span></p>
+<p>On the mechanical side, the power is also given by:</p>
+<p><span class="math display">\[
+\begin{align}
+P &amp;= T_M \times \omega\;\;\;\; \text{watts} \\
+   &amp;= (\text{Newton-m})(\text{rad-s})
+\end{align}
+\]</span></p>
+<p>Which can be expanded as: <span class="math display">\[
+\begin{align}
+P &amp;= K_Ti_a \times \omega\;\;\;\; \text{watts} \\
+   &amp;= \frac{\text{Newton-m}}{\text{amp}} \text{amp} \times \text{rad/s}
+\end{align}
+\]</span></p>
+<p>Given that both expressions represent the power developed in the motor, we equate them:</p>
+<p><span class="math display">\[
+K_b \omega \times i_a = K_T i_a \times \omega
+\]</span></p>
+<p>Upon simplifying, we find: <span class="math display">\[
+\begin{align}
+K_b &amp;= K_T \\
+\frac{\text{Newton-m}}{\text{amp}} &amp;= \frac{\text{volts}}{\text{rad/s}}
+\end{align}
+\]</span></p>
+<p>Thus, this derivation highlights that the torque constant $ K_T $ and the back EMF constant $ K_b $ are numerically equal when $ K_T $ is measured in Newton meter per ampere and $ K_b $ in volts per radian per second. Their numerical values are the same. This is the case when we consider them using these specific units. If we use different units they can be related by a constant and hence their numerical values might be different.</p>
+</section>
+<section id="practical-implications" class="level4">
+<h4 class="anchored" data-anchor-id="practical-implications">Practical implications</h4>
+<ul>
+<li><p>This equivalence is not just a mathematical curiosity; it has real-world implications. For example, when designing motor controllers or when procuring motors for specific applications, knowing that <span class="math inline">\(K_T\)</span> and <span class="math inline">\(K_b\)</span> are equal (under consistent units) can simplify calculations and provide insights into motor behavior.</p></li>
+<li><p>From an experimental standpoint, measuring <span class="math inline">\(K_b\)</span> is simpler and potentially more accurate than measuring <span class="math inline">\(K_T\)</span>. For instance, determining <span class="math inline">\(K_b\)</span> requires only measuring back EMF and speed, while assessing <span class="math inline">\(K_T\)</span> would entail torque measurements. Given the aforementioned relationship between <span class="math inline">\(K_T\)</span> and <span class="math inline">\(K_b\)</span>, one can measure <span class="math inline">\(K_b\)</span> experimentally and derive <span class="math inline">\(K_T\)</span> from it, offering a more straightforward approach.</p></li>
+<li><p>The ease of measuring <span class="math inline">\(K_b\)</span> compared to <span class="math inline">\(K_T\)</span> means that engineers often determine <span class="math inline">\(K_b\)</span> experimentally (you measure back EMF and speed) and then infer <span class="math inline">\(K_T\)</span> (requires to mearure a torque). This can lead to cost savings and more accurate motor characterizations in practical scenarios.</p></li>
+</ul>
+<p>– END OF SIDEBAR</p>
+</section>
+</section>
+</section>
+<section id="field-controlled-motors" class="level2">
+<h2 class="anchored" data-anchor-id="field-controlled-motors">Field Controlled Motors</h2>
+<p>Having understood armature controlled motors, it’s now time to introduce the concept of field controlled motors.</p>
+<p>In these motors, the armature current <span class="math inline">\(i_a\)</span> remains constant, while the field current <span class="math inline">\(i_f\)</span> is varied to control the torque <span class="math inline">\(T_M\)</span>.</p>
+<p><span class="math inline">\(e_f\)</span> is the controlling voltage, it controls the torque.</p>
+<table>
+<tbody><tr>
+<td>
+<img src="./pics/10_hardware_and_case_studies_field_motors.png" alt="10_hardware_and_case_studies_field_motors" style="width: 650px;">
+</td>
+</tr>
+</tbody></table>
+<ul>
+<li>Now the field resistance and inductance are not negligible.</li>
+</ul>
+<img src="./pics/10_hardware_and_case_studies_field_motors_block_diagram.png" alt="10_hardware_and_case_studies_field_motors_block_diagram" style="width: 750px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<ul>
+<li>The ‘electric resistance’ effect is not present anymore. There is no back EMF against <span class="math inline">\(e_f\)</span>.</li>
+</ul>
+<p>The resulting transfer function from <span class="math inline">\(\omega(s)\)</span> and <span class="math inline">\(E_f(s)\)</span> is:</p>
+<p><span class="math display">\[
+\frac{\omega(s)}{E_f(s)} = \frac{K^{'}_m}{(\tau_f s + 1)(\tau^{'}_m s + 1)}
+\]</span></p>
+<p>which is a second-order model.</p>
+<p>The transfer function from the position <span class="math inline">\(\theta_M(s)\)</span> and <span class="math inline">\(E_f(s)\)</span> we have a third order model:</p>
+<p><span class="math display">\[
+\frac{\theta_M(s)}{E_f(s)} = \frac{K^{'}_m}{s(\tau_f s + 1)(\tau^{'}_m s + 1)}
+\]</span></p>
+<p>The higher the order of the model the more complex is the design. The additional complexity comes from the fact that <span class="math inline">\(L_f\)</span> cannot be neglected.</p>
+</section>
+</section>
+<section id="making-a-motor-selection-factors-to-consider" class="level1">
+<h1>Making a Motor Selection: Factors to Consider</h1>
+<p>Let’s delve deeper into how the choice between different types of motors, specifically field controlled versus armature controlled motors, is made based on specific applications. Remember, every engineering decision involves trade-offs. In our context, these decisions revolve around power, performance, cost, and specific application requirements.</p>
+<ol type="1">
+<li><strong>Field vs.&nbsp;Armature Circuit</strong>:</li>
+</ol>
+<ul>
+<li><p>Power Amplifier Requirements: One significant advantage of the <strong>field circuit</strong> is the lower power amplifier requirements. The total power needed to drive the field circuit is considerably less than what’s required for the armature circuit. This means a less costly power amplifier would suffice.</p></li>
+<li><p>Cost Implications: A direct consequence of the reduced power amplifier requirements is the cost. The power amplifier for a field circuit is generally more economical compared to that for the armature circuit.</p></li>
+</ul>
+<ol start="2" type="1">
+<li><strong>Challenges with Armature Current</strong>:</li>
+</ol>
+<p>Maintaining a consistent armature current, especially when it’s high, poses a challenge.</p>
+<ul>
+<li><strong>How to Keep Armature Current Constant?</strong>
+<ul>
+<li>The armature current can be kept fairly consistent by using a high constant voltage source.</li>
+<li>If the resistance of the circuit <span class="math inline">\(R\)</span> is considerably larger than the armature circuit’s resistance and the voltage source is robust, then the armature current <span class="math inline">\(i_a\)</span> will remain relatively constant.</li>
+</ul></li>
+</ul>
+<img src="./pics/10_hardware_and_case_studies_choosing_motors.png" alt="10_hardware_and_case_studies_choosing_motors" style="width: 250px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<ul>
+<li><strong>What Causes Changes in <span class="math inline">\(i_a\)</span></strong> ?
+<ul>
+<li>The primary culprit is the back EMF effect. This effect is evident in the armature’s side and as the back EMF changes with speed, maintaining a consistent armature current becomes challenging.</li>
+</ul></li>
+<li><strong>Overcoming the Challenge</strong>:
+<ul>
+<li>Using a substantial voltage source and significant resistance can help keep the armature current roughly constant. However, this approximation is more accurate when the required armature current isn’t too high. For this reason, <em>Field Controlled Motors are a good selection for low-power servos</em>. <em>High power servos instead are better done with armature controlled motors</em>. For this reason, in most industrial applications we have armature controlled motors.</li>
+</ul></li>
+</ul>
+<ol start="3" type="1">
+<li><strong>Field-Controlled vs.&nbsp;Armature-Controlled Motors for Different Power Needs</strong>:</li>
+</ol>
+<ul>
+<li><strong>Low Power Servos</strong>: Field-controlled motors are a compelling choice for low power servos. When there’s a low power requirement, such that the armature current <span class="math inline">\(i_a\)</span> remains low, it’s feasible to maintain that current at a reasonably constant value.</li>
+<li><strong>High Power Servos</strong>: For high power servos, armature-controlled motors are typically preferred. In many industrial control applications, armature-controlled motors are chosen over field-controlled motors. These motors not only provide more power but also offer advantages like intrinsic damping, allowing for better control.</li>
+</ul>
+<section id="additional-comments" class="level2">
+<h2 class="anchored" data-anchor-id="additional-comments">Additional comments:</h2>
+<p>Advancements have addressed some of the challenges associated with these motor drives. Some key trends include:</p>
+<ul>
+<li><strong>Brushless DC Motors</strong>: One major challenge with the motors discussed so far is the brush friction, which introduces non-linearity into our mathematical models.</li>
+</ul>
+<p>Brushless DC motors, with electronic commutation, are now available to mitigate the non-linear effects due to brush friction. Note that in our modeling we have assumed that we can have a linear model, with viscous friction only and neglecting the effects of brush fiction (which is constant frictional source independent on the speed - this would make the model non-linear).</p>
+<ul>
+<li><strong>Gears and Backlash</strong>: Our discussion assumes a linear relationship between motor input and output through gears and the defined gear ratio.</li>
+</ul>
+<p>However, in reality, gear backlash introduces non-linearity. This is due to the fact that when the gears have to reverse this will not be instantaneous (e.g., object tracking requires the tracker to move back and forth and hence the motor will need to often reverse its direction). <strong>Direct-drive</strong> motors are now designed to interface directly with the load, eliminating the need for gear trains and the associated nonlinear challenges.</p>
+<ul>
+<li><strong>Feedback Mechanisms</strong>: Although potentiometers provide a simple way to measure angular position, they introduce their own challenges.</li>
+</ul>
+<p>For example they have a finite resolution. The resolution (minimum change in output voltage obtained by moving the wiper, expressed as a percentage of the total applied voltage) of precision wire-wound potentiometers ranges from 0.001 to 0.5 percent. This discontinuous output voltage contributes to servo inaccuracy. Potentiometers are <em>temperature-sensitive</em>, a characteristic that affects their accuracy. The wiper contact is another limiting factor, being subject to wear and dirt and potentially producing electrical noise.</p>
+<p>In our models we have neglected these nuances and assumed a linear relationship between <span class="math inline">\(\theta_R\)</span> and <span class="math inline">\(e_r\)</span> through <span class="math inline">\(\theta_R = K_p e_r\)</span>. Modern systems are leaning towards more advanced sensors that offer higher precision and better linearity.</p>
+</section>
+</section>
+<section id="feedback-control-using-operational-amplifiers-op-amps" class="level1">
+<h1>Feedback Control using Operational Amplifiers (Op-Amps)</h1>
+<p>Let’s revisit our position control system</p>
+<img src="./pics/10_hardware_and_case_studies_position_control_review.png" alt="10_hardware_and_case_studies_position_control_review" style="width: 750px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<section id="defining-the-variables" class="level2">
+<h2 class="anchored" data-anchor-id="defining-the-variables">Defining the Variables</h2>
+<p>The variable <span class="math inline">\(\theta_L\)</span> is our attribute of interest - the one we want to control. For illustration, let’s assume <span class="math inline">\(\theta_L\)</span> represents an antenna’s position. On the other hand, <span class="math inline">\(\theta_R\)</span> is the <strong>command signal</strong>, which in many real-world applications can come digitally or from various devices.</p>
+<p>For the purpose of this notebook, we will represent the command signal symbolically, using a wiper on a potentiometer to adjust <span class="math inline">\(\theta_R\)</span>. As the wiper moves, it adjusts the voltage (let’s call this voltage <span class="math inline">\(e_r\)</span>), which is directly proportional to <span class="math inline">\(\theta_R\)</span>.</p>
+<section id="potentiometer" class="level3">
+<h3 class="anchored" data-anchor-id="potentiometer">Potentiometer</h3>
+<p>The relationship between <span class="math inline">\(\theta_R\)</span> and <span class="math inline">\(e_r\)</span> depends on the potentiometer constant <span class="math inline">\(K_p\)</span>, which depends on the voltage provided to the potentiometre, and on the resistor:</p>
+<p><span class="math display">\[e_r = K_P\theta_R\]</span></p>
+<p>Note that we are using another potentiometer to sense the output <span class="math inline">\(\theta_L\)</span>.</p>
+<p>Potentiometers are often used in these systems. However, they can introduce nonlinearities due to their finite resolution. For instance, a wire-wound potentiometer changes step by step, not allowing for continuous adjustments (e.g., wire-wound potentiometer). Despite this, for our mathematical model, we will assume a linear relationship for simplicity.</p>
+<p>For now, we are using Potentiometers as representations of devices that make it possible to generate reference and feedback signals, but the actual device might be different from a potentiometer, with better linear characteristics.</p>
+</section>
+<section id="from-voltage-to-position-control" class="level3">
+<h3 class="anchored" data-anchor-id="from-voltage-to-position-control">From Voltage to Position Control</h3>
+<p>Let’s focus now on the first operational amplifier.</p>
+<p>This circuit gives an output voltage proportional to the difference <span class="math inline">\(e_r−e_0\)</span>, where <span class="math inline">\(e_0\)</span> is the feedback voltage corresponding to <span class="math inline">\(\theta_L\)</span>. This operation makes the Op-Amp behave like a differential amplifier with a specific gain (<span class="math inline">\(\frac{-R_f}{R}\)</span>). Depending on the arrangement, the voltage output can represent either position or speed.</p>
+<p><strong>The Op-Amp acts as a differential amplifier, producing an output voltage based on the difference between the reference and feedback voltages.</strong></p>
+<p>Given the specific arragements with the potentiometers ( <span class="math inline">\(e_r\)</span> is a negative voltage, and <span class="math inline">\(e_0\)</span> is a positive voltage), we have:</p>
+<img src="./pics/10_hardware_and_case_studies_position_control_review_1.png" alt="10_hardware_and_case_studies_position_control_review_1" style="width: 350px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<ul>
+<li>Note that to make the representation straightforward, we have restructured our block diagram by flipping the signs for these voltages.</li>
+</ul>
+<p>We can then add the potentiometers to have the explicit presence of the two angles:</p>
+<img src="./pics/10_hardware_and_case_studies_position_control_review_2.png" alt="10_hardware_and_case_studies_position_control_review_2" style="width: 350px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<p>This can also be equivalently written as:</p>
+<img src="./pics/10_hardware_and_case_studies_position_control_review_3.png" alt="10_hardware_and_case_studies_position_control_review_3" style="width: 350px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<ul>
+<li>We have moved <span class="math inline">\(K_P\)</span> inside the loop</li>
+<li>This is now a unity feedback loop</li>
+</ul>
+</section>
+<section id="incorporating-tachogenerator-feedback" class="level3">
+<h3 class="anchored" data-anchor-id="incorporating-tachogenerator-feedback">Incorporating Tachogenerator Feedback</h3>
+<p>A crucial part of our system is the addition of a tachogenerator, introducing a secondary (or minor) feedback loop for velocity. The voltage from the tachogenerator (<span class="math inline">\(e_t\)</span>) plays a pivotal role in the performance and control of the system.</p>
+<p>The second Op-Amp is also activing as a differential amplifier with gain: <span class="math inline">\(\frac{-R^{'}_f}{R^{'}}\)</span>. The input to this Op-Amp is <span class="math inline">\(e^{'}-e_t\)</span>.</p>
+<img src="./pics/10_hardware_and_case_studies_position_control_review_4.png" alt="10_hardware_and_case_studies_position_control_review_4" style="width: 750px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<ul>
+<li><p>The final Op-Amp is used as a power amplifier with gain: <span class="math display">\[-\frac{R_{fp}}{R_p}\]</span></p></li>
+<li><p>Note that given that we have two Op-Amps in cascade, their negative signs cancel out and we have the desired signal at the end of the chain.</p></li>
+</ul>
+<p>We can now finish the block diagram:</p>
+<img src="./pics/10_hardware_and_case_studies_position_control_review_5.png" alt="10_hardware_and_case_studies_position_control_review_5" style="width: 750px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<ul>
+<li><p>Note that you can detail the block digram with a more detailed representation of the motor which includes the back EMF loop.</p></li>
+<li><p>Remember that the gear ration is defined as:</p></li>
+</ul>
+<p><span class="math display">\[n = \frac{\dot{\theta}_L}{\dot{\theta}_M} = \frac{\theta_L}{\theta_M}\]</span></p>
+<p>The system has two loops:</p>
+<ol type="1">
+<li><strong>Primary Loop (Position Feedback)</strong>: This provides feedback based on the position <span class="math inline">\(\theta_L\)</span>.</li>
+<li><strong>Secondary or Minor Loop (Velocity Feedback)</strong>: This loop provides feedback based on the velocity or speed. It derives its signal from a tachogenerator, symbolized by <span class="math inline">\(e_t\)</span>. This secondary loop serves a similar damping purpose as the inherent back EMF in the motor but has the advantage of being adjustable.</li>
+<li><strong>Motor-internal loop</strong>: The inherent nature of the motor introduces another feedback loop, the back EMF, which isn’t directly under our control. In contrast, the tachogenerator’s output can be controlled, allowing us to adjust the system’s damping.</li>
+</ol>
+</section>
+<section id="breaking-the-loops" class="level3">
+<h3 class="anchored" data-anchor-id="breaking-the-loops">Breaking the loops</h3>
+<section id="breaking-the-velocity-loop" class="level4">
+<h4 class="anchored" data-anchor-id="breaking-the-velocity-loop">Breaking the velocity loop</h4>
+<ul>
+<li><p>If we break the secondary velocity feedback, what happens to the performance of the system?</p></li>
+<li><p>The tachogenerator inherently provides information about the system’s velocity (we are feeding back the <em>derivative</em> of <span class="math inline">\(\theta_M\)</span> through the tachometer).</p></li>
+<li><p><strong>The lack of the secondary loop leads to a Loss of Damping</strong></p>
+<ul>
+<li><p>The system will continue to act as a position control system but through the secondary loop we are controlling the damping of the system. The tachogenerator typically provides a damping effect to the system, helping to stabilize it. This damping effect is beneficial in minimizing oscillations around the setpoint or reference value. Without this feedback, the system might experience prolonged or even sustained oscillations upon any disturbances or setpoint changes. Performance might deteriorate.</p></li>
+<li><p><em>Note that is similar to what happened when we were analysing the effect of the back EMF. The back EMF was also proportional to speed and was able to improve our damping. The only difference is that the back EMF (<span class="math inline">\(K_b\)</span>) is out of our control (once the motor is selected you cannot change your <span class="math inline">\(K_b\)</span>). The <span class="math inline">\(K_T\)</span> instead is something you can explicitly control selecting the tachogenerator.</em></p></li>
+<li><p>Real-world consequences: If our system were controlling the position of an antenna, a loss of damping might lead to the antenna overshooting its desired position and then oscillating back and forth before settling. This could result in interrupted or degraded communication signals.</p></li>
+</ul></li>
+</ul>
+</section>
+<section id="breaking-the-position-loop" class="level4">
+<h4 class="anchored" data-anchor-id="breaking-the-position-loop">Breaking the position loop</h4>
+<img src="./pics/10_hardware_and_case_studies_position_control_review_6.png" alt="10_hardware_and_case_studies_position_control_review_6" style="width: 750px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<ul>
+<li><p>When the primary feedback loop (position) is disrupted, but the secondary loop (velocity) remains, the system behaves as a speed-controlled system.</p></li>
+<li><p>Note that the actual input we have is the voltage <span class="math inline">\(e_r\)</span>. Previously we interpreted this signal as a position.</p></li>
+<li><p>The voltage <span class="math inline">\(e_r\)</span> in the forward loop, which was previously interpreted as position, is now indicative of speed, given the feedback is now from the tachogenerator representing velocity.</p></li>
+<li><p>The system becomes a speed controlled system. We can also now explicit that the tachogenerator provides a speed:</p></li>
+</ul>
+<img src="./pics/10_hardware_and_case_studies_position_control_review_7.png" alt="10_hardware_and_case_studies_position_control_review_7" style="width: 750px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+
+
+</section>
+</section>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/andreamunafo\.github\.io\/principles-of-automatic-controls");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/andreamunafo/principles-of-automatic-controls/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

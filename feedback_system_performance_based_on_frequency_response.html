@@ -1,0 +1,2109 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.552">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>principles-of-automatic-controls - Feedback System Performance Based On Frequency Response</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+<meta property="og:title" content="principles-of-automatic-controls - Feedback System Performance Based On Frequency Response">
+<meta property="og:description" content="Course in feedback control for the University of Pisa">
+<meta property="og:site_name" content="principles-of-automatic-controls">
+<meta name="twitter:title" content="principles-of-automatic-controls - Feedback System Performance Based On Frequency Response">
+<meta name="twitter:description" content="Course in feedback control for the University of Pisa">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">principles-of-automatic-controls</span>
+    </a>
+  </div>
+        <div class="quarto-navbar-tools tools-end">
+</div>
+          <div id="quarto-search" class="" title="Search"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./feedback_system_performance_based_on_frequency_response.html">Feedback System Performance Based On Frequency Response</a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Feedback Control</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./faq.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Frequently Asked Questions (FAQ)</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./syllabus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Syllabus for “Principles of Automatic Control”</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./toc.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Table of Contents</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./update_and_manage_local_changes_guide.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A Guide to Updating Your Local Repository with Git in Anaconda’s Virtual Environment</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./getting_started_with_python_and_jupyter_notebook.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Getting Started with Python and Jupyter Notebooks</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principles of Automatic Control</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./basics_of_feedback_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Feedback Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./introduction_to_control_problem.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to the control problem</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dynamic_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modeling in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dynamic_response.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Dynamic response of control systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06_inverse_laplace_transform.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Inverse Laplace Transform: Partial fraction decomposition</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./modeling_dynamic_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Modeling of Dynamic Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./control_system_components.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Control System Components</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./models_of_control_devices_and_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Models of Controlled Devices</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./hardware_and_case_studies.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Hardware of Control Systems and Case Studies</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ac_hardware_and_case_studies.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">AC Motion Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./a_first_complete_application.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A Feedback Control System</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./principles_of_feedback_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principles of Feedback Control</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./feedback_systems_and_their_effects.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Feedback systems and their effects</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./introduction_to_control_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./stability.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Stability Analysis in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./stability_and_routh_criterion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Stability Analysis in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./performance_of_feedback_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Performance of Feedback Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./design_of_feedback_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Design Cycle for a Standard Second-Order System</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./20_Design_of_feedback_control_continued.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Understanding the Standard Second-Order System: Recap</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./steady_state_accuracy_and_design_principles.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Steady State Accuracy and Design Principles</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./compensator_design_using_root_locus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compensator Design</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./design_with_the_root_locus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Design with the Root Locus</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./compensators_and_root_locus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compensators and the Root Locus</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./introduction_to_frequency_domain_analysis_in_control_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Frequency Domain Analysis in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./application_of_nyquist_stability_criterion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Application of Nyquist Stability Criterion in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./the_nyquist_stability_criterion_and_relative_stability.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The Nyquist Stability Criterion and Relative Stability</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./bode_plots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Bode Plot Analysis</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./feedback_system_performance_based_on_frequency_response.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Feedback System Performance Based On Frequency Response</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./compensator_design_using_frequency_response_plots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principles of Automatic Control: Lead and Lag Compensation</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">IT_TCLab_🇮🇹</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/spacecraft_thermal_control_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Il Laboratorio di Controllo della Temperatura</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/tclab_exercises_report_template_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modello di report sugli esercizi TCLab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/tclab_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Il Laboratorio di Controllo della Temperatura</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/understanding_tclab_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Comprendere TCLab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/tclab_lab_1_coding_a_relay_controller_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 1: Codifica di un controller relè</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/system_model_and_identification_tclab_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modellazione del sistema</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/step_testing_tclab_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Passo Test</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/fitting_step_test_data_to_empirical_models_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Adattamento dei dati dei test di fase ai modelli empirici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/tclab_lab_2_model_identification_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 2: Identificazione del modello</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/tclab_lab_2_fitting_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Identificazione del modello: adattamento dei modelli ai dati</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/relay_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Controllo relè</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/pid_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Controllo PID</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/lab-assignment-pid-control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compito di laboratorio: Controllo PID</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/lab-assignment-pi-control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compito di laboratorio 4: Controllo PI</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">IT_🇮🇹</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/faq_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Domande frequenti (FAQ)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/syllabus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Programma del corso “Principi del controllo automatico”</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/update_and_manage_local_changes_guide_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Aggiornare il Proprio Repository Locale Mantenendo le Modifiche Locali</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/getting_started_with_python_and_jupyter_notebook_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Guida introduttiva ai notebook Python e Jupyter</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/intro_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principi di controllo automatico</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/basics_of_feedback_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione ai sistemi di controllo del feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/introduction_to_control_problem_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione al problema del controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/dynamic_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modellazione nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/dynamic_response_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Risposta dinamica dei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/06_inverse_laplace_transform_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Trasformata di Laplace inversa: scomposizione parziale di frazioni</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/modeling_dynamic_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione alla modellazione dei sistemi dinamici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/control_system_components_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Componenti del sistema di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/models_of_control_devices_and_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modelli di dispositivi controllati</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/hardware_and_case_studies_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Hardware dei sistemi di controllo e casi di studio</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/ac_hardware_and_case_studies_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sistemi di controllo del movimento CA</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/a_first_complete_application_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Un sistema di controllo del feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/principles_of_feedback_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principi di controllo del feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/feedback_systems_and_their_effects_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sistemi di feedback e loro effetti</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/introduction_to_control_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione ai sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/stability_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analisi di stabilità nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/stability_and_routh_criterion_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analisi di stabilità nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/performance_of_feedback_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prestazioni dei sistemi di feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/design_of_feedback_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Ciclo di progettazione per un sistema standard del secondo ordine</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/20_Design_of_feedback_control_continued_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Comprensione del sistema standard del secondo ordine: riepilogo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/steady_state_accuracy_and_design_principles_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Precisione dello stato stazionario e principi di progettazione</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/compensator_design_using_root_locus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Progettazione del compensatore</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/design_with_the_root_locus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Progettare con il luogo delle radici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/compensators_and_root_locus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compensatori e luogo delle radici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/introduction_to_frequency_domain_analysis_in_control_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione all’analisi nel dominio della frequenza nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/application_of_nyquist_stability_criterion_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Applicazione del criterio di stabilità di Nyquist nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/the_nyquist_stability_criterion_and_relative_stability_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Il criterio di stabilità di Nyquist e la stabilità relativa</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/bode_plots_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analisi del diagramma di Bode</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/feedback_system_performance_based_on_frequency_response_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prestazioni del sistema di feedback basate sulla risposta in frequenza</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/index_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Syllabus - Fondamenti di Automatica</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">TCLab</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/spacecraft_thermal_control_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The Temperature Control Laboratory</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/tclab_exercises_report_template.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Exercises Report Template</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The Temperature Control Lab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/understanding_tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Understanding TCLab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/tclab_lab_1_coding_a_relay_controller-solution.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 1: Coding a relay controller</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/tclab_lab_1_coding_a_relay_controller.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 1: Coding a relay controller</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/system_model_and_identification_tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">System Modeling</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/step_testing_tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Step Testing</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/fitting_step_test_data_to_empirical_models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Fitting Step Test Data to Empirical Models</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/tclab_lab_2_model_identification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 2: Model Identification</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/tclab_lab_2_model_identification_solutions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 2: Model Identification</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/tclab_lab_2_fitting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Model Identification: Fitting models to data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/relay_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Relay Control</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/pid_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">PID Control</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/lab-assignment-pid-control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab Assignment: PID Control</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/lab-assignment-pi-control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab Assignment 4: PI Control</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#representing-and-characterizing-a-system-in-frequency-domain" id="toc-representing-and-characterizing-a-system-in-frequency-domain" class="nav-link active" data-scroll-target="#representing-and-characterizing-a-system-in-frequency-domain">Representing and Characterizing a System in Frequency Domain</a></li>
+  <li><a href="#ideal-low-pass-filter-characteristics-in-control-systems" id="toc-ideal-low-pass-filter-characteristics-in-control-systems" class="nav-link" data-scroll-target="#ideal-low-pass-filter-characteristics-in-control-systems">Ideal Low-Pass Filter Characteristics in Control Systems</a>
+  <ul class="collapse">
+  <li><a href="#typical-frequency-response-of-a-feedback-control-system" id="toc-typical-frequency-response-of-a-feedback-control-system" class="nav-link" data-scroll-target="#typical-frequency-response-of-a-feedback-control-system">Typical Frequency Response of a Feedback Control System</a></li>
+  <li><a href="#understanding-bandwidth-in-control-systems" id="toc-understanding-bandwidth-in-control-systems" class="nav-link" data-scroll-target="#understanding-bandwidth-in-control-systems">Understanding Bandwidth in Control Systems</a></li>
+  <li><a href="#quantifying-system-performance" id="toc-quantifying-system-performance" class="nav-link" data-scroll-target="#quantifying-system-performance">Quantifying System Performance</a></li>
+  <li><a href="#quantifying-control-system-behavior" id="toc-quantifying-control-system-behavior" class="nav-link" data-scroll-target="#quantifying-control-system-behavior">Quantifying Control System Behavior</a></li>
+  <li><a href="#visualizing-system-behavior-in-time-domain" id="toc-visualizing-system-behavior-in-time-domain" class="nav-link" data-scroll-target="#visualizing-system-behavior-in-time-domain">Visualizing System Behavior in Time Domain</a></li>
+  <li><a href="#simplifying-with-frequency-domain-design" id="toc-simplifying-with-frequency-domain-design" class="nav-link" data-scroll-target="#simplifying-with-frequency-domain-design">Simplifying with Frequency Domain Design</a></li>
+  <li><a href="#key-approximation-in-frequency-domain-closed-loop-system-design" id="toc-key-approximation-in-frequency-domain-closed-loop-system-design" class="nav-link" data-scroll-target="#key-approximation-in-frequency-domain-closed-loop-system-design">Key Approximation in Frequency-Domain Closed-Loop System Design</a></li>
+  <li><a href="#the-role-of-simulation-in-refining-design" id="toc-the-role-of-simulation-in-refining-design" class="nav-link" data-scroll-target="#the-role-of-simulation-in-refining-design">The Role of Simulation in Refining Design</a></li>
+  <li><a href="#clarification-on-the-use-of-approximation" id="toc-clarification-on-the-use-of-approximation" class="nav-link" data-scroll-target="#clarification-on-the-use-of-approximation">Clarification on the Use of Approximation</a></li>
+  <li><a href="#importance-of-precision-in-design" id="toc-importance-of-precision-in-design" class="nav-link" data-scroll-target="#importance-of-precision-in-design">Importance of Precision in Design</a></li>
+  </ul></li>
+  <li><a href="#approximating-second-order-system-behavior" id="toc-approximating-second-order-system-behavior" class="nav-link" data-scroll-target="#approximating-second-order-system-behavior">Approximating Second-Order System Behavior</a>
+  <ul class="collapse">
+  <li><a href="#deriving-resonant-frequency-and-peak-in-a-second-order-system" id="toc-deriving-resonant-frequency-and-peak-in-a-second-order-system" class="nav-link" data-scroll-target="#deriving-resonant-frequency-and-peak-in-a-second-order-system">Deriving Resonant Frequency and Peak in a Second-Order System</a></li>
+  <li><a href="#closed-loop-transfer-function-of-a-second-order-system" id="toc-closed-loop-transfer-function-of-a-second-order-system" class="nav-link" data-scroll-target="#closed-loop-transfer-function-of-a-second-order-system">Closed-Loop Transfer Function of a Second-Order System</a></li>
+  <li><a href="#expressing-the-transfer-function-with-complex-frequency" id="toc-expressing-the-transfer-function-with-complex-frequency" class="nav-link" data-scroll-target="#expressing-the-transfer-function-with-complex-frequency">Expressing the Transfer Function with Complex Frequency</a></li>
+  <li><a href="#using-normalized-frequency" id="toc-using-normalized-frequency" class="nav-link" data-scroll-target="#using-normalized-frequency">Using Normalized Frequency</a></li>
+  <li><a href="#determining-resonant-frequency-and-peak" id="toc-determining-resonant-frequency-and-peak" class="nav-link" data-scroll-target="#determining-resonant-frequency-and-peak">Determining Resonant Frequency and Peak</a></li>
+  <li><a href="#consistency-in-system-specifications" id="toc-consistency-in-system-specifications" class="nav-link" data-scroll-target="#consistency-in-system-specifications">Consistency in System Specifications</a></li>
+  <li><a href="#choosing-effective-specifications" id="toc-choosing-effective-specifications" class="nav-link" data-scroll-target="#choosing-effective-specifications">Choosing Effective Specifications</a></li>
+  </ul></li>
+  <li><a href="#obtaining-closed-loop-frequency-response-from-open-loop-data" id="toc-obtaining-closed-loop-frequency-response-from-open-loop-data" class="nav-link" data-scroll-target="#obtaining-closed-loop-frequency-response-from-open-loop-data">Obtaining Closed-Loop Frequency Response from Open-Loop Data</a>
+  <ul class="collapse">
+  <li><a href="#utilizing-open-loop-data-for-closed-loop-characterization" id="toc-utilizing-open-loop-data-for-closed-loop-characterization" class="nav-link" data-scroll-target="#utilizing-open-loop-data-for-closed-loop-characterization">Utilizing Open-Loop Data for Closed-Loop Characterization</a></li>
+  </ul></li>
+  <li><a href="#understanding-gain-margin-and-phase-margin-and-application-to-second-order-systems" id="toc-understanding-gain-margin-and-phase-margin-and-application-to-second-order-systems" class="nav-link" data-scroll-target="#understanding-gain-margin-and-phase-margin-and-application-to-second-order-systems">Understanding Gain Margin and Phase Margin and Application to Second-Order Systems</a>
+  <ul class="collapse">
+  <li><a href="#application-to-second-order-systems" id="toc-application-to-second-order-systems" class="nav-link" data-scroll-target="#application-to-second-order-systems">Application to Second-Order Systems</a></li>
+  <li><a href="#polar-plot-characteristics" id="toc-polar-plot-characteristics" class="nav-link" data-scroll-target="#polar-plot-characteristics">Polar Plot Characteristics</a></li>
+  <li><a href="#gain-crossover-frequency-and-phase-margin" id="toc-gain-crossover-frequency-and-phase-margin" class="nav-link" data-scroll-target="#gain-crossover-frequency-and-phase-margin">Gain Crossover Frequency and Phase Margin</a></li>
+  <li><a href="#correlating-frequency-domain-indices-with-time-domain-behavior" id="toc-correlating-frequency-domain-indices-with-time-domain-behavior" class="nav-link" data-scroll-target="#correlating-frequency-domain-indices-with-time-domain-behavior">Correlating Frequency Domain Indices with Time Domain Behavior</a></li>
+  </ul></li>
+  <li><a href="#control-system-design-specifications" id="toc-control-system-design-specifications" class="nav-link" data-scroll-target="#control-system-design-specifications">Control System Design Specifications</a>
+  <ul class="collapse">
+  <li><a href="#key-specifications-in-control-system-design" id="toc-key-specifications-in-control-system-design" class="nav-link" data-scroll-target="#key-specifications-in-control-system-design">Key Specifications in Control System Design</a></li>
+  <li><a href="#design-approaches-based-on-specifications" id="toc-design-approaches-based-on-specifications" class="nav-link" data-scroll-target="#design-approaches-based-on-specifications">Design Approaches Based on Specifications</a></li>
+  <li><a href="#conclusion-and-practical-application" id="toc-conclusion-and-practical-application" class="nav-link" data-scroll-target="#conclusion-and-practical-application">Conclusion and Practical Application</a></li>
+  </ul></li>
+  <li><a href="#check-your-understanding" id="toc-check-your-understanding" class="nav-link" data-scroll-target="#check-your-understanding">Check Your Understanding</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/andreamunafo/principles-of-automatic-controls/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Feedback System Performance Based On Frequency Response</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
+<p>In our final phase of discussion, we delve into the design aspects of control systems within the frequency domain. Our focus is to understand how a system can be represented and characterized in this domain. The upcoming lectures will lay out the design algorithms essential for frequency domain analysis.</p>
+<section id="representing-and-characterizing-a-system-in-frequency-domain" class="level2">
+<h2 class="anchored" data-anchor-id="representing-and-characterizing-a-system-in-frequency-domain">Representing and Characterizing a System in Frequency Domain</h2>
+<p>To begin with, it’s important to understand what we mean by the “frequency domain.” Unlike the time domain, where we analyze systems based on their response over time, the frequency domain focuses on how systems respond to different frequencies. This is important in control systems, especially for analyzing how systems behave under various sinusoidal inputs.</p>
+<p>Consider a feedback system with an open-loop transfer function in the forward path, denoted as <span class="math inline">\(G(s)\)</span>, and a sensor or feedback path transfer function, <span class="math inline">\(H(s)\)</span>. The closed-loop transfer function <span class="math inline">\(M(s)\)</span> is given by:</p>
+<p><span class="math display">\[ M(s) = \frac{G(s)}{1 + G(s)H(s)} \]</span></p>
+
+
+
+<img src="./pics/29_Feedback_system_performance_based_on_frequency_response_closed_loop.png" alt="29_Feedback_system_performance_based_on_frequency_response_closed_loop" style="width:550px;">
+
+
+
+<p>To analyze these transfer functions in the frequency domain, we replace the Laplace variable $ s $ with $ j$. Thus, our closed-loop transfer function in the frequency domain becomes:</p>
+<p><span class="math display">\[ M(j\omega) = \frac{G(j\omega)}{1 + G(j\omega)H(j\omega)} \]</span></p>
+<p>As frequency varies from 0 to infinity, understanding the behavior of the closed-loop system requires evaluating the magnitude and phase angle of <span class="math inline">\(M(j\omega)\)</span>.</p>
+<p>In other words, I know the behavior of the closed-loop system if I am able to evaluate the magnitude and phase angle of <span class="math inline">\(M(j\omega)\)</span>.</p>
+<section id="frequency-response" class="level4">
+<h4 class="anchored" data-anchor-id="frequency-response">Frequency Response</h4>
+<p>When analyzing control systems, one key concept is the open-loop frequency response <span class="math inline">\(G(j\omega)H(j\omega)\)</span>, which appears in the closed loop transfer function. This response is particularly important as it provides foundational information about the system’s behavior without the influence of a feedback loop.</p>
+<p>Let’s break this down:</p>
+<ol type="1">
+<li><p><strong>Open-Loop Frequency Response</strong>: This refers to how the system, consisting of the sensor and the plant, responds to different frequencies when there is no feedback applied. Essentially, it’s the system’s natural behavior in response to inputs.</p></li>
+<li><p><strong>Significance</strong>: The reason we focus on the open-loop frequency response is because it offers valuable insights into the inherent characteristics of the system. By understanding the system’s response in an open-loop state, we can make informed predictions about how it will behave once we introduce a feedback loop (i.e., in a closed-loop configuration).</p></li>
+</ol>
+<p>To sum up, the open-loop frequency response, which includes the combined effect of the sensor and the plant (denoted as $ GH $), is a critical piece of information. It can be derived either from a theoretical model of the sensor and plant or through experimental methods to measure how the system responds to various frequencies in an open-loop state.</p>
+</section>
+<section id="from-open-loop-to-closed-loop" class="level4">
+<h4 class="anchored" data-anchor-id="from-open-loop-to-closed-loop">From Open-Loop to Closed-Loop</h4>
+<p>Let’s explore a critical aspect of control systems: determining the closed-loop behavior from the open-loop frequency response data. This task, while seemingly straightforward, actually poses a complex question that needs careful analysis.</p>
+<p>Here’s the process broken down:</p>
+<ol type="1">
+<li><p><strong>Closed-Loop Behavior Analysis</strong>: Our goal is to understand how the system behaves when feedback is applied. This is known as the closed-loop behavior.</p></li>
+<li><p><strong>Using Open-Loop Data</strong>: We start with what we know - the open-loop frequency response. This is the response of the system without feedback, as discussed earlier.</p></li>
+<li><p><strong>Transitioning to Closed-Loop</strong>: To analyze the closed-loop behavior, we apply the open-loop frequency response data into the closed-loop transfer function formula. This is a mathematical approach that integrates the open-loop data into a framework that considers feedback.</p></li>
+<li><p><strong>Understanding the Outcome</strong>: By applying the open-loop data to the closed-loop formula, we can calculate important aspects like the magnitude and phase angle of the closed-loop transfer function, denoted as $ M $. These calculations give us a clear picture of how the feedback alters the system’s response.</p></li>
+</ol>
+<p>In summary, to grasp the closed-loop behavior, we need to effectively translate our understanding of the open-loop system (the system without feedback) into the closed-loop context (the system with feedback). This translation is done through the closed-loop transfer function formula, utilizing the open-loop frequency response data as our starting point.</p>
+</section>
+</section>
+<section id="ideal-low-pass-filter-characteristics-in-control-systems" class="level2">
+<h2 class="anchored" data-anchor-id="ideal-low-pass-filter-characteristics-in-control-systems">Ideal Low-Pass Filter Characteristics in Control Systems</h2>
+<p>In control systems, the concept of a low-pass filter is essential. Let’s unpack this idea to understand its role and functionality better.</p>
+<ol type="1">
+<li><strong>What is a Low-Pass Filter?</strong>
+<ul>
+<li>A low-pass filter is a type of system that allows signals with frequencies below a certain threshold (known as the cutoff frequency) to pass through it without attenuation.</li>
+<li>Signals with frequencies above this cutoff frequency are significantly weakened or attenuated.</li>
+<li>This characteristic makes low-pass filters ideal for blocking out unwanted high-frequency noise while permitting lower-frequency signals to pass through.</li>
+</ul></li>
+<li><strong>Understanding the Cutoff Frequency (<span class="math inline">\(\omega_c\)</span>)</strong>
+<ul>
+<li>The cutoff frequency, denoted as <span class="math inline">\(\omega_c\)</span>, is a critical point in a low-pass filter. It determines the threshold between the frequencies that are allowed to pass and those that are attenuated.</li>
+<li>Up to this frequency, the filter maintains a constant gain, which we often consider as unity (or no change to the signal strength).</li>
+<li>Beyond <span class="math inline">\(\omega_c\)</span>, the filter sharply reduces the gain, effectively filtering out higher frequencies.</li>
+</ul></li>
+<li><strong>Ideal Characteristics of a Low-Pass Filter</strong>
+<ul>
+<li>In an ideal low-pass filter, this transition from unity gain to zero gain at the cutoff frequency is abrupt and distinct.</li>
+<li>This ideal behavior is highly sought after in many control systems, especially in scenarios where filtering out high-frequency noise is crucial while maintaining the integrity of lower-frequency signals.</li>
+</ul></li>
+<li><strong>Application in Control Systems</strong>
+<ul>
+<li>The low-pass filter finds its utility in various control systems where it’s essential to preserve low-frequency signals (like actual system inputs or commands) while eliminating high-frequency disturbances (like electronic noise or irrelevant rapid fluctuations)</li>
+</ul></li>
+</ol>
+
+
+
+<img src="./pics/29_Feedback_system_performance_based_on_frequency_response_low_pass_filter.png" alt="29_Feedback_system_performance_based_on_frequency_response_low_pass_filter" style="width:550px;">
+
+
+
+<p>Understanding the role of low-pass filters in control systems is important. Let’s delve into why low-pass characteristics are particularly suited for control systems.</p>
+<ol type="1">
+<li><strong>Low-Pass Filter Characteristics in Control Systems</strong>
+<ul>
+<li>Ideal Low-Pass Filter: The ideal characteristic of a low-pass filter is a perfect fit for many control systems. This characteristic involves allowing low-frequency signals to pass unaltered while blocking or attenuating high-frequency signals.</li>
+<li>Relevance to Control Systems: Control systems often deal with signals in the low-frequency range, which are the primary signals of interest, such as control commands or system inputs.</li>
+<li>Noise Filtering: High-frequency components in the signal usually represent noise or unwanted disturbances. A low-pass filter’s ability to filter out these high-frequency components is crucial for maintaining the integrity and performance of the control system.</li>
+</ul></li>
+<li><strong>Practical Application in Control Systems</strong>
+<ul>
+<li>Real-World Scenario: In practice, control systems often exhibit low-pass filter behavior, though they might not perfectly match the ideal characteristics of an ideal low-pass filter.</li>
+<li>Functionality: These systems are designed to let through low-frequency signals — the useful part of the signal — while reducing the impact of high-frequency noise. This ensures that the control system responds primarily to actual control inputs rather than being disrupted by noise.</li>
+</ul></li>
+<li><strong>Designing Control Systems with Low-Pass Characteristics</strong>
+<ul>
+<li>When designing a control system in the frequency domain, one of the key objectives is to imbue it with low-pass characteristics. This ensures that the system performs effectively by focusing on the low-frequency range signals while filtering out high-frequency noise.</li>
+</ul></li>
+</ol>
+<p>In summary, low-pass filters are an integral concept in control systems, aligning with the primary goal of these systems to respond to relevant low-frequency signals while filtering out undesirable high-frequency noise.</p>
+<p>Control systems often exhibit low-pass filter characteristics, filtering out high-frequency noise while preserving the low-frequency signals that are of interest.</p>
+<p>Ideally, a low-pass filter would have a flat gain up to a certain cut-off frequency <span class="math inline">\(\omega_c\)</span>, beyond which the gain sharply drops to zero. However, such an ideal characteristic is not realizable in practice.</p>
+<section id="typical-frequency-response-of-a-feedback-control-system" class="level3">
+<h3 class="anchored" data-anchor-id="typical-frequency-response-of-a-feedback-control-system">Typical Frequency Response of a Feedback Control System</h3>
+<p>In practice, an ideal low-pass filter is not realizable. Control systems tend to have a more gradual decline in gain beyond the cutoff frequency.</p>
+
+
+
+<img src="./pics/29_Feedback_system_performance_based_on_frequency_response_actual_response_with_details.png" alt="29_Feedback_system_performance_based_on_frequency_response_actual_response_with_details" style="width:550px;">
+
+
+
+<p><em>Figure: A more realistic low-pass filter characteristic showing a gradual decline in gain.</em></p>
+<section id="characteristic-curve-of-a-feedback-system" class="level4">
+<h4 class="anchored" data-anchor-id="characteristic-curve-of-a-feedback-system">Characteristic Curve of a Feedback System</h4>
+<ol type="1">
+<li><strong>Resonant Frequency and Peak</strong>:
+<ul>
+<li>In a practical feedback control system, the frequency response curve exhibits a unique feature known as the resonant frequency. This is the frequency at which the system’s response (or gain) reaches its maximum.</li>
+<li>Accompanying the resonant frequency is the resonant peak, which is the actual magnitude of this maximum response. This peak is indicative of the system’s most pronounced response to a particular frequency.</li>
+</ul></li>
+<li><strong>Gradual Decline Beyond Resonant Frequency</strong>:
+<ul>
+<li>Unlike an ideal low-pass filter with a sharp cutoff, real-world control systems typically show a more gradual decline in gain beyond the resonant frequency.</li>
+<li>This means that instead of a sudden drop to zero gain past a certain frequency, practical systems slowly attenuate the signal as the frequency increases beyond the resonant point.</li>
+</ul></li>
+</ol>
+</section>
+</section>
+<section id="understanding-bandwidth-in-control-systems" class="level3">
+<h3 class="anchored" data-anchor-id="understanding-bandwidth-in-control-systems">Understanding Bandwidth in Control Systems</h3>
+<ol type="1">
+<li><strong>Bandwidth Defined</strong>:
+<ul>
+<li>Bandwidth ($ _b $) refers to the range of frequencies over which a control system maintains a consistent gain, close to its maximum value.</li>
+<li>This range is crucial because it determines the frequencies at which the system operates most effectively.</li>
+</ul></li>
+<li><strong>Setting the Cutoff Frequency</strong>:
+<ul>
+<li>Determining the exact point for the cutoff frequency can be challenging (see Figure above). However, in control systems, we often define the bandwidth as the frequency range where the system’s gain remains near unity.</li>
+<li>The cutoff frequency, in this case, is where the gain drops to $ $ of the unity value. This point marks the transition from the system’s effective operational range to where it begins attenuating the signal.</li>
+<li>We select the unity value and not the peak, because a unity value at all frequencies would be the ideal value. It would correspond to perfect tracking to any input.</li>
+</ul></li>
+<li><strong>Significance of Bandwidth</strong>:
+<ul>
+<li>Within the bandwidth, the system performs optimally, processing signals with minimal attenuation. This is the frequency range where the system’s gain is almost flat, signifying stable and effective signal handling.</li>
+<li>Beyond the bandwidth, the system’s gain starts to decrease, indicating the start of signal attenuation. This characteristic is crucial for filtering out unwanted high-frequency signals while maintaining fidelity for signals within the bandwidth.</li>
+</ul></li>
+<li><strong>Practical Application</strong>:
+<ul>
+<li>In real-world scenarios, control systems are designed to have a specific bandwidth that aligns with the frequency range of the signals they are intended to manage or control.</li>
+<li>By understanding and setting the appropriate bandwidth, engineers can ensure that the system responds accurately to the relevant frequencies while filtering out undesirable noise or disturbances.</li>
+</ul></li>
+</ol>
+<p>The bandwidth ($ _b $) in control systems is a critical parameter that defines the range of frequencies over which the system can effectively process signals with near-unity gain. Beyond this range, the system’s efficiency in handling signals decreases, making bandwidth a vital factor in system design and performance analysis.</p>
+<section id="bandwidth-and-system-performance" class="level4">
+<h4 class="anchored" data-anchor-id="bandwidth-and-system-performance">Bandwidth and System Performance</h4>
+<p>There is not clear cut-off frequency and for this reason,</p>
+<ol type="1">
+<li><strong>Defining Bandwidth (<span class="math inline">\(\omega_b\)</span>)</strong>:
+<ul>
+<li>Bandwidth is a critical concept in control systems. It is defined based on the frequency range over which the system maintains a near-unity gain, effectively processing the signals.</li>
+<li>Technically, the bandwidth (<span class="math inline">\(\omega_b\)</span>) is the frequency at which the system’s gain drops to <span class="math inline">\(\frac{1}{\sqrt{2}}\)</span> of the maximum (or unity) gain. This point is crucial because it marks the beginning of the system’s attenuation phase for higher frequencies.</li>
+</ul></li>
+<li><strong>Practical Implications</strong>:
+<ul>
+<li>The bandwidth helps in understanding how wide a range of frequencies the system can handle effectively. Within this range, the system performs optimally, maintaining a steady gain.</li>
+<li>Beyond the bandwidth, the system’s ability to process signals diminishes, which is vital for designing control systems that need to filter out unwanted high-frequency signals.</li>
+</ul></li>
+</ol>
+<p>In summary, the frequency response of a typical feedback control system is characterized by its resonant frequency and peak, followed by a gradual reduction in gain beyond this point. The bandwidth of the system, a key performance indicator, defines the range of frequencies over which the system maintains effective control and signal processing capabilities.</p>
+</section>
+</section>
+<section id="quantifying-system-performance" class="level3">
+<h3 class="anchored" data-anchor-id="quantifying-system-performance">Quantifying System Performance</h3>
+<ol type="1">
+<li><p>**Large Bandwidth ($ _b $)**: Desirable for good tracking performance and low rise time. It means that the system gain is as large as possible for a range of frequencies, improving tracking performance and speed of response.</p></li>
+<li><p><strong>Resonant Peak ($ M_r $)</strong>: Should not be too high to ensure the flat gain requirement is met.</p></li>
+<li><p><strong>Limitations</strong>: Factors like noise characteristics and saturation risk limit the achievable bandwidth. High bandwidth means that noise might be entering the loop. Knowing the sensor characteristics means knowing the maximum bandwidth that we can support, even if that might mean trading off tracking accuracy. Large bandwidth also means large gains and hence possibly saturation. With reference to the equation below, <span class="math inline">\(M(j\omega)=1\)</span> (large bandwidth in a large range of frequency) only when <span class="math inline">\(G(j\omega) \rightarrow \infty\)</span>:</p></li>
+</ol>
+<p><span class="math display">\[ M(j\omega) = \frac{G(j\omega)}{1 + G(j\omega)H(j\omega)} = 1 \Rightarrow G(j\omega) \rightarrow \infty\]</span></p>
+</section>
+<section id="quantifying-control-system-behavior" class="level3">
+<h3 class="anchored" data-anchor-id="quantifying-control-system-behavior">Quantifying Control System Behavior</h3>
+<ol type="1">
+<li><strong>Frequency Response Characteristics</strong>:
+<ul>
+<li>To fully grasp a control system’s behavior, we examine its frequency response. This involves understanding how the system reacts across a range of frequencies.</li>
+</ul></li>
+<li><strong>Closed-Loop vs.&nbsp;Open-Loop Frequency Response</strong>:
+<ul>
+<li>It’s important to note that the frequency response we refer to here is the closed-loop response, though initially, we have access to open-loop frequency data. This means that to construct a closed-loop frequency response graph, we need to process the open-loop data accordingly.</li>
+</ul></li>
+</ol>
+<section id="characterizing-parameters-of-frequency-response" class="level4">
+<h4 class="anchored" data-anchor-id="characterizing-parameters-of-frequency-response">Characterizing Parameters of Frequency Response</h4>
+<ol type="1">
+<li><strong>Resonant Frequency (<span class="math inline">\(\omega_r\)</span>)</strong>:
+<ul>
+<li>This is the frequency at which the system’s response reaches its maximum. It’s a critical point in understanding system behavior.</li>
+</ul></li>
+<li><strong>Resonant Peak (M_r)</strong>:
+<ul>
+<li>$ M_r $ is the magnitude of the system’s response at the resonant frequency. It should ideally not be too high to ensure a stable system response.</li>
+</ul></li>
+<li><strong>Bandwidth (<span class="math inline">\(\omega_b\)</span>)</strong>:
+<ul>
+<li>The bandwidth is defined as the frequency range where the system’s response (or gain) is near its maximum. Beyond this range, the system starts attenuating signals.</li>
+</ul></li>
+<li><strong>Rise Time and Bandwidth</strong>:
+<ul>
+<li>Both <span class="math inline">\(\omega_r\)</span> and <span class="math inline">\(\omega_b\)</span> are linked to the system’s rise time. A shorter rise time requires larger values of <span class="math inline">\(\omega_r\)</span> and <span class="math inline">\(\omega_b\)</span>.</li>
+</ul></li>
+</ol>
+</section>
+<section id="additional-indices-for-system-characterization" class="level4">
+<h4 class="anchored" data-anchor-id="additional-indices-for-system-characterization">Additional Indices for System Characterization</h4>
+<ol type="1">
+<li><strong>Phase Margin and Gain Margin</strong>:
+<ul>
+<li>These are derived from the open-loop frequency response and are indicative of the system’s relative stability in closed-loop.</li>
+<li>The phase margin (<span class="math inline">\(\phi\)</span>) is measured with respect to the negative real axis, and a positive phase margin suggests stability.</li>
+<li>The gain margin, calculated as <span class="math inline">\(\frac{1}{a}\)</span>, also gives an indication of system stability.</li>
+</ul></li>
+</ol>
+
+
+
+<img src="./pics/29_Feedback_system_performance_based_on_frequency_response_gain_phase_margins.png" alt="29_Feedback_system_performance_based_on_frequency_response_gain_phase_margins" style="width:550px;">
+
+
+
+</section>
+<section id="comprehensive-system-characterization" class="level4">
+<h4 class="anchored" data-anchor-id="comprehensive-system-characterization">Comprehensive System Characterization</h4>
+<ol type="1">
+<li><strong>Time Domain vs.&nbsp;Frequency Domain</strong>:
+<ul>
+<li>While we can characterize a system in the frequency domain using indices like <span class="math inline">\(\omega_r\)</span>, <span class="math inline">\(M_r\)</span>, <span class="math inline">\(\omega_b\)</span>, gain margin, and phase margin, it’s also crucial to understand their impact in the time domain.</li>
+<li>The time domain perspective gives us insights into how the system responds to inputs like step changes and how it deals with transient errors.</li>
+</ul></li>
+<li><strong>Linking Time Domain and Frequency Domain</strong>:
+<ul>
+<li>The real challenge in system design is to correlate these two domains. This correlation is crucial for leveraging the simplicity of frequency domain design and the intuitive understanding from the time domain.</li>
+<li>Although theoretically, time domain behavior and frequency domain behavior are linked via Fourier transform, practically, this transformation can be complex. Therefore, we often rely on simulations and approximations to make this correlation more manageable.</li>
+</ul></li>
+</ol>
+
+
+
+<img src="./pics/29_Feedback_system_performance_based_on_frequency_response_closed_loop_frequency_response.png" alt="29_Feedback_system_performance_based_on_frequency_response_closed_loop_frequency_response" style="width:550px;">
+
+
+
+</section>
+<section id="key-performance-indices" class="level4">
+<h4 class="anchored" data-anchor-id="key-performance-indices">Key Performance Indices</h4>
+<p>A control system’s behavior in the frequency domain can be characterized by several indices:</p>
+<ol type="1">
+<li><strong>Resonant Peak (<span class="math inline">\(M_r\)</span>)</strong></li>
+<li><strong>Resonant Frequency (<span class="math inline">\(\omega_r\)</span>)</strong></li>
+<li><strong>Bandwidth (<span class="math inline">\(\omega_b\)</span>)</strong></li>
+<li><strong>Gain Margin (GM)</strong></li>
+<li><strong>Phase Margin (PM)</strong></li>
+<li><strong>Steady State Error (<span class="math inline">\(e_{ss}\)</span>)</strong></li>
+<li><strong>System Constants (<span class="math inline">\(K_p, K_v, K_a\)</span>)</strong></li>
+</ol>
+<p>These specifications guide the design process and help in tuning the system to achieve the desired performance in both frequency and time domains.</p>
+<p>These parameters are derived from the open-loop frequency response data but reflect the closed-loop behavior. They offer insights into the relative stability of the system.</p>
+</section>
+</section>
+<section id="visualizing-system-behavior-in-time-domain" class="level3">
+<h3 class="anchored" data-anchor-id="visualizing-system-behavior-in-time-domain">Visualizing System Behavior in Time Domain</h3>
+<p>Understanding the relationship between frequency and time is key to analyzing and designing effective control systems.</p>
+<ol type="1">
+<li><strong>Time Domain Visualization</strong>:
+<ul>
+<li>The time domain is particularly useful for visualizing how a system behaves in response to certain inputs, like a step input.</li>
+<li>For instance, in the time domain, we can easily see how well a system tracks an input and identify the transient errors (the initial difference between the desired and actual response).</li>
+<li>The dynamic behavior of a system, such as its response to changes over time, is often more intuitively understood in the time domain.</li>
+</ul></li>
+</ol>
+</section>
+<section id="simplifying-with-frequency-domain-design" class="level3">
+<h3 class="anchored" data-anchor-id="simplifying-with-frequency-domain-design">Simplifying with Frequency Domain Design</h3>
+<ol type="1">
+<li><strong>Advantages of Frequency Domain</strong>:
+<ul>
+<li>Designing in the frequency domain is generally simpler and more straightforward.</li>
+<li>However, to fully leverage its advantages, we need to establish a connection between the time domain and frequency domain characteristics.</li>
+</ul></li>
+<li><strong>Linking Time and Frequency Domains</strong>:
+<ul>
+<li>This linking involves correlating parameters like resonant peak <span class="math inline">\(M_r\)</span>, resonant frequency <span class="math inline">\(\omega_r\)</span>, bandwidth <span class="math inline">\(\omega_b\)</span>, phase margin, and gain margin between the two domains.</li>
+<li>By understanding these relationships, we can appreciate how frequency domain decisions will impact the time domain behavior.</li>
+</ul></li>
+</ol>
+<section id="practical-approach" class="level4">
+<h4 class="anchored" data-anchor-id="practical-approach">Practical Approach</h4>
+<ol type="1">
+<li><strong>Fourier Transform Limitations</strong>:
+<ul>
+<li>Theoretically, the Fourier transform can be used to derive the time response from frequency response data. However, in practice, this can be complex and impractical.</li>
+</ul></li>
+<li><strong>Using Computational Tools</strong>:
+<ul>
+<li>With the advent of computers, a more practical approach is to use the transfer function derived from frequency domain data and simulate it in the time domain.</li>
+<li>This method allows us to approximate how frequency domain parameters will manifest in the time domain, bypassing the complexities of Fourier transforms.</li>
+</ul></li>
+<li><strong>Approximating Relationships</strong>:
+<ul>
+<li>Our goal is to quickly gauge if the chosen frequency domain parameters make sense when converted into time domain behavior.</li>
+<li>A complete and accurate depiction of time domain behavior can be achieved through thorough simulation.</li>
+<li>What this means is that we are going to accept approximations and we will verify if the assumptions and approximations done are correct through thorough simulations. This is similar to what we did when using the dominance condition to identify two closed-loop poles that were dominant in the response of the system. This approximation is used for the initial design and then if discrepancies arise in simulations, adjustments are made accordingly.</li>
+</ul></li>
+</ol>
+</section>
+</section>
+<section id="key-approximation-in-frequency-domain-closed-loop-system-design" class="level3">
+<h3 class="anchored" data-anchor-id="key-approximation-in-frequency-domain-closed-loop-system-design">Key Approximation in Frequency-Domain Closed-Loop System Design</h3>
+<ol type="1">
+<li><strong>Assuming Second-Order System Behavior</strong>:
+<ul>
+<li>A significant simplification in the design process is to approximate the behavior of the closed-loop system as being similar to a second-order system. This means we assume the system has a dominant pair of roots that predominantly influence its response.</li>
+</ul></li>
+<li><strong>Implications for Time Domain Visualization</strong>:
+<ul>
+<li>With this approximation, it becomes more straightforward to predict and visualize the system’s behavior in the time domain. For instance, understanding how the system responds to certain inputs or its overall dynamic behavior becomes more intuitive.</li>
+</ul></li>
+<li><strong>Dealing with Approximation Limitations</strong>:
+<ul>
+<li>It’s important to acknowledge that this is an approximation. If the actual system significantly deviates from a second-order behavior, there might be a noticeable discrepancy between our predictions and the actual performance observed in simulations.</li>
+<li>To address such discrepancies, we often rely on a trial and error approach. This involves adjusting the design based on simulation outcomes to better match the expected behavior.</li>
+</ul></li>
+</ol>
+</section>
+<section id="the-role-of-simulation-in-refining-design" class="level3">
+<h3 class="anchored" data-anchor-id="the-role-of-simulation-in-refining-design">The Role of Simulation in Refining Design</h3>
+<ol type="1">
+<li><strong>Bridging the Gap with Simulation</strong>:
+<ul>
+<li>Simulations are crucial in verifying and refining our design approximations. They provide a practical view of how the system will behave, allowing us to make necessary adjustments.</li>
+</ul></li>
+<li><strong>Iterative Approach in Design</strong>:
+<ul>
+<li>System design in the frequency domain often requires an iterative process, moving back and forth between designing, simulating, and tweaking based on the simulation results. This iterative process helps ensure that the final design aligns well with the desired performance specifications.</li>
+</ul></li>
+</ol>
+<p>In essence, while approximating the closed-loop system as a second-order system simplifies the design process, it’s important to validate and adjust this approximation through simulation to achieve a design that performs effectively in real-world conditions.</p>
+<p>Before moving forward it is worth re-emphasising the use of the second-order approximation that we will be doing.</p>
+</section>
+<section id="clarification-on-the-use-of-approximation" class="level3">
+<h3 class="anchored" data-anchor-id="clarification-on-the-use-of-approximation">Clarification on the Use of Approximation</h3>
+<ol type="1">
+<li><strong>Scope of the Approximation</strong>:
+<ul>
+<li>The approximation of treating the closed-loop system as a second-order system is primarily used for quick visualization and understanding. It’s important to emphasize that this is a tool for conceptualization rather than a direct element in the actual design process.</li>
+</ul></li>
+<li><strong>Application in Visualization</strong>:
+<ul>
+<li>The main purpose of this approximation is to provide a simpler way to translate and comprehend system behavior from the frequency domain into the time domain. It’s a method to quickly gauge how the system might behave in real-time operation based on its frequency domain characteristics.</li>
+</ul></li>
+<li><strong>Not Directly Used in Design</strong>:
+<ul>
+<li>When it comes to the actual design of the system in the frequency domain, this approximation does not directly influence the design decisions or calculations. It’s not re-entered into the design process.</li>
+</ul></li>
+<li><strong>Caution in Design Process</strong>:
+<ul>
+<li>Designers should exercise caution and not overly rely on this approximation for making design choices. While it’s useful for initial understanding, the actual design should be based on more precise analyses and simulations that take into account the specific characteristics of the system.</li>
+</ul></li>
+</ol>
+</section>
+<section id="importance-of-precision-in-design" class="level3">
+<h3 class="anchored" data-anchor-id="importance-of-precision-in-design">Importance of Precision in Design</h3>
+<ol type="1">
+<li><strong>Design Accuracy</strong>:
+<ul>
+<li>Accurate and effective design in the frequency domain requires considering all the detailed characteristics of the system, beyond the simplifications offered by the approximation.</li>
+</ul></li>
+<li><strong>Role of Simulations</strong>:
+<ul>
+<li>Simulations play a critical role in validating the design, offering a more accurate picture of how the system will behave in various scenarios, which might differ from the simplified approximation.</li>
+</ul></li>
+</ol>
+<p>The approximation of a closed-loop system as a second-order system is a helpful tool for initial visualization and understanding, it should not be directly used in the design process. Accurate design requires a detailed analysis and simulations tailored to the specific system being developed.</p>
+<hr>
+<p><strong>Pop-Up Question</strong>: Why is it important to understand both time domain and frequency domain behaviors in control systems?</p>
+<p><strong>Answer</strong>: Understanding both domains allows for a comprehensive view of the system’s performance. The time domain offers insights into the system’s real-world response to inputs, while the frequency domain simplifies the design and analysis process, particularly in filtering and stability aspects.</p>
+<p><strong>Pop-Up Question</strong>: Why is it beneficial to link time domain and frequency domain analyses?</p>
+<p><strong>Answer</strong>: Linking these domains allows for leveraging the simplicity of frequency domain design while appreciating and verifying system performance in the more intuitive time domain.</p>
+<hr>
+</section>
+</section>
+<section id="approximating-second-order-system-behavior" class="level2">
+<h2 class="anchored" data-anchor-id="approximating-second-order-system-behavior">Approximating Second-Order System Behavior</h2>
+<p>A common approximation in control system analysis is assuming that the system behaves like a second-order system with two dominant poles. This simplification is often valid, especially when the final design exhibits two dominant poles, and non-dominant poles have a minimal effect.</p>
+<p><strong>Typical System Behavior</strong>: - A standard second-order system is represented by the transfer function</p>
+<p><span class="math display">\[\frac{\omega_n^2}{ s(s + 2 \zeta \omega_n) }\]</span></p>
+<p>and by the following feedback loop:</p>
+
+
+
+<img src="./pics/29_Feedback_system_performance_based_on_frequency_response_second_order_system.png" alt="29_Feedback_system_performance_based_on_frequency_response_second_order_system" style="width:550px;">
+
+
+
+<ul>
+<li>In many designs, such systems exhibit two dominant poles, which significantly influence the system’s behavior.</li>
+</ul>
+<section id="deriving-resonant-frequency-and-peak-in-a-second-order-system" class="level3">
+<h3 class="anchored" data-anchor-id="deriving-resonant-frequency-and-peak-in-a-second-order-system">Deriving Resonant Frequency and Peak in a Second-Order System</h3>
+<p>We begin determining the resonant frequency (<span class="math inline">\(\omega_r\)</span>) and the resonant peak (<span class="math inline">\(M_r\)</span>). Let’s break down this process step by step for clarity.</p>
+</section>
+<section id="closed-loop-transfer-function-of-a-second-order-system" class="level3">
+<h3 class="anchored" data-anchor-id="closed-loop-transfer-function-of-a-second-order-system">Closed-Loop Transfer Function of a Second-Order System</h3>
+<p>Consider the following transfer function:</p>
+<p><span class="math display">\[
+M(s) = \frac{\omega_n^2}{s^2 + 2 \zeta \omega_n s + \omega_n^2}
+\]</span></p>
+<p>This equation represents the closed-loop transfer function for a second-order system, where <span class="math inline">\(\omega_n\)</span> is the natural frequency and <span class="math inline">\(\zeta\)</span> is the damping ratio.</p>
+</section>
+<section id="expressing-the-transfer-function-with-complex-frequency" class="level3">
+<h3 class="anchored" data-anchor-id="expressing-the-transfer-function-with-complex-frequency">Expressing the Transfer Function with Complex Frequency</h3>
+<p>To analyze the system’s behavior at different frequencies, we express <span class="math inline">\(M(s)\)</span> using a complex frequency <span class="math inline">\(j\omega\)</span>:</p>
+<p><span class="math display">\[
+M(j\omega) = \frac{\omega_n^2}{- \omega^2 + j 2 \zeta \omega_n \omega + \omega_n^2}
+\]</span></p>
+</section>
+<section id="using-normalized-frequency" class="level3">
+<h3 class="anchored" data-anchor-id="using-normalized-frequency">Using Normalized Frequency</h3>
+<ol type="1">
+<li><strong>Defining Normalized Frequency</strong>:
+<ul>
+<li>Let’s introduce a normalized frequency $ u = $. This simplifies our calculations and helps in comparing systems with different natural frequencies.</li>
+</ul></li>
+<li><strong>Modified Transfer Function</strong>:
+<ul>
+<li>With this normalized frequency, our transfer function becomes:</li>
+</ul>
+<span class="math display">\[
+M(ju) = \frac{1}{1 - u^2 + j 2 \zeta u}
+\]</span></li>
+</ol>
+</section>
+<section id="determining-resonant-frequency-and-peak" class="level3">
+<h3 class="anchored" data-anchor-id="determining-resonant-frequency-and-peak">Determining Resonant Frequency and Peak</h3>
+<ol type="1">
+<li><p><strong>Calculating the Resonant Frequency (<span class="math inline">\(\omega_r\)</span>)</strong>:</p>
+<ul>
+<li>To find the resonant frequency, we need to determine the point where the magnitude of $ M(ju) $ reaches its maximum. This involves differentiating the magnitude with respect to $ u $ and setting the derivative to zero ($ = 0 $).</li>
+</ul></li>
+<li><p><strong>Magnitude of $ M(ju) $</strong>:</p>
+<ul>
+<li>The magnitude of $ M(ju) $ is given by:</li>
+</ul>
+<p><span class="math display">\[
+\left|M(ju)\right| = \frac{1}{\sqrt{(1 - u^2)^2 + (2 \zeta u)^2}}
+\]</span></p></li>
+<li><p><strong>Finding $ u_r $ and $ M_r(u_r) $</strong>:</p>
+<ul>
+<li>By setting $ = 0 $, we find $ u_r $, the normalized frequency at which the resonant peak occurs.</li>
+<li>Substituting this value back into the magnitude equation gives us $ M_r(u_r) $, the resonant peak.</li>
+</ul></li>
+<li><p><strong>Calculating Resonant Frequency and Peak:</strong></p></li>
+</ol>
+<p><span class="math display">\[ u_r = \sqrt{1 - 2\zeta^2} \]</span> <span class="math display">\[ \omega_r = \omega_n\sqrt{1 - 2\zeta^2} \]</span> <span class="math display">\[ M_r = \frac{1}{2\zeta\sqrt{1 - \zeta^2}} \]</span></p>
+<section id="relationship-between-damping-ratio-and-resonant-peak" class="level4">
+<h4 class="anchored" data-anchor-id="relationship-between-damping-ratio-and-resonant-peak">Relationship Between Damping Ratio and Resonant Peak</h4>
+<p>The frequency domain index, <span class="math inline">\(\omega_r\)</span> (resonant frequency), and <span class="math inline">\(M_r\)</span> (resonant peak), are directly related to the time domain parameter, damping ratio (<span class="math inline">\(\zeta\)</span>). This relationship is ties the peak overshoot in the time domain, which is a function of <span class="math inline">\(\zeta\)</span>, to the frequency domain characteristics.</p>
+<p><span class="math display">\[ M_r = \frac{1}{2\zeta\sqrt{1 - \zeta^2}} \quad \text{for} \quad 0 &lt; \zeta &lt; 0.707 \]</span></p>
+<p>The equation illustrates a direct relationship between the resonant peak (<span class="math inline">\(M_r\)</span>) in the frequency domain and the peak overshoot in the time domain (which is obtained through <span class="math inline">\(\zeta\)</span>).</p>
+<p>We can make the following plot of <span class="math inline">\(M_r\)</span> as <span class="math inline">\(\zeta\)</span> varies:</p>
+
+
+
+<img src="./pics/29_Feedback_system_performance_based_on_frequency_response_closed_loop_frequency_response_1.png" alt="29_Feedback_system_performance_based_on_frequency_response_closed_loop_frequency_response_1" style="width:550px;">
+
+
+
+<p>The equation is valid for $ 0 &lt; &lt; 0.707 $. When $ &gt; 0.707 $ the system behaves very close to a critically damped system and in practise there is no overshoot peak (overshoot will be between 2% and 5%). We are more interested in capturing important behaviours that can affect the stability of the system, whereas we can capture detailed behaviours through simulations.</p>
+<p>In other words, the resonant peak equation is defined for <span class="math inline">\(0 &lt; \zeta &lt; 0.707\)</span>. For <span class="math inline">\(\zeta &gt; 0.707\)</span>, the system approximates a critically damped response, with no significant overshoot. This implies that for larger values of <span class="math inline">\(\zeta\)</span>, the system’s behavior is akin to having no resonant peak, leading to a flatter frequency response.</p>
+</section>
+<section id="interpreting-omega_r-and-omega_b" class="level4">
+<h4 class="anchored" data-anchor-id="interpreting-omega_r-and-omega_b">Interpreting <span class="math inline">\(\omega_r\)</span> and <span class="math inline">\(\omega_b\)</span></h4>
+<p>The values of <span class="math inline">\(\omega_r\)</span> and <span class="math inline">\(\omega_b\)</span> (bandwidth) can give insights into the rise time and settling time of the system. Given a specific damping ratio (<span class="math inline">\(\zeta\)</span>), <span class="math inline">\(\omega_r\)</span> helps determine the natural frequency (<span class="math inline">\(\omega_n\)</span>), and consequently, the rise time and settling time.</p>
+<p><span class="math inline">\(\omega_r\)</span> depends on <span class="math inline">\(\zeta\)</span> and <span class="math inline">\(\omega_n\)</span> and hence is representive of the rise time or settling timne.</p>
+<p>Given <span class="math inline">\(\omega_r\)</span> and <span class="math inline">\(M_r\)</span> we can obtain <span class="math inline">\(\zeta\)</span> and <span class="math inline">\(\omega_n\)</span> and hence the transient behaviour of the system in terms of settling time, rise time, peak overshoot, etc.</p>
+<p>The only caveat is that the system must be approximated by a second-order system. If not, in this course, we will rely on simulations only.</p>
+</section>
+<section id="calculating-bandwidth-for-second-order-systems" class="level4">
+<h4 class="anchored" data-anchor-id="calculating-bandwidth-for-second-order-systems">Calculating Bandwidth for Second-Order Systems</h4>
+<p>To calculate the bandwidth, we go back to our magnitude equation:</p>
+<p><span class="math display">\[
+   \left|M(ju)\right| = \frac{1}{\sqrt{(1 - u^2)^2 + (2 \zeta u)^2}}
+\]</span></p>
+<p>and set <span class="math inline">\(\left|M(ju)\right| = 0.707\)</span> to find <span class="math display">\[u_b=\frac{\omega_b}{\omega_n}\]</span></p>
+<p>and finally it can be calculated for a second-order system as follows:</p>
+<p><span class="math display">\[ \text{Bandwidth, } \omega_b = \omega_n \left[ (1 - 2\zeta^2) + \sqrt{4\zeta^4-4\zeta^2 +2} \right]^{\frac{1}{2}} \]</span></p>
+<p>In time domain, <span class="math inline">\(\omega_b\)</span> is related to the system’s rise time, settling time. In frequency domain, <span class="math inline">\(\omega_b\)</span> is related to noise filtering characteristics.</p>
+</section>
+</section>
+<section id="consistency-in-system-specifications" class="level3">
+<h3 class="anchored" data-anchor-id="consistency-in-system-specifications">Consistency in System Specifications</h3>
+<p>In designing control systems, especially in the frequency domain, we need to ensure that the specifications we choose are consistent and compatible with each other.</p>
+<p>Let’s explore this concept further and understand how it applies to the selection of specifications like resonant peak (<span class="math inline">\(M_r\)</span>), the resonant frequency (<span class="math inline">\(\omega_r\)</span>) and bandwidth (<span class="math inline">\(\omega_b\)</span>).</p>
+<ol type="1">
+<li><strong>Interrelated Nature of Frequency Domain Specifications</strong>:
+<ul>
+<li><p>In the frequency domain, key parameters such as resonant frequency (<span class="math inline">\(\omega_r\)</span>), resonant peak (<span class="math inline">\(M_r\)</span>), and bandwidth (<span class="math inline">\(\omega_b\)</span>) are closely interrelated. They cannot be set independently of each other as their values influence one another.</p></li>
+<li><p>Given this interdependence, these specifications need to be consistent with each other. For instance, a change in the resonant peak (<span class="math inline">\(M_r\)</span>) might necessitate adjustments in the bandwidth (<span class="math inline">\(\omega_b\)</span>) or the resonant frequency (<span class="math inline">\(\omega_r\)</span>) to maintain system coherence.</p></li>
+<li><p>In scenarios where more than two specifications are involved, typically, one of these parameters will be a result of the other two. This means that if you specify two parameters, the third should logically follow or be derived based on those choices.</p></li>
+</ul></li>
+<li><strong>Selecting Compatible Specifications</strong>:
+<ul>
+<li>When multiple specifications are given for a system’s behavior, they must align with each other. For example, if you set a certain resonant frequency (<span class="math inline">\(\omega_r\)</span>), it should be in harmony with other parameters like the resonant peak (<span class="math inline">\(M_r\)</span>) and bandwidth (<span class="math inline">\(\omega_b\)</span>).</li>
+</ul></li>
+</ol>
+</section>
+<section id="choosing-effective-specifications" class="level3">
+<h3 class="anchored" data-anchor-id="choosing-effective-specifications">Choosing Effective Specifications</h3>
+<ol type="1">
+<li><strong>Resonant Peak (<span class="math inline">\(M_r\)</span>) and Bandwidth (<span class="math inline">\(\omega_b\)</span>)</strong>:
+<ul>
+<li>A practical approach in frequency domain design is to primarily use <span class="math inline">\(M_r\)</span> and <span class="math inline">\(\omega_b\)</span> as key specifications.</li>
+<li><span class="math inline">\(M_r\)</span> effectively represents the damping characteristics, while <span class="math inline">\(\omega_b\)</span> relates to both noise filtering characteristics and, in terms of time domain, to the rise time or settling time of the system.</li>
+</ul></li>
+<li><strong>Implementing in Design Algorithms</strong>:
+<ul>
+<li>These specifications, <span class="math inline">\(M_r\)</span> and <span class="math inline">\(\omega_b\)</span>, can be embedded into the design algorithm. This allows for a focused and consistent approach to system design.</li>
+<li>Additional specifications, like <span class="math inline">\(\omega_r\)</span>, can be checked for compatibility post the initial design process.</li>
+</ul></li>
+<li><strong>Simplification Through Specific Methods</strong>:
+<ul>
+<li>Having a clear method for specifying system performance can simplify the design process. By focusing on key parameters like <span class="math inline">\(M_r\)</span> and <span class="math inline">\(\omega_b\)</span>, we can effectively control important aspects of the system’s behavior.</li>
+</ul></li>
+</ol>
+</section>
+</section>
+<section id="obtaining-closed-loop-frequency-response-from-open-loop-data" class="level2">
+<h2 class="anchored" data-anchor-id="obtaining-closed-loop-frequency-response-from-open-loop-data">Obtaining Closed-Loop Frequency Response from Open-Loop Data</h2>
+<ul>
+<li><p>It’s important to understand that the critical indices for characterizing a control system — such as resonant frequency (<span class="math inline">\(\omega_r\)</span>), resonant peak (<span class="math inline">\(M_r\)</span>), bandwidth (<span class="math inline">\(\omega_b\)</span>) — are derived exclusively from the system’s closed-loop frequency response.</p></li>
+<li><p>A significant task in control system analysis is to determine the closed-loop frequency response based on the open-loop frequency response data. The open-loop response gives us insights into the system’s inherent behavior without feedback, but it’s the closed-loop response that shows us how the system will perform under actual operating conditions with feedback.</p></li>
+<li><p>In the modern context, where computational tools are readily available, this transition becomes much more manageable. With the help of computers, we can efficiently process the open-loop data to generate the closed-loop frequency response.</p></li>
+</ul>
+<section id="utilizing-open-loop-data-for-closed-loop-characterization" class="level3">
+<h3 class="anchored" data-anchor-id="utilizing-open-loop-data-for-closed-loop-characterization">Utilizing Open-Loop Data for Closed-Loop Characterization</h3>
+<ul>
+<li><p>Our goal is to find efficient methods to characterize the closed-loop frequency response of a system. The indices such as resonant peak (<span class="math inline">\(M_r\)</span>), resonant frequency (<span class="math inline">\(\omega_r\)</span>), and bandwidth (<span class="math inline">\(\omega_b\)</span>) are valuable for this purpose.</p></li>
+<li><p>The challenge is obtaining these parameters quickly, especially when we usually only have open-loop frequency response data.</p></li>
+<li><p>We will see how to characterize the closed-loop system behavior directly using the open-loop frequency response data.</p></li>
+<li><p>We saw one method already: the Nyquist stability criterion. This criterion allows us to infer the closed-loop behavior of the system using the open-loop frequency response data. We will see how the Nyquist Criterion and the Bode’s Plot help us understand key aspects like gain margin and phase margin directly from the open-loop data, bridging the gap between open and closed-loop analysis.</p></li>
+</ul>
+</section>
+</section>
+<section id="understanding-gain-margin-and-phase-margin-and-application-to-second-order-systems" class="level2">
+<h2 class="anchored" data-anchor-id="understanding-gain-margin-and-phase-margin-and-application-to-second-order-systems">Understanding Gain Margin and Phase Margin and Application to Second-Order Systems</h2>
+<ul>
+<li>Gain margin and phase margin are critical parameters in assessing the stability of a control system.</li>
+<li>Gain margin indicates how much the system’s gain can be increased before it becomes unstable, calculated as <span class="math inline">\(1/a\)</span> where <span class="math inline">\(A\)</span> is the gain at the phase crossover frequency.</li>
+<li>Phase margin <span class="math inline">\(\phi\)</span> is the additional phase shift that would bring the system to the edge of instability, offering insight into how far the system is from a potential oscillatory or unstable state.</li>
+</ul>
+<section id="application-to-second-order-systems" class="level3">
+<h3 class="anchored" data-anchor-id="application-to-second-order-systems">Application to Second-Order Systems</h3>
+<p>For a standard second-order system, these stability parameters become especially significant. We can relate the system’s gain margin and phase margin to its characteristic behavior, providing a clear picture of its stability in closed loop.</p>
+<p>For a standard second-order system, represented by the transfer function</p>
+<p><span class="math display">\[G(s) = \frac{\omega_n^2}{s(s + 2 \zeta \omega_n)}\]</span></p>
+<p>its open-loop frequency response presents unique characteristics.</p>
+<p>Let’s explore how to analyze this system directly from its open-loop frequency response data.</p>
+</section>
+<section id="polar-plot-characteristics" class="level3">
+<h3 class="anchored" data-anchor-id="polar-plot-characteristics">Polar Plot Characteristics</h3>
+<p>The polar plot of a standard second-order system does not cross the imaginary axis but is asymptotic to it. This behavior is a key characteristic of a type-1, second-order system.</p>
+<section id="calculating-phase-margin-for-a-second-order-system" class="level4">
+<h4 class="anchored" data-anchor-id="calculating-phase-margin-for-a-second-order-system">Calculating Phase Margin for a Second-Order System</h4>
+<ol type="1">
+<li><p><strong>Gain Crossover Frequency (<span class="math inline">\(\omega_{gc}\)</span>)</strong>: This is the frequency at which the gain of the system is equal to unity. It is important for determining the phase margin of the system.</p></li>
+<li><p><strong>Phase Margin Calculation</strong>: The phase margin is calculated at the gain crossover frequency. It is the angle measured positive with respect to the negative real axis at <span class="math inline">\(\omega_{gc}\)</span>.</p></li>
+<li><p><strong>Gain Margin</strong>: The Gain Margin is infinity for a standard second-order system.</p></li>
+</ol>
+
+
+
+<img src="./pics/29_Feedback_system_performance_based_on_frequency_response_second_order_system_nyquist.png" alt="29_Feedback_system_performance_based_on_frequency_response_second_order_system_nyquist" style="width:550px;">
+
+
+
+<p><em>Figure: A polar plot of the open-loop frequency response for a standard second-order system.</em></p>
+<p>We can plot it using Python as shown below.</p>
+<div id="3dd217d0" class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> control <span class="im">as</span> ctl</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the parameters for the second-order system</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>omega_n <span class="op">=</span> <span class="fl">1.0</span>  <span class="co"># Natural frequency</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>zeta <span class="op">=</span> <span class="fl">0.5</span>     <span class="co"># Damping ratio</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the transfer function G(s)</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>num <span class="op">=</span> [omega_n<span class="op">**</span><span class="dv">2</span>]</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>den <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span> <span class="op">*</span> zeta <span class="op">*</span> omega_n, <span class="dv">0</span>]</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>G <span class="op">=</span> ctl.TransferFunction(num, den)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Nyquist plot</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>_, contour <span class="op">=</span> ctl.nyquist(G, plot<span class="op">=</span><span class="va">True</span>, return_contour<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>real, imag <span class="op">=</span> np.real(G(contour)), np.imag(G(contour))</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the unit circle for reference</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>circle <span class="op">=</span> plt.Circle((<span class="dv">0</span>, <span class="dv">0</span>), <span class="dv">1</span>, color<span class="op">=</span><span class="st">'blue'</span>, fill<span class="op">=</span><span class="va">False</span>, linestyle<span class="op">=</span><span class="st">'dotted'</span>)</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>plt.gca().add_artist(circle)</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Annotations for Gain Margin and Phase Margin</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>gm, pm, wg, wp <span class="op">=</span> ctl.margin(G)</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Gain Margin</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="co"># plt.plot([real[0], 1], [imag[0], 0], 'g--')</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>plt.text(<span class="fl">0.5</span>, <span class="dv">0</span>, <span class="ss">f'GM: </span><span class="sc">{</span>gm<span class="sc">:.2f}</span><span class="ss">'</span>, color<span class="op">=</span><span class="st">'green'</span>)</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Phase Margin</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>plt.plot([<span class="dv">0</span>, <span class="op">-</span><span class="dv">1</span>], [<span class="dv">0</span>, <span class="op">-</span>np.tan(pm <span class="op">*</span> np.pi <span class="op">/</span> <span class="dv">180</span>)], <span class="st">'r--'</span>)</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>plt.text(<span class="op">-</span><span class="dv">1</span>, <span class="op">-</span>np.tan(pm <span class="op">*</span> np.pi <span class="op">/</span> <span class="dv">180</span>), <span class="ss">f'PM: </span><span class="sc">{</span>pm<span class="sc">:.2f}</span><span class="ss">°'</span>, color<span class="op">=</span><span class="st">'red'</span>)</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Nyquist Plot of a Standard Second-Order System with Phase and Gain Margins"</span>)</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Real"</span>)</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Imaginary"</span>)</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">'equal'</span>)</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>plt.xlim((<span class="op">-</span><span class="dv">2</span>,<span class="dv">1</span>))</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>plt.ylim((<span class="op">-</span><span class="dv">2</span>,<span class="dv">2</span>))</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="29_Feedback_system_performance_based_on_frequency_response_files/figure-html/cell-2-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="gain-crossover-frequency-and-phase-margin" class="level3">
+<h3 class="anchored" data-anchor-id="gain-crossover-frequency-and-phase-margin">Gain Crossover Frequency and Phase Margin</h3>
+<section id="deriving-gain-crossover-frequency-omega_gc" class="level4">
+<h4 class="anchored" data-anchor-id="deriving-gain-crossover-frequency-omega_gc">Deriving Gain Crossover Frequency (<span class="math inline">\(\omega_{gc}\)</span>)</h4>
+<p>For a standard second-order system, the gain crossover frequency can be found by setting the magnitude of the open-loop frequency response to 1:</p>
+<p><span class="math display">\[
+G(j\omega) = \frac{\omega_n^2}{j\omega(j\omega + 2\zeta\omega_n)}
+\]</span></p>
+<p>from which:</p>
+<p><span class="math display">\[
+\left| G(j\omega) \right| = \frac{\omega_n^2}{\omega\sqrt{(\omega^2 + 4\zeta^2\omega_n^2)}}
+\]</span></p>
+<p>Set this magnitude equal to 1 and solve for <span class="math inline">\(\omega\)</span>, which gives you the gain crossover frequency <span class="math inline">\(\omega_{gc}\)</span>.</p>
+<p><span class="math display">\[
+\omega_{gc} = \omega_n k
+\]</span></p>
+<p>where</p>
+<p><span class="math display">\[
+k=\sqrt{\sqrt{4\zeta^4+1} - 2\zeta^2}
+\]</span></p>
+<p>Note that we are obtaining this directly from the open-loop frequency response, without plotting the closed-loop frequency response.</p>
+</section>
+<section id="deriving-phase-margin-pm-phi" class="level4">
+<h4 class="anchored" data-anchor-id="deriving-phase-margin-pm-phi">Deriving Phase Margin, PM (<span class="math inline">\(\phi\)</span>)</h4>
+<p><span class="math display">\[
+PM = 180^\circ + \text{phase of } G(j\omega_gc) = \tan^{-1}\frac{2\zeta}{k}
+\]</span></p>
+<p>We need to be careful with the signs of the angles:</p>
+
+
+
+<img src="./pics/29_Feedback_system_performance_based_on_frequency_response_second_order_system_nyquist.png" alt="29_Feedback_system_performance_based_on_frequency_response_second_order_system_nyquist" style="width:550px;">
+
+
+
+</section>
+<section id="phase-margin-as-a-function-of-damping-ratio-zeta" class="level4">
+<h4 class="anchored" data-anchor-id="phase-margin-as-a-function-of-damping-ratio-zeta">Phase Margin as a Function of Damping Ratio (<span class="math inline">\(\zeta\)</span>)</h4>
+<p>For a standard second-order system, the phase margin is a function of <span class="math inline">\(\zeta\)</span> only.</p>
+<p>An interesting observation is that for values of <span class="math inline">\(\zeta\)</span> less than 0.5, the phase margin is approximately linear and equals <span class="math inline">\(100 \times \zeta\)</span>.</p>
+<p>To plot the Phase Margin (PM) in degrees as a function of the damping ratio (<span class="math inline">\(\zeta\)</span>), we can write a simple Python script. The phase margin formula given is:</p>
+<p><span class="math display">\[
+PM =  \tan^{-1}\left(\frac{2\zeta}{k}\right)
+\]</span></p>
+<p>where $ k = $.</p>
+<p>This script will create a plot of the Phase Margin (PM) in degrees against the damping ratio (<span class="math inline">\(\zeta\)</span>). You can adjust the range of <span class="math inline">\(\zeta\)</span> values in <code>zeta_values</code> if you want to explore different ranges.</p>
+<div id="d214e387" class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the range of zeta values</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>zeta_values <span class="op">=</span> np.linspace(<span class="fl">0.01</span>, <span class="dv">1</span>, <span class="dv">500</span>)  <span class="co"># Avoid starting from 0 to prevent division by zero</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate k and PM for each zeta</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>k_values <span class="op">=</span> np.sqrt(np.sqrt(<span class="dv">4</span> <span class="op">*</span> zeta_values<span class="op">**</span><span class="dv">4</span> <span class="op">+</span> <span class="dv">1</span>) <span class="op">-</span> <span class="dv">2</span> <span class="op">*</span> zeta_values<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>pm_values <span class="op">=</span> np.arctan2(<span class="dv">2</span> <span class="op">*</span> zeta_values, k_values) <span class="op">*</span> <span class="dv">180</span> <span class="op">/</span> np.pi  <span class="co"># Convert from radians to degrees</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the linear relationship PM = 100 * zeta</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>linear_pm_values <span class="op">=</span> <span class="dv">100</span> <span class="op">*</span> zeta_values</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot PM as a function of zeta</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>plt.plot(zeta_values, pm_values, label<span class="op">=</span><span class="st">'PM vs. Zeta (Complex Formula)'</span>)</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>plt.plot(zeta_values, linear_pm_values, label<span class="op">=</span><span class="st">'PM = 100 * Zeta (Linear Approximation)'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Phase Margin (PM) as a Function of Damping Ratio (Zeta)'</span>)</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Damping Ratio (Zeta)'</span>)</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Phase Margin (PM) in Degrees'</span>)</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="29_Feedback_system_performance_based_on_frequency_response_files/figure-html/cell-3-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="correlating-frequency-domain-indices-with-time-domain-behavior" class="level3">
+<h3 class="anchored" data-anchor-id="correlating-frequency-domain-indices-with-time-domain-behavior">Correlating Frequency Domain Indices with Time Domain Behavior</h3>
+<section id="phase-margin-and-gain-crossover-frequency-as-indicators" class="level4">
+<h4 class="anchored" data-anchor-id="phase-margin-and-gain-crossover-frequency-as-indicators">Phase Margin and Gain Crossover Frequency as Indicators</h4>
+<ol type="1">
+<li><strong>Frequency Domain Representation</strong>:
+<ul>
+<li>The phase margin and gain crossover frequency together form a set of parameters that effectively represent a system’s behavior in the frequency domain.</li>
+</ul></li>
+<li><strong>Inferring Time Domain Behavior</strong>:
+<ul>
+<li>By analyzing these two parameters, we can draw inferences about how the system behaves in the time domain. This includes the system’s response to input changes and its overall stability characteristics.</li>
+</ul></li>
+<li><strong>Understanding Gain Margin in Second-Order Systems</strong>:
+<ul>
+<li>It’s important to note that for a second-order system, the gain margin is typically infinity. However, when dealing with higher-order systems, the gain margin becomes a finite value and plays a significant role in the design process.</li>
+<li>A larger gain margin implies greater relative stability of the system, indicating a higher tolerance for gain increases before becoming unstable.</li>
+</ul></li>
+</ol>
+</section>
+<section id="integrating-phase-margin-and-gain-crossover-frequency-in-design" class="level4">
+<h4 class="anchored" data-anchor-id="integrating-phase-margin-and-gain-crossover-frequency-in-design">Integrating Phase Margin and Gain Crossover Frequency in Design</h4>
+<ol type="1">
+<li><strong>Building Design Specifications</strong>:
+<ul>
+<li>We can incorporate the phase margin (PM) and the gain crossover frequency into our design specifications.</li>
+<li>These specifications will help guide the design process, ensuring that the system meets both frequency domain requirements and desired time domain performance.</li>
+</ul></li>
+</ol>
+</section>
+</section>
+</section>
+<section id="control-system-design-specifications" class="level2">
+<h2 class="anchored" data-anchor-id="control-system-design-specifications">Control System Design Specifications</h2>
+<p>When designing control systems, selecting the right specifications is important for achieving the desired system performance. These specifications not only influence the design but also help in fine-tuning the system to function effectively in both the frequency and time domains.</p>
+<section id="key-specifications-in-control-system-design" class="level3">
+<h3 class="anchored" data-anchor-id="key-specifications-in-control-system-design">Key Specifications in Control System Design</h3>
+<ol type="1">
+<li><strong>Essential Parameters</strong>:
+<ul>
+<li>A typical control system design might include several critical specifications:
+<ul>
+<li>Resonant Peak (<span class="math inline">\(M_r\)</span>)</li>
+<li>Bandwidth (<span class="math inline">\(\omega_b\)</span>)</li>
+<li>Phase Margin (PM)</li>
+<li>Gain Crossover Frequency (<span class="math inline">\(\omega_{gc}\)</span>)</li>
+<li>Steady-State Error Constants (<span class="math inline">\(K_p\)</span>, <span class="math inline">\(K_v\)</span>, <span class="math inline">\(K_a\)</span>)</li>
+</ul></li>
+</ul></li>
+<li><strong>Guiding the Design Process</strong>:
+<ul>
+<li>These parameters are not just arbitrary values; they are there to guide the design process and ensuring that the system meets its performance objectives.</li>
+</ul></li>
+</ol>
+</section>
+<section id="design-approaches-based-on-specifications" class="level3">
+<h3 class="anchored" data-anchor-id="design-approaches-based-on-specifications">Design Approaches Based on Specifications</h3>
+<ol type="1">
+<li><strong>Starting with Resonant Peak and Bandwidth</strong>:
+<ul>
+<li>One approach is to begin the design focusing on the Resonant Peak (<span class="math inline">\(M_r\)</span>) and Bandwidth (<span class="math inline">\(\omega_b\)</span>). After the initial design, we then check how the system aligns with the other specifications.</li>
+</ul></li>
+<li><strong>Using Phase Margin and Bandwidth</strong>:
+<ul>
+<li>Another common method is to use Phase Margin and Bandwidth as the starting points for the design.</li>
+<li>Phase Margin is indicative of the damping ratio (<span class="math inline">\(\zeta\)</span>), and Bandwidth is important for defining the system’s noise filtering capabilities.</li>
+</ul></li>
+<li><strong>Designing with Open-Loop Frequency Response</strong>:
+<ul>
+<li>If working primarily with open-loop frequency response data, the Phase Margin and Gain Crossover Frequency (<span class="math inline">\(\omega_{gc}\)</span>) become more relevant specifications.</li>
+<li>In such cases, if there is also a specification on Bandwidth (<span class="math inline">\(\omega_b\)</span>), the design starts with Phase Margin and Gain Crossover Frequency, and then checks if the Bandwidth specification is met by calculating the closed-loop frequency response.</li>
+<li>If discrepancies arise, a process of trial and error is used to adjust the design until the desired outcome is achieved.</li>
+</ul></li>
+</ol>
+</section>
+<section id="conclusion-and-practical-application" class="level3">
+<h3 class="anchored" data-anchor-id="conclusion-and-practical-application">Conclusion and Practical Application</h3>
+<ul>
+<li><strong>Flexibility in Design</strong>: These design approaches illustrate the flexibility and adaptability required in control system design, ensuring that the final system meets all specified criteria.</li>
+<li><strong>Balancing Specifications</strong>: The key is to balance these specifications, understanding that each influences the system’s performance in distinct ways.</li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="check-your-understanding" class="level2">
+<h2 class="anchored" data-anchor-id="check-your-understanding">Check Your Understanding</h2>
+<p><strong>Pop-Up Question</strong>: What does a high phase margin imply about the system’s stability?</p>
+<p><strong>Answer</strong>: A high phase margin indicates that the system has a good degree of relative stability and is far from the brink of instability.</p>
+<p><strong>Pop-Up Question</strong>: How do specifications like <span class="math inline">\(M_r\)</span> and <span class="math inline">\(\omega_b\)</span> influence the final system design?</p>
+<p><strong>Answer</strong>: Specifications like <span class="math inline">\(M_r\)</span> and <span class="math inline">\(\omega_b\)</span> directly influence the damping characteristics and response speed of the system, thus impacting its overall performance.</p>
+<p><strong>Pop-Up Question</strong>: Why is it important to consider multiple specifications in control system design?</p>
+<p><strong>Answer</strong>: Considering multiple specifications is important because it ensures a holistic approach to design, where the system’s stability, responsiveness, noise immunity, and error handling are all optimized to work together harmoniously.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/andreamunafo\.github\.io\/principles-of-automatic-controls");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/andreamunafo/principles-of-automatic-controls/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

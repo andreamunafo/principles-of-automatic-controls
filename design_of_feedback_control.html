@@ -1,0 +1,2400 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.552">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>principles-of-automatic-controls - Design Cycle for a Standard Second-Order System</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+<script src="https://unpkg.com/@jupyter-widgets/html-manager@*/dist/embed-amd.js" crossorigin="anonymous"></script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+<meta property="og:title" content="principles-of-automatic-controls - Design Cycle for a Standard Second-Order System">
+<meta property="og:description" content="Course in feedback control for the University of Pisa">
+<meta property="og:site_name" content="principles-of-automatic-controls">
+<meta name="twitter:title" content="principles-of-automatic-controls - Design Cycle for a Standard Second-Order System">
+<meta name="twitter:description" content="Course in feedback control for the University of Pisa">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">principles-of-automatic-controls</span>
+    </a>
+  </div>
+        <div class="quarto-navbar-tools tools-end">
+</div>
+          <div id="quarto-search" class="" title="Search"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./design_of_feedback_control.html">Design Cycle for a Standard Second-Order System</a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Feedback Control</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./faq.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Frequently Asked Questions (FAQ)</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./syllabus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Syllabus for “Principles of Automatic Control”</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./toc.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Table of Contents</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./update_and_manage_local_changes_guide.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A Guide to Updating Your Local Repository with Git in Anaconda’s Virtual Environment</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./getting_started_with_python_and_jupyter_notebook.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Getting Started with Python and Jupyter Notebooks</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principles of Automatic Control</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./basics_of_feedback_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Feedback Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./introduction_to_control_problem.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to the control problem</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dynamic_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modeling in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dynamic_response.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Dynamic response of control systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06_inverse_laplace_transform.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Inverse Laplace Transform: Partial fraction decomposition</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./modeling_dynamic_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Modeling of Dynamic Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./control_system_components.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Control System Components</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./models_of_control_devices_and_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Models of Controlled Devices</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./hardware_and_case_studies.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Hardware of Control Systems and Case Studies</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ac_hardware_and_case_studies.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">AC Motion Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./a_first_complete_application.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A Feedback Control System</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./principles_of_feedback_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principles of Feedback Control</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./feedback_systems_and_their_effects.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Feedback systems and their effects</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./introduction_to_control_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./stability.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Stability Analysis in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./stability_and_routh_criterion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Stability Analysis in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./performance_of_feedback_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Performance of Feedback Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./design_of_feedback_control.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Design Cycle for a Standard Second-Order System</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./20_Design_of_feedback_control_continued.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Understanding the Standard Second-Order System: Recap</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./steady_state_accuracy_and_design_principles.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Steady State Accuracy and Design Principles</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./compensator_design_using_root_locus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compensator Design</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./design_with_the_root_locus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Design with the Root Locus</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./compensators_and_root_locus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compensators and the Root Locus</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./introduction_to_frequency_domain_analysis_in_control_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Frequency Domain Analysis in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./application_of_nyquist_stability_criterion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Application of Nyquist Stability Criterion in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./the_nyquist_stability_criterion_and_relative_stability.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The Nyquist Stability Criterion and Relative Stability</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./bode_plots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Bode Plot Analysis</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./feedback_system_performance_based_on_frequency_response.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Feedback System Performance Based On Frequency Response</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./compensator_design_using_frequency_response_plots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principles of Automatic Control: Lead and Lag Compensation</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">IT_TCLab_🇮🇹</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/spacecraft_thermal_control_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Il Laboratorio di Controllo della Temperatura</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/tclab_exercises_report_template_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modello di report sugli esercizi TCLab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/tclab_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Il Laboratorio di Controllo della Temperatura</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/understanding_tclab_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Comprendere TCLab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/tclab_lab_1_coding_a_relay_controller_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 1: Codifica di un controller relè</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/system_model_and_identification_tclab_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modellazione del sistema</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/step_testing_tclab_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Passo Test</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/fitting_step_test_data_to_empirical_models_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Adattamento dei dati dei test di fase ai modelli empirici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/tclab_lab_2_model_identification_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 2: Identificazione del modello</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/tclab_lab_2_fitting_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Identificazione del modello: adattamento dei modelli ai dati</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/relay_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Controllo relè</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/pid_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Controllo PID</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/lab-assignment-pid-control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compito di laboratorio: Controllo PID</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/lab-assignment-pi-control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compito di laboratorio 4: Controllo PI</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">IT_🇮🇹</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/faq_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Domande frequenti (FAQ)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/syllabus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Programma del corso “Principi del controllo automatico”</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/update_and_manage_local_changes_guide_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Aggiornare il Proprio Repository Locale Mantenendo le Modifiche Locali</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/getting_started_with_python_and_jupyter_notebook_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Guida introduttiva ai notebook Python e Jupyter</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/intro_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principi di controllo automatico</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/basics_of_feedback_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione ai sistemi di controllo del feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/introduction_to_control_problem_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione al problema del controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/dynamic_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modellazione nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/dynamic_response_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Risposta dinamica dei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/06_inverse_laplace_transform_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Trasformata di Laplace inversa: scomposizione parziale di frazioni</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/modeling_dynamic_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione alla modellazione dei sistemi dinamici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/control_system_components_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Componenti del sistema di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/models_of_control_devices_and_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modelli di dispositivi controllati</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/hardware_and_case_studies_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Hardware dei sistemi di controllo e casi di studio</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/ac_hardware_and_case_studies_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sistemi di controllo del movimento CA</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/a_first_complete_application_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Un sistema di controllo del feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/principles_of_feedback_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principi di controllo del feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/feedback_systems_and_their_effects_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sistemi di feedback e loro effetti</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/introduction_to_control_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione ai sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/stability_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analisi di stabilità nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/stability_and_routh_criterion_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analisi di stabilità nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/performance_of_feedback_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prestazioni dei sistemi di feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/design_of_feedback_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Ciclo di progettazione per un sistema standard del secondo ordine</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/20_Design_of_feedback_control_continued_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Comprensione del sistema standard del secondo ordine: riepilogo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/steady_state_accuracy_and_design_principles_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Precisione dello stato stazionario e principi di progettazione</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/compensator_design_using_root_locus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Progettazione del compensatore</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/design_with_the_root_locus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Progettare con il luogo delle radici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/compensators_and_root_locus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compensatori e luogo delle radici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/introduction_to_frequency_domain_analysis_in_control_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione all’analisi nel dominio della frequenza nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/application_of_nyquist_stability_criterion_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Applicazione del criterio di stabilità di Nyquist nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/the_nyquist_stability_criterion_and_relative_stability_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Il criterio di stabilità di Nyquist e la stabilità relativa</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/bode_plots_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analisi del diagramma di Bode</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/feedback_system_performance_based_on_frequency_response_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prestazioni del sistema di feedback basate sulla risposta in frequenza</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/index_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Syllabus - Fondamenti di Automatica</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">TCLab</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/spacecraft_thermal_control_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The Temperature Control Laboratory</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/tclab_exercises_report_template.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Exercises Report Template</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The Temperature Control Lab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/understanding_tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Understanding TCLab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/tclab_lab_1_coding_a_relay_controller-solution.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 1: Coding a relay controller</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/tclab_lab_1_coding_a_relay_controller.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 1: Coding a relay controller</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/system_model_and_identification_tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">System Modeling</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/step_testing_tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Step Testing</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/fitting_step_test_data_to_empirical_models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Fitting Step Test Data to Empirical Models</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/tclab_lab_2_model_identification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 2: Model Identification</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/tclab_lab_2_model_identification_solutions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 2: Model Identification</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/tclab_lab_2_fitting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Model Identification: Fitting models to data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/relay_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Relay Control</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/pid_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">PID Control</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/lab-assignment-pid-control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab Assignment: PID Control</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/lab-assignment-pi-control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab Assignment 4: PI Control</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#the-system-description" id="toc-the-system-description" class="nav-link active" data-scroll-target="#the-system-description">The System Description</a></li>
+  <li><a href="#analysis-and-design" id="toc-analysis-and-design" class="nav-link" data-scroll-target="#analysis-and-design">Analysis and Design</a></li>
+  <li><a href="#analysis" id="toc-analysis" class="nav-link" data-scroll-target="#analysis">Analysis</a>
+  <ul class="collapse">
+  <li><a href="#understanding-the-damping-ratio-zeta" id="toc-understanding-the-damping-ratio-zeta" class="nav-link" data-scroll-target="#understanding-the-damping-ratio-zeta">Understanding the Damping Ratio (<span class="math inline">\(\zeta\)</span>)</a></li>
+  <li><a href="#characteristic-equation-and-roots" id="toc-characteristic-equation-and-roots" class="nav-link" data-scroll-target="#characteristic-equation-and-roots">Characteristic Equation and Roots</a></li>
+  <li><a href="#sidebar---relationship-between-zeta-omega_n-and-closed-loop-poles" id="toc-sidebar---relationship-between-zeta-omega_n-and-closed-loop-poles" class="nav-link" data-scroll-target="#sidebar---relationship-between-zeta-omega_n-and-closed-loop-poles">SIDEBAR - Relationship between <span class="math inline">\(\zeta\)</span>, <span class="math inline">\(\omega_n\)</span>, and Closed-Loop Poles</a></li>
+  </ul></li>
+  <li><a href="#transient-response-characteristics" id="toc-transient-response-characteristics" class="nav-link" data-scroll-target="#transient-response-characteristics">Transient Response Characteristics</a>
+  <ul class="collapse">
+  <li><a href="#understanding-the-design-trade-offs" id="toc-understanding-the-design-trade-offs" class="nav-link" data-scroll-target="#understanding-the-design-trade-offs">Understanding the Design Trade-offs</a></li>
+  <li><a href="#key-transient-performance-indicators" id="toc-key-transient-performance-indicators" class="nav-link" data-scroll-target="#key-transient-performance-indicators">Key Transient Performance Indicators</a></li>
+  </ul></li>
+  <li><a href="#transient-performance-specifications" id="toc-transient-performance-specifications" class="nav-link" data-scroll-target="#transient-performance-specifications">Transient Performance Specifications</a>
+  <ul class="collapse">
+  <li><a href="#rise-time-peak-overshoot-time-to-peak-and-settling-time" id="toc-rise-time-peak-overshoot-time-to-peak-and-settling-time" class="nav-link" data-scroll-target="#rise-time-peak-overshoot-time-to-peak-and-settling-time">Rise Time, Peak Overshoot, Time to Peak, and Settling Time</a></li>
+  <li><a href="#second-order-system-transfer-function" id="toc-second-order-system-transfer-function" class="nav-link" data-scroll-target="#second-order-system-transfer-function">Second-Order System Transfer Function</a></li>
+  <li><a href="#inverse-laplace-transform" id="toc-inverse-laplace-transform" class="nav-link" data-scroll-target="#inverse-laplace-transform">Inverse Laplace Transform</a></li>
+  <li><a href="#rise-time-t_r-1" id="toc-rise-time-t_r-1" class="nav-link" data-scroll-target="#rise-time-t_r-1">Rise Time (<span class="math inline">\(t_r\)</span>)</a></li>
+  <li><a href="#peak-overshoot-m_p" id="toc-peak-overshoot-m_p" class="nav-link" data-scroll-target="#peak-overshoot-m_p">Peak Overshoot (<span class="math inline">\(M_p\)</span>)</a></li>
+  <li><a href="#rise-time-and-bandwidth" id="toc-rise-time-and-bandwidth" class="nav-link" data-scroll-target="#rise-time-and-bandwidth">Rise time and Bandwidth</a></li>
+  <li><a href="#stability-considerations" id="toc-stability-considerations" class="nav-link" data-scroll-target="#stability-considerations">Stability considerations</a></li>
+  <li><a href="#peak-time-t_p-1" id="toc-peak-time-t_p-1" class="nav-link" data-scroll-target="#peak-time-t_p-1">Peak time (<span class="math inline">\(t_p\)</span>)</a></li>
+  <li><a href="#settling-time-t_s" id="toc-settling-time-t_s" class="nav-link" data-scroll-target="#settling-time-t_s">Settling Time (<span class="math inline">\(t_s\)</span>)</a></li>
+  <li><a href="#settling-time-vs.-damping-ratio" id="toc-settling-time-vs.-damping-ratio" class="nav-link" data-scroll-target="#settling-time-vs.-damping-ratio">Settling Time vs.&nbsp;Damping Ratio</a></li>
+  <li><a href="#approximating-the-settling-time" id="toc-approximating-the-settling-time" class="nav-link" data-scroll-target="#approximating-the-settling-time">Approximating the Settling Time</a></li>
+  <li><a href="#settling-time-within-a-2-tolerance-band" id="toc-settling-time-within-a-2-tolerance-band" class="nav-link" data-scroll-target="#settling-time-within-a-2-tolerance-band">Settling Time within a 2% Tolerance Band</a></li>
+  </ul></li>
+  <li><a href="#understanding-steady-state-error" id="toc-understanding-steady-state-error" class="nav-link" data-scroll-target="#understanding-steady-state-error">Understanding Steady-State Error</a>
+  <ul class="collapse">
+  <li><a href="#steady-state-error-for-different-inputs" id="toc-steady-state-error-for-different-inputs" class="nav-link" data-scroll-target="#steady-state-error-for-different-inputs">Steady-State Error for Different Inputs</a></li>
+  <li><a href="#analytical-calculation" id="toc-analytical-calculation" class="nav-link" data-scroll-target="#analytical-calculation">Analytical Calculation</a></li>
+  <li><a href="#practical-implications" id="toc-practical-implications" class="nav-link" data-scroll-target="#practical-implications">Practical Implications</a></li>
+  </ul></li>
+  <li><a href="#exercise-and-questions" id="toc-exercise-and-questions" class="nav-link" data-scroll-target="#exercise-and-questions">Exercise and Questions</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/andreamunafo/principles-of-automatic-controls/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Design Cycle for a Standard Second-Order System</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
+<p>We will take second-order systems as exemplar. However, before diving into the design cycle, it’s crucial to understand that while real-world systems may not always be second-order, mastering the design for such systems is fundamental. This knowledge can be extended to more complex systems. We start with a standard second-order system in a unity-feedback configuration.</p>
+<section id="the-system-description" class="level3">
+<h3 class="anchored" data-anchor-id="the-system-description">The System Description</h3>
+<p>Consider the transfer function <span class="math inline">\(G(s)\)</span> in the forward path of a unity-feedback system:</p>
+<p><span class="math display">\[
+G(s) = \frac{\omega_n^2}{s(s + 2\zeta\omega_n)}
+\]</span></p>
+<img src="./pics/19_Design_of_feedback_control_system_1.png" alt="19_Design_of_feedback_control_system_1" style="width:450px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+</section>
+<section id="analysis-and-design" class="level3">
+<h3 class="anchored" data-anchor-id="analysis-and-design">Analysis and Design</h3>
+<ul>
+<li><strong>Analysis Problem</strong>: Determine the system’s behavior without any controller (<span class="math inline">\(D(s)\)</span>).</li>
+<li><strong>Design Problem</strong>: Introduce a controller <span class="math inline">\(D(s)\)</span> to meet specified transient and steady-state requirements.</li>
+</ul>
+</section>
+<section id="analysis" class="level2">
+<h2 class="anchored" data-anchor-id="analysis">Analysis</h2>
+<p>Determine the system’s behavior without any controller:</p>
+<img src="./pics/19_Design_of_feedback_control_system_1.png" alt="19_Design_of_feedback_control_system_1" style="width:450px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<p><span class="math display">\[
+G(s) = \frac{\omega_n^2}{s(s + 2\zeta\omega_n)}
+\]</span></p>
+<p>and the closed-loop transfer function <span class="math inline">\(Y(s)/R(s)\)</span> is given by:</p>
+<p><span class="math display">\[
+\frac{Y(s)}{R(s)} = \frac{\omega_n^2}{s^2 + 2\zeta\omega_n s + \omega_n^2}
+\]</span></p>
+<p>Where: - $ _n $ is the undamped natural frequency. - $ $ is the damping ratio.</p>
+<section id="understanding-the-damping-ratio-zeta" class="level3">
+<h3 class="anchored" data-anchor-id="understanding-the-damping-ratio-zeta">Understanding the Damping Ratio (<span class="math inline">\(\zeta\)</span>)</h3>
+<ul>
+<li><strong>Undamped System (<span class="math inline">\(\zeta = 0\)</span>)</strong>: Purely oscillatory behavior.</li>
+<li><strong>Under-Damped (<span class="math inline">\(0 &lt; \zeta &lt; 1\)</span>)</strong>: Oscillatory but decaying response.</li>
+<li><strong>Critically Damped (<span class="math inline">\(\zeta = 1\)</span>)</strong>: Fastest return to equilibrium without overshooting.</li>
+<li><strong>Over-Damped (<span class="math inline">\(\zeta &gt; 1\)</span>)</strong>: Slow return to equilibrium without oscillations.</li>
+</ul>
+</section>
+<section id="characteristic-equation-and-roots" class="level3">
+<h3 class="anchored" data-anchor-id="characteristic-equation-and-roots">Characteristic Equation and Roots</h3>
+<p>The characteristic equation is:</p>
+<p><span class="math display">\[
+\Delta (s) = s^2 + 2\zeta\omega_n s + \omega_n^2
+\]</span></p>
+<p>The roots of this equation (closed-loop poles or characteristic roots) are critical for system behavior analysis.</p>
+<p>The characteristic roots of a standard second-order system can be derived from its characteristic equation. For the system represented by the transfer function $ G(s) = $, the characteristic equation is obtained from the denominator of the closed-loop transfer function:</p>
+<p><span class="math display">\[
+\Delta s = s^2 + 2\zeta\omega_n s + \omega_n^2 = 0
+\]</span></p>
+<p>To find the roots of this characteristic equation, we solve for $ s $. These roots, which are also known as the poles of the system, dictate the system’s behavior.</p>
+<p>Solving the quadratic equation $ s^2 + 2_n s + _n^2 = 0 $ using the quadratic formula, we get:</p>
+<p><span class="math display">\[
+s = \frac{-2\zeta\omega_n \pm \sqrt{(2\zeta\omega_n)^2 - 4\omega_n^2}}{2}
+\]</span></p>
+<p>Simplifying further:</p>
+<p><span class="math display">\[
+s = \frac{-2\zeta\omega_n \pm \sqrt{4\zeta^2\omega_n^2 - 4\omega_n^2}}{2}
+\]</span></p>
+<p><span class="math display">\[
+s = \frac{-2\zeta\omega_n \pm \sqrt{4\omega_n^2(\zeta^2 - 1)}}{2}
+\]</span></p>
+<p><span class="math display">\[
+s = \frac{-2\zeta\omega_n \pm 2\omega_n\sqrt{\zeta^2 - 1}}{2}
+\]</span></p>
+<p><span class="math display">\[
+s = -\zeta\omega_n \pm \omega_n\sqrt{\zeta^2 - 1}
+\]</span></p>
+<p>So, the characteristic roots (or poles) are:</p>
+<p><span class="math display">\[
+s = -\zeta\omega_n \pm \omega_n\sqrt{\zeta^2 - 1}
+\]</span></p>
+<p>Depending on the value of $ $ (the damping ratio), these roots can be real or complex:</p>
+<ul>
+<li><p><strong>For $ &lt; 1 $</strong> (under-damped): The roots are complex conjugates.</p>
+<p><span class="math display">\[ s = -\zeta\omega_n \pm j\omega_n\sqrt{1 - \zeta^2} \]</span></p></li>
+<li><p><strong>For $ = 1 $</strong> (critically damped): The roots are real and identical.</p>
+<p><span class="math display">\[ s = -\omega_n \]</span></p></li>
+<li><p><strong>For $ &gt; 1 $</strong> (over-damped): The roots are distinct real numbers.</p></li>
+</ul>
+<p>These roots are crucial for understanding the system’s transient response, stability, and overall behavior.</p>
+<section id="characteristic-roots-visualization" class="level4">
+<h4 class="anchored" data-anchor-id="characteristic-roots-visualization">Characteristic Roots Visualization</h4>
+<ul>
+<li><p><strong>For $ = 0 $</strong> (under-damped):</p>
+<p><span class="math display">\[ s = \pm j\omega_n \]</span></p></li>
+<li><p><strong>For $ = 1 $</strong> (critically damped): The roots are real and identical.</p>
+<p><span class="math display">\[ s = -\omega_n \]</span></p></li>
+</ul>
+<p>We can plot how the roots move in the s-plane.</p>
+<p>Let’s use Python for this running the cell below</p>
+<div id="ac5ebedd" class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Set the undamped natural frequency</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>omega_n <span class="op">=</span> <span class="dv">1</span>  <span class="co"># You can adjust this as needed</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a range of zeta values from 0 to 2</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>zeta_values <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">400</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Prepare a plot</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">8</span>))</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> zeta <span class="kw">in</span> zeta_values:</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Calculate the roots for each zeta</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> zeta <span class="op">&lt;</span> <span class="dv">1</span>:</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Under-damped (Complex conjugate roots)</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>        roots <span class="op">=</span> [<span class="op">-</span>zeta <span class="op">*</span> omega_n <span class="op">+</span> <span class="ot">1j</span> <span class="op">*</span> omega_n <span class="op">*</span> np.sqrt(<span class="dv">1</span> <span class="op">-</span> zeta<span class="op">**</span><span class="dv">2</span>),</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>                 <span class="op">-</span>zeta <span class="op">*</span> omega_n <span class="op">-</span> <span class="ot">1j</span> <span class="op">*</span> omega_n <span class="op">*</span> np.sqrt(<span class="dv">1</span> <span class="op">-</span> zeta<span class="op">**</span><span class="dv">2</span>)]</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>        color <span class="op">=</span> <span class="st">'blue'</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> zeta <span class="op">==</span> <span class="dv">1</span>:</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Critically damped (Repeated real roots)</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>        roots <span class="op">=</span> [<span class="op">-</span>zeta <span class="op">*</span> omega_n, <span class="op">-</span>zeta <span class="op">*</span> omega_n]</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>        color <span class="op">=</span> <span class="st">'green'</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Over-damped (Distinct real roots)</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>        roots <span class="op">=</span> [<span class="op">-</span>zeta <span class="op">*</span> omega_n <span class="op">+</span> omega_n <span class="op">*</span> np.sqrt(zeta<span class="op">**</span><span class="dv">2</span> <span class="op">-</span> <span class="dv">1</span>),</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>                 <span class="op">-</span>zeta <span class="op">*</span> omega_n <span class="op">-</span> omega_n <span class="op">*</span> np.sqrt(zeta<span class="op">**</span><span class="dv">2</span> <span class="op">-</span> <span class="dv">1</span>)]</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>        color <span class="op">=</span> <span class="st">'red'</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Plot the roots</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>    plt.plot([root.real <span class="cf">for</span> root <span class="kw">in</span> roots], [root.imag <span class="cf">for</span> root <span class="kw">in</span> roots], <span class="st">'o'</span>, color<span class="op">=</span>color)</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Annotating key points</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>plt.annotate(<span class="st">'Undamped</span><span class="ch">\n</span><span class="st">(Complex Roots)'</span>, xy<span class="op">=</span>(<span class="dv">0</span>, omega_n), xytext<span class="op">=</span>(<span class="fl">0.5</span>, omega_n<span class="op">+</span><span class="fl">0.5</span>),</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>             arrowprops<span class="op">=</span><span class="bu">dict</span>(facecolor<span class="op">=</span><span class="st">'black'</span>, shrink<span class="op">=</span><span class="fl">0.05</span>))</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>plt.annotate(<span class="st">'Critically Damped</span><span class="ch">\n</span><span class="st">(Repeated Real Roots)'</span>, xy<span class="op">=</span>(<span class="op">-</span>omega_n, <span class="dv">0</span>), xytext<span class="op">=</span>(<span class="op">-</span><span class="dv">2</span>, <span class="fl">0.5</span>),</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>             arrowprops<span class="op">=</span><span class="bu">dict</span>(facecolor<span class="op">=</span><span class="st">'black'</span>, shrink<span class="op">=</span><span class="fl">0.05</span>))</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>plt.annotate(<span class="st">'Over-Damped</span><span class="ch">\n</span><span class="st">(Distinct Real Roots)'</span>, xy<span class="op">=</span>(<span class="op">-</span><span class="dv">2</span><span class="op">*</span>omega_n, <span class="dv">0</span>), xytext<span class="op">=</span>(<span class="op">-</span><span class="fl">2.5</span>, <span class="op">-</span><span class="fl">0.5</span>),</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>             arrowprops<span class="op">=</span><span class="bu">dict</span>(facecolor<span class="op">=</span><span class="st">'black'</span>, shrink<span class="op">=</span><span class="fl">0.05</span>))</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="co"># Setting plot features</span></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Root Locus as Damping Ratio (zeta) Varies'</span>)</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Real Part'</span>)</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Imaginary Part'</span>)</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>plt.axhline(y<span class="op">=</span><span class="dv">0</span>, color<span class="op">=</span><span class="st">'k'</span>)  <span class="co"># x-axis</span></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>plt.axvline(x<span class="op">=</span><span class="dv">0</span>, color<span class="op">=</span><span class="st">'k'</span>)  <span class="co"># y-axis</span></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>plt.xlim(<span class="op">-</span><span class="fl">2.5</span>, <span class="fl">0.5</span>)</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>plt.ylim(<span class="op">-</span><span class="fl">1.5</span>, <span class="fl">1.5</span>)</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="co"># Show the plot</span></span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="19_Design_of_feedback_control_files/figure-html/cell-2-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>The quantity <span class="math inline">\(\zeta\omega_n\)</span> has a very important role: it is the real part of the complex conjugate pair.</li>
+</ul>
+<img src="./pics/19_Design_of_feedback_control_system_roots.png" alt="19_Design_of_feedback_control_system_roots
+" style="width:450px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+</section>
+<section id="determining-the-damping-angle-theta" class="level4">
+<h4 class="anchored" data-anchor-id="determining-the-damping-angle-theta">Determining the Damping Angle (<span class="math inline">\(\theta\)</span>)</h4>
+<p>Given the geometry of the root locus diagram above we can determine the angle <span class="math inline">\(\theta\)</span> (hint: the radius of the circle is <span class="math inline">\(\omega_n\)</span>):</p>
+<p><span class="math display">\[
+\omega_n\cos\theta = \zeta\omega_n
+\]</span></p>
+<p><span class="math display">\[
+\cos(\theta) = \zeta \\
+\theta = \cos^{-1}(\zeta)
+\]</span></p>
+<ul>
+<li><p><strong>The angle <span class="math inline">\(\theta\)</span> is called the damping angle because it is a function of <span class="math inline">\(\zeta\)</span> only (and does not depend on <span class="math inline">\(\omega_n\)</span>.</strong></p></li>
+<li><p>The line of constant <span class="math inline">\(\theta\)</span> (and hence constant <span class="math inline">\(\zeta\)</span>) is called <strong>damping line</strong>. Given a specific <span class="math inline">\(\zeta\)</span> the roots will lie along the associated damping line.</p></li>
+</ul>
+<p>Given specific <span class="math inline">\(\theta\)</span>, <span class="math inline">\(\omega_n\)</span> the closed loop poles, the roots of the characteristic equation are:</p>
+<img src="./pics/19_Design_of_feedback_control_system_roots_1.png" alt="19_Design_of_feedback_control_system_roots_1
+" style="width:450px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<p>or: <span class="math display">\[ s = -\zeta\omega_n \pm j\omega_n\sqrt{1 - \zeta^2} \]</span></p>
+<p>This means that given specific <span class="math inline">\(\theta\)</span>, <span class="math inline">\(\omega_n\)</span> we can translate these values into closed loop poles.</p>
+<p>The design criteria will hence be to force the closed loop poles to the desired location, where we obtain the performance that we want (i.e., satisfy the transient response specification).</p>
+</section>
+</section>
+<section id="sidebar---relationship-between-zeta-omega_n-and-closed-loop-poles" class="level3">
+<h3 class="anchored" data-anchor-id="sidebar---relationship-between-zeta-omega_n-and-closed-loop-poles">SIDEBAR - Relationship between <span class="math inline">\(\zeta\)</span>, <span class="math inline">\(\omega_n\)</span>, and Closed-Loop Poles</h3>
+<ol type="1">
+<li><strong>Relationship between <span class="math inline">\(\zeta\)</span>, <span class="math inline">\(\omega_n\)</span>, and Closed-Loop Poles</strong>:
+<ul>
+<li>In a standard second-order system, the parameters <span class="math inline">\(\zeta\)</span> (damping ratio) and <span class="math inline">\(\omega_n\)</span> (undamped natural frequency) are key determinants of the system’s behavior.</li>
+<li>The values of <span class="math inline">\(\zeta\)</span> and <span class="math inline">\(\omega_n\)</span> directly define the position of the closed-loop poles in the complex plane. For instance, a change in <span class="math inline">\(\zeta\)</span> and <span class="math inline">\(\omega_n\)</span> will move these poles, affecting the system’s transient response.</li>
+</ul></li>
+<li><strong>Equivalence of Specifying <span class="math inline">\(\zeta\)</span>, <span class="math inline">\(\omega_n\)</span>, and Closed-Loop Poles</strong>:
+<ul>
+<li>When you specify <span class="math inline">\(\zeta\)</span> and <span class="math inline">\(\omega_n\)</span> for a second-order system, it’s equivalent to specifying the desired locations of the closed-loop poles. This is because there’s a direct, calculable relationship between these parameters and the poles.</li>
+<li>The closed-loop poles, in turn, determine key performance characteristics of the system, like overshoot, settling time, and oscillation frequency.</li>
+</ul></li>
+<li><strong>Importance in Root Locus Design</strong>:
+<ul>
+<li>This understanding forms the basis of root locus design, a method used to determine the stability of a control system and design controllers.</li>
+<li>In root locus design, you typically start with a desired transient response (defined by <span class="math inline">\(\zeta\)</span> and <span class="math inline">\(\omega_n\)</span>) and then adjust the controller to move the system’s poles to these predefined locations in the complex plane.</li>
+</ul></li>
+<li><strong>Translating <span class="math inline">\(\zeta\)</span> and <span class="math inline">\(\omega_n\)</span> into Closed-Loop Pole Locations</strong>:
+<ul>
+<li>By specifying <span class="math inline">\(\zeta\)</span> and <span class="math inline">\(\omega_n\)</span>, you essentially set a target for where you want the closed-loop poles to be. The design task then becomes a matter of modifying the system (often through a controller) so that its actual poles align with these target locations.</li>
+<li>Achieving this alignment ensures that the system’s transient response meets the specified performance criteria.</li>
+</ul></li>
+</ol>
+<p>In the context of a standard second-order system, specifying <span class="math inline">\(\zeta\)</span> and <span class="math inline">\(\omega_n\)</span> is a way of defining desired performance characteristics. The root locus method then uses these specifications to design a control system that places the closed-loop poles in positions that ensure these performance characteristics are met. This is a fundamental approach in control system design, allowing engineers to tailor systems to meet specific transient response requirements.</p>
+</section>
+</section>
+<section id="transient-response-characteristics" class="level2">
+<h2 class="anchored" data-anchor-id="transient-response-characteristics">Transient Response Characteristics</h2>
+<p>Let’s now analyzing the response of an under-damped system to a unit-step input:</p>
+<p><span class="math display">\[
+R(s) = \frac{1}{s}
+\]</span></p>
+<p>In this case, the output is:</p>
+<p><span class="math display">\[
+Y(s) = \frac{\omega_n^2}{s(s^2 + 2\zeta\omega_n s + \omega_n^2)}
+\]</span></p>
+<p>The response function, obtained as the inverse Laplace transform, is:</p>
+<p><span class="math display">\[
+y(t) = 1 - \frac{e^{-\zeta\omega_nt}}{\sqrt{1-\zeta^2}}\sin(\omega_d t + \theta)
+\]</span></p>
+<p>Where: - $ _d = _n $ is the damped frequency. - <span class="math inline">\(\theta = \cos^{-1}(\zeta)\)</span> is the damping angle.</p>
+<p>In this case, the poles are complex conjugate.</p>
+<div id="485f3b31" class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the parameters</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>zeta <span class="op">=</span> <span class="fl">0.3</span>       <span class="co"># Damping ratio</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>omega_n <span class="op">=</span> <span class="fl">1.0</span>    <span class="co"># Natural frequency (rad/s)</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">1000</span>)  <span class="co"># Time vector</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the angular frequency and phase angle</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>omega_d <span class="op">=</span> omega_n <span class="op">*</span> np.sqrt(<span class="dv">1</span> <span class="op">-</span> zeta<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>theta <span class="op">=</span> np.arctan2(omega_n <span class="op">*</span> np.sqrt(<span class="dv">1</span> <span class="op">-</span> zeta<span class="op">**</span><span class="dv">2</span>), zeta)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the system response</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> <span class="dv">1</span> <span class="op">-</span> (np.exp(<span class="op">-</span>zeta <span class="op">*</span> omega_n <span class="op">*</span> t) <span class="op">/</span> np.sqrt(<span class="dv">1</span> <span class="op">-</span> zeta<span class="op">**</span><span class="dv">2</span>)) <span class="op">*</span> np.sin(omega_d <span class="op">*</span> t <span class="op">+</span> theta)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the upper and lower envelope curves</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>upper_envelope <span class="op">=</span> <span class="dv">1</span> <span class="op">+</span> (np.exp(<span class="op">-</span>zeta <span class="op">*</span> omega_n <span class="op">*</span> t) <span class="op">/</span> np.sqrt(<span class="dv">1</span> <span class="op">-</span> zeta<span class="op">**</span><span class="dv">2</span>))</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>lower_envelope <span class="op">=</span> <span class="dv">1</span> <span class="op">-</span> (np.exp(<span class="op">-</span>zeta <span class="op">*</span> omega_n <span class="op">*</span> t) <span class="op">/</span> np.sqrt(<span class="dv">1</span> <span class="op">-</span> zeta<span class="op">**</span><span class="dv">2</span>))</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the response and envelope curves</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>plt.plot(t, y, label<span class="op">=</span><span class="st">'System Response'</span>)</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>plt.plot(t, upper_envelope, <span class="st">'r--'</span>, label<span class="op">=</span><span class="st">'Upper Envelope'</span>)</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>plt.plot(t, lower_envelope, <span class="st">'g--'</span>, label<span class="op">=</span><span class="st">'Lower Envelope'</span>)</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Time (s)'</span>)</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'y(t)'</span>)</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Second-Order System Response with Envelopes'</span>)</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="19_Design_of_feedback_control_files/figure-html/cell-3-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<section id="envelope-curves-and-time-constant" class="level4">
+<h4 class="anchored" data-anchor-id="envelope-curves-and-time-constant">Envelope Curves and Time Constant</h4>
+<p>The response is bounded by envelope curves:</p>
+<ul>
+<li>Upper Envelope: $ 1 + $</li>
+<li>Lower Envelope: $ 1 - $</li>
+</ul>
+<p>These curves play a significant role: the faster they decay, the faster the decay of the response.</p>
+<p>The time constant of the envelope is (hint: it is an exponential function): <span class="math display">\[ \tau = \frac{1}{\zeta\omega_n} \]</span></p>
+<p>The response is:</p>
+<p><span class="math display">\[
+y(t) = 1 - \frac{e^{-\zeta\omega_nt}}{\sqrt{1-\zeta^2}}\sin(\omega_d t + \theta)
+\]</span></p>
+<p>but it is more convenient to plot the response with respect to the normalised time <span class="math inline">\(\omega_n t\)</span>. Now we only have <span class="math inline">\(\zeta\)</span> as parameter:</p>
+<img src="./pics/19_Design_of_feedback_control_system_second_order_response.png" alt="19_Design_of_feedback_control_system_second_order_response
+" style="width:650px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<p>Note that:</p>
+<ul>
+<li><p>for <span class="math inline">\(\zeta=1\)</span> the system is critically damped, just about without oscillations.</p></li>
+<li><p>for <span class="math inline">\(\zeta&gt;1\)</span> the system is over-damped and becomes sluggish. This is typically not desirable in a control system.</p></li>
+</ul>
+</section>
+<section id="understanding-the-design-trade-offs" class="level3">
+<h3 class="anchored" data-anchor-id="understanding-the-design-trade-offs">Understanding the Design Trade-offs</h3>
+<ul>
+<li>A lower $ $ (more oscillatory) leads to a shorter rise time but higher overshoot.</li>
+<li>A higher $ $ (less oscillatory) reduces overshoot but increases rise time.</li>
+</ul>
+</section>
+<section id="key-transient-performance-indicators" class="level3">
+<h3 class="anchored" data-anchor-id="key-transient-performance-indicators">Key Transient Performance Indicators</h3>
+<ol type="1">
+<li><strong>Rise Time (<span class="math inline">\(t_r\)</span>)</strong>: Time taken for the response to first reach the final value.</li>
+<li><strong>Peak Time (<span class="math inline">\(t_p\)</span>)</strong>: Time to first peak of the response.</li>
+<li><strong>Maximum Overshoot (<span class="math inline">\(M_p\)</span>)</strong>: Maximum deviation from the final value.</li>
+</ol>
+<section id="calculating-t_r-t_p-and-m_p" class="level4">
+<h4 class="anchored" data-anchor-id="calculating-t_r-t_p-and-m_p">Calculating <span class="math inline">\(t_r\)</span>, <span class="math inline">\(t_p\)</span>, and <span class="math inline">\(M_p\)</span></h4>
+<p>We start from</p>
+<p><span class="math display">\[
+y(t) = 1 - \frac{e^{-\zeta\omega_nt}}{\sqrt{1-\zeta^2}}\sin(\omega_d t + \theta)
+\]</span></p>
+</section>
+<section id="rise-time-t_r" class="level4">
+<h4 class="anchored" data-anchor-id="rise-time-t_r"><strong>Rise Time (<span class="math inline">\(t_r\)</span>)</strong>:</h4>
+<p><span class="math display">\[ t_r :\;\; y(t_r) = 1 \;\; \Rightarrow \frac{e^{-\zeta\omega_nt_r}}{\sqrt{1-\zeta^2}}\sin(\omega_d t_r + \theta) = 0 \;\; \Rightarrow \sin(\omega_d t_r + \theta) = 0 \;\; \Rightarrow \omega_d t_r + \theta = \pi\]</span></p>
+<p><span class="math display">\[ t_r = \frac{\pi - \theta}{\omega_d} = \frac{\pi - \cos^{-1}(\zeta)}{\omega_n\sqrt{1-\zeta^2}} \]</span></p>
+</section>
+<section id="peak-time-t_p" class="level4">
+<h4 class="anchored" data-anchor-id="peak-time-t_p"><strong>Peak Time (<span class="math inline">\(t_p\)</span>)</strong>:</h4>
+<p>To determine the time to peak (<span class="math inline">\(t_p\)</span>) for a standard second-order system, we need to analyze the system’s response and find when it reaches its first maximum. This occurs at a point of extremum in the response function, where the first derivative of the response with respect to time (<span class="math inline">\(t\)</span>) equals zero.</p>
+<p>Let’s break down the steps to find <span class="math inline">\(t_p\)</span>:</p>
+<ol type="1">
+<li><p><strong>The Response Function</strong>:</p>
+<p>For an under-damped second-order system (<span class="math inline">\(0 &lt; \zeta &lt; 1\)</span>), the step response is given by: <span class="math display">\[
+y(t) = 1 - \frac{e^{-\zeta\omega_nt}}{\sqrt{1-\zeta^2}}\sin(\omega_d t + \theta)
+\]</span> where <span class="math inline">\(\omega_d = \omega_n\sqrt{1-\zeta^2}\)</span> and <span class="math inline">\(\theta = \cos^{-1}(\zeta)\)</span>.</p></li>
+<li><p><strong>Finding the Extremum</strong>:</p>
+<p>The extremum occurs where the derivative of <span class="math inline">\(y(t)\)</span> with respect to <span class="math inline">\(t\)</span> is zero. Let’s find this derivative:</p>
+<p><span class="math display">\[
+\frac{dy}{dt} = \zeta\omega_n \frac{e^{-\zeta\omega_nt}}{\sqrt{1-\zeta^2}}\sin(\omega_d t + \theta) - \omega_d \frac{e^{-\zeta\omega_nt}}{\sqrt{1-\zeta^2}}\cos(\omega_d t + \theta).
+\]</span></p>
+<p>Setting <span class="math inline">\(\frac{dy}{dt} = 0\)</span> gives us the condition for the peak.</p></li>
+<li><p><strong>Simplifying the Equation</strong>:</p>
+<p>The equation <span class="math inline">\(\frac{dy}{dt} = 0\)</span> simplifies to: <span class="math display">\[
+\zeta\sin(\omega_d t + \theta) = \sqrt{1-\zeta^2}\cos(\omega_d t + \theta).
+\]</span></p>
+<p>Using the identity <span class="math inline">\(\sin(a + b) = \sin(a)\cos(b) + \cos(a)\sin(b)\)</span>, we get: <span class="math display">\[
+\zeta[\sin(\omega_d t)\cos(\theta) + \cos(\omega_d t)\sin(\theta)] = \sqrt{1-\zeta^2}\cos(\omega_d t).
+\]</span></p>
+<p>Since <span class="math inline">\(\theta = \cos^{-1}(\zeta)\)</span>, <span class="math inline">\(\sin(\theta) = \sqrt{1-\zeta^2}\)</span> and <span class="math inline">\(\cos(\theta) = \zeta\)</span>. Substituting these into the equation, we simplify it to: <span class="math display">\[
+\zeta^2\sin(\omega_d t) + \sqrt{1-\zeta^2}\cos(\omega_d t)\sin(\omega_d t) = \zeta\cos(\omega_d t).
+\]</span></p></li>
+<li><p><strong>Finding <span class="math inline">\(t_p\)</span></strong>:</p>
+<p>The equation simplifies to <span class="math inline">\(\sin(\omega_d t) = 0\)</span>, indicating that the peak occurs at a multiple of <span class="math inline">\(\pi/\omega_d\)</span>. The first peak (<span class="math inline">\(t_p\)</span>) occurs at: <span class="math display">\[
+t_p = \frac{\pi}{\omega_d} = \frac{\pi}{\omega_n\sqrt{1-\zeta^2}}.
+\]</span></p></li>
+</ol>
+<p>This <span class="math inline">\(t_p\)</span> is the time to peak for the under-damped second-order system’s step response. It’s important to note that this derivation assumes an under-damped system (<span class="math inline">\(0 &lt; \zeta &lt; 1\)</span>). For critically damped (<span class="math inline">\(\zeta = 1\)</span>) or over-damped (<span class="math inline">\(\zeta &gt; 1\)</span>) systems, the approach to finding <span class="math inline">\(t_p\)</span> would be different, as the system response does not exhibit overshoot in these cases.</p>
+<p>Note that the time to first undershoot would be <span class="math inline">\(\omega_d t = 2\pi\)</span>, the time to second overshoot <span class="math inline">\(\omega_d t = 3\pi\)</span> and so on.</p>
+</section>
+<section id="maximum-overshoot-m_p" class="level4">
+<h4 class="anchored" data-anchor-id="maximum-overshoot-m_p"><strong>Maximum Overshoot (<span class="math inline">\(M_p\)</span>)</strong>:</h4>
+<p>To derive the maximum overshoot value (<span class="math inline">\(M_p\)</span>) for an under-damped second-order system, we need to evaluate the system’s response at the time to peak (<span class="math inline">\(t_p\)</span>), which we previously determined. The maximum overshoot is the amount by which the system’s response exceeds its final value (which is 1 for a unit step input) at the first peak.</p>
+<ol type="1">
+<li><p><strong>Recall the Response Function</strong>:</p>
+<p>The response for an under-damped system (<span class="math inline">\(0 &lt; \zeta &lt; 1\)</span>) to a unit step input is:</p>
+<p><span class="math display">\[
+y(t) = 1 - \frac{e^{-\zeta\omega_nt}}{\sqrt{1-\zeta^2}}\sin(\omega_d t + \theta),
+\]</span></p>
+<p>where <span class="math inline">\(\omega_d = \omega_n\sqrt{1-\zeta^2}\)</span> and <span class="math inline">\(\theta = \cos^{-1}(\zeta)\)</span>.</p></li>
+<li><p><strong>Evaluate the Response at <span class="math inline">\(t_p\)</span></strong>:</p>
+<p>We previously found that <span class="math inline">\(t_p = \frac{\pi}{\omega_d}\)</span>. Substituting this into the response function gives:</p>
+<p><span class="math display">\[
+y(t_p) = 1 - \frac{e^{-\zeta\omega_n(\pi/\omega_d)}}{\sqrt{1-\zeta^2}}\sin(\omega_d (\pi/\omega_d) + \theta).
+\]</span></p></li>
+<li><p><strong>Simplify the Expression</strong>:</p>
+<p>The sine term simplifies as <span class="math inline">\(\sin(\pi + \theta) = -\sin(\theta)\)</span>. Since <span class="math inline">\(\theta = \cos^{-1}(\zeta)\)</span>, we have <span class="math inline">\(\sin(\theta) = \sqrt{1-\zeta^2}\)</span>. Therefore:</p>
+<p><span class="math display">\[
+y(t_p) = 1 + e^{-\zeta\omega_n(\pi/\omega_d)}.
+\]</span></p></li>
+<li><p><strong>Calculate Maximum Overshoot (<span class="math inline">\(M_p\)</span>)</strong>:</p>
+<p>The maximum overshoot is the peak value minus the steady-state value (which is 1 for a unit step response), so:</p>
+<p><span class="math display">\[
+M_p = y(t_p) - 1 = e^{-\zeta\omega_n(\pi/\omega_d)}.
+\]</span></p></li>
+<li><p><strong>Substitute <span class="math inline">\(\omega_d\)</span></strong>:</p>
+<p>Recall that <span class="math inline">\(\omega_d = \omega_n\sqrt{1-\zeta^2}\)</span>. Substituting this in <span class="math inline">\(M_p\)</span>:</p>
+<p><span class="math display">\[
+M_p = e^{-\frac{\zeta\omega_n\pi}{\omega_n\sqrt{1-\zeta^2}}} = e^{-\frac{\pi\zeta}{\sqrt{1-\zeta^2}}}.
+\]</span></p></li>
+</ol>
+<p>This final expression gives the maximum overshoot <span class="math inline">\(M_p\)</span> for an under-damped second-order system. It quantifies how much the first peak of the system’s response overshoots the steady-state value in response to a unit step input. The overshoot depends solely on the damping ratio <span class="math inline">\(\zeta\)</span>, and as <span class="math inline">\(\zeta\)</span> approaches 1 (transition to critical damping), <span class="math inline">\(M_p\)</span> decreases, reflecting less overshoot in the system’s response.</p>
+<p><strong>Pop-up Question</strong>: What happens to the peak time (<span class="math inline">\(t_p\)</span>) as the damping ratio ($ $) increases?</p>
+<p><strong>Answer</strong>: As $ $ increases, $ _d = _n $ decreases, leading to an increase in peak time (<span class="math inline">\(t_p\)</span>).</p>
+<hr>
+</section>
+</section>
+</section>
+<section id="transient-performance-specifications" class="level2">
+<h2 class="anchored" data-anchor-id="transient-performance-specifications">Transient Performance Specifications</h2>
+<p>Let’s continue our exploration of control engineering, focusing on transient performance specifications. Remember, we’re using a step response, typically a unit step response, as our primary tool for examining the transient response of second-order systems. And interestingly, these specifications apply to higher-order systems too.</p>
+<section id="rise-time-peak-overshoot-time-to-peak-and-settling-time" class="level3">
+<h3 class="anchored" data-anchor-id="rise-time-peak-overshoot-time-to-peak-and-settling-time">Rise Time, Peak Overshoot, Time to Peak, and Settling Time</h3>
+<p>First, let’s recap the key specifications we’re discussing: - <strong>Rise Time (t_r):</strong> The time it takes for the system’s response to rise from 10% to 90% of its final value. - <strong>Peak Overshoot (M_p):</strong> The maximum peak value of the response curve as a percentage over the final value. - <strong>Time to Peak (t_p):</strong> The time taken to reach the first peak overshoot. - <strong>Settling Time (t_s):</strong> The time taken for the response to reach and stay within a certain percentage (commonly 2% or 5%) of its final value.</p>
+<div id="3c6ba7e0" class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Import necessary libraries</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> control</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> find_max_consecutive_index(arr):</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    max_consecutive_index <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    consecutive_start <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(arr) <span class="op">-</span> <span class="dv">1</span>):</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> arr[i] <span class="op">+</span> <span class="dv">1</span> <span class="op">!=</span> arr[i <span class="op">+</span> <span class="dv">1</span>]:</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> consecutive_start <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>                max_consecutive_index <span class="op">=</span> consecutive_start</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>            consecutive_start <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">elif</span> consecutive_start <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>            consecutive_start <span class="op">=</span> i <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Check if the entire array is consecutive</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> consecutive_start <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>        max_consecutive_index <span class="op">=</span> consecutive_start</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> max_consecutive_index <span class="cf">if</span> max_consecutive_index <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span> <span class="cf">else</span> <span class="bu">len</span>(arr) <span class="op">-</span> <span class="dv">1</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Define a function to calculate and plot the system response with performance parameters</span></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_response(zeta, omega_n, sim_time):</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>    <span class="co"># System parameters: zeta (damping ratio), omega_n (natural frequency)</span></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>    num <span class="op">=</span> [omega_n<span class="op">**</span><span class="dv">2</span>]  <span class="co"># Numerator (assuming unit gain)</span></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>    den <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span> <span class="op">*</span> zeta <span class="op">*</span> omega_n, omega_n<span class="op">**</span><span class="dv">2</span>]  <span class="co"># Denominator</span></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Create a transfer function model</span></span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>    system <span class="op">=</span> control.tf(num, den)</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Time parameters</span></span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>    t <span class="op">=</span> np.linspace(<span class="dv">0</span>, sim_time, <span class="bu">int</span>(sim_time<span class="op">*</span><span class="dv">100</span>))  <span class="co"># Time vector</span></span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Step response</span></span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>    t, y <span class="op">=</span> control.step_response(system, t)</span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>    steady_state_value <span class="op">=</span> y[<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Rise Time</span></span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>    rise_time_indices <span class="op">=</span> np.where(y <span class="op">&gt;=</span> steady_state_value)[<span class="dv">0</span>]</span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>    rise_time <span class="op">=</span> t[rise_time_indices[<span class="dv">0</span>]] <span class="cf">if</span> rise_time_indices.size <span class="cf">else</span> <span class="va">None</span></span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Peak Overshoot and Peak Time</span></span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>    peak_overshoot <span class="op">=</span> np.<span class="bu">max</span>(y) <span class="op">-</span> steady_state_value</span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>    peak_time <span class="op">=</span> t[np.argmax(y)]</span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Settling Time (within 2% of steady-state value). This is found numerically.</span></span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>    settling_time_indices <span class="op">=</span> np.where(<span class="bu">abs</span>(y <span class="op">-</span> steady_state_value) <span class="op">&lt;=</span> <span class="fl">0.02</span> <span class="op">*</span> steady_state_value)[<span class="dv">0</span>]</span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>    ts_index <span class="op">=</span> find_max_consecutive_index(settling_time_indices)</span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>    settling_time <span class="op">=</span> t[settling_time_indices[ts_index]] <span class="cf">if</span> settling_time_indices.size <span class="cf">else</span> <span class="va">None</span></span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Plot</span></span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a>    plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a>    plt.plot(t, y, label<span class="op">=</span><span class="st">'System Response'</span>)</span>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a>    plt.axhline(steady_state_value, color<span class="op">=</span><span class="st">'r'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, label<span class="op">=</span><span class="st">'Steady State'</span>)</span>
+<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a>    <span class="co"># tolerange band (0.02 percent)</span></span>
+<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a>    plt.axhline(steady_state_value <span class="op">*</span> <span class="fl">1.02</span>, color<span class="op">=</span><span class="st">'g'</span>, linestyle<span class="op">=</span><span class="st">':'</span>, label<span class="op">=</span><span class="st">'Settling Time Bound'</span>)</span>
+<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a>    plt.axhline(steady_state_value <span class="op">*</span> <span class="fl">0.98</span>, color<span class="op">=</span><span class="st">'g'</span>, linestyle<span class="op">=</span><span class="st">':'</span>)</span>
+<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> rise_time:</span>
+<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a>        plt.axvline(rise_time, color<span class="op">=</span><span class="st">'y'</span>, linestyle<span class="op">=</span><span class="st">'-'</span>, label<span class="op">=</span><span class="ss">f'Rise Time: </span><span class="sc">{</span>rise_time<span class="sc">:.2f}</span><span class="ss">s'</span>)</span>
+<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a>    plt.axvline(peak_time, color<span class="op">=</span><span class="st">'b'</span>, linestyle<span class="op">=</span><span class="st">'-'</span>, label<span class="op">=</span><span class="ss">f'Peak Time: </span><span class="sc">{</span>peak_time<span class="sc">:.2f}</span><span class="ss">s'</span>)</span>
+<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a>    plt.scatter(peak_time, np.<span class="bu">max</span>(y), color<span class="op">=</span><span class="st">'black'</span>, label<span class="op">=</span><span class="ss">f'Peak Overshoot: </span><span class="sc">{</span>peak_overshoot<span class="sc">:.2f}</span><span class="ss">'</span>)</span>
+<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> settling_time:</span>
+<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a>        plt.scatter(settling_time, y[settling_time_indices[ts_index]], color<span class="op">=</span><span class="st">'purple'</span>)</span>
+<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a>        plt.axvline(settling_time, color<span class="op">=</span><span class="st">'purple'</span>, linestyle<span class="op">=</span><span class="st">'-'</span>, label<span class="op">=</span><span class="ss">f'Settling Time: </span><span class="sc">{</span>settling_time<span class="sc">:.2f}</span><span class="ss">s'</span>)</span>
+<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="st">'Transient Response with Performance Parameters'</span>)</span>
+<span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="st">'Time (seconds)'</span>)</span>
+<span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a>    plt.ylabel(<span class="st">'Output'</span>)</span>
+<span id="cb3-75"><a href="#cb3-75" aria-hidden="true" tabindex="-1"></a>    plt.legend()</span>
+<span id="cb3-76"><a href="#cb3-76" aria-hidden="true" tabindex="-1"></a>    plt.grid(<span class="va">True</span>)</span>
+<span id="cb3-77"><a href="#cb3-77" aria-hidden="true" tabindex="-1"></a>    plt.show()</span>
+<span id="cb3-78"><a href="#cb3-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-79"><a href="#cb3-79" aria-hidden="true" tabindex="-1"></a><span class="co"># Interactive sliders</span></span>
+<span id="cb3-80"><a href="#cb3-80" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ipywidgets <span class="im">import</span> interact, FloatSlider</span>
+<span id="cb3-81"><a href="#cb3-81" aria-hidden="true" tabindex="-1"></a>interact(plot_response, </span>
+<span id="cb3-82"><a href="#cb3-82" aria-hidden="true" tabindex="-1"></a>         zeta<span class="op">=</span>FloatSlider(value<span class="op">=</span><span class="fl">0.3</span>, <span class="bu">min</span><span class="op">=</span><span class="fl">0.01</span>, <span class="bu">max</span><span class="op">=</span><span class="fl">1.0</span>, step<span class="op">=</span><span class="fl">0.01</span>), </span>
+<span id="cb3-83"><a href="#cb3-83" aria-hidden="true" tabindex="-1"></a>         omega_n<span class="op">=</span>FloatSlider(value<span class="op">=</span><span class="dv">2</span>, <span class="bu">min</span><span class="op">=</span><span class="dv">1</span>, <span class="bu">max</span><span class="op">=</span><span class="dv">10</span>, step<span class="op">=</span><span class="fl">0.1</span>), </span>
+<span id="cb3-84"><a href="#cb3-84" aria-hidden="true" tabindex="-1"></a>         sim_time<span class="op">=</span>FloatSlider(value<span class="op">=</span><span class="dv">10</span>, <span class="bu">min</span><span class="op">=</span><span class="dv">1</span>, <span class="bu">max</span><span class="op">=</span><span class="dv">50</span>, step<span class="op">=</span><span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"091b6debd10e49a4a08403429035a05b","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+</script>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>&lt;function __main__.plot_response(zeta, omega_n, sim_time)&gt;</code></pre>
+</div>
+</div>
+</section>
+<section id="second-order-system-transfer-function" class="level3">
+<h3 class="anchored" data-anchor-id="second-order-system-transfer-function">Second-Order System Transfer Function</h3>
+<p>For a standard second-order system, the transfer function is:</p>
+<p><span class="math display">\[ Y(s) = \frac{\omega_n^2}{s(s^2 + 2 \zeta \omega_n s + \omega_n^2)} \]</span></p>
+<p>where $ _n $ is the natural frequency and $ $ is the damping ratio.</p>
+<p>This is the response transfor for which <span class="math inline">\(R(s) = \frac{1}{s}.\)</span></p>
+</section>
+<section id="inverse-laplace-transform" class="level3">
+<h3 class="anchored" data-anchor-id="inverse-laplace-transform">Inverse Laplace Transform</h3>
+<p>Applying the inverse Laplace transform, we get the time domain response:</p>
+<p><span class="math display">\[ y(t) = 1 - \frac{e^{-\zeta \omega_n t}}{\sqrt{1 - \zeta^2}} \sin(\omega_d t + \theta) \]</span></p>
+<p>with <span class="math inline">\(\theta = \cos^{-1}(\zeta)\)</span> and <span class="math inline">\(\omega_d = \omega_n \sqrt{1 - \zeta^2}\)</span>, representing the damped natural frequency.</p>
+</section>
+<section id="rise-time-t_r-1" class="level3">
+<h3 class="anchored" data-anchor-id="rise-time-t_r-1">Rise Time (<span class="math inline">\(t_r\)</span>)</h3>
+<p>Rise time can be expressed as:</p>
+<p><span class="math display">\[ t_r = \frac{\pi - \cos^{-1}(\zeta)}{\omega_n \sqrt{1 - \zeta^2}} \]</span></p>
+<p>Notice that rise time depends on both $ $ and $ _n $, but the effect of $ $ is relatively small.</p>
+<ul>
+<li>As we discussed, we would like the rise time to be as small as possible. This would mean that the system responds quickly.</li>
+</ul>
+<p>To visualize how rise time varies with $ $ and $ _n $ and to demonstrate that the rise time remains relatively constant as $ $ changes, we can write a Python script using libraries like <code>matplotlib</code> for plotting and <code>numpy</code> for numerical computations.</p>
+<p>In this script: - We define a range of $ $ values from 0.01 to 0.99. - We select a few values of $ _n $ to illustrate the effect on rise time. - We use the derived formula for rise time and plot it against $ $ for each $ _n $. - The plot will show multiple curves, each representing a different $ _n $, and how the rise time varies with $ $ for these values.</p>
+<p>Running this code will generate a graph illustrating the relationship between rise time, damping ratio $ $, and natural frequency $ _n $. The graph will demonstrate that while the rise time varies with different $ _n $ values, the effect of $ $ on rise time is relatively small, especially within a typical range of $ $.</p>
+<div id="f2f2c66f" class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Define a range of zeta and omega_n values</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>zeta_values <span class="op">=</span> np.linspace(<span class="fl">0.01</span>, <span class="fl">0.99</span>, <span class="dv">100</span>)  <span class="co"># Zeta values from 0.01 to 0.99</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>omega_n_values <span class="op">=</span> np.array([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">5</span>, <span class="dv">10</span>])    <span class="co"># Different omega_n values</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to calculate rise time</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rise_time(zeta, omega_n):</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (np.pi <span class="op">-</span> np.arccos(zeta)) <span class="op">/</span> (omega_n <span class="op">*</span> np.sqrt(<span class="dv">1</span> <span class="op">-</span> zeta<span class="op">**</span><span class="dv">2</span>))</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> normalised_rise_time(zeta):</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (np.pi <span class="op">-</span> np.arccos(zeta)) <span class="op">/</span> (np.sqrt(<span class="dv">1</span> <span class="op">-</span> zeta<span class="op">**</span><span class="dv">2</span>))</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> omega_n <span class="kw">in</span> omega_n_values:</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    rt <span class="op">=</span> rise_time(zeta_values, omega_n)    </span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>    plt.plot(zeta_values, rt, label<span class="op">=</span><span class="ss">f'ωₙ = </span><span class="sc">{</span>omega_n<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>wnrt <span class="op">=</span> normalised_rise_time(zeta_values)</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>plt.plot(zeta_values, wnrt, label<span class="op">=</span><span class="ss">f'ωₙtₙ'</span>)</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Add vertical lines at zeta = 0.4 and zeta = 0.7</span></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>plt.axvline(x<span class="op">=</span><span class="fl">0.4</span>, color<span class="op">=</span><span class="st">'gray'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, linewidth<span class="op">=</span><span class="fl">1.5</span>, label<span class="op">=</span><span class="st">'ζ = 0.4'</span>)</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>plt.axvline(x<span class="op">=</span><span class="fl">0.7</span>, color<span class="op">=</span><span class="st">'gray'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, linewidth<span class="op">=</span><span class="fl">1.5</span>, label<span class="op">=</span><span class="st">'ζ = 0.7'</span>)</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Rise Time vs Damping Ratio (ζ) for Different ωₙ'</span>)</span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Damping Ratio (ζ)'</span>)</span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Rise Time'</span>)</span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="19_Design_of_feedback_control_files/figure-html/cell-5-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="peak-overshoot-m_p" class="level3">
+<h3 class="anchored" data-anchor-id="peak-overshoot-m_p">Peak Overshoot (<span class="math inline">\(M_p\)</span>)</h3>
+<p>The peak overshoot is given by:</p>
+<p><span class="math display">\[\Large M_p = e^{-\frac{\pi \zeta}{\sqrt{1 - \zeta^2}}} \]</span></p>
+<p>Here, $ M_p $ depends solely on the damping ratio $ $.</p>
+<p>We would like the rise time <span class="math inline">\(t_r\)</span> to be as short as possible, but <em>also</em> that the peak overshoot remains small. A high peak overshoot means that the system is close to instability and even small variations of parameters might make the system unstable.</p>
+<p>Typically, $ M_p $ is acceptable when stays between <span class="math inline">\(5\% - 40\%\)</span>. A value less than <span class="math inline">\(5\%\)</span> is also acceptable but typically this means that the rise time will be very high.</p>
+<p>This means that typically: <span class="math inline">\(0.4 &lt; \zeta &lt; 0.7\)</span>. With reference to the previous figure, in this range, <span class="math inline">\(\omega_n t_r\)</span> (the normalised rise time) is practically constant and not affected too much by the change in the damping ratio.</p>
+<p>If this is true we can then say that the rise time is the inverse of the undamped natural frequency:</p>
+<p><span class="math display">\[ \omega_n t_r = const \Rightarrow t_r = \frac{1}{\omega_n} const\]</span></p>
+</section>
+<section id="rise-time-and-bandwidth" class="level3">
+<h3 class="anchored" data-anchor-id="rise-time-and-bandwidth">Rise time and Bandwidth</h3>
+<p>To optimize the performance of a control system, particularly its speed of response, we often aim to decrease the rise time. The rise time, which indicates how quickly a system responds to changes, is inversely related to the system’s natural frequency, $ _n $. Therefore, to reduce the rise time, a common strategy is to design the system such that $ _n $ is as large as possible.</p>
+<p>However, this approach comes with a significant caveat. Increasing $ _n $ also increases the system’s bandwidth. Bandwidth, in simple terms, is the range of frequencies over which the system can effectively operate. A higher bandwidth means that the system becomes more sensitive to a wider range of frequencies, including those in the higher range.</p>
+<p>The challenge with a large bandwidth is that it allows high-frequency signals, which are often noise, to penetrate the system. These high-frequency signals can adversely affect the system’s performance. In contrast, the useful signals in most control systems are typically of lower frequency. Thus, while a large bandwidth might improve the speed of response, it can compromise the system’s ability to filter out unwanted noise.</p>
+<p>Therefore, when designing for optimal rise time, one must consider the trade-off between speed of response and noise immunity. The goal is not to achieve the smallest theoretical rise time, but to find a practical balance that ensures the system’s reliability and stability. This balance is largely influenced by the bandwidth limitations.</p>
+<p>The relationship between the speed of response (as measured by the rise time) and the system’s bandwidth is almost direct: a faster response (lower rise time) corresponds to a wider bandwidth. However, an infinite bandwidth is impractical, as it would lead to excessive noise interference. Consequently, a zero rise time, which would require infinite bandwidth, is unachievable.</p>
+<p>The appropriate balance between rise time and bandwidth is highly dependent on the specific components and characteristics of the system. For instance, if the system employs sensors that do not generate high-frequency noise, it may be feasible to design for a higher bandwidth (and thus a lower rise time) without significantly compromising the system’s performance. Each system requires a tailored approach, considering its unique hardware and operational environment.</p>
+</section>
+<section id="stability-considerations" class="level3">
+<h3 class="anchored" data-anchor-id="stability-considerations">Stability considerations</h3>
+<img src="./pics/19_Design_of_feedback_control_system_roots.png" alt="19_Design_of_feedback_control_system_roots
+" style="width:450px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<p>In the context of control systems, particularly those modeled as second-order systems, the stability and response characteristics are significantly influenced by two parameters: the damping ratio ($ <span class="math inline">\() and the natural frequency (\)</span> _n $). The damping ratio $ $ plays a pivotal role in governing the system’s oscillatory behavior and its ability to reach equilibrium. A higher $ $ results in less oscillation and a more overdamped system, which stabilizes quicker but may have a slower response. Conversely, a lower $ $ leads to a more underdamped system, characterized by more pronounced oscillations, and can risk instability if it becomes too low.</p>
+<p>The natural frequency $ _n $, representing the system’s intrinsic oscillation rate in the absence of damping, affects the speed of the system’s response. A higher $ _n $ typically allows for faster response times but, coupled with a low damping ratio, can induce rapid oscillations, edging the system towards instability.</p>
+<p>Crucially, the peak overshoot ($ M_p $) is intimately linked with these parameters. $ M_p $, defined as the maximum peak of the response curve as a percentage over the final value, is directly influenced by $ $. Specifically, $ M_p = e^{-} $ illustrates that a higher damping ratio reduces the peak overshoot, moving the system away from instability. This relationship highlights the delicate balance required in control system design: ensuring responsiveness and minimizing overshoot while maintaining stability. Therefore, the selection of $ $ and $ _n $ must be made with a keen understanding of their impact on both the transient response (rise time, overshoot) and the overall stability of the system.</p>
+<p>For example, a <span class="math inline">\(100\%\)</span> overshoot means that the poles are on the <span class="math inline">\(j\omega\)</span> axis and hence the system is marginally stable.</p>
+<p>Qualitatively, for second-order systems: - <span class="math inline">\(\zeta\)</span> is indicative of stability. - <span class="math inline">\(\omega_n\)</span> is indicative of the speed of response.</p>
+<hr>
+<p>In other words, the stability of a control system depends by two key parameters: the damping ratio $ $ and the natural frequency $ _n $.</p>
+<ul>
+<li><strong>damping ratio $ $</strong>: The damping ratio $ $ primarily dictates the system’s ability to mitigate oscillations and return to equilibrium.
+<ul>
+<li>A higher $ $ generally indicates a more damped system, which tends to stabilize more quickly but may respond slower to changes.</li>
+<li>In contrast, a lower $ $ leads to a less damped system that can exhibit more oscillatory behavior, potentially approaching instability if it’s too low.</li>
+</ul></li>
+<li>**natural frequency $ _n $**: The natural frequency $ _n $, on the other hand, is indicative of the system’s inherent tendency to oscillate at a particular rate in the absence of damping.
+<ul>
+<li>A higher $ _n $ can contribute to a quicker response time, but when combined with a low damping ratio, it can make the system prone to rapid and potentially unstable oscillations.</li>
+</ul></li>
+</ul>
+<p>The interplay between $ $ and $ _n $ is therefore important: while a higher $ _n $ can enhance system responsiveness, it must be balanced with an appropriate $ $ to ensure the system remains stable and does not oscillate excessively. This balance is key in control system design, ensuring that systems are both responsive and stable.</p>
+<hr>
+<p>To calculate the peak overshoot (<span class="math inline">\(M_p\)</span>) for $ = 0.4 $ and $ = 0.7 $ in Python, we can use the <code>numpy</code> library for numerical calculations.</p>
+<p>The cell below defines a function <code>peak_overshoot</code> which takes a damping ratio $ $ and computes the peak overshoot using the given formula. The function is then used to calculate the peak overshoot for $ = 0.4 $ and $ = 0.7 $. The results are printed in both decimal and percentage forms.</p>
+<p>Here’s the Python code to do this:</p>
+<div id="5748ef4e" class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to calculate peak overshoot</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> peak_overshoot(zeta):</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.exp(<span class="op">-</span>np.pi <span class="op">*</span> zeta <span class="op">/</span> np.sqrt(<span class="dv">1</span> <span class="op">-</span> zeta<span class="op">**</span><span class="dv">2</span>))</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate peak overshoot for zeta = 0.4 and zeta = 0.7</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>mp_04 <span class="op">=</span> peak_overshoot(<span class="fl">0.4</span>)</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>mp_07 <span class="op">=</span> peak_overshoot(<span class="fl">0.7</span>)</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Peak Overshoot for ζ = 0.4: </span><span class="sc">{</span>mp_04<span class="sc">:.4f}</span><span class="ss"> or </span><span class="sc">{</span>mp_04 <span class="op">*</span> <span class="dv">100</span><span class="sc">:.2f}</span><span class="ss">%"</span>)</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Peak Overshoot for ζ = 0.7: </span><span class="sc">{</span>mp_07<span class="sc">:.4f}</span><span class="ss"> or </span><span class="sc">{</span>mp_07 <span class="op">*</span> <span class="dv">100</span><span class="sc">:.2f}</span><span class="ss">%"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Peak Overshoot for ζ = 0.4: 0.2538 or 25.38%
+Peak Overshoot for ζ = 0.7: 0.0460 or 4.60%</code></pre>
+</div>
+</div>
+</section>
+<section id="peak-time-t_p-1" class="level3">
+<h3 class="anchored" data-anchor-id="peak-time-t_p-1">Peak time (<span class="math inline">\(t_p\)</span>)</h3>
+<p>The peak time <span class="math inline">\(t_p\)</span> is similar to the rise term in terms of qualitative behaviour.</p>
+<p>The relationship between the peak time (<span class="math inline">\(t_p\)</span>)) and the natural frequency (<span class="math inline">\(\omega_n\)</span>)) is also important to understand. The peak time is defined as the time it takes for the system response to reach its first maximum peak. From the theoretical background provided, the peak time is given by the formula:</p>
+<p><span class="math display">\[ t_p = \frac{\pi}{\omega_n \sqrt{1 - \zeta^2}} \]</span></p>
+<p>This equation illustrates that the peak time is inversely proportional to the natural frequency (<span class="math inline">\(\omega_n\)</span>) of the system, while also being influenced by the damping ratio <span class="math inline">\(\zeta\)</span>). Specifically, as <span class="math inline">\(\omega_n\)</span> increases, the peak time <span class="math inline">\(t_p\)</span> decreases, implying that the system reaches its peak response more quickly. This relationship highlights that a system with a higher natural frequency will respond faster, reaching its peak in a shorter amount of time.</p>
+<p>The presence of <span class="math inline">\(\sqrt{1 - \zeta^2}\)</span>) in the denominator also indicates the influence of the damping ratio <span class="math inline">\(\zeta\)</span>) on the peak time. However, the dominant factor in determining <span class="math inline">\(t_p\)</span> is <span class="math inline">\(\omega_n\)</span>, as the damping ratio’s impact is moderated by the square root and the subtraction from unity.</p>
+<p>In practical terms, designing a control system with a higher natural frequency <span class="math inline">\(\omega_n\)</span> can be beneficial for achieving quicker responses. However, this must be carefully balanced with considerations for the system’s stability and overshoot, as influenced by both <span class="math inline">\(\omega_n\)</span> and <span class="math inline">\(\zeta\)</span>. The peak time thus serves as an essential indicator in the design and analysis of control systems, particularly when quick responses are desirable, but not at the expense of system stability and performance.</p>
+</section>
+<section id="settling-time-t_s" class="level3">
+<h3 class="anchored" data-anchor-id="settling-time-t_s">Settling Time (<span class="math inline">\(t_s\)</span>)</h3>
+<p>Calculating an analytical expression for the settling time in control systems, particularly for higher-order or complex systems, presents several challenges.</p>
+<p>Settling time is defined as the duration after which the system’s response remains within a specified tolerance band around the steady-state value and does not exit this band thereafter.</p>
+<p>For second-order systems, this can often be approximated with standard formulas, especially when systems are underdamped. However, for systems that exhibit more complex behavior, such as those with higher-order dynamics, non-linearities, or varying parameters, deriving an exact analytical expression becomes considerably more complicated.</p>
+<p>One of the key difficulties lies in the system’s response characteristics, which can vary significantly based on factors like damping ratio ($ <span class="math inline">\(), natural frequency (\)</span> _n $), and the presence of non-linear elements or external disturbances. The response might exhibit oscillations, overshoots, or varying rates of decay, which are not straightforward to encapsulate in a single formula. Additionally, the criteria for ‘settling’ within a tolerance band are not always clear-cut in practical scenarios, where noise and external factors can cause the response to fluctuate around the desired value.</p>
+<p>As a result, numerical methods and simulations become essential tools for accurately determining the settling time. They allow for the detailed modeling of system behavior under various conditions, capturing nuances that analytical methods may miss. The following Python code exemplifies this numerical approach, illustrating how the settling time varies with the damping ratio ($ $) in a second-order system. This numerical analysis provides a more flexible and practical means to understand and predict system behavior in real-world scenarios.</p>
+</section>
+<section id="settling-time-vs.-damping-ratio" class="level3">
+<h3 class="anchored" data-anchor-id="settling-time-vs.-damping-ratio">Settling Time vs.&nbsp;Damping Ratio</h3>
+<p>In control systems, the relationship between the settling time and the damping ratio (<span class="math inline">\(\zeta\)</span>) can be effectively illustrated through a graph.</p>
+<p>This graph is particularly insightful as it reveals the non-linear nature of how the settling time varies with different values of <span class="math inline">\(\zeta\)</span>.</p>
+<p>Specifically, it highlights a notable characteristic where the settling time experiences a sharp increase at certain values of <span class="math inline">\(\zeta\)</span>.</p>
+<p>This increase is not linear or gradual but occurs at specific points, reflecting the complex dynamics of how damping affects the time it takes for a system to stabilize within its desired operational parameters. Such a graphical representation is crucial for understanding and designing control systems, especially in fine-tuning damping ratios to achieve optimal performance.</p>
+<div id="faad904d" class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Time array</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">1000</span>)  <span class="co"># Extended time range for more clarity</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co"># System parameters</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>zeta_values <span class="op">=</span> [<span class="dv">1</span>, <span class="fl">0.9</span>, <span class="fl">0.7</span>, <span class="fl">0.55</span>, <span class="fl">0.43</span>]</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>omega_n <span class="op">=</span> <span class="dv">1</span>  <span class="co"># Natural frequency</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Function for second-order system unit-step response</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> unit_step_response(t, zeta, omega_n):</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> zeta <span class="op">&lt;</span> <span class="dv">1</span>:  <span class="co"># Underdamped</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>        omega_d <span class="op">=</span> omega_n <span class="op">*</span> np.sqrt(<span class="dv">1</span> <span class="op">-</span> zeta<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">1</span> <span class="op">-</span> np.exp(<span class="op">-</span>zeta <span class="op">*</span> omega_n <span class="op">*</span> t) <span class="op">*</span> (np.cos(omega_d <span class="op">*</span> t) <span class="op">+</span> (zeta<span class="op">/</span>np.sqrt(<span class="dv">1</span><span class="op">-</span>zeta<span class="op">**</span><span class="dv">2</span>)) <span class="op">*</span> np.sin(omega_d <span class="op">*</span> t))</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> zeta <span class="op">==</span> <span class="dv">1</span>:  <span class="co"># Critically damped</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">1</span> <span class="op">-</span> np.exp(<span class="op">-</span>omega_n <span class="op">*</span> t) <span class="op">*</span> (<span class="dv">1</span> <span class="op">+</span> omega_n <span class="op">*</span> t)</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute settling time</span></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> compute_settling_time(t, response, tolerance<span class="op">=</span><span class="fl">0.05</span>):</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>    upper_bound <span class="op">=</span> <span class="dv">1</span> <span class="op">+</span> tolerance</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>    lower_bound <span class="op">=</span> <span class="dv">1</span> <span class="op">-</span> tolerance</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(response)):</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="bu">all</span>(response[j] <span class="op">&lt;</span> upper_bound <span class="kw">and</span> response[j] <span class="op">&gt;</span> lower_bound <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(i, <span class="bu">len</span>(response))):</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> t[i]</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.nan</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Storing settling times</span></span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>settling_times <span class="op">=</span> []</span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting responses for different zeta values</span></span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> zeta <span class="kw">in</span> zeta_values:</span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> unit_step_response(t, zeta, omega_n)</span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>    settling_time <span class="op">=</span> compute_settling_time(t, y)</span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>    settling_times.append(settling_time)</span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>    plt.plot(t, y, label<span class="op">=</span><span class="ss">f'ζ = </span><span class="sc">{</span>zeta<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Annotate settling time</span></span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> np.isnan(settling_time):</span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a>        plt.axvline(x<span class="op">=</span>settling_time, color<span class="op">=</span><span class="st">'gray'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, alpha<span class="op">=</span><span class="fl">0.7</span>)</span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a>        settling_point <span class="op">=</span> y[np.argmin(np.<span class="bu">abs</span>(t <span class="op">-</span> settling_time))]</span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a>        plt.plot(settling_time, settling_point, <span class="st">'ro'</span>)  <span class="co"># Mark the settling point</span></span>
+<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a>        plt.text(settling_time, settling_point, <span class="ss">f' (</span><span class="sc">{</span>settling_time<span class="sc">:.2f}</span><span class="ss">s)'</span>, verticalalignment<span class="op">=</span><span class="st">'bottom'</span>)</span>
+<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a>        <span class="co">#plt.text(settling_time, settling_point, f' ({settling_time:.2f}, {settling_point:.2f})', verticalalignment='bottom')</span></span>
+<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a><span class="co"># Unit value and tolerance band</span></span>
+<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a>plt.plot(t, np.ones_like(t), <span class="st">'k--'</span>, label<span class="op">=</span><span class="st">'Unit Value'</span>)</span>
+<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a>plt.fill_between(t, <span class="fl">0.95</span>, <span class="fl">1.05</span>, color<span class="op">=</span><span class="st">'yellow'</span>, alpha<span class="op">=</span><span class="fl">0.3</span>, label<span class="op">=</span><span class="st">'5% Tolerance Band'</span>)</span>
+<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Unit-Step Response of a Second-Order System'</span>)</span>
+<span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Time'</span>)</span>
+<span id="cb8-53"><a href="#cb8-53" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Response'</span>)</span>
+<span id="cb8-54"><a href="#cb8-54" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb8-55"><a href="#cb8-55" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb8-56"><a href="#cb8-56" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb8-57"><a href="#cb8-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-58"><a href="#cb8-58" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb8-59"><a href="#cb8-59" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting Settling Time vs Zeta</span></span>
+<span id="cb8-60"><a href="#cb8-60" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb8-61"><a href="#cb8-61" aria-hidden="true" tabindex="-1"></a>plt.plot(zeta_values, settling_times, <span class="st">'o:'</span>, label<span class="op">=</span><span class="st">'Settling Time'</span>, markersize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb8-62"><a href="#cb8-62" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Normalised Settling Time (ωₙtₙ) vs Damping Ratio (ζ)'</span>)</span>
+<span id="cb8-63"><a href="#cb8-63" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Damping Ratio (ζ)'</span>)</span>
+<span id="cb8-64"><a href="#cb8-64" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Normalised Settling Time (ωₙtₙ)'</span>)</span>
+<span id="cb8-65"><a href="#cb8-65" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb8-66"><a href="#cb8-66" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb8-67"><a href="#cb8-67" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="19_Design_of_feedback_control_files/figure-html/cell-7-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="19_Design_of_feedback_control_files/figure-html/cell-7-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The plot shows the typical response of a second-order system to settle to its final value within a <span class="math inline">\(5\%\)</span> tolerance band (hence between values 0.95-1.05). The plot also shows the response of the system for a critically damped system (<span class="math inline">\(\zeta=1\)</span>).</p>
+<p>We can define a better curve varying <span class="math inline">\(\zeta\)</span>:</p>
+<div id="8793f349" class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Time array</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">100</span>, <span class="dv">1000</span>)  <span class="co"># Extended time range for more clarity and lower damping ratios</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>zeta_values <span class="op">=</span> np.linspace(<span class="fl">0.2</span>, <span class="dv">1</span>, <span class="dv">500</span>) </span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>settling_times <span class="op">=</span>[]</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> zeta <span class="kw">in</span> zeta_values:</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> unit_step_response(t, zeta, omega_n)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    settling_time <span class="op">=</span> compute_settling_time(t, y)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    settling_times.append(settling_time)</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting Settling Time vs Zeta</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>plt.plot(zeta_values, settling_times, <span class="st">'o--'</span>, label<span class="op">=</span><span class="st">'Settling Time'</span>, markersize<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Normalised Settling Time (ωₙtₙ) vs Damping Ratio (ζ)'</span>)</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Damping Ratio (ζ)'</span>)</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Normalised Settling Time (ωₙtₙ)'</span>)</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="19_Design_of_feedback_control_files/figure-html/cell-8-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="approximating-the-settling-time" class="level3">
+<h3 class="anchored" data-anchor-id="approximating-the-settling-time">Approximating the Settling Time</h3>
+<p>Approximating the settling time of a control system using the envelope of its response is a practical approach, especially in the case of underdamped systems where the response exhibits oscillatory behavior. The envelope provides a clear visual representation of the maximum extent of the system’s response over time, which is particularly useful for identifying when the system’s output stabilizes within a specified tolerance band.</p>
+<p><strong>This will make it possible to have an approximation of the part where <span class="math inline">\(0 &lt; \zeta &lt; 0.7\)</span> in the above plot. Remember that typical values for the damping ratio will be in this range. The behaviour for values of <span class="math inline">\(\zeta&gt;0.7\)</span> is different.</strong></p>
+<p>The standard form of the response of an underdamped second-order system can be expressed as:</p>
+<p><span class="math display">\[ y(t) = 1 - \frac{e^{-\zeta \omega_n t}}{\sqrt{1 - \zeta^2}} \sin(\omega_d t + \theta) \]</span></p>
+<p>where $ $ is the damping ratio, $ _n $ is the natural frequency, and $ _d = _n $ is the damped natural frequency.</p>
+<p>The envelope of this oscillatory response is given by the decaying exponential term:</p>
+<p><span class="math display">\[
+1 \pm \frac{e^{-\zeta \omega_n t}}{\sqrt{1 - \zeta^2}}
+\]</span></p>
+<p>This envelope captures the oscillatory nature of the system’s response and its exponential decay.</p>
+<p>To approximate the settling time, you can set the envelope equal to the tolerance level and solve for time $ t $. For instance, for a 5% tolerance level, the equation becomes:</p>
+<p><span class="math display">\[ 1 + \frac{e^{-\zeta \omega_n t_s}}{\sqrt{1 - \zeta^2}} = 0.05 \]</span></p>
+<p>Solving for <span class="math inline">\(t\)</span> gives:</p>
+<p><span class="math display">\[
+\zeta\omega_n t_s = -\ln(0.05\sqrt{1-\zeta^2})
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+\omega_n t_s = -\frac{1}{\zeta}\ln(0.05\sqrt{1-\zeta^2})
+\]</span></p>
+<p>and finally:</p>
+<p><span class="math display">\[
+t_s = -\frac{1}{\omega_n\zeta}\ln(0.05\sqrt{1-\zeta^2})
+\]</span></p>
+<p>Note that <span class="math inline">\(\ln(0.05\sqrt{1-\zeta^2}) \in [-3, -3.3]\)</span>, for <span class="math inline">\(0 &lt; \zeta &lt; 0.7\)</span> (which is what we are analysing).</p>
+<p>We can obtain a further approximation as:</p>
+<p><span class="math display">\[
+t_s = \frac{3}{\omega_n\zeta}
+\]</span></p>
+<p>Let’s write Python code that plots this envelope for a range of <span class="math inline">\(\zeta\)</span> values and indicates the associated settling time within a 5% tolerance band. The settling time can be estimated by finding the point at which the envelope first enters the tolerance band and doesn’t exit afterward.</p>
+<div id="c5425b16" class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Time array</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">1000</span>)  <span class="co"># Time range for plotting</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co"># System parameters</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>zeta_values <span class="op">=</span> [<span class="fl">0.9</span>, <span class="fl">0.7</span>, <span class="fl">0.55</span>, <span class="fl">0.43</span>]  <span class="co"># zeta values - to highlight the difference use [0.2, 0.5, 0.7] </span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>omega_n <span class="op">=</span> <span class="dv">1</span>  <span class="co"># Natural frequency</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>colors <span class="op">=</span> [<span class="st">'red'</span>, <span class="st">'blue'</span>, <span class="st">'green'</span>, <span class="st">'purple'</span>]  <span class="co"># Colors for each zeta value</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> zeta, color <span class="kw">in</span> <span class="bu">zip</span>(zeta_values, colors):</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>    envelope_upper <span class="op">=</span> <span class="dv">1</span> <span class="op">+</span> np.exp(<span class="op">-</span>zeta <span class="op">*</span> omega_n <span class="op">*</span> t) <span class="op">/</span> np.sqrt(<span class="dv">1</span> <span class="op">-</span> zeta<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>    envelope_lower <span class="op">=</span> <span class="dv">1</span> <span class="op">-</span> np.exp(<span class="op">-</span>zeta <span class="op">*</span> omega_n <span class="op">*</span> t) <span class="op">/</span> np.sqrt(<span class="dv">1</span> <span class="op">-</span> zeta<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Plot envelope</span></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>    plt.plot(t, envelope_upper, color<span class="op">=</span>color, linestyle<span class="op">=</span><span class="st">'--'</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>    plt.plot(t, envelope_lower, color<span class="op">=</span>color, linestyle<span class="op">=</span><span class="st">'--'</span>, alpha<span class="op">=</span><span class="fl">0.5</span>, label<span class="op">=</span><span class="ss">f'ζ = </span><span class="sc">{</span>zeta<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Settling time estimation</span></span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>    settling_time <span class="op">=</span> <span class="op">-</span>np.log(<span class="fl">0.05</span> <span class="op">*</span> np.sqrt(<span class="dv">1</span> <span class="op">-</span> zeta<span class="op">**</span><span class="dv">2</span>)) <span class="op">/</span> (zeta <span class="op">*</span> omega_n)</span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>    plt.axvline(x<span class="op">=</span>settling_time, color<span class="op">=</span>color, linestyle<span class="op">=</span><span class="st">'-'</span>, alpha<span class="op">=</span><span class="fl">0.7</span>)</span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>    plt.text(settling_time, <span class="fl">1.1</span>, <span class="ss">f'</span><span class="sc">{</span>settling_time<span class="sc">:.2f}</span><span class="ss">'</span>, rotation<span class="op">=</span><span class="dv">90</span>, verticalalignment<span class="op">=</span><span class="st">'bottom'</span>, color<span class="op">=</span>color)</span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Envelope and Settling Time for Underdamped Systems'</span>)</span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Time'</span>)</span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Response'</span>)</span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="19_Design_of_feedback_control_files/figure-html/cell-9-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="settling-time-within-a-2-tolerance-band" class="level3">
+<h3 class="anchored" data-anchor-id="settling-time-within-a-2-tolerance-band">Settling Time within a 2% Tolerance Band</h3>
+<p>In control system specifications, a 2% tolerance band is commonly utilized. Through detailed computer simulations, it has been observed that the critical damping ratio for achieving a 2% tolerance band is <span class="math inline">\(\zeta = 0.76\)</span>. The behavior of the normalized settling time (<span class="math inline">\(\omega_n t_s\)</span>) relative to <span class="math inline">\(\zeta\)</span> in this scenario exhibits a notable pattern:</p>
+<ul>
+<li>When <span class="math inline">\(\zeta\)</span> ranges from 1 to 0.76, the normalized settling time decreases.</li>
+<li>As <span class="math inline">\(\zeta\)</span> decreases from 0.76 to 0, the normalized settling time increases.</li>
+</ul>
+<p>The challenge in obtaining an analytical expression for the settling time within a 2% tolerance band, as before, lies in its complex non-linear nature. However, an approximation can be made as follows:</p>
+<p><span class="math display">\[ \zeta \omega_n t_s = -\ln\left(0.02 \sqrt{1-\zeta^2}\right) \]</span></p>
+<p>Here, the logarithmic term <span class="math inline">\(\ln(0.02 \sqrt{1-\zeta^2})\)</span> varies between -3.9 to -4.34 for <span class="math inline">\(\zeta\)</span> values within the range of 0 to 0.76, reaching its minimum at <span class="math inline">\(\zeta=0.76\)</span>. Rewriting this expression, we get:</p>
+<p><span class="math display">\[ t_s = -\frac{1}{\zeta \omega_n} \ln\left(0.02 \sqrt{1-\zeta^2}\right) \]</span></p>
+<p>In this context, it’s important to note that <span class="math inline">\(\zeta \omega_n\)</span> is the reciprocal of the time constant of the envelope curve. Therefore, for a 2% tolerance band, the settling time can be approximated using the time constant of the system’s envelope:</p>
+<p><span class="math display">\[ t_s = \frac{4}{\zeta \omega_n} \]</span> (i.e., four times the time constant)</p>
+<p>This approximation effectively utilizes the time constant of the envelope curve, simplifying the calculation of the settling time within the specified tolerance band.</p>
+<p>This is the expression for the settling time that we will use most of the time.</p>
+</section>
+</section>
+<section id="understanding-steady-state-error" class="level2">
+<h2 class="anchored" data-anchor-id="understanding-steady-state-error">Understanding Steady-State Error</h2>
+<p>Steady-state error is a key metric in control systems that quantifies the difference between the desired output (the setpoint) and the actual output of the system as time approaches infinity. In simpler terms, it measures how close the system’s output can get to the desired value after transients have died out.</p>
+<section id="steady-state-error-for-different-inputs" class="level3">
+<h3 class="anchored" data-anchor-id="steady-state-error-for-different-inputs">Steady-State Error for Different Inputs</h3>
+<p>The nature of the steady-state error varies significantly based on the type of input signal the system is responding to.</p>
+<p>Typically, three standard types of inputs are considered: step, ramp, and parabolic. When designing a controller for steady state, it is typically important to understand the system behaivour for all these inputs.</p>
+<p>The steady-state error for each type of input highlights the system’s ability to track different kinds of signals:</p>
+<section id="step-input" class="level4">
+<h4 class="anchored" data-anchor-id="step-input">1. Step Input</h4>
+<p>For a step input (a sudden change in the desired output), a well-designed second-order system will often have a steady-state error of zero. This is because the system can adjust its output to match the new setpoint after some time.</p>
+<p>This is clear looking at the unit-step response for <span class="math inline">\(t \rightarrow \infty\)</span>:</p>
+<p><span class="math display">\[ y(t) = 1 - \frac{e^{-\zeta \omega_n t}}{\sqrt{1 - \zeta^2}} \sin(\omega_d t + \theta) \]</span></p>
+</section>
+<section id="ramp-input" class="level4">
+<h4 class="anchored" data-anchor-id="ramp-input">2. <strong>Ramp Input:</strong></h4>
+<p>A ramp input (a continuously increasing or decreasing setpoint) introduces a new challenge. The steady-state error for a ramp input is generally non-zero for a standard second-order system. It indicates the system’s inability to keep up with the continuously changing setpoint. The steady-state error in response to a ramp input can be calculated using the final value theorem from Laplace transform theory.</p>
+<p><span class="math display">\[R(s) = \frac{1}{s^2}\]</span></p>
+<pre><code>and</code></pre>
+<p><span class="math display">\[Y(s) = \frac{\omega_n^2}{s^2(s^2+2\zeta\omega_ns+\omega_n^2)}\]</span></p>
+<p>whose inverse is:</p>
+<p><span class="math display">\[
+y(t) = t - \frac{2\zeta}{\omega_n} + \frac{e^{-\zeta\omega_nt}}{\omega_n\sqrt{1-\zeta^2}}\sin(\omega_dt+2\theta)
+\]</span></p>
+<p>where <span class="math inline">\(\theta = \cos^{-1}\zeta\)</span> and <span class="math inline">\(\omega_d = \omega_n\sqrt{1-\zeta^2}\)</span></p>
+<p>To create a Python sketch of the response to a ramp input, we’ll use the provided response formulas.</p>
+<p>The code below plots both the response of the system to a ramp input and the ramp input itself. The ramp_response function computes the system’s response using the given formula. The plot will illustrate how the system’s output behaves over time in response to a linearly increasing input. The parameters <span class="math inline">\(\zeta\)</span> and <span class="math inline">\(\omega_n\)</span> can be adjusted to see how different system characteristics affect the response.</p>
+<div id="eddbb6f0" class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Time array</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">500</span>)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co"># System parameters</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>zeta <span class="op">=</span> <span class="fl">0.3</span>  <span class="co"># Example damping ratio</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>omega_n <span class="op">=</span> <span class="dv">2</span>  <span class="co"># Example natural frequency</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate omega_s and theta</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>omega_s <span class="op">=</span> omega_n <span class="op">*</span> np.sqrt(<span class="dv">1</span> <span class="op">-</span> zeta<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>theta <span class="op">=</span> np.arccos(zeta) <span class="co"># np.arctan(np.sqrt(1 - zeta**2) / zeta)</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Response to ramp input</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> ramp_response(t, zeta, omega_n, omega_s, theta):</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> t <span class="op">-</span> (<span class="dv">2</span> <span class="op">*</span> zeta <span class="op">/</span> omega_n) <span class="op">+</span> (np.exp(<span class="op">-</span>zeta <span class="op">*</span> omega_n <span class="op">*</span> t) <span class="op">/</span> (omega_n <span class="op">*</span> np.sqrt(<span class="dv">1</span> <span class="op">-</span> zeta<span class="op">**</span><span class="dv">2</span>))) <span class="op">*</span> np.sin(omega_s <span class="op">*</span> t <span class="op">+</span> <span class="dv">2</span> <span class="op">*</span> theta)</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Ramp input</span></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>ramp_input <span class="op">=</span> t</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculating response</span></span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>response <span class="op">=</span> ramp_response(t, zeta, omega_n, omega_s, theta)</span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting</span></span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>plt.plot(t, response, label<span class="op">=</span><span class="st">'System Response to Ramp Input'</span>)</span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>plt.plot(t, ramp_input, label<span class="op">=</span><span class="st">'Ramp Input'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Response to a Ramp Input'</span>)</span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Time'</span>)</span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Response'</span>)</span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="19_Design_of_feedback_control_files/figure-html/cell-10-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<section id="comments" class="level5">
+<h5 class="anchored" data-anchor-id="comments">Comments</h5>
+<p>Note that from a transient perspective, there are no new behaviours. There is oscillations that we captured already analysing the unit-step response. This is the reason why we do not need to analyse the transient to multiple inputs.</p>
+<p>If however we look at the steady state, we now have a steady state error.</p>
+<p>Given: <span class="math display">\[
+y(t) = t - \frac{2\zeta}{\omega_n} + \frac{e^{-\zeta\omega_nt}}{\omega_n\sqrt{1-\zeta^2}}\sin(\omega_dt+2\theta)
+\]</span></p>
+<p>when <span class="math inline">\(t \rightarrow \infty\)</span>:</p>
+<p><span class="math display">\[
+y_{ss} = t - \frac{2\zeta}{\omega_n}
+\]</span></p>
+<p>The output follow the ramp input but with a <span class="math inline">\(\frac{2\zeta}{\omega_n}\)</span> steady state error.</p>
+<p>The steady state error can formally be calculated as:</p>
+<p><span class="math display">\[
+e_{ss} = r - y_{ss} = t -  \big(t - \frac{2\zeta}{\omega_n}\big) = \frac{2\zeta}{\omega_n}
+\]</span></p>
+</section>
+</section>
+</section>
+<section id="analytical-calculation" class="level3">
+<h3 class="anchored" data-anchor-id="analytical-calculation">Analytical Calculation</h3>
+<p>Analytically, the steady-state error can be determined using the final value theorem of Laplace transforms.</p>
+<p>In this case, we are not interested in the transient behaviour which we analyse only through the response to the unit-step input.</p>
+<p>The theorem states that the steady-state value of a function can be found by taking the limit as <span class="math inline">\(s\)</span> (the Laplace variable) approaches zero of <span class="math inline">\(s\)</span> times the Laplace transform of the function.</p>
+<p>For example, the steady-state error for a ramp input can be calculated by applying the final value theorem to the error signal <span class="math inline">\(E(s)\)</span>, which is the difference between the input signal <span class="math inline">\(R(s)\)</span> and the output signal <span class="math inline">\(Y(s)\)</span>. This involves evaluating the limit:</p>
+<p><span class="math display">\[ e_{ss} = \lim_{s \to 0} sE(s) \]</span></p>
+<p>where <span class="math inline">\(E(s) = R(s) - Y(s)\)</span>.</p>
+<p>For our system:</p>
+<img src="./pics/19_Design_of_feedback_control_system.png" alt="19_Design_of_feedback_control_system
+" style="width:450px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<p><span class="math display">\[
+\frac{E(s)}{R(s)} = \frac{1}{1+G(s)}
+\]</span></p>
+<p>From which:</p>
+<p><span class="math display">\[
+E(s) = \frac{R(s)}{1+G(s)}
+\]</span></p>
+<p>Applying the final value theorem:</p>
+<p><span class="math display">\[ e_{ss} = \lim_{s \to 0} s \frac{R(s)}{1+G(s)} \]</span></p>
+<p><em>Remember the conditions for applycability of the final value theorem: <span class="math inline">\(sE(s)\)</span> has no poles on the imaginary axis or in the RHP</em>.</p>
+<p><span class="math display">\[
+\frac{E(s)}{R(s)} = \frac{1}{1 + \frac{\omega_n^2}{s(s+2\zeta\omega_n)}} = \frac{s(s+2\zeta\omega_n)}{s^2 +2\zeta\omega_ns + \omega_n^2}
+\]</span></p>
+<p>given that <span class="math inline">\(R(s)=\frac{1}{s^2}\)</span> we obtain:</p>
+<p><span class="math display">\[
+E(s) = \frac{(s+2\zeta\omega_n)}{s(s^2 +2\zeta\omega_n s + \omega_n^2)}
+\]</span></p>
+<p><span class="math display">\[
+sE(s) = \frac{(s+2\zeta\omega_n)}{(s^2 +2\zeta\omega_n s + \omega_n^2)}
+\]</span></p>
+<p>This transfer function has no poles on the imaginary axis or in the right half plane and we can apply the Final Value Theorem. <strong>This is important to check!</strong></p>
+<p>and finally:</p>
+<p><span class="math display">\[ e_{ss} = \lim_{s \to 0} s E(s) = \frac{2\zeta}{\omega_n}\]</span></p>
+<section id="parabolic-input" class="level4">
+<h4 class="anchored" data-anchor-id="parabolic-input">3. <strong>Parabolic Input:</strong></h4>
+<p>The parabolic input represents an even more challenging scenario, typically resulting in an infinite steady-state error for a standard second-order system. This reflects the system’s inability to track a signal that changes at an accelerating rate.</p>
+<p>Applying the same reasoning: <span class="math display">\[
+   R(s) = \frac{1}{s^3}
+   \]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+   sE(s) = \frac{(s+2\zeta\omega_n)}{s(s^2 +2\zeta\omega_n s + \omega_n^2)}
+   \]</span></p>
+<p><strong>We cannot apply the Final Value Theorem because we have one pole on the imaginary axis.</strong></p>
+<p>To understand the steady state error we can analyse:</p>
+<p><span class="math display">\[
+   E(s) = \frac{(s+2\zeta\omega_n)}{s^2(s^2 +2\zeta\omega_n s + \omega_n^2)}
+   \]</span></p>
+<p>invert this expression to obtain <span class="math inline">\(e(t)\)</span> for <span class="math inline">\(t\rightarrow \infty\)</span>. This function has two poles at the origin, which means that we can interpret this as an unstable system, i.e., the error grows unbounded.</p>
+<p>The standard second-order system in feedback loop is not able to follow a parabolic input. It means that this system might need to be limited to cases where inputs are steps and ramps only. Alternatively we need a suitable controller.</p>
+<p>To sum up we can re-run the same code we had in notebook <code>18_Performance_of_Feedback_Systems</code>. The unbounded growth of the steady state error for the parabolic input is clearly visible.</p>
+<div id="54be1d2a" class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> control</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Define system parameters (modify as needed for your example)</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>Kp <span class="op">=</span> <span class="fl">1.0</span>    <span class="co"># Proportional gain</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>omega_n <span class="op">=</span> <span class="fl">1.0</span>  <span class="co"># Natural frequency</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>zeta <span class="op">=</span> <span class="fl">0.5</span>  <span class="co"># Damping ratio</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>num <span class="op">=</span> [Kp <span class="op">*</span> omega_n<span class="op">**</span><span class="dv">2</span>]</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>den <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span> <span class="op">*</span> zeta <span class="op">*</span> omega_n, omega_n<span class="op">**</span><span class="dv">2</span>]</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Create transfer function</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>G <span class="op">=</span> control.tf(num, den)</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Time vector</span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">20</span>, <span class="dv">1000</span>)</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Unit Step Input</span></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>t_step, y_step <span class="op">=</span> control.step_response(G, t)</span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>e_step <span class="op">=</span> <span class="dv">1</span> <span class="op">-</span> y_step  <span class="co"># Steady-state error for step input</span></span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Unit Ramp Input</span></span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>t_ramp, y_ramp <span class="op">=</span> control.forced_response(G, t, t)</span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>e_ramp <span class="op">=</span> t <span class="op">-</span> y_ramp  <span class="co"># Steady-state error for ramp input</span></span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Unit Parabola Input</span></span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>t_parabola, y_parabola <span class="op">=</span> control.forced_response(G, t, t<span class="op">**</span><span class="dv">2</span> <span class="op">/</span> <span class="dv">2</span>)</span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>e_parabola <span class="op">=</span> t<span class="op">**</span><span class="dv">2</span> <span class="op">/</span> <span class="dv">2</span> <span class="op">-</span> y_parabola  <span class="co"># Steady-state error for parabola input</span></span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting</span></span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">15</span>, <span class="dv">5</span>))</span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">1</span>)</span>
+<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a>plt.plot(t_step, y_step, label<span class="op">=</span><span class="st">'Response'</span>)</span>
+<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a>plt.plot(t_step, np.ones_like(t_step), <span class="st">'r--'</span>, label<span class="op">=</span><span class="st">'Step Input'</span>)</span>
+<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a>plt.plot(t_step, e_step, <span class="st">'g:'</span>, label<span class="op">=</span><span class="st">'Error'</span>)</span>
+<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Response to Unit Step Input'</span>)</span>
+<span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Time'</span>)</span>
+<span id="cb13-39"><a href="#cb13-39" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Output'</span>)</span>
+<span id="cb13-40"><a href="#cb13-40" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb13-41"><a href="#cb13-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-42"><a href="#cb13-42" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">2</span>)</span>
+<span id="cb13-43"><a href="#cb13-43" aria-hidden="true" tabindex="-1"></a>plt.plot(t_ramp, y_ramp, label<span class="op">=</span><span class="st">'Response'</span>)</span>
+<span id="cb13-44"><a href="#cb13-44" aria-hidden="true" tabindex="-1"></a>plt.plot(t_ramp, t_ramp, <span class="st">'r--'</span>, label<span class="op">=</span><span class="st">'Ramp Input'</span>)</span>
+<span id="cb13-45"><a href="#cb13-45" aria-hidden="true" tabindex="-1"></a>plt.plot(t_ramp, e_ramp, <span class="st">'g:'</span>, label<span class="op">=</span><span class="st">'Error'</span>)</span>
+<span id="cb13-46"><a href="#cb13-46" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Response to Unit Ramp Input'</span>)</span>
+<span id="cb13-47"><a href="#cb13-47" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Time'</span>)</span>
+<span id="cb13-48"><a href="#cb13-48" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Output'</span>)</span>
+<span id="cb13-49"><a href="#cb13-49" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb13-50"><a href="#cb13-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-51"><a href="#cb13-51" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">3</span>)</span>
+<span id="cb13-52"><a href="#cb13-52" aria-hidden="true" tabindex="-1"></a>plt.plot(t_parabola, y_parabola, label<span class="op">=</span><span class="st">'Response'</span>)</span>
+<span id="cb13-53"><a href="#cb13-53" aria-hidden="true" tabindex="-1"></a>plt.plot(t_parabola, t_parabola<span class="op">**</span><span class="dv">2</span> <span class="op">/</span> <span class="dv">2</span>, <span class="st">'r--'</span>, label<span class="op">=</span><span class="st">'Parabola Input'</span>)</span>
+<span id="cb13-54"><a href="#cb13-54" aria-hidden="true" tabindex="-1"></a>plt.plot(t_parabola, e_parabola, <span class="st">'g:'</span>, label<span class="op">=</span><span class="st">'Error'</span>)</span>
+<span id="cb13-55"><a href="#cb13-55" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Response to Unit Parabola Input'</span>)</span>
+<span id="cb13-56"><a href="#cb13-56" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Time'</span>)</span>
+<span id="cb13-57"><a href="#cb13-57" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Output'</span>)</span>
+<span id="cb13-58"><a href="#cb13-58" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb13-59"><a href="#cb13-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-60"><a href="#cb13-60" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb13-61"><a href="#cb13-61" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="19_Design_of_feedback_control_files/figure-html/cell-11-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="practical-implications" class="level3">
+<h3 class="anchored" data-anchor-id="practical-implications">Practical Implications</h3>
+<p>In practical terms, understanding and calculating the steady-state error is crucial for system design and tuning. It helps in setting realistic performance expectations and in choosing the right type of controller or compensator to minimize the error for the given type of input. For instance, in systems where following a ramp input is important, designers might opt for different controller settings or add integral action to reduce the steady-state error.</p>
+<p>In summary, the steady-state error is a vital aspect of control system performance, offering insight into how well a system can maintain its output at or near a desired level in response to various types of inputs. Analyzing and minimizing this error is a key part of control system design and optimization.</p>
+</section>
+</section>
+<section id="exercise-and-questions" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-and-questions">Exercise and Questions</h2>
+<p>Now, let’s reinforce these concepts with some exercises: 1. <strong>Compute Peak Overshoot:</strong> Given a damping ratio of 0.5, calculate the peak overshoot $ M_p $. 2. <strong>Steady-State Error for a Ramp Input:</strong> For a system with $ = 0.3 $ and $ _n = 4 $, find the steady-state error for a ramp input. 3. <strong>Effect of Bandwidth on Stability:</strong> Discuss how increasing the bandwidth affects the system’s stability and its ability to reject noise.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script type="application/vnd.jupyter.widget-state+json">
+{"state":{},"version_major":2,"version_minor":0}
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/andreamunafo\.github\.io\/principles-of-automatic-controls");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/andreamunafo/principles-of-automatic-controls/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

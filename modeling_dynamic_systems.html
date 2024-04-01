@@ -1,0 +1,1867 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.552">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>principles-of-automatic-controls - Introduction to Modeling of Dynamic Systems</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+<meta property="og:title" content="principles-of-automatic-controls - Introduction to Modeling of Dynamic Systems">
+<meta property="og:description" content="Course in feedback control for the University of Pisa">
+<meta property="og:site_name" content="principles-of-automatic-controls">
+<meta name="twitter:title" content="principles-of-automatic-controls - Introduction to Modeling of Dynamic Systems">
+<meta name="twitter:description" content="Course in feedback control for the University of Pisa">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">principles-of-automatic-controls</span>
+    </a>
+  </div>
+        <div class="quarto-navbar-tools tools-end">
+</div>
+          <div id="quarto-search" class="" title="Search"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./modeling_dynamic_systems.html">Introduction to Modeling of Dynamic Systems</a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Feedback Control</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./faq.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Frequently Asked Questions (FAQ)</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./syllabus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Syllabus for “Principles of Automatic Control”</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./toc.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Table of Contents</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./update_and_manage_local_changes_guide.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A Guide to Updating Your Local Repository with Git in Anaconda’s Virtual Environment</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./getting_started_with_python_and_jupyter_notebook.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Getting Started with Python and Jupyter Notebooks</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principles of Automatic Control</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./basics_of_feedback_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Feedback Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./introduction_to_control_problem.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to the control problem</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dynamic_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modeling in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dynamic_response.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Dynamic response of control systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06_inverse_laplace_transform.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Inverse Laplace Transform: Partial fraction decomposition</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./modeling_dynamic_systems.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Introduction to Modeling of Dynamic Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./control_system_components.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Control System Components</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./models_of_control_devices_and_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Models of Controlled Devices</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./hardware_and_case_studies.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Hardware of Control Systems and Case Studies</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ac_hardware_and_case_studies.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">AC Motion Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./a_first_complete_application.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A Feedback Control System</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./principles_of_feedback_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principles of Feedback Control</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./feedback_systems_and_their_effects.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Feedback systems and their effects</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./introduction_to_control_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./stability.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Stability Analysis in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./stability_and_routh_criterion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Stability Analysis in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./performance_of_feedback_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Performance of Feedback Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./design_of_feedback_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Design Cycle for a Standard Second-Order System</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./20_Design_of_feedback_control_continued.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Understanding the Standard Second-Order System: Recap</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./steady_state_accuracy_and_design_principles.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Steady State Accuracy and Design Principles</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./compensator_design_using_root_locus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compensator Design</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./design_with_the_root_locus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Design with the Root Locus</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./compensators_and_root_locus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compensators and the Root Locus</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./introduction_to_frequency_domain_analysis_in_control_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Frequency Domain Analysis in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./application_of_nyquist_stability_criterion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Application of Nyquist Stability Criterion in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./the_nyquist_stability_criterion_and_relative_stability.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The Nyquist Stability Criterion and Relative Stability</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./bode_plots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Bode Plot Analysis</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./feedback_system_performance_based_on_frequency_response.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Feedback System Performance Based On Frequency Response</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./compensator_design_using_frequency_response_plots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principles of Automatic Control: Lead and Lag Compensation</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">IT_TCLab_🇮🇹</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/spacecraft_thermal_control_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Il Laboratorio di Controllo della Temperatura</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/tclab_exercises_report_template_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modello di report sugli esercizi TCLab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/tclab_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Il Laboratorio di Controllo della Temperatura</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/understanding_tclab_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Comprendere TCLab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/tclab_lab_1_coding_a_relay_controller_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 1: Codifica di un controller relè</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/system_model_and_identification_tclab_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modellazione del sistema</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/step_testing_tclab_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Passo Test</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/fitting_step_test_data_to_empirical_models_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Adattamento dei dati dei test di fase ai modelli empirici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/tclab_lab_2_model_identification_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 2: Identificazione del modello</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/tclab_lab_2_fitting_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Identificazione del modello: adattamento dei modelli ai dati</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/relay_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Controllo relè</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/pid_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Controllo PID</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/lab-assignment-pid-control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compito di laboratorio: Controllo PID</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/lab-assignment-pi-control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compito di laboratorio 4: Controllo PI</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">IT_🇮🇹</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/faq_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Domande frequenti (FAQ)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/syllabus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Programma del corso “Principi del controllo automatico”</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/update_and_manage_local_changes_guide_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Aggiornare il Proprio Repository Locale Mantenendo le Modifiche Locali</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/getting_started_with_python_and_jupyter_notebook_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Guida introduttiva ai notebook Python e Jupyter</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/intro_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principi di controllo automatico</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/basics_of_feedback_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione ai sistemi di controllo del feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/introduction_to_control_problem_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione al problema del controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/dynamic_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modellazione nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/dynamic_response_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Risposta dinamica dei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/06_inverse_laplace_transform_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Trasformata di Laplace inversa: scomposizione parziale di frazioni</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/modeling_dynamic_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione alla modellazione dei sistemi dinamici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/control_system_components_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Componenti del sistema di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/models_of_control_devices_and_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modelli di dispositivi controllati</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/hardware_and_case_studies_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Hardware dei sistemi di controllo e casi di studio</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/ac_hardware_and_case_studies_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sistemi di controllo del movimento CA</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/a_first_complete_application_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Un sistema di controllo del feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/principles_of_feedback_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principi di controllo del feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/feedback_systems_and_their_effects_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sistemi di feedback e loro effetti</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/introduction_to_control_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione ai sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/stability_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analisi di stabilità nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/stability_and_routh_criterion_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analisi di stabilità nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/performance_of_feedback_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prestazioni dei sistemi di feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/design_of_feedback_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Ciclo di progettazione per un sistema standard del secondo ordine</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/20_Design_of_feedback_control_continued_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Comprensione del sistema standard del secondo ordine: riepilogo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/steady_state_accuracy_and_design_principles_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Precisione dello stato stazionario e principi di progettazione</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/compensator_design_using_root_locus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Progettazione del compensatore</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/design_with_the_root_locus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Progettare con il luogo delle radici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/compensators_and_root_locus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compensatori e luogo delle radici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/introduction_to_frequency_domain_analysis_in_control_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione all’analisi nel dominio della frequenza nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/application_of_nyquist_stability_criterion_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Applicazione del criterio di stabilità di Nyquist nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/the_nyquist_stability_criterion_and_relative_stability_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Il criterio di stabilità di Nyquist e la stabilità relativa</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/bode_plots_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analisi del diagramma di Bode</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/feedback_system_performance_based_on_frequency_response_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prestazioni del sistema di feedback basate sulla risposta in frequenza</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/index_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Syllabus - Fondamenti di Automatica</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">TCLab</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/spacecraft_thermal_control_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The Temperature Control Laboratory</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/tclab_exercises_report_template.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Exercises Report Template</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The Temperature Control Lab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/understanding_tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Understanding TCLab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/tclab_lab_1_coding_a_relay_controller-solution.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 1: Coding a relay controller</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/tclab_lab_1_coding_a_relay_controller.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 1: Coding a relay controller</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/system_model_and_identification_tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">System Modeling</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/step_testing_tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Step Testing</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/fitting_step_test_data_to_empirical_models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Fitting Step Test Data to Empirical Models</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/tclab_lab_2_model_identification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 2: Model Identification</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/tclab_lab_2_model_identification_solutions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 2: Model Identification</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/tclab_lab_2_fitting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Model Identification: Fitting models to data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/relay_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Relay Control</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/pid_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">PID Control</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/lab-assignment-pid-control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab Assignment: PID Control</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/lab-assignment-pi-control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab Assignment 4: PI Control</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#mechanics" id="toc-mechanics" class="nav-link active" data-scroll-target="#mechanics">Mechanics</a>
+  <ul class="collapse">
+  <li><a href="#mass" id="toc-mass" class="nav-link" data-scroll-target="#mass">Mass</a></li>
+  <li><a href="#friction" id="toc-friction" class="nav-link" data-scroll-target="#friction">Friction</a></li>
+  <li><a href="#springs" id="toc-springs" class="nav-link" data-scroll-target="#springs">Springs</a></li>
+  <li><a href="#deriving-the-mathematical-model" id="toc-deriving-the-mathematical-model" class="nav-link" data-scroll-target="#deriving-the-mathematical-model">Deriving the Mathematical Model</a></li>
+  </ul></li>
+  <li><a href="#physical-models-and-approximations" id="toc-physical-models-and-approximations" class="nav-link" data-scroll-target="#physical-models-and-approximations">Physical models and approximations</a></li>
+  <li><a href="#transforming-into-transfer-function-model" id="toc-transforming-into-transfer-function-model" class="nav-link" data-scroll-target="#transforming-into-transfer-function-model">Transforming into Transfer Function Model</a></li>
+  <li><a href="#fixed-axis-rotational-systems" id="toc-fixed-axis-rotational-systems" class="nav-link" data-scroll-target="#fixed-axis-rotational-systems">Fixed axis rotational systems</a>
+  <ul class="collapse">
+  <li><a href="#changing-output-variable" id="toc-changing-output-variable" class="nav-link" data-scroll-target="#changing-output-variable">Changing output variable</a></li>
+  <li><a href="#from-a-transfer-function-block-diagram-to-state-variables-models" id="toc-from-a-transfer-function-block-diagram-to-state-variables-models" class="nav-link" data-scroll-target="#from-a-transfer-function-block-diagram-to-state-variables-models">From a transfer function block diagram to state variables models</a></li>
+  </ul></li>
+  <li><a href="#introduction-to-thermal-systems-in-automatic-control" id="toc-introduction-to-thermal-systems-in-automatic-control" class="nav-link" data-scroll-target="#introduction-to-thermal-systems-in-automatic-control">Introduction to Thermal Systems in Automatic Control</a>
+  <ul class="collapse">
+  <li><a href="#heat-transfer-through-a-solid-wall" id="toc-heat-transfer-through-a-solid-wall" class="nav-link" data-scroll-target="#heat-transfer-through-a-solid-wall">Heat Transfer Through a Solid Wall</a></li>
+  <li><a href="#heat-transfer-at-the-liquid-solid-interface" id="toc-heat-transfer-at-the-liquid-solid-interface" class="nav-link" data-scroll-target="#heat-transfer-at-the-liquid-solid-interface">Heat Transfer at the Liquid-Solid Interface</a></li>
+  <li><a href="#heat-storage-in-a-solid" id="toc-heat-storage-in-a-solid" class="nav-link" data-scroll-target="#heat-storage-in-a-solid">Heat Storage in a Solid</a></li>
+  <li><a href="#heat-storage-in-a-solid-1" id="toc-heat-storage-in-a-solid-1" class="nav-link" data-scroll-target="#heat-storage-in-a-solid-1">Heat Storage in a Solid</a></li>
+  <li><a href="#heat-storage-in-a-liquid-tank" id="toc-heat-storage-in-a-liquid-tank" class="nav-link" data-scroll-target="#heat-storage-in-a-liquid-tank">Heat Storage in a Liquid Tank</a></li>
+  </ul></li>
+  <li><a href="#principle-of-analogous-variables" id="toc-principle-of-analogous-variables" class="nav-link" data-scroll-target="#principle-of-analogous-variables">Principle of Analogous Variables</a>
+  <ul class="collapse">
+  <li><a href="#sidebar---modeling-and-analysis-of-a-parallel-rlc-circuit-with-a-current-source" id="toc-sidebar---modeling-and-analysis-of-a-parallel-rlc-circuit-with-a-current-source" class="nav-link" data-scroll-target="#sidebar---modeling-and-analysis-of-a-parallel-rlc-circuit-with-a-current-source">Sidebar - Modeling and Analysis of a Parallel RLC Circuit with a Current Source</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/andreamunafo/principles-of-automatic-controls/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Introduction to Modeling of Dynamic Systems</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
+<p>Modeling serves as the backbone for understanding and manipulating dynamic systems. These dynamic systems encompass various components:</p>
+<ul>
+<li>Plants</li>
+<li>Controllers</li>
+<li>Sensors</li>
+<li>Actuators</li>
+<li>Any other intervening devices</li>
+</ul>
+<p>The primary goal? To establish precise equations that define these dynamic systems.</p>
+<p>Recalling our previous discussions, our focus has always been on applying physical laws. By doing so, we can transform the derived differential equations into more digestible forms. Two such forms that we’ll extensively use are:</p>
+<ul>
+<li>State variable models</li>
+<li>Transfer function models</li>
+</ul>
+<p>These models offer a structured way to represent systems mathematically, allowing for analysis and design.</p>
+<section id="mechanics" class="level2">
+<h2 class="anchored" data-anchor-id="mechanics">Mechanics</h2>
+<p>While this might feel like revisiting old territory, a review of the mechanics of translation is important. This is because the physical models we use in control systems are derived from these very principles.</p>
+<p>Under the umbrella of mechanics of translation, three fundamental elements emerge:</p>
+<ol type="1">
+<li>The ideal mass <span class="math inline">\(M\)</span></li>
+<li>The friction coefficient <span class="math inline">\(B\)</span></li>
+<li>The spring constant <span class="math inline">\(K\)</span></li>
+</ol>
+<section id="mass" class="level3">
+<h3 class="anchored" data-anchor-id="mass">Mass</h3>
+<p>The component <span class="math inline">\(M\)</span>, representing the ideal mass, is a simplification, a lumped parameter idealization of a distributed mass. In real-world scenarios, you wouldn’t encounter a single particle of mass <span class="math inline">\(M\)</span>. This is an approximation where we assume that the entire mass is centered at its centre of gravity.</p>
+<p><strong>Pop-up Question</strong>: Why do we use lumped parameter idealization for the ideal mass <span class="math inline">\(M\)</span> in dynamic systems?</p>
+<p><strong>Answer</strong>: We use lumped parameter idealization to simplify the representation of distributed masses by approximating them as a single point mass concentrated at its centre of gravity. This makes modeling and analysis more tractable.</p>
+</section>
+<section id="friction" class="level3">
+<h3 class="anchored" data-anchor-id="friction">Friction</h3>
+<p>The friction coefficient <span class="math inline">\(B\)</span> presents its own set of challenges. Friction can arise due to various phenomena, hence different models might be necessary.</p>
+<p>For instance, constant drive friction between surfaces would result in a <strong>constant frictional force</strong> for all velocities, known as <strong>Coulomb friction</strong>.</p>
+<p>On the other hand, when two surfaces slide with a <strong>viscous medium in between</strong>, the <strong>frictional force is typically proportional to velocity</strong>, leading to the equation <span class="math inline">\(F=Bv\)</span>, where <span class="math inline">\(B\)</span> is the coefficient of viscous friction. This model is prevalent when a solid body interacts with a fluidic medium.</p>
+<p>It’s essential to acknowledge the presence of other friction types, like Coulomb friction, in devices like DC motors due to brush contact. But since our initial discussions revolve around linear models, we’ll consider all non-linear frictions as disturbances on the system.</p>
+</section>
+<section id="springs" class="level3">
+<h3 class="anchored" data-anchor-id="springs">Springs</h3>
+<p>Lastly, the spring constant <span class="math inline">\(K\)</span> comes into play when there’s <strong>elastic deformation</strong>. Here, the force due to the spring effect is given by <span class="math inline">\(F=Kx\)</span>, where <span class="math inline">\(x\)</span> is the displacement.</p>
+<p><strong>Note</strong>: It’s essential to understand that these models, while incredibly useful, are approximations. They simplify real-world complexities into digestible chunks that can be used for design and analysis.</p>
+</section>
+<section id="deriving-the-mathematical-model" class="level3">
+<h3 class="anchored" data-anchor-id="deriving-the-mathematical-model">Deriving the Mathematical Model</h3>
+<p>Let’s consider a complex mechanical system, in this case, a car’s suspension system, and see how we can approximate it through a simpler mass, spring, damper.</p>
+<table>
+<tbody><tr>
+<td>
+<img src="./pics/07_modeling_dynamic_systems_hydraulic-power-steering-parameters.png" alt="hydraulic-power-steering" style="width: 450px;">
+</td></tr>
+</tbody></table>
+<p>Given a physical system, our first step is to derive its mathematical model. This is essential for analysis or design.</p>
+<p>Let’s take, for instance, the load on a system comprising the mass of a power piston, the drive linkage, and wheels. All these components have distributed masses. However, for our model, we’ll simplify this as a single particle of mass <span class="math inline">\(M\)</span>.</p>
+<p>In our case, the distributed mass is the mass of the power piston, the mass of the drive linkage and the mass of the wheels. But we will model all this as a particle mass <span class="math inline">\(M\)</span>.</p>
+<p>Frictions in our system arise from various sources, such as the motion of a piston in a viscous medium or the interaction between the drive linkage and its surroundings. We’ll model these frictions using the parameter <span class="math inline">\(B\)</span> and a Viscous Friction.</p>
+<p>The tires on the road could create a Coulomb Friction, but we will consider this as a disturbance acting on our system.</p>
+<p>Finally, the elastic behaviour of the tires can be modeled through a spring with parameter <span class="math inline">\(k\)</span>.</p>
+<p>With these considerations we can model the cat’s suspension system with:</p>
+<table>
+<tbody><tr>
+<td>
+<img src="./pics/07_modeling_dynamic_systems_mechanical-systems-models-simpler.png" alt="mechanical-systems-models" style="width: 550px;">
+</td></tr>
+</tbody></table>
+<p>This transformation, while involving various approximations, has proven to be effective for control system design.</p>
+<p>We saw that depending on the <span class="math inline">\(\zeta\)</span> parameter we have undamped (<span class="math inline">\(\zeta=0\)</span>), damped (<span class="math inline">\(0&lt;\zeta&lt;1\)</span>), critically damped (<span class="math inline">\(\zeta=1\)</span>) and over damped systems (<span class="math inline">\(\zeta&gt;1\)</span>).</p>
+<p>In some situations, we might need to <strong>introduce intentional friction</strong> to control the system’s damping. This can be achieved using a device called a dashpot, which uses an oil medium to provide resistance against motion.</p>
+<p>The same symbol (dashpot) we will use for intentional and unintentional friction.</p>
+</section>
+</section>
+<section id="physical-models-and-approximations" class="level2">
+<h2 class="anchored" data-anchor-id="physical-models-and-approximations">Physical models and approximations</h2>
+<p>Any physical situation, be it in nature or industry, especially if it pertains to a mechanical system in translational mode, can be modeled using the principles we’ve discussed. This representation will serve as our main model.</p>
+<p>However, as we move forward, it’s essential to recognize the complexities and approximations we’ve employed. Every model we derive has its roots in various assumptions and simplifications, which are vital to making the model manageable.</p>
+<p>Consider the parameters <span class="math inline">\(M\)</span> (the ideal mass), <span class="math inline">\(K\)</span> (the spring constant), and <span class="math inline">\(B\)</span> (the dash pot constant or viscous friction constant). In our model, <span class="math inline">\(F_\omega\)</span> signifies a disturbance force acting on the system. It could be attributed to uncontrolled friction or even environmental factors. We’ve chosen the symbol “<span class="math inline">\(\omega\)</span>” to represent disturbances.</p>
+<p>The variables <span class="math inline">\(y\)</span> and <span class="math inline">\(v\)</span> denote displacement and velocity, respectively.</p>
+<table>
+<tbody><tr>
+<td>
+<img src="./pics/07_modeling_dynamic_systems_mechanical-systems-models.png" alt="mechanical-systems-models" style="width: 650px;">
+</td></tr>
+</tbody></table>
+<p><strong>Pop-up Question</strong>: Why do we need to model disturbances in our system? <strong>Answer</strong>: Disturbances can affect the performance and stability of a control system. By modeling them, we can design control strategies to mitigate their effects and ensure the system operates as intended.</p>
+<p>To transition this physical model into a differential equation model, it’s often useful to sketch a free body diagram.</p>
+<table>
+<tbody><tr>
+<td>
+<img src="./pics/07_modeling_dynamic_systems_mechanical-systems-models-forces.png" alt="mechanical-systems-models" style="width: 650px;">
+</td></tr>
+</tbody></table>
+<p>This diagram visualizes the masses as nodes, and the forces acting on them are depicted with arrows. For our current system, we have a single mass, <span class="math inline">\(M\)</span>, with an applied force <span class="math inline">\(F\)</span> and a disturbance force <span class="math inline">\(F_\omega\)</span>. Additionally, the spring force <span class="math inline">\(Ky\)</span> and frictional force <span class="math inline">\(Bv\)</span> oppose the motion. We must also consider the inertial force due to the mass <span class="math inline">\(M\)</span> itself, which counteracts the movement.</p>
+<p>A crucial principle in mechanics is the force balance equation, which states that forces promoting motion should equal forces opposing it. Therefore, our equation becomes:</p>
+<p><span class="math display">\[
+M\dot{v} + B{v} + Ky = F - F_\omega
+\]</span></p>
+<p>Here, <span class="math inline">\(F-F_\omega\)</span> is the <strong>net force</strong> acting to the system.</p>
+<p><span class="math inline">\(\dot{v}\)</span> denotes acceleration, and <span class="math inline">\(F_\omega\)</span> can either assist or counteract (it is an algebric quantity) the applied force <span class="math inline">\(F\)</span> depending on its nature. <em>It’s worth noting that even if <span class="math inline">\(F_\omega\)</span> assists the motion, it’s still considered a disturbance, as the system wasn’t designed with it in mind.</em></p>
+<p>We can convert this to a state variable model:</p>
+<p><span class="math display">\[
+\begin{align}
+x_1 &amp;= y\\
+x_2 &amp;= v = \dot{y}
+\end{align}
+\]</span></p>
+<p>and we saw how to do this already. Let’s instead focus on the transfer function model.</p>
+</section>
+<section id="transforming-into-transfer-function-model" class="level2">
+<h2 class="anchored" data-anchor-id="transforming-into-transfer-function-model">Transforming into Transfer Function Model</h2>
+<p>Every control system can be portrayed in the Laplace domain, making it easier to analyze and design control strategies. For our system, the transfer function is a relation between a single input and output. However, note that the system is a two inputs (<span class="math inline">\(F, F_\omega\)</span>), one output (<span class="math inline">\(y\)</span>).</p>
+<p>We can re-write our equation to <strong>explicit the output variable</strong>:</p>
+<p><span class="math display">\[
+M\ddot{y} + B\dot{y} + Ky = F - F_\omega
+\]</span></p>
+<p>The Transfer Function is a SISO description and hence, using as a block diagram:</p>
+<table>
+<tbody><tr>
+<td>
+<img src="./pics/07_modeling_dynamic_systems_mechanical-systems-models-transfer-function.png" alt="mechanical-systems-models-transfer-function" style="width: 650px;">
+</td></tr>
+</tbody></table>
+<p>We can hence write the transfer function between <span class="math inline">\(Y(s)\)</span> and <span class="math inline">\(F(s)\)</span>, and between <span class="math inline">\(Y(s)\)</span> and <span class="math inline">\(F_\omega(s)\)</span></p>
+<p>Given the above representation, we can express the transfer function between <span class="math inline">\(Y(s)\)</span> and <span class="math inline">\(F(s)\)</span> (assuming <span class="math inline">\(F_\omega(s)=0\)</span>) as:</p>
+<p><span class="math display">\[
+\frac{Y(s)}{F(s)} = \frac{1}{Ms^s+Bs+K}
+\]</span></p>
+<p>and this is also the transfer function between <span class="math inline">\(Y(s)\)</span> and <span class="math inline">\(F_\omega(s)\)</span>.</p>
+<p>We can then call:</p>
+<p><span class="math display">\[
+\frac{Y(s)}{F(s)} = \frac{1}{Ms^s+Bs+K} = G(s)
+\]</span></p>
+<p>With some simplification and standardization, and considering the system’s damping and natural frequency, we get:</p>
+<p><span class="math display">\[
+G(s)=\frac{1/K}{\frac{M}{K}s^s + \frac{B}{K}s + 1} = \frac{K_S}{\frac{1}{\omega_n^2}s^2 + \frac{2\zeta}{\omega_n} s + 1 }
+\]</span></p>
+<p>Where I called <span class="math inline">\(K_S\)</span> the system gain to differentiate it from <span class="math inline">\(K\)</span>.</p>
+<p>This function, termed as the quadratic lag, is a second-order lag in contrast to the first-order (or simple) lag we previously discussed.</p>
+<section id="units" class="level4">
+<h4 class="anchored" data-anchor-id="units">Units</h4>
+<p>The importance of understanding these units and parameters cannot be overstated. They form the foundation upon which our mathematical models are built, allowing us to make predictions, design controllers, and understand system behavior.</p>
+<ul>
+<li>Force: Newtons, <span class="math inline">\(N\)</span></li>
+<li>Displacement <span class="math inline">\(y\)</span>: Meters, <span class="math inline">\(m\)</span></li>
+<li>Velocity <span class="math inline">\(v\)</span>: Meters/second, <span class="math inline">\(m/s\)</span></li>
+<li>Acceleration: Meters/second^2, <span class="math inline">\(m/s^2\)</span></li>
+<li>Mass <span class="math inline">\(M\)</span>: kilograms, <span class="math inline">\(kg\)</span>, (<span class="math inline">\(F=M\ddot{y}\)</span>) and hence also <span class="math inline">\(N/(m/s^2)\)</span></li>
+<li>Friction Coefficient <span class="math inline">\(B\)</span>: Newtons/(meters/second), <span class="math inline">\(N/(m/s)\)</span> (<span class="math inline">\(F=Bv\)</span>)</li>
+<li>Spring Constant <span class="math inline">\(K\)</span>: Newtons/meter, <span class="math inline">\(N/m\)</span> (<span class="math inline">\(F=Kx\)</span>)</li>
+</ul>
+<p><strong>Pop-up Question</strong>: What distinguishes a second-order lag (quadratic lag) from a first-order (simple) lag?</p>
+<p><strong>Answer</strong>: A second-order lag has a quadratic term (s^2) in the denominator, while a first-order lag only has a linear term (s). This makes the second-order system more complex, with properties like oscillations and overshoot that aren’t present in a first-order system.</p>
+</section>
+</section>
+<section id="fixed-axis-rotational-systems" class="level1">
+<h1>Fixed axis rotational systems</h1>
+<p>Moving on to rotational systems, we find parallels with our previous discussions. Key parameters here include:</p>
+<ul>
+<li><span class="math inline">\(J\)</span>: Moment of inertia of the system (Remember that the inertial torque due to <span class="math inline">\(J\)</span> opposes the motion).</li>
+<li><span class="math inline">\(B\)</span>: Viscous friction coefficient</li>
+<li><span class="math inline">\(K\)</span>: Spring constant (though often ignored in many applications)</li>
+</ul>
+<p>Consider, for instance, the steering of an antenna.</p>
+<img src="./pics/07_modeling_dynamic_systems_antenna-tracking-system-gopal.png" alt="antenna-tracking-system-gopal" style="width: 450px;"><img src="./pics/07_modeling_dynamic_systems_antenna-tracking-system-gopal-block-diagram.png" alt="antenna-tracking-system-gopal-block-diagram" style="width: 450px;"><br><table>
+<tbody><tr>
+ 
+
+</tr>
+</tbody></table>
+<p>The moment of inertia of the antenna might be represented by the <span class="math inline">\(J\)</span> parameter. Yet, this parameter might also account for the inertia of other components, such as the motor rotor, shaft, and even gears. As before the elements are distributed, but all these are lumped together into a single parameter for modeling.</p>
+<p>Similarly, the frictional effects (e.g., bearings, etc) are encapsulated within the <span class="math inline">\(B\)</span> parameter. Remember, damping forces play a crucial role in controlling the oscillations in a system and ensuring it settles to a stable position over time.</p>
+<p>Here, we usually encounter two main parameters, <span class="math inline">\(J\)</span> and <span class="math inline">\(B\)</span>.</p>
+<p>In these systems, we often <strong>neglect</strong> the spring effect <span class="math inline">\(K\)</span> due to the short length of shafts and the relatively low torques generated. <strong><span class="math inline">\(K\)</span> is due to the torsional effect of the shaft</strong>. However, in certain applications, like robot-controlled systems, the flexibility of the shaft becomes significant, warranting the inclusion of the <span class="math inline">\(K\)</span> parameter.</p>
+<p>To establish a mathematical model for such a system, we’ll represent the inertial element <span class="math inline">\(J\)</span>, applied torque <span class="math inline">\(T\)</span>, and frictional effect <span class="math inline">\(B\)</span>.</p>
+<table>
+<tbody><tr>
+<td>
+<img src="./pics/07_modeling_dynamic_systems_mechanical-systems-rotations-1.png" alt="mechanical-systems-rotations" style="width: 450px;">
+</td></tr>
+</tbody></table>
+<p>For our free-body diagram, the applied torque <span class="math inline">\(T\)</span> opposes the disturbance torque <span class="math inline">\(T_\omega\)</span>, and the frictional torque <span class="math inline">\(B\dot{\theta}\)</span> (where <span class="math inline">\(\dot{\theta}\)</span> is the angular velocity) opposes the motion.</p>
+<table>
+<tbody><tr>
+<td>
+<img src="./pics/07_modeling_dynamic_systems_mechanical-systems-rotations-1-torques.png" alt="mechanical-systems-rotations-1-torques" style="width: 450px;">
+</td></tr>
+</tbody></table>
+<p>Using similar principles as before, our equation becomes:</p>
+<p><span class="math display">\[
+J\ddot{\theta} + B \dot{\theta} = T − T_\omega
+\]</span></p>
+<p>Where:</p>
+<ul>
+<li><span class="math inline">\(J \ddot{\theta}\)</span> is the inertial torque.</li>
+<li><span class="math inline">\(B \dot{\theta}\)</span> is the damping torque.</li>
+<li><span class="math inline">\(T\)</span> is the applied torque.</li>
+<li><span class="math inline">\(T_\omega\)</span> is the disturbance torque.</li>
+</ul>
+<p>The transfer function model for this system, considering <span class="math inline">\(\theta(s)\)</span> as the output variable, can be given by:</p>
+<table>
+<tbody><tr>
+<td>
+<img src="./pics/07_modeling_dynamic_systems_mechanical-systems-rotations-1-transfer-function-1.png" alt="mechanical-systems-rotations-1-transfer-function" style="width: 450px;">
+</td></tr>
+</tbody></table>
+<p>Where:</p>
+<p><span class="math display">\[
+G(s) = \frac{1}{Js^2+Bs}=\frac{1}{s(Js+B)}
+\]</span></p>
+<p>Expressing the transfer function in its standard form:</p>
+<p><span class="math display">\[
+G(s) = \frac{1}{s(Js+B)} = \frac{1/B}{s(\frac{J}{B} s+1)} = \frac{K}{s(\tau s + 1)}
+\]</span></p>
+<p>Where:</p>
+<ul>
+<li><span class="math inline">\(K=\frac{1}{B}\)</span> is the system gain.</li>
+<li><span class="math inline">\(\tau=\frac{J}{B}\)</span> is the time constant of the system.</li>
+</ul>
+<p>The time constant, <span class="math inline">\(\tau\)</span>, represents how quickly the system responds to changes in input, with smaller values indicating faster responses.</p>
+<p>This system is composed by an integrator <span class="math inline">\(\frac{1}{s}\)</span>, and <span class="math inline">\(\frac{K}{(\tau s + 1)}\)</span> is a simple lag, cascaded together.</p>
+<section id="changing-output-variable" class="level3">
+<h3 class="anchored" data-anchor-id="changing-output-variable">Changing output variable</h3>
+<p>We previously focused on the rotational system where the angular displacement, <span class="math inline">\(\theta\)</span>, was the primary output variable of interest. However, in some applications, it might be more pertinent to consider the angular velocity, <span class="math inline">\(\omega\)</span> (or <span class="math inline">\(\dot\theta\)</span>), as the output variable.</p>
+<p>If we change our output variable to angular velocity, our governing differential equation changes. Specifically, the equation becomes: <span class="math display">\[
+J\dot{\omega} + B {\omega} = T − T_\omega
+\]</span></p>
+<p>Where:</p>
+<ul>
+<li><span class="math inline">\(J \dot\omega\)</span> denotes the inertial torque due to acceleration.</li>
+<li><span class="math inline">\(B\omega\)</span> signifies the damping torque due to velocity.</li>
+<li><span class="math inline">\(T\)</span> and <span class="math inline">\(T_\omega\)</span> are, as before, the applied and disturbance torques respectively.</li>
+</ul>
+<p>Transforming the above differential equation into the Laplace domain, and considering <span class="math inline">\(\omega(s)\)</span> as the output variable, the transfer function becomes:</p>
+<p><span class="math display">\[
+G(s) = \frac{K}{\tau s + 1}
+\]</span></p>
+<table>
+<tbody><tr>
+<td>
+<img src="./pics/07_modeling_dynamic_systems_mechanical-systems-rotations-1-transfer-function-omega.png" alt="mechanical-systems-rotations-1-transfer-function-omega" style="width: 450px;">
+</td></tr>
+</tbody></table>
+<p>Where:</p>
+<ul>
+<li><span class="math inline">\(K=\frac{1}{B}\)</span> is the system gain.</li>
+<li><span class="math inline">\(\tau=\frac{J}{B}\)</span> is the time constant of the system.</li>
+</ul>
+<ol type="1">
+<li><strong>System Gain, <span class="math inline">\(K\)</span></strong>: It signifies how the system’s angular velocity, ω, changes with variations in torque. A larger <span class="math inline">\(K\)</span> means the system is more sensitive to torque changes.</li>
+<li><strong>Time Constant, τ</strong>: This represents how quickly the system’s angular velocity responds to changes in input torque. A smaller τ indicates a faster response.</li>
+</ol>
+<p><strong>Pop-up Question</strong>: Why might we be interested in angular velocity as the output rather than angular displacement? <strong>Answer</strong>: Angular velocity can be crucial in scenarios where the speed of rotation is more critical than the position, such as in motors, turbines, or any system where rotational speed control is essential.</p>
+<p>Switching the output variable from angular displacement to angular velocity changes the system dynamics:</p>
+<ul>
+<li>The system now primarily responds to changes in speed rather than position.</li>
+<li>Control strategies might differ, focusing on maintaining or adjusting speed rather than achieving a particular position.</li>
+</ul>
+<p>For instance, in a servo motor application where the objective is to maintain a constant speed under varying load conditions, angular velocity as the output variable would be more relevant than angular displacement. Conversely, for a robotic arm’s precise positioning, angular displacement might be the more appropriate output variable.</p>
+<p>We can now revisit the system when the output was the position:</p>
+<table>
+<tbody><tr>
+<td>
+<img src="./pics/07_modeling_dynamic_systems_mechanical-systems-rotations-1-transfer-function-omega-theta.png" alt="mechanical-systems-rotations-1-transfer-function-omega-theta" style="width: 450px;">
+</td></tr>
+</tbody></table>
+<p>A motor that is position controlled has an integrating effect. There is not physical integrator but the overall effect is that of an integrator.</p>
+</section>
+<section id="from-a-transfer-function-block-diagram-to-state-variables-models" class="level3">
+<h3 class="anchored" data-anchor-id="from-a-transfer-function-block-diagram-to-state-variables-models">From a transfer function block diagram to state variables models</h3>
+<p>Note also that if we are given a transfer function diagram model, the output of an integrator are suitable state variables.</p>
+<p>It is important to also realise the the output of a first-order lag is the same of an integrator along with a filter. So its output is also a suitable state variable.</p>
+<table>
+<tbody><tr>
+<td>
+<img src="./pics/07_modeling_dynamic_systems_mechanical-systems-rotations-1-transfer-function-to-state.png" alt="mechanical-systems-rotations-1-transfer-function-to-state" style="width: 450px;">
+</td></tr>
+</tbody></table>
+<p>And from the diagram above we can easily calculate the state model.</p>
+<p>From the integrator on the right we obtain:</p>
+<p><span class="math display">\[
+\dot{x_1}=x_2
+\]</span></p>
+<p>and from the first-order lag we obtain:</p>
+<p><span class="math display">\[
+\tau\dot{x_2} + x_2 = K(T-T_\omega)
+\]</span></p>
+<p>and finally we can find the matrices <span class="math inline">\(A\)</span>, <span class="math inline">\(b\)</span>, <span class="math inline">\(c\)</span> and <span class="math inline">\(d\)</span> to have it in the standard form.</p>
+<p>Think about what happens with a second-order lag (e.g., the mass-sping-damper system).</p>
+<p>A second-order lag will be modeled with two state variables, but in this case they are not available as output of an integrator.</p>
+<table>
+<tbody><tr>
+<td>
+<img src="./pics/07_modeling_dynamic_systems_mechanical-systems-rotations-1-transfer-function-to-state-second-order.png" alt="mechanical-systems-rotations-1-transfer-function-to-state-second-order" style="width: 450px;">
+</td></tr>
+</tbody></table>
+<p>The state variable selection is not unique, but one option that will work is to take the output as one of the state variables, and its derivative as the other state variables. In this case:</p>
+<p><span class="math display">\[
+\begin{align*}
+x_1 &amp;= y\\
+x_2 &amp;= \dot{y} = \dot{x_1}\\
+\end{align*}
+\]</span></p>
+<p>Which gives the first equation:</p>
+<p><span class="math display">\[
+\begin{align}
+\dot{x_1}=x_2
+\end{align}
+\]</span></p>
+<p>And for the second equation we can write:</p>
+<p><span class="math display">\[
+\frac{1}{\omega_n^2}\ddot{y} + \frac{2\zeta}{\omega_n} \dot{y} + y = K(F-F_\omega)
+\]</span></p>
+<p>from which we derive:</p>
+<p><span class="math display">\[
+\begin{align}
+\dot{x_2}= \Big[ -x_1 - \frac{2\zeta}{\omega_n}x_2 + K(F-F_\omega) \Big] \omega_n^2
+\end{align}
+\]</span></p>
+<p>Note that there are <strong>two inputs</strong>: <span class="math inline">\(F\)</span> and <span class="math inline">\(F_\omega\)</span> and hence the state variable model will be:</p>
+<span class="math display">\[\begin{aligned}
+\begin{bmatrix}
+\dot{x}_1(t) \\
+\dot{x}_2(t) \\
+\end{bmatrix}
+&amp;=
+\begin{bmatrix}
+a_{11} &amp; a_{12} \\
+a_{21} &amp; a_{22} \\
+\end{bmatrix}
+\begin{bmatrix}
+x_1(t) \\
+x_2(t) \\
+\end{bmatrix}
++
+\begin{bmatrix}
+b_{11} &amp; b_{12} \\
+b_{21} &amp; b_{22} \\
+\end{bmatrix}
+\begin{bmatrix}
+F(t) \\
+F_\omega(t) \\
+\end{bmatrix}
+\end{aligned}\]</span>
+<span class="math display">\[\begin{aligned}
+y(t) =
+\begin{bmatrix}
+c_{1} &amp; c_{2} \\
+\end{bmatrix}
+\begin{bmatrix}
+x_1(t) \\
+x_2(t) \\
+\end{bmatrix}
++
+\begin{bmatrix}
+d_{11} &amp; d_{12} \\
+\end{bmatrix}
+\begin{bmatrix}
+F(t) \\
+F_\omega(t) \\
+\end{bmatrix}
+\end{aligned}\]</span>
+<p>Note that <span class="math inline">\(F_\omega\)</span> is a disturbance but it is an input in the model.</p>
+<section id="units-1" class="level4">
+<h4 class="anchored" data-anchor-id="units-1">Units</h4>
+<p>The importance of understanding these units and parameters cannot be overstated. They form the foundation upon which our mathematical models are built, allowing us to make predictions, design controllers, and understand system behavior.</p>
+<ul>
+<li>Torque: Newtons<span class="math inline">\(\cdot\)</span>m</li>
+<li>Displacement <span class="math inline">\(\theta\)</span>: Radians, <span class="math inline">\(rad\)</span></li>
+<li>Velocity <span class="math inline">\(\dot\theta\)</span>: Radians/second, <span class="math inline">\(rad/s\)</span></li>
+<li>Acceleration <span class="math inline">\(\ddot\theta\)</span>: Radians/second^2, <span class="math inline">\(rad/s^2\)</span></li>
+<li>Friction Coefficient <span class="math inline">\(B\)</span>: Newton-m/(rad/second) - from <span class="math inline">\(T=B\dot{\theta}\)</span></li>
+<li>Moment of inertia <span class="math inline">\(J\)</span>: Newton-m/(rad/sec^2) or kg-m^2</li>
+</ul>
+</section>
+</section>
+</section>
+<section id="introduction-to-thermal-systems-in-automatic-control" class="level1">
+<h1>Introduction to Thermal Systems in Automatic Control</h1>
+<p>Two other essential systems in control engineering are thermal systems and liquid level systems. These systems follow the same principles of control as mechanical systems, but with different parameters and components.</p>
+<ol type="1">
+<li>Thermal Systems: These deal with heat conduction, radiation, and convection.</li>
+<li>Liquid Level Systems: These focus on the dynamics of liquid storage and flow.</li>
+</ol>
+<section id="heat-transfer-through-a-solid-wall" class="level2">
+<h2 class="anchored" data-anchor-id="heat-transfer-through-a-solid-wall">Heat Transfer Through a Solid Wall</h2>
+<p>Consider a wall made of any material with a surface area <span class="math inline">\(A\)</span> (<span class="math inline">\(m/s^2\)</span>) and thickness <span class="math inline">\(l\)</span> (<span class="math inline">\(m\)</span>).</p>
+<p>Let <span class="math inline">\(\theta_1\)</span> (<span class="math inline">\(^oC\)</span>) and <span class="math inline">\(\theta_2\)</span> (<span class="math inline">\(^oC\)</span>) be the temperatures on either side of this wall.</p>
+<table>
+<tbody><tr>
+<td>
+<img src="./pics/07_modeling_dynamic_systems_thermal-model-wall.png" alt="thermal-model-wall" style="width: 250px;">
+</td></tr>
+</tbody></table>
+<p>The heat transfer through this wall can be described by the following equation:</p>
+<p><span class="math display">\[
+h = \frac{\sigma A(\theta_1−\theta_2)}{l}
+\]</span></p>
+<p>Where: - <span class="math inline">\(h\)</span> is the heat transfer rate (in Joules per second). - <span class="math inline">\(\sigma\)</span> is the thermal conductivity of the material.</p>
+<p>From an analogous perspective, considering <span class="math inline">\(h\)</span> to be similar to current and the temperature difference <span class="math inline">\(\theta_1−\theta_2\)</span> to be similar to voltage, the above equation can be viewed as:</p>
+<p><span class="math display">\[
+h = \frac{\theta_1−\theta_2}{R}
+\]</span></p>
+<p>Where: - <span class="math inline">\(R = \frac{l}{\sigma A}\)</span> is the conductive resistance of the material.</p>
+</section>
+<section id="heat-transfer-at-the-liquid-solid-interface" class="level2">
+<h2 class="anchored" data-anchor-id="heat-transfer-at-the-liquid-solid-interface">Heat Transfer at the Liquid-Solid Interface</h2>
+<p>Consider a solid-liquid interface, where heat is being transferred. Let <span class="math inline">\(U\)</span> be the film coefficient at this interface, and <span class="math inline">\(A\)</span> be the contact surface area.</p>
+<p>The heat transfer in this scenario can be described by:</p>
+<p><span class="math display">\[
+h = UA(\theta_1−\theta_2)
+\]</span></p>
+<p>Where: - <span class="math inline">\(\theta_1−\theta_2\)</span> is the net gradient across the film</p>
+<p>or</p>
+<p><span class="math display">\[
+h = \frac{\theta_1−\theta_2}{R}
+\]</span></p>
+<p>Where: - <span class="math inline">\(R = \frac{1}{U A}\)</span> is the <strong>convective heat transfer resistance</strong></p>
+</section>
+<section id="heat-storage-in-a-solid" class="level2">
+<h2 class="anchored" data-anchor-id="heat-storage-in-a-solid">Heat Storage in a Solid</h2>
+<p>Heat storage plays an important role in thermal systems. Consider the same wall described earlier.</p>
+<table>
+<tbody><tr>
+<td>
+<img src="./pics/07_modeling_dynamic_systems_thermal-model-heat-storage.png" alt="thermal-model-heat-storage" style="width: 150px;">
+</td></tr>
+</tbody></table>
+<p>The heat stored within this wall can be represented as:</p>
+<p><span class="math display">\[
+h=Mc\frac{d\theta}{dt}
+\]</span></p>
+<p>Where:</p>
+<ul>
+<li><span class="math inline">\(h\)</span> is the <strong>heat flow rate</strong> in Joules/second</li>
+<li><span class="math inline">\(M\)</span> is the mass of the material</li>
+<li><span class="math inline">\(c\)</span> is the specific heat of the material</li>
+<li><span class="math inline">\(\theta\)</span> is the temperature of the material</li>
+</ul>
+<p>The equation can be written as:</p>
+<p><span class="math display">\[
+h = C\frac{d\theta}{dt}
+\]</span></p>
+<p>Where: - <span class="math inline">\(C=Mc\)</span> is the thermal capacitance of the material.</p>
+</section>
+<section id="heat-storage-in-a-solid-1" class="level2">
+<h2 class="anchored" data-anchor-id="heat-storage-in-a-solid-1">Heat Storage in a Solid</h2>
+<p>Heat storage plays a pivotal role in thermal systems. Consider the same wall described earlier.</p>
+<table>
+<tbody><tr>
+<td>
+<img src="./pics/07_modeling_dynamic_systems_thermal-model-heat-storage.png" alt="thermal-model-heat-storage" style="width: 150px;">
+</td></tr>
+</tbody></table>
+<p>Where:</p>
+<ul>
+<li><span class="math inline">\(M\)</span> is the mass</li>
+<li><span class="math inline">\(\theta\)</span> is the temperature</li>
+</ul>
+<p>The rate of change of the heat stored within this wall can be represented as:</p>
+<p><span class="math display">\[
+h=Mc\frac{d\theta}{dt}
+\]</span></p>
+<p>Where: - <span class="math inline">\(h\)</span> is in Joules/second (rate of change of the heat stored) - <span class="math inline">\(c\)</span> is the specific heat of the material.</p>
+<p>The equation can be written as:</p>
+<p><span class="math display">\[
+h=C\frac{d\theta}{dt}
+\]</span></p>
+<p>Where:</p>
+<ul>
+<li><span class="math inline">\(C=Mc\)</span> is the thermal capacitance of the material.</li>
+</ul>
+</section>
+<section id="heat-storage-in-a-liquid-tank" class="level2">
+<h2 class="anchored" data-anchor-id="heat-storage-in-a-liquid-tank">Heat Storage in a Liquid Tank</h2>
+<p>Consider a tank containing a liquid with volume <span class="math inline">\(V\)</span> at temperature <span class="math inline">\(\theta\)</span>.</p>
+<table>
+<tbody><tr>
+<td>
+<img src="./pics/07_modeling_dynamic_systems_thermal-model-liquid-tank.png" alt="thermal-model-liquid-tank" style="width: 250px;">
+</td></tr>
+</tbody></table>
+<p>The heat storage within the liquid can be represented as:</p>
+<p><span class="math display">\[
+h=V\rho c\frac{d\theta}{dt}
+\]</span></p>
+<p>Where:</p>
+<ul>
+<li><span class="math inline">\(\rho\)</span> is the density of the liquid (<span class="math inline">\(Kg/m^3\)</span>).</li>
+<li><span class="math inline">\(c\)</span> is the specific heat of the liquid.</li>
+</ul>
+<p>The equation can be written as:</p>
+<p><span class="math display">\[
+h=C\frac{d\theta}{dt}
+\]</span></p>
+<p>Where:</p>
+<ul>
+<li><span class="math inline">\(C=V\rho c\)</span> is the thermal capacitance of the liquid.</li>
+</ul>
+<p>Thermal systems have <span class="math inline">\(R\)</span> and <span class="math inline">\(C\)</span> equivalents (and no inductance equivalence).</p>
+<p><strong>Pop-up Question</strong>: Why do we often use the analogy of electrical circuits when analyzing thermal systems?</p>
+<p><strong>Answer</strong>: Analogizing thermal systems to electrical circuits allows us to apply familiar electrical circuit theory to understand and analyze the behavior of thermal systems. This approach simplifies complex thermal scenarios and provides intuitive insights.</p>
+<hr>
+</section>
+</section>
+<section id="principle-of-analogous-variables" class="level1">
+<h1>Principle of Analogous Variables</h1>
+<p>In the vast realm of system dynamics, it’s often useful to draw parallels between different types of systems to simplify our understanding. One such approach is to analogize between mechanical and electrical systems. This analogy allows us to translate the behavior of one system type into another, giving us additional perspectives and tools for analysis and design.</p>
+<p>At the core of the concept of analogous systems is the idea that different systems governed by similar differential equations will exhibit identical dynamic behavior. Therefore, if we study the response of one system, we can infer the behavior of its analogous counterpart.</p>
+<p>To understand this, let’s consider an electrical circuit:</p>
+<table>
+<tbody><tr>
+<td>
+<img src="./pics/07_modeling_dynamic_systems_princicple-of-analogous-systems-circuit.png" alt="princicple-of-analogous-systems-circuit" style="width: 450px;">
+</td></tr>
+</tbody></table>
+<p>This electrical circuit is made up of a resistor (<span class="math inline">\(R\)</span>), an inductor (<span class="math inline">\(L\)</span>), and a capacitor (<span class="math inline">\(C\)</span>), driven by a current source (<span class="math inline">\(i\)</span>).</p>
+<p>We can write the equation as:</p>
+<p><span class="math display">\[
+\frac{e}{R} + i_2 + C\frac{de}{dt} = i
+\]</span></p>
+<p><span class="math display">\[
+L\frac{di_2}{dt} = e
+\]</span></p>
+<p>The current through the inductor and the voltage across the capacitor and we can derive the usual state variable model.</p>
+<p>In drawing parallels between mechanical and electrical systems:</p>
+<ul>
+<li>Force in a mechanical system is analogous to voltage in an electrical system.</li>
+<li>Velocity or displacement in a mechanical system can be compared to current in an electrical system. Using these analogies, we can transform mechanical system models into equivalent electrical circuits. This equivalence allows for the application of well-established electrical circuit analysis techniques to mechanical systems.</li>
+</ul>
+<p>The governing equation for this system can be written as:</p>
+<p><span class="math display">\[
+\begin{align}
+\frac{e}{R} + C \frac{de}{dt} + \frac{1}{L} \int_{-\infty}^{t} e(\tau) d\tau = i
+\end{align}
+\]</span></p>
+<p>Where:</p>
+<ul>
+<li><span class="math inline">\(e\)</span> is the voltage across the components.</li>
+<li><span class="math inline">\(i_2\)</span> is the current through the inductor.</li>
+</ul>
+<section id="sidebar---modeling-and-analysis-of-a-parallel-rlc-circuit-with-a-current-source" class="level3">
+<h3 class="anchored" data-anchor-id="sidebar---modeling-and-analysis-of-a-parallel-rlc-circuit-with-a-current-source">Sidebar - Modeling and Analysis of a Parallel RLC Circuit with a Current Source</h3>
+<p>The model for a circuit with a current source and a resistor (R), inductor (L), and capacitor (C) in parallel can be represented using Kirchhoff’s current law (KCL). KCL states that the sum of currents entering a node (or a junction) is equal to the sum of currents leaving the node.</p>
+<section id="circuit-representation" class="level4">
+<h4 class="anchored" data-anchor-id="circuit-representation">Circuit Representation:</h4>
+<table>
+<tbody><tr>
+<td>
+<img src="./pics/07_modeling_dynamic_systems_princicple-of-analogous-systems-circuit-sidebar.png" alt="princicple-of-analogous-systems-circuit-sidebar" style="width: 450px;">
+</td></tr>
+</tbody></table>
+<p>A circuit diagram showing a current source $ I_s $ connected to a parallel combination of a resistor (R), an inductor (L), and a capacitor (C).</p>
+</section>
+<section id="mathematical-model" class="level4">
+<h4 class="anchored" data-anchor-id="mathematical-model">Mathematical Model:</h4>
+<p>For the given circuit, let’s apply KCL at the node where R, L, and C are connected in parallel. We’ll denote the current through the resistor as $ I_R $, the current through the inductor as $ I_L $, and the current through the capacitor as $ I_C $.</p>
+<p>According to Ohm’s law:</p>
+<p><span class="math display">\[ I_R = \frac{V}{R} \]</span> Where $ V $ is the voltage across the resistor (and also across the inductor and capacitor due to the parallel connection).</p>
+<p>For the inductor: <span class="math display">\[ I_L(t) = \int_{-\infty}^{t} \frac{V(\tau)}{L} \, d\tau \]</span> Or in the differential form: <span class="math display">\[ V = L \frac{dI_L}{dt} \]</span></p>
+<p>For the capacitor: <span class="math display">\[ I_C(t) = C \frac{dV}{dt} \]</span></p>
+<p>Combining these equations using KCL: <span class="math display">\[ I_s = I_R + I_L + I_C \]</span></p>
+<p><span class="math display">\[ I_s = \frac{V}{R} + \int_{-\infty}^{t} \frac{V(\tau)}{L} \, d\tau + C \frac{dV}{dt} \]</span></p>
+<p>This equation represents the relationship between the source current $ I_s $ and the voltage $ V $ across the parallel components. It’s a second-order differential equation due to the presence of both the inductor and the capacitor.</p>
+<p>END OF SIDEBAR</p>
+<hr>
+<p>Let’s now consider the equations governing a mechanical system.</p>
+<p>For the mechanical system, Newton’s second law can be applied, resulting in an equation that represents the sum of forces acting on the mass being equal to the product of the mass and its acceleration.</p>
+<p>The differential equation governing this system is:</p>
+<p><span class="math display">\[
+\begin{align}
+M\ddot{y} + B\dot{y} + Ky = F
+\end{align}
+\]</span></p>
+<p>where - <span class="math inline">\(y\)</span>: is the displacement - we are assuming that <span class="math inline">\(F_\omega=0\)</span> (if we refer to the previous example)</p>
+<p>We can now write the previous equation (6) as:</p>
+<p><span class="math display">\[
+M\dot{v} + Bv + K\int_{-\infty}^{t} v(\tau)d\tau = F
+\]</span></p>
+<p>where - <span class="math inline">\(v\)</span>: is the velocity</p>
+<p>The electical and mechanical equations are identical:</p>
+<p><span class="math display">\[
+\begin{align}
+C \dot{e} + \frac{1}{R}e + \frac{1}{L} \int_{-\infty}^{t} e(\tau) d\tau = i
+\end{align}
+\]</span></p>
+<p><span class="math display">\[
+\begin{align}
+M\dot{v} + Bv + K\int_{-\infty}^{t} v(\tau)d\tau = F
+\end{align}
+\]</span></p>
+<p>What this means is that if you provide a Force step input in equation (2) and measure the response <span class="math inline">\(v\)</span>, or a current step input in equation (1) and measure the response <span class="math inline">\(e\)</span>, the two will be identical as far as their dynamic is concerned.</p>
+<p>This is the basic principle behind analog computers.</p>
+<p>This makes it possible to draw an electrical equivalent of mechanical, thermal, liquid, etc systems.</p>
+<p>Why typically we want an electrical system? Because they are easy to be experimented with.</p>
+<p>Drawing parallels between the two systems, we obtain the <em>Force-Current</em> Analogy for mechanical translational systems:</p>
+<ol type="1">
+<li><strong>Force (F)</strong> in the mechanical system is analogous to <strong>Current (I)</strong> in the electrical system.</li>
+<li><strong>Velocity (v)</strong> in the mechanical system is analogous to <strong>Voltage (e)</strong> in the electrical system.</li>
+<li><strong>Mass (M)</strong> is analogous to <strong>Capacitance (C)</strong>.</li>
+<li><strong>Damping (B)</strong> is analogous to the <strong>reciprocal of Resistance (1/R)</strong>.</li>
+<li><strong>Spring Constant (K)</strong> is analogous to the <strong>reciprocal of Inductance (1/L)</strong>.</li>
+</ol>
+<p><em>Torque-Current</em> Analogy for Rotational Systems</p>
+<p>For mechanical rotational systems, the analogy can be extended:</p>
+<ol type="1">
+<li><strong>Torque (T)</strong> is analogous to <strong>Current (I)</strong>.</li>
+<li><strong>Angular Velocity (ω)</strong> is analogous to <strong>Voltage (e)</strong>.</li>
+<li><strong>Moment of Inertia (J)</strong> is analogous to <strong>Capacitance (C)</strong>.</li>
+<li><strong>Rotational Damping (B)</strong> remains analogous to the <strong>reciprocal of Resistance (1/R)</strong>.</li>
+<li><strong>Torsional Spring Constant (K)</strong> is analogous to the <strong>reciprocal of Inductance (1/L)</strong>.</li>
+</ol>
+
+
+</section>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/andreamunafo\.github\.io\/principles-of-automatic-controls");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/andreamunafo/principles-of-automatic-controls/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

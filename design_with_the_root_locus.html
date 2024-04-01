@@ -1,0 +1,1878 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.552">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>principles-of-automatic-controls - Design with the Root Locus</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+<script src="https://unpkg.com/@jupyter-widgets/html-manager@*/dist/embed-amd.js" crossorigin="anonymous"></script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+<meta property="og:title" content="principles-of-automatic-controls - Design with the Root Locus">
+<meta property="og:description" content="Course in feedback control for the University of Pisa">
+<meta property="og:site_name" content="principles-of-automatic-controls">
+<meta name="twitter:title" content="principles-of-automatic-controls - Design with the Root Locus">
+<meta name="twitter:description" content="Course in feedback control for the University of Pisa">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">principles-of-automatic-controls</span>
+    </a>
+  </div>
+        <div class="quarto-navbar-tools tools-end">
+</div>
+          <div id="quarto-search" class="" title="Search"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./design_with_the_root_locus.html">Design with the Root Locus</a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Feedback Control</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./faq.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Frequently Asked Questions (FAQ)</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./syllabus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Syllabus for “Principles of Automatic Control”</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./toc.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Table of Contents</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./update_and_manage_local_changes_guide.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A Guide to Updating Your Local Repository with Git in Anaconda’s Virtual Environment</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./getting_started_with_python_and_jupyter_notebook.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Getting Started with Python and Jupyter Notebooks</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principles of Automatic Control</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./basics_of_feedback_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Feedback Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./introduction_to_control_problem.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to the control problem</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dynamic_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modeling in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dynamic_response.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Dynamic response of control systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06_inverse_laplace_transform.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Inverse Laplace Transform: Partial fraction decomposition</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./modeling_dynamic_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Modeling of Dynamic Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./control_system_components.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Control System Components</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./models_of_control_devices_and_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Models of Controlled Devices</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./hardware_and_case_studies.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Hardware of Control Systems and Case Studies</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ac_hardware_and_case_studies.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">AC Motion Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./a_first_complete_application.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A Feedback Control System</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./principles_of_feedback_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principles of Feedback Control</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./feedback_systems_and_their_effects.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Feedback systems and their effects</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./introduction_to_control_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./stability.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Stability Analysis in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./stability_and_routh_criterion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Stability Analysis in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./performance_of_feedback_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Performance of Feedback Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./design_of_feedback_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Design Cycle for a Standard Second-Order System</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./20_Design_of_feedback_control_continued.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Understanding the Standard Second-Order System: Recap</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./steady_state_accuracy_and_design_principles.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Steady State Accuracy and Design Principles</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./compensator_design_using_root_locus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compensator Design</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./design_with_the_root_locus.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Design with the Root Locus</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./compensators_and_root_locus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compensators and the Root Locus</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./introduction_to_frequency_domain_analysis_in_control_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Frequency Domain Analysis in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./application_of_nyquist_stability_criterion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Application of Nyquist Stability Criterion in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./the_nyquist_stability_criterion_and_relative_stability.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The Nyquist Stability Criterion and Relative Stability</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./bode_plots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Bode Plot Analysis</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./feedback_system_performance_based_on_frequency_response.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Feedback System Performance Based On Frequency Response</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./compensator_design_using_frequency_response_plots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principles of Automatic Control: Lead and Lag Compensation</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">IT_TCLab_🇮🇹</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/spacecraft_thermal_control_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Il Laboratorio di Controllo della Temperatura</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/tclab_exercises_report_template_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modello di report sugli esercizi TCLab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/tclab_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Il Laboratorio di Controllo della Temperatura</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/understanding_tclab_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Comprendere TCLab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/tclab_lab_1_coding_a_relay_controller_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 1: Codifica di un controller relè</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/system_model_and_identification_tclab_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modellazione del sistema</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/step_testing_tclab_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Passo Test</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/fitting_step_test_data_to_empirical_models_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Adattamento dei dati dei test di fase ai modelli empirici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/tclab_lab_2_model_identification_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 2: Identificazione del modello</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/tclab_lab_2_fitting_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Identificazione del modello: adattamento dei modelli ai dati</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/relay_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Controllo relè</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/pid_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Controllo PID</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/lab-assignment-pid-control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compito di laboratorio: Controllo PID</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/lab-assignment-pi-control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compito di laboratorio 4: Controllo PI</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">IT_🇮🇹</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/faq_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Domande frequenti (FAQ)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/syllabus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Programma del corso “Principi del controllo automatico”</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/update_and_manage_local_changes_guide_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Aggiornare il Proprio Repository Locale Mantenendo le Modifiche Locali</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/getting_started_with_python_and_jupyter_notebook_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Guida introduttiva ai notebook Python e Jupyter</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/intro_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principi di controllo automatico</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/basics_of_feedback_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione ai sistemi di controllo del feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/introduction_to_control_problem_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione al problema del controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/dynamic_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modellazione nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/dynamic_response_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Risposta dinamica dei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/06_inverse_laplace_transform_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Trasformata di Laplace inversa: scomposizione parziale di frazioni</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/modeling_dynamic_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione alla modellazione dei sistemi dinamici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/control_system_components_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Componenti del sistema di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/models_of_control_devices_and_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modelli di dispositivi controllati</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/hardware_and_case_studies_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Hardware dei sistemi di controllo e casi di studio</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/ac_hardware_and_case_studies_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sistemi di controllo del movimento CA</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/a_first_complete_application_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Un sistema di controllo del feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/principles_of_feedback_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principi di controllo del feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/feedback_systems_and_their_effects_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sistemi di feedback e loro effetti</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/introduction_to_control_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione ai sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/stability_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analisi di stabilità nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/stability_and_routh_criterion_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analisi di stabilità nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/performance_of_feedback_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prestazioni dei sistemi di feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/design_of_feedback_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Ciclo di progettazione per un sistema standard del secondo ordine</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/20_Design_of_feedback_control_continued_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Comprensione del sistema standard del secondo ordine: riepilogo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/steady_state_accuracy_and_design_principles_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Precisione dello stato stazionario e principi di progettazione</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/compensator_design_using_root_locus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Progettazione del compensatore</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/design_with_the_root_locus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Progettare con il luogo delle radici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/compensators_and_root_locus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compensatori e luogo delle radici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/introduction_to_frequency_domain_analysis_in_control_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione all’analisi nel dominio della frequenza nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/application_of_nyquist_stability_criterion_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Applicazione del criterio di stabilità di Nyquist nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/the_nyquist_stability_criterion_and_relative_stability_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Il criterio di stabilità di Nyquist e la stabilità relativa</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/bode_plots_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analisi del diagramma di Bode</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/feedback_system_performance_based_on_frequency_response_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prestazioni del sistema di feedback basate sulla risposta in frequenza</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/index_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Syllabus - Fondamenti di Automatica</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">TCLab</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/spacecraft_thermal_control_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The Temperature Control Laboratory</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/tclab_exercises_report_template.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Exercises Report Template</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The Temperature Control Lab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/understanding_tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Understanding TCLab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/tclab_lab_1_coding_a_relay_controller-solution.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 1: Coding a relay controller</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/tclab_lab_1_coding_a_relay_controller.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 1: Coding a relay controller</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/system_model_and_identification_tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">System Modeling</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/step_testing_tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Step Testing</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/fitting_step_test_data_to_empirical_models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Fitting Step Test Data to Empirical Models</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/tclab_lab_2_model_identification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 2: Model Identification</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/tclab_lab_2_model_identification_solutions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 2: Model Identification</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/tclab_lab_2_fitting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Model Identification: Fitting models to data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/relay_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Relay Control</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/pid_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">PID Control</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/lab-assignment-pid-control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab Assignment: PID Control</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/lab-assignment-pi-control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab Assignment 4: PI Control</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#example-problem" id="toc-example-problem" class="nav-link active" data-scroll-target="#example-problem">Example Problem</a>
+  <ul class="collapse">
+  <li><a href="#root-locus-analysis" id="toc-root-locus-analysis" class="nav-link" data-scroll-target="#root-locus-analysis">Root Locus Analysis</a></li>
+  <li><a href="#meeting-transient-requirements" id="toc-meeting-transient-requirements" class="nav-link" data-scroll-target="#meeting-transient-requirements">Meeting Transient Requirements</a></li>
+  <li><a href="#reassessing-design-requirements" id="toc-reassessing-design-requirements" class="nav-link" data-scroll-target="#reassessing-design-requirements">2.5 Reassessing Design Requirements</a></li>
+  <li><a href="#introducing-a-zero-to-the-system" id="toc-introducing-a-zero-to-the-system" class="nav-link" data-scroll-target="#introducing-a-zero-to-the-system">Introducing a Zero to the System</a></li>
+  <li><a href="#python-code-to-compare-the-systems" id="toc-python-code-to-compare-the-systems" class="nav-link" data-scroll-target="#python-code-to-compare-the-systems">Python Code to Compare the Systems</a></li>
+  <li><a href="#expected-outcome" id="toc-expected-outcome" class="nav-link" data-scroll-target="#expected-outcome">Expected Outcome</a></li>
+  <li><a href="#physical-realization-of-the-compensator" id="toc-physical-realization-of-the-compensator" class="nav-link" data-scroll-target="#physical-realization-of-the-compensator">Physical Realization of the Compensator</a></li>
+  <li><a href="#phase-lead-compensation" id="toc-phase-lead-compensation" class="nav-link" data-scroll-target="#phase-lead-compensation">Phase Lead Compensation</a></li>
+  </ul></li>
+  <li><a href="#effects-of-adding-a-pole-at-the-origin" id="toc-effects-of-adding-a-pole-at-the-origin" class="nav-link" data-scroll-target="#effects-of-adding-a-pole-at-the-origin">Effects of Adding a Pole at the Origin</a>
+  <ul class="collapse">
+  <li><a href="#steady-state-accuracy-1" id="toc-steady-state-accuracy-1" class="nav-link" data-scroll-target="#steady-state-accuracy-1">Steady-State Accuracy</a></li>
+  <li><a href="#transient-response" id="toc-transient-response" class="nav-link" data-scroll-target="#transient-response">Transient Response</a></li>
+  <li><a href="#visualizing-through-root-locus" id="toc-visualizing-through-root-locus" class="nav-link" data-scroll-target="#visualizing-through-root-locus">Visualizing Through Root Locus</a></li>
+  <li><a href="#adding-a-zero-close-to-the-origin" id="toc-adding-a-zero-close-to-the-origin" class="nav-link" data-scroll-target="#adding-a-zero-close-to-the-origin">Adding a zero close to the origin</a></li>
+  <li><a href="#practical-approach-phase-lag-compensator" id="toc-practical-approach-phase-lag-compensator" class="nav-link" data-scroll-target="#practical-approach-phase-lag-compensator">Practical Approach: Phase Lag Compensator</a></li>
+  </ul></li>
+  <li><a href="#phase-lag-compensator-practical-realization" id="toc-phase-lag-compensator-practical-realization" class="nav-link" data-scroll-target="#phase-lag-compensator-practical-realization">Phase Lag Compensator: Practical Realization</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/andreamunafo/principles-of-automatic-controls/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Design with the Root Locus</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
+<p>The root locus is a graphical method used to analyze how the roots (poles) of a system’s characteristic equation change as a parameter, typically the controller gain (<span class="math inline">\(K\)</span>), varies. It helps us understand how the system’s stability and transient response depend on the control gain.</p>
+<p>Many industrial control systems are designed using either the root locus approach or the frequency domain approach (based on Bode plots). These methods ensure that the system meets performance requirements.</p>
+<section id="example-problem" class="level2">
+<h2 class="anchored" data-anchor-id="example-problem">Example Problem</h2>
+<p>Let’s consider an example to apply the root locus method. We have a plant with the transfer function:</p>
+<p><span class="math display">\[
+G(s) = \frac{5}{s(\frac{1}{6}s+1)(0.5s + 1} = \frac{60K_A}{s(s+2)(s+6)}
+\]</span></p>
+<p>This plant model represents a motor servo system, where the output is the position, and the input is the manipulated signal.</p>
+<table>
+<tbody><tr>
+<td>
+<img src="./pics/23_Design_with_the_root_locus_example_1.png" alt="23_Design_with_the_root_locus_example_1" style="width:550px;">
+</td>
+</tr>
+</tbody></table>
+<p>As usual, the first thing we would like to understand is if a controller gain can solve our problem.</p>
+<section id="steady-state-accuracy-and-transient-requirements" class="level4">
+<h4 class="anchored" data-anchor-id="steady-state-accuracy-and-transient-requirements">Steady-State Accuracy and Transient Requirements</h4>
+<p>Our design strategy is to first meet the transient performance and steady-state accuracy requirements and then check for robustness and disturbance rejection.</p>
+<p>Remember that transient requirements include relative stability and speed of response. - Relative stability is related to peak overshoot, which can be specified using the damping ratio (<span class="math inline">\(\zeta\)</span>) or the percent overshoot (<span class="math inline">\(M_p\)</span>). - The speed of response can be specified using settling time (<span class="math inline">\(t_s\)</span>), rise time (<span class="math inline">\(t_r\)</span>), or natural frequency (<span class="math inline">\(\omega_n\)</span>).</p>
+<p>In the context of second-order systems, it’s important to remember to check for the <strong>‘dominance condition.’</strong> This condition ensures that the main characteristics of a system are governed by its dominant poles. If the dominance condition is met, great! However, if it’s not, we need to address the influence of other poles, like third poles, on the system’s performance. This is a crucial aspect to consider when tackling a design problem.</p>
+<p><strong>Requirements</strong> - Steady-state accuracy: $K_v $ or <span class="math inline">\(e_{ss} \le 0.2\)</span></p>
+<p>In control system design, we often focus on steady-state accuracy. For a type-1 system like ours, steady-state error to a step input is zero. Therefore, we specify the steady-state accuracy in terms of the velocity error constant, <span class="math inline">\(K_v\)</span>. In this example, we want <span class="math inline">\(K_v\)</span> to be greater than or equal to 5.</p>
+<p>To satisfy the steady-state accuracy requirement, we need to select an appropriate gain, <span class="math inline">\(K_A\)</span>. Given that we would like to focus on a pure gain adjustment, and we have a type-1 system, then the acceleration constant is always <span class="math inline">\(K_a=0\)</span> and the steady-state error to parabolic inputs is infinite. The system will not be able to follow acceleration inputs.</p>
+<p>Note also that this discussion means that for this system any stead-state requirement must be specified in terms of accuracy to ramp inputs. It is the only input that makes sense to analyse. If we restrict to selecting a pure gain, the error to step is alway zero; error to ramp is always inifite.</p>
+</section>
+<section id="root-locus-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="root-locus-analysis">Root Locus Analysis</h3>
+<p>The first thing to do is to put the transfer function in the root locus form. In this case:</p>
+<p><span class="math display">\[
+G(s) = \frac{60K_A}{s(s+2)(s+6)} = \frac{K}{s(s+2)(s+6)}
+\]</span></p>
+<p>where <span class="math inline">\(K=60K_A\)</span> is the root locus gain.</p>
+<p>In this case, we can calculate <span class="math inline">\(K_v\)</span>:</p>
+<p><span class="math display">\[
+K_v = \lim_{s\rightarrow0} s \frac{60K_A}{s(s+2)(s+6)} = 5K_A
+\]</span></p>
+<p>and our requirement is satisfied for <span class="math inline">\(K_A=1\)</span>, and hence it is satisfied for a root locus gain <span class="math inline">\(K=60\)</span>.</p>
+<ul>
+<li>We can draw a rough root locus plot and locate the poles when <span class="math inline">\(K=60\)</span> applying the magnitude condition.</li>
+</ul>
+<table>
+<tbody><tr>
+<td>
+<img src="./pics/23_Design_with_the_root_locus_example_2.png" alt="23_Design_with_the_root_locus_example_2" style="width:550px;">
+</td>
+</tr>
+</tbody></table>
+<ul>
+<li><p>From the position of the closed loop poles we can determine the damping angle <span class="math inline">\(\theta\)</span> and the damping ratio <span class="math inline">\(\zeta=\cos(\theta) = 0.105\)</span>.</p></li>
+<li><p>We can also obtain the corresponding <span class="math inline">\(\omega_n = 2.85\)</span></p></li>
+</ul>
+<section id="settling-time" class="level4">
+<h4 class="anchored" data-anchor-id="settling-time">Settling time</h4>
+<p>One key parameter to evaluate transient performance is settling time (<span class="math inline">\(t_s\)</span>). Settling time represents how quickly the system reaches a steady-state after a disturbance or change in input. It is typically defined with respect to a 2 percent tolerance band around the final value.</p>
+<p>The formula to calculate settling time is:</p>
+<p><span class="math display">\[
+t_s = \frac{4}{\zeta \cdot \omega_n} = 13.36\;\;sec
+\]</span></p>
+<p>where <span class="math inline">\(\zeta\)</span> is the damping ratio and <span class="math inline">\(\omega_n\)</span> is the natural frequency. We can easily calculate <span class="math inline">\(t_s\)</span> if we know <span class="math inline">\(\zeta\)</span> and <span class="math inline">\(\omega_n\)</span>.</p>
+</section>
+<section id="dominance-condition" class="level4">
+<h4 class="anchored" data-anchor-id="dominance-condition">Dominance condition</h4>
+<p>In control system design, we aim for stability and satisfactory transient response. The dominance condition helps us determine whether we can neglect certain poles in the system.</p>
+<p>The dominance condition states that if the complex conjugate poles that govern transient response are significantly farther to the left on the real axis than other poles, we can ignore the latter ones. This simplification allows us to focus on the dominant poles when analyzing transient performance.</p>
+<p>In our case, the specific transient response characteristics only make sense if we have a pair of dominant poles. In this case however, the dominance condition is certainly verified. The two closed loop are with real part less than one and the third pole is moving away from -6 towards <span class="math inline">\(-\infty\)</span>. If this was not the case, we would have located the third pole usign the magnitude condition and verified explicitly the dominance condition.</p>
+<p>Note that the relative stability is quite poor, the system oscillates and is very slow. With a simple amplifier we will not be able to meet the transient requirement while simultaneously meeting the steady-state accuracy.</p>
+</section>
+</section>
+<section id="meeting-transient-requirements" class="level3">
+<h3 class="anchored" data-anchor-id="meeting-transient-requirements">Meeting Transient Requirements</h3>
+<p>Let’s consider an example where the user specifies transient requirements:</p>
+<ul>
+<li>Damping ratio (<span class="math inline">\(\zeta\)</span>) equal to 0.6</li>
+<li>Settling time (<span class="math inline">\(t_s\)</span>) less than or equal to 4 seconds</li>
+</ul>
+<section id="finding-dominant-poles" class="level4">
+<h4 class="anchored" data-anchor-id="finding-dominant-poles">1. Finding Dominant Poles</h4>
+<p>To satisfy the transient requirements, we need to locate dominant poles. We start by setting <span class="math inline">\(\zeta\)</span> to 0.6. Rememebr that if we focus on using a simple gain, we only have one degree of freedom and hence we need to choose the specific parameter we want to start with.</p>
+<p>By trial and error, we locate a point on the root locus plot that satisfies both the angle criterion and <span class="math inline">\(\zeta\)</span> requirement. This point represents the dominant poles.</p>
+<table>
+<tbody><tr>
+<td>
+<img src="./pics/23_Design_with_the_root_locus_example_3.png" alt="23_Design_with_the_root_locus_example_3" style="width:550px;">
+</td>
+</tr>
+</tbody></table>
+</section>
+<section id="evaluating-settling-time" class="level4">
+<h4 class="anchored" data-anchor-id="evaluating-settling-time">2. Evaluating Settling Time</h4>
+<p>Having found the dominant poles, we can calculate the settling time using the formula mentioned earlier. For the given design, the settling time is approximately 5.3 seconds:</p>
+<p><span class="math display">\[
+t_s = 5.3
+\]</span></p>
+<p>It is higher than 4s but potentially not too far off..</p>
+<p>If we started from the settling time requirements we would need to consider what is the vertical line on the root locus plot that meets the requirements on the settling time.</p>
+<p>Given <span class="math inline">\(t_s\)</span> we can calculate the corresponding <span class="math inline">\(\zeta\omega_n\)</span>.</p>
+<p>Note that, as usual with our rough plots, the specific point that we pick might not lie exactly on the root locus plot and we need to re-adjust the plot with trial and error (moving along the <span class="math inline">\(t_s\)</span> line with our trial points) until we have refined the plot as needed (the point satisfies the angle condition) and found the correct point corresponding to the desired closed loop poles.</p>
+<p>You then calculate the corresponding <span class="math inline">\(\zeta\)</span> and verify if this is acceptable with respect to the requirements.</p>
+<table>
+<tbody><tr>
+<td>
+<img src="./pics/23_Design_with_the_root_locus_example_4.png" alt="23_Design_with_the_root_locus_example_4" style="width:550px;">
+</td>
+</tr>
+</tbody></table>
+</section>
+<section id="calculating-the-root-locus-gain-k" class="level4">
+<h4 class="anchored" data-anchor-id="calculating-the-root-locus-gain-k">3. Calculating the root locus gain <span class="math inline">\(K\)</span></h4>
+<p>Given the specific point selected, we apply the magnitude condition to calculate the root locus gain, which in this case <span class="math inline">\(K=10.5\)</span>, and the corresponding <span class="math inline">\(K_A = 10.5/60\)</span>.</p>
+</section>
+<section id="steady-state-accuracy" class="level4">
+<h4 class="anchored" data-anchor-id="steady-state-accuracy">4. Steady-State Accuracy</h4>
+<p>To ensure that the system reaches the desired final value without error, we use the velocity error constant (<span class="math inline">\(K_v\)</span>).</p>
+<p>The formula to calculate <span class="math inline">\(K_v\)</span> is:</p>
+<p><span class="math display">\[
+K_v = \lim_{s \to 0} s \cdot G(s) = \frac{10.5}{12} = 0.825
+\]</span></p>
+<p>With a steady state error of <span class="math inline">\(e_{ss} = 1.14\)</span> rad.</p>
+<p>The steady state error is too high to meet our specifications.</p>
+<p><strong>A simple gain cannot meet our requirements unfortunately.</strong></p>
+</section>
+</section>
+<section id="reassessing-design-requirements" class="level3">
+<h3 class="anchored" data-anchor-id="reassessing-design-requirements">2.5 Reassessing Design Requirements</h3>
+<p>The damping ratio determines how oscillatory the system’s response will be. A lower <span class="math inline">\(\zeta\)</span> leads to a more oscillatory response, while a higher <span class="math inline">\(\zeta\)</span> leads to a more damped system.</p>
+<p>We often face a trade-off in control system design between transient response (how quickly the system responds to changes) and steady-state accuracy (how accurately the system maintains its output over time).</p>
+<p>Think of it as tuning a car’s suspension: too stiff (high ζ), and it’s not responsive enough; too soft (low ζ), and it oscillates too much.</p>
+<table>
+<tbody><tr>
+<td>
+<img src="./pics/23_Design_with_the_root_locus_example_5.png" alt="23_Design_with_the_root_locus_example_5" style="width:550px;">
+</td>
+</tr>
+</tbody></table>
+<p><em>Figure: For <span class="math inline">\(\zeta = 0.15\)</span> (K = 60), the complex roots are located at a specific point on the plot and they move a s we modify the gain.</em></p>
+</section>
+<section id="introducing-a-zero-to-the-system" class="level3">
+<h3 class="anchored" data-anchor-id="introducing-a-zero-to-the-system">Introducing a Zero to the System</h3>
+<p>As control system designers, we face a trade-off between transient and steady-state performance. By introducing a zero into the system, we can adjust the root locus to meet the transient requirements. However, this may affect the steady-state accuracy. We must carefully reassess the user’s requirements and communicate the trade-offs to them.</p>
+<p>To strike a balance between transient and steady-state performance, we introduce a zero into the system’s transfer function at <span class="math inline">\(s = -3\)</span>. This zero has a stabilizing effect and affects the root locus plot.</p>
+<p>By introducing a zero at s = -3, we modify the system’s dynamics. This can help balance our transient and steady-state requirements.</p>
+<table>
+<tbody><tr>
+<td>
+<img src="./pics/23_Design_with_the_root_locus_example_6.png" alt="23_Design_with_the_root_locus_example_6" style="width:550px;">
+</td>
+</tr>
+</tbody></table>
+<p>The plot has been pulled to the left, and hence the addition of a zero has stabilised the system. The system was osciallatory and had very poor relative stability properties. Adding a zero improves relative stability, it is similar to increasing the damping of the system. Adding a zero can be thought of as adding a “counter-weight” in our system that helps adjust its dynamic response.</p>
+<p>We have now a PD compensator which effectively adds a zero to the forward path transfer function, enhancing system stability and response.</p>
+<section id="understanding-the-impact-of-adding-a-zero" class="level4">
+<h4 class="anchored" data-anchor-id="understanding-the-impact-of-adding-a-zero">Understanding the Impact of Adding a Zero</h4>
+<p>When we say “the plot has been pulled to the left,” we are referring to the root locus plot of our system. This leftward shift is significant because:</p>
+<ul>
+<li><p><strong>Stabilization of the System</strong>: In control systems, moving the poles of a system to the left in the s-plane (which is what the root locus plot represents) generally means the system is becoming more stable.</p></li>
+<li><p><strong>Improving Relative Stability</strong>: Originally, our system was oscillatory with poor relative stability. Think of relative stability as the system’s ability to resist oscillations and remain stable under different conditions.</p></li>
+</ul>
+</section>
+<section id="the-role-of-a-pd-proportional-derivative-compensator" class="level4">
+<h4 class="anchored" data-anchor-id="the-role-of-a-pd-proportional-derivative-compensator">The Role of a PD (Proportional-Derivative) Compensator</h4>
+<ul>
+<li><p><strong>What is a PD Compensator?</strong>: A PD compensator is a type of controller used in control systems to improve the stability and response. It adjusts the control signal based on the current error (proportional part) and the rate of change of the error (derivative part).</p></li>
+<li><p><strong>Effect of a PD Compensator</strong>: By adding a PD compensator to our system, we effectively add a zero to the forward path transfer function. This is like adding a carefully calculated counter-weight to our previously rocky boat, now making it more stable and responsive to changes.</p></li>
+</ul>
+<p>A good way to illustrate this concept is to simulate the system’s response with and without the PD compensator. Let’s how the system’s oscillations decrease and stability improves when the compensator is added.</p>
+<p>Now, let’s write the Python code. We’ll simulate two systems: one without the PD compensator and one with it.</p>
+</section>
+</section>
+<section id="python-code-to-compare-the-systems" class="level3">
+<h3 class="anchored" data-anchor-id="python-code-to-compare-the-systems">Python Code to Compare the Systems</h3>
+<p>To demonstrate how a system’s oscillations decrease and its stability improves when a PD compensator is added, compared to a proportional controller, we’ll use Python. We’ll consider two cases: one with a proportional controller and the other with a PD controller.</p>
+<p>First, let’s define the system and the controllers:</p>
+<ol type="1">
+<li><p><strong>Original System (Proportional Controller)</strong>: <span class="math display">\[ G(s) = \frac{K}{s(s+2)(s+6)} \]</span> For this example, let’s assume ( K = 60K_A ). The exact value of ( K_A ) isn’t specified, so we’ll choose a value that demonstrates the system behavior.</p></li>
+<li><p><strong>System with PD Controller</strong>: <span class="math display">\[ G(s) = \frac{16(s+3)}{s(s+2)(s+6)} \]</span> Here, the zero at ( s = -3 ) represents the derivative action of the PD controller.</p></li>
+</ol>
+<p>Both systems will be in a unity feedback configuration. We’ll use the Python libraries <code>matplotlib</code> for plotting and <code>control</code> for control system analysis.</p>
+<div id="3255a36c" class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> control <span class="im">as</span> ctl</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="0bc35206" class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the transfer function of the original system (Proportional Controller)</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>K <span class="op">=</span> <span class="dv">60</span>  <span class="co"># Assuming a value for K</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>G_proportional <span class="op">=</span> ctl.TransferFunction(K, [<span class="dv">1</span>, <span class="dv">8</span>, <span class="dv">12</span>, <span class="dv">0</span>])</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the transfer function of the system with PD Controller</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>G_PD <span class="op">=</span> ctl.TransferFunction([<span class="dv">16</span>, <span class="dv">48</span>], [<span class="dv">1</span>, <span class="dv">8</span>, <span class="dv">12</span>, <span class="dv">0</span>])</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating unity feedback loop for both systems</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>H <span class="op">=</span> ctl.TransferFunction([<span class="dv">1</span>], [<span class="dv">1</span>])  <span class="co"># Unity feedback</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>closed_loop_proportional <span class="op">=</span> ctl.feedback(G_proportional, H)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>closed_loop_PD <span class="op">=</span> ctl.feedback(G_PD, H)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Time vector for simulation</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>time <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">1000</span>)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Step response for the Proportional Controller with unity feedback</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>t1, y1 <span class="op">=</span> ctl.step_response(closed_loop_proportional, time)</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Step response for the PD Controller with unity feedback</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>t2, y2 <span class="op">=</span> ctl.step_response(closed_loop_PD, time)</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>plt.plot(t1, y1, label<span class="op">=</span><span class="st">'Proportional Controller (Unity Feedback)'</span>)</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>plt.plot(t2, y2, label<span class="op">=</span><span class="st">'PD Controller (Unity Feedback)'</span>)</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Step Response Comparison in Unity Feedback Configuration'</span>)</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Time (seconds)'</span>)</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Response'</span>)</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="23_Design_with_the_root_locus_files/figure-html/cell-3-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="expected-outcome" class="level3">
+<h3 class="anchored" data-anchor-id="expected-outcome">Expected Outcome</h3>
+<p>The plot generated by this script will show the step responses of the two systems. You should observe that:</p>
+<ul>
+<li>The system with the proportional controller may exhibit more oscillations and a slower response.</li>
+<li>The system with the PD controller should show improved damping (less oscillation) and faster stabilization, thanks to the added zero at $ s = -3 $.</li>
+</ul>
+<p><strong>Pop-Up Question</strong>: How does adding a zero to a control system’s forward path transfer function affect its stability?</p>
+<p><strong>Answer</strong>: Adding a zero typically improves the system’s stability by making it less oscillatory and more resistant to disturbances, similar to increasing the system’s damping.</p>
+<p>Let’s now consider a <span class="math inline">\(\zeta = 0.6\)</span> requirement and as usual let’s put it on the root locus plot.</p>
+<table>
+<tbody><tr>
+<td>
+<img src="./pics/23_Design_with_the_root_locus_example_7.png" alt="23_Design_with_the_root_locus_example_7" style="width:550px;">
+</td>
+</tr>
+</tbody></table>
+<p>The forward path transfer function becomes:</p>
+<p><span class="math display">\[
+G(s) = \frac{(s+3)}{s(s+2)(s+6)}
+\]</span></p>
+<p>We can then calculate the gain at which we obtain the desired closed loop poles to obtain:</p>
+<p><span class="math display">\[K = 16\]</span></p>
+<p>And finally the settling time:</p>
+<p><span class="math display">\[
+t_s = \frac{4}{\zeta\omega_n} = 1.96\;\;sec
+\]</span></p>
+<p>and the velocity constant:</p>
+<p><span class="math display">\[
+K_v = \frac{16\cdot3}{12} = 4
+\]</span></p>
+<p>We had a requirement that <span class="math inline">\(K_v \ge 5\)</span> so we have not fully achieved it, but now with some trial and error we can obtian the performance that we desire.</p>
+<p><strong>Dominance condition</strong>:the third pole now lies in the <span class="math inline">\(-6\)</span> to <span class="math inline">\(-3\)</span> region and there is the risk that the dominance condition might be violated. If this was the case, we need to mitigate the effect of this pole. For example, if the distance cannot be 5 times we can try and make it at a distance which is three to four times the position of the right-most poles. Alternatively, instead of designing for <span class="math inline">\(\zeta=0.6\)</span> you can design for some other value.</p>
+<p>Simulation will be helpful to understand the full effects.</p>
+<p>Note also that if the third pole moves close enough to the zero their combined effect in closed-loop will be nullified and the system will behave as a second-order system. The dominance condition is respected.</p>
+<section id="dealing-with-the-third-pole" class="level4">
+<h4 class="anchored" data-anchor-id="dealing-with-the-third-pole">Dealing with the Third Pole</h4>
+<p>In our system, we have a situation where the third pole is located in the region between -6 and -3. This creates a risk that the dominance condition may be violated, meaning this third pole could unduly influence the system’s behavior.</p>
+</section>
+<section id="strategies-for-mitigating-the-third-poles-effect" class="level4">
+<h4 class="anchored" data-anchor-id="strategies-for-mitigating-the-third-poles-effect">Strategies for Mitigating the Third Pole’s Effect</h4>
+<ol type="1">
+<li><p><strong>Distance Consideration</strong>: Ideally, we want this third pole to be at least five times the distance away from the imaginary axis as the right-most poles. If this isn’t possible, we aim for it to be three to four times the distance.</p></li>
+<li><p><strong>Design Adjustments</strong>: If maintaining the desired distance is challenging, we could redesign the system for a different damping ratio (<span class="math inline">\(\zeta\)</span>), other than 0.6.</p></li>
+<li><p><strong>Simulation Benefits</strong>: Simulating the system’s response with these variations will provide a clearer picture of how these changes affect performance.</p></li>
+</ol>
+<p><strong>Instructor Note</strong>: <em>Conduct a simulation showing the system’s response with the third pole at different distances from the dominant poles and the zero. This will visually demonstrate the impact on system behavior.</em></p>
+<p><strong>THE SCRIPT BELOW HAS AN ERROR IN HOW THE RAMP STEADY STEATE ERROR IS CALCULATED. FIX IT</strong>.</p>
+<div id="120c9eff" class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># %matplotlib inline</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># import numpy as np</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># import matplotlib.pyplot as plt</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># import control as ctl</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># from ipywidgets import interact, FloatSlider</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co"># def calculate_settling_time(T, yout, tol=0.02):</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co">#     # Settling time is the time at which the response remains within a certain tolerance</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co">#     settled_value = yout[-1]</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co">#     lower_bound = settled_value * (1 - tol)</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co">#     upper_bound = settled_value * (1 + tol)</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co">#     within_tol = np.where((yout &gt;= lower_bound) &amp; (yout &lt;= upper_bound))[0]</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co">#     if within_tol.size == 0:</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co">#         return np.nan  # Return NaN if the system never settles</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="co">#     return T[within_tol[0]]</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="co"># def calculate_steady_state_error(system_type, G, K, time_span):</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="co">#     G_closed_loop = ctl.feedback(K * G)</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="co">#     if system_type == 'step':</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="co">#         # Steady-state error for step input (Type 0 system)</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="co">#         T, yout = ctl.step_response(G_closed_loop, T=np.linspace(0, time_span[-1], 500))</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="co">#         steady_state_val = yout[-1]</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="co">#         return 1 - steady_state_val</span></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="co">#     elif system_type == 'ramp':</span></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="co">#         # Steady-state error for ramp input (Type 1 system)</span></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a><span class="co">#         Kv = ctl.dcgain(G_closed_loop * ctl.TransferFunction([1, 0], [1]))</span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a><span class="co">#         return 1 / Kv if Kv != 0 else np.inf</span></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a><span class="co">#     else:</span></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a><span class="co">#         return np.nan</span></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a><span class="co"># def plot_step_response(G, K, time_span):</span></span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a><span class="co">#     G_closed_loop = ctl.feedback(K * G)</span></span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a><span class="co">#     T, yout = ctl.step_response(G_closed_loop, T=np.linspace(0, time_span[-1], 500))</span></span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a><span class="co">#     plt.plot(T, yout)</span></span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a><span class="co">#     settling_time = calculate_settling_time(T, yout)</span></span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a><span class="co">#     steady_state_error = calculate_steady_state_error('step', G, K, time_span)</span></span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a><span class="co">#     plt.title(f'Step Response for Gain K={K}\nSettling Time: {settling_time:.2f}, Steady-State Error: {steady_state_error:.2f}')</span></span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a><span class="co">#     plt.xlabel('Time')</span></span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a><span class="co">#     plt.ylabel('Amplitude')</span></span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a><span class="co">#     plt.grid(True)</span></span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a><span class="co"># def plot_ramp_response(G, K, time_span):</span></span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a><span class="co">#     G_closed_loop = ctl.feedback(K * G)</span></span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a><span class="co">#     T, yout = ctl.forced_response(G_closed_loop, T=time_span, U=time_span)</span></span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a><span class="co">#     plt.plot(T, yout)</span></span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a><span class="co">#     steady_state_error = calculate_steady_state_error('ramp', G, K, time_span)</span></span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a><span class="co">#     plt.title(f'Ramp Response for Gain K={K}\nSteady-State Error: {steady_state_error:.2f}')</span></span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a><span class="co">#     plt.xlabel('Time')</span></span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a><span class="co">#     plt.ylabel('Amplitude')</span></span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a><span class="co">#     plt.grid(True)</span></span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a><span class="co"># def plot_root_locus_with_gain(K):</span></span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a><span class="co">#     # Define the transfer function G(s)</span></span>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a><span class="co">#     numerator = [1, 3]</span></span>
+<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a><span class="co">#     denominator = [1, 8, 12, 0]</span></span>
+<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a><span class="co">#     G = ctl.TransferFunction(numerator, denominator)</span></span>
+<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a><span class="co">#     # Calculate the closed-loop transfer function for the given gain</span></span>
+<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a><span class="co">#     G_closed_loop = ctl.feedback(K * G)</span></span>
+<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a><span class="co">#     # Find the poles for the specific gain</span></span>
+<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a><span class="co">#     poles = ctl.pole(G_closed_loop)</span></span>
+<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a><span class="co">#     # Plot the root locus</span></span>
+<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a><span class="co">#     plt.figure(figsize=(10, 6))</span></span>
+<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a><span class="co">#     ctl.root_locus(G, plot=True)</span></span>
+<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a><span class="co">#     # Plot the poles for the specific gain</span></span>
+<span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a><span class="co">#     plt.plot(np.real(poles), np.imag(poles), 'ro', markersize=10, label=f'Poles for K={K}')</span></span>
+<span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-75"><a href="#cb3-75" aria-hidden="true" tabindex="-1"></a><span class="co">#     # Enhance plot</span></span>
+<span id="cb3-76"><a href="#cb3-76" aria-hidden="true" tabindex="-1"></a><span class="co">#     plt.xlabel('Real Axis')</span></span>
+<span id="cb3-77"><a href="#cb3-77" aria-hidden="true" tabindex="-1"></a><span class="co">#     plt.ylabel('Imaginary Axis')</span></span>
+<span id="cb3-78"><a href="#cb3-78" aria-hidden="true" tabindex="-1"></a><span class="co">#     plt.title(f'Root Locus of G(s) with Poles for Gain K={K}')</span></span>
+<span id="cb3-79"><a href="#cb3-79" aria-hidden="true" tabindex="-1"></a><span class="co">#     plt.grid(True)</span></span>
+<span id="cb3-80"><a href="#cb3-80" aria-hidden="true" tabindex="-1"></a><span class="co">#     plt.legend()</span></span>
+<span id="cb3-81"><a href="#cb3-81" aria-hidden="true" tabindex="-1"></a><span class="co">#     plt.show()</span></span>
+<span id="cb3-82"><a href="#cb3-82" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-83"><a href="#cb3-83" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-84"><a href="#cb3-84" aria-hidden="true" tabindex="-1"></a><span class="co"># def plot_all(K):</span></span>
+<span id="cb3-85"><a href="#cb3-85" aria-hidden="true" tabindex="-1"></a><span class="co">#     # Define the transfer function G(s)</span></span>
+<span id="cb3-86"><a href="#cb3-86" aria-hidden="true" tabindex="-1"></a><span class="co">#     numerator = [16, 48]</span></span>
+<span id="cb3-87"><a href="#cb3-87" aria-hidden="true" tabindex="-1"></a><span class="co">#     denominator = [1, 8, 12, 0]</span></span>
+<span id="cb3-88"><a href="#cb3-88" aria-hidden="true" tabindex="-1"></a><span class="co">#     G = ctl.TransferFunction(numerator, denominator)</span></span>
+<span id="cb3-89"><a href="#cb3-89" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-90"><a href="#cb3-90" aria-hidden="true" tabindex="-1"></a><span class="co">#     # Time span for the responses</span></span>
+<span id="cb3-91"><a href="#cb3-91" aria-hidden="true" tabindex="-1"></a><span class="co">#     time_span = np.linspace(0, 10, 1000)</span></span>
+<span id="cb3-92"><a href="#cb3-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-93"><a href="#cb3-93" aria-hidden="true" tabindex="-1"></a><span class="co">#     # Plot Root Locus</span></span>
+<span id="cb3-94"><a href="#cb3-94" aria-hidden="true" tabindex="-1"></a><span class="co">#     plot_root_locus_with_gain(K)</span></span>
+<span id="cb3-95"><a href="#cb3-95" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-96"><a href="#cb3-96" aria-hidden="true" tabindex="-1"></a><span class="co">#     # Plot Step Response</span></span>
+<span id="cb3-97"><a href="#cb3-97" aria-hidden="true" tabindex="-1"></a><span class="co">#     plt.figure(figsize=(10, 4))</span></span>
+<span id="cb3-98"><a href="#cb3-98" aria-hidden="true" tabindex="-1"></a><span class="co">#     plot_step_response(G, K, time_span)</span></span>
+<span id="cb3-99"><a href="#cb3-99" aria-hidden="true" tabindex="-1"></a><span class="co">#     plt.show()</span></span>
+<span id="cb3-100"><a href="#cb3-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-101"><a href="#cb3-101" aria-hidden="true" tabindex="-1"></a><span class="co">#     # Plot Ramp Response</span></span>
+<span id="cb3-102"><a href="#cb3-102" aria-hidden="true" tabindex="-1"></a><span class="co">#     plt.figure(figsize=(10, 4))</span></span>
+<span id="cb3-103"><a href="#cb3-103" aria-hidden="true" tabindex="-1"></a><span class="co">#     plot_ramp_response(G, K, time_span)</span></span>
+<span id="cb3-104"><a href="#cb3-104" aria-hidden="true" tabindex="-1"></a><span class="co">#     plt.show()</span></span>
+<span id="cb3-105"><a href="#cb3-105" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-106"><a href="#cb3-106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-107"><a href="#cb3-107" aria-hidden="true" tabindex="-1"></a><span class="co"># # interact(plot_root_locus_with_gain, </span></span>
+<span id="cb3-108"><a href="#cb3-108" aria-hidden="true" tabindex="-1"></a><span class="co"># #          K=FloatSlider(value=16, min=0, max=50, step=0.5, description='Gain K:'))</span></span>
+<span id="cb3-109"><a href="#cb3-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-110"><a href="#cb3-110" aria-hidden="true" tabindex="-1"></a><span class="co"># interact(plot_all, </span></span>
+<span id="cb3-111"><a href="#cb3-111" aria-hidden="true" tabindex="-1"></a><span class="co">#          K=FloatSlider(value=16, min=0, max=50, step=0.5, description='Gain K:'))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"4173c1ab5b6742698e0e52b7c6e93f6d","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+</script>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>&lt;function __main__.plot_all(K)&gt;</code></pre>
+</div>
+</div>
+</section>
+<section id="pole-zero-cancellation" class="level4">
+<h4 class="anchored" data-anchor-id="pole-zero-cancellation">Pole-Zero Cancellation</h4>
+<ul>
+<li><p><strong>Moving Close to the Zero</strong>: If the third pole moves sufficiently close to the zero we’ve added, their effects in the closed-loop system can cancel each other out. This makes the system behave like a second-order system, respecting the dominance condition.</p></li>
+<li><p><strong>Design Flexibility</strong>: If the third pole is neither far enough from the dominant poles nor close enough to the added zero, we still have some flexibility. We can utilize the margin we have in the settling time (the time it takes for the system to stabilize) to adjust our design accordingly.</p></li>
+</ul>
+<p><strong>Pop-Up Question</strong>: Why is it important to respect the dominance condition in control system design?</p>
+<p><strong>Answer</strong>: Respecting the dominance condition ensures that the system behaves in a predictable and stable manner, primarily influenced by the dominant poles, and minimizes the impact of other less significant poles.</p>
+</section>
+</section>
+<section id="physical-realization-of-the-compensator" class="level3">
+<h3 class="anchored" data-anchor-id="physical-realization-of-the-compensator">Physical Realization of the Compensator</h3>
+<p>We have chosen a controller that is</p>
+<p><span class="math display">\[ D(s) = s + z_c \]</span></p>
+<p>where $ z_c $ is the compensator zero, and this is added to enhance its transient response and stability.</p>
+<p>In practice, pure differentiators are avoided due to their sensitivity to high-frequency noise.</p>
+<p>Therefore, this types of compensators are usually implemented with an additional pole to attenuate high frequencies.</p>
+<p>The practical realization of this compensator includes adding a filter to reduce the impact of high frequency noise.</p>
+<p>The actual compensator has the form:</p>
+<p><span class="math display">\[
+D(s) = \frac{s + z_c}{s + p_c}
+\]</span></p>
+<p>Here, $ z_c $ is the zero and $ p_c $ is a pole introduced to filter high-frequency noise.</p>
+<p>The purpose of this pole is not to help with the compensation part, so we want it to be far away from the rest of our poles and zeros. In our case, for example we could place it at -10 or farther. It might depend on the realisation requirements. Numerical accuracy might put specific constraints on how far it can be.</p>
+<p>The addition of another pole modifies the root locus which becomes:</p>
+<table>
+<tbody><tr>
+<td>
+<img src="./pics/23_Design_with_the_root_locus_example_8.png" alt="23_Design_with_the_root_locus_example_8" style="width:550px;">
+</td>
+</tr>
+</tbody></table>
+<p>The addition of another pole has a destibilising effect. You need to choose the pole so that the root locus around our requirments is not disturbed. For example, <span class="math inline">\(\zeta=0.6\)</span> continues to lie on the root locus, and <span class="math inline">\(K_v=4\)</span> continues to be satisfied (at least approximately).</p>
+<p>In this case the final performance are:</p>
+<p><span class="math display">\[
+\zeta = 0.6
+\]</span></p>
+<p><span class="math display">\[
+t_s = 3.33\;\; sec
+\]</span></p>
+<p><span class="math display">\[
+K_v = 1.7
+\]</span></p>
+<p>The velocity constant is now poorer! And hence we have higher steady-state error. We might need to adjust the compensator again.</p>
+<p>You need to adjust the zero-pole pair to achieve the desired performance. We have an additional degree of freedom.</p>
+<p>Overall we can change: <span class="math inline">\(z_c\)</span>, <span class="math inline">\(p_c\)</span> and <span class="math inline">\(K_A\)</span>.</p>
+</section>
+<section id="phase-lead-compensation" class="level3">
+<h3 class="anchored" data-anchor-id="phase-lead-compensation">Phase Lead Compensation</h3>
+<p>This type of controller is called Phase Lead Compensator. It adds a lead angle. This will become clearer when we discuss frequency-based design.</p>
+<table>
+<tbody><tr>
+<td>
+<img src="./pics/23_Design_with_the_root_locus_example_9.png" alt="23_Design_with_the_root_locus_example_9" style="width:550px;">
+</td>
+</tr>
+</tbody></table>
+<p>This network can be implemented as:</p>
+<table>
+<tbody><tr>
+<td>
+<img src="./pics/23_Design_with_the_root_locus_example_10.png" alt="23_Design_with_the_root_locus_example_10" style="width:550px;">
+</td>
+</tr>
+</tbody></table>
+<p>and its transfer function is:</p>
+<p><span class="math display">\[
+D(s) =  \frac{-R_F(sR_1C+1)}{sR_1R_2C+R_1R_2}
+\]</span></p>
+<p>and we can adjust the pole and zero locations choosing resistors and capacitors appropriately.</p>
+<p>The transfer function above can be rearranged to have our typical form as:</p>
+<p><span class="math display">\[
+D(s) = \frac{-K_C(\tau s + 1)}{\alpha\tau s + 1}
+\]</span></p>
+<p>where</p>
+<ul>
+<li><span class="math inline">\(\tau = R_1C\)</span></li>
+<li><span class="math inline">\(K_C = \frac{R_F}{R_1+R_2}\)</span></li>
+<li><span class="math inline">\(\alpha = \frac{R_2}{R_1+R_2}\)</span></li>
+</ul>
+</section>
+</section>
+<section id="effects-of-adding-a-pole-at-the-origin" class="level2">
+<h2 class="anchored" data-anchor-id="effects-of-adding-a-pole-at-the-origin">Effects of Adding a Pole at the Origin</h2>
+<p><strong>Impact on System Dynamics</strong></p>
+<p>Placing a pole at the origin significantly affects both the transient and steady-state behavior of the system.</p>
+<section id="steady-state-accuracy-1" class="level3">
+<h3 class="anchored" data-anchor-id="steady-state-accuracy-1">Steady-State Accuracy</h3>
+<p>When a pole is added at the origin, the system’s type number increases, which in turn increases the steady-state gain $ K_v $ to infinity for a ramp input. This improves the steady-state accuracy.</p>
+</section>
+<section id="transient-response" class="level3">
+<h3 class="anchored" data-anchor-id="transient-response">Transient Response</h3>
+<p>However, adding a pole at the origin can adversely affect the system’s transient response, potentially destabilizing the system for all values of gain $ K $.</p>
+</section>
+<section id="visualizing-through-root-locus" class="level3">
+<h3 class="anchored" data-anchor-id="visualizing-through-root-locus">Visualizing Through Root Locus</h3>
+To demonstrate this, we can draw the root locus of the system with an added pole at the origin.
+<table>
+<tbody><tr>
+<td>
+<img src="./pics/23_Design_with_the_root_locus_example_11.png" alt="23_Design_with_the_root_locus_example_11" style="width:550px;">
+</td>
+</tr>
+</tbody></table>
+</section>
+<section id="adding-a-zero-close-to-the-origin" class="level3">
+<h3 class="anchored" data-anchor-id="adding-a-zero-close-to-the-origin">Adding a zero close to the origin</h3>
+<p>To recover the stability we have to pull the system to the left, and to do this we can add a zero close to the origin.</p>
+<p>Now the root locus becomes:</p>
+<table>
+<tbody><tr>
+<td>
+<img src="./pics/23_Design_with_the_root_locus_example_11.png" alt="23_Design_with_the_root_locus_example_11" style="width:550px;">
+</td>
+</tr>
+</tbody></table>
+<p>We are now using a controller of the form:</p>
+<p><span class="math display">\[
+D(s) = \frac{s+z_c}{z} = 1 + \frac{z_c}{s} = 1 + \frac{1}{T_is}
+\]</span></p>
+<p>which is a PI controller.</p>
+<div id="9f3cf9c1" class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> control <span class="im">as</span> ctl</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ipywidgets <span class="im">import</span> interact, FloatSlider</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_closed_loop_system(K, z_c, z<span class="op">=</span><span class="dv">1</span>):</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Open-loop transfer function G(s)</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    G <span class="op">=</span> ctl.TransferFunction([K], [<span class="dv">1</span>, <span class="dv">8</span>, <span class="dv">12</span>, <span class="dv">0</span>])</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Compensator D(s)</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    D <span class="op">=</span> ctl.TransferFunction([<span class="dv">1</span>, z_c], [z, <span class="dv">0</span>])</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Combined system</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    open_loop_system <span class="op">=</span> G <span class="op">*</span> D</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Closing the loop with unity feedback</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ctl.feedback(open_loop_system, <span class="dv">1</span>)</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_root_locus(K, z_c<span class="op">=</span><span class="dv">1</span>):</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>    system <span class="op">=</span> get_closed_loop_system(K, z_c)</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>    plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>    ctl.root_locus(system, plot<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="st">'Real Axis'</span>)</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>    plt.ylabel(<span class="st">'Imaginary Axis'</span>)</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="ss">f'Root Locus with Gain K = </span><span class="sc">{</span>K<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>    plt.grid(<span class="va">True</span>)</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>    plt.show()</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>interact(plot_root_locus, K<span class="op">=</span>FloatSlider(value<span class="op">=</span><span class="dv">1</span>, <span class="bu">min</span><span class="op">=</span><span class="dv">0</span>, <span class="bu">max</span><span class="op">=</span><span class="dv">100</span>, step<span class="op">=</span><span class="fl">.1</span>, description<span class="op">=</span><span class="st">'Gain K:'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"ac5012a8d1404d8bab834d90520d3c08","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+</script>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>&lt;function __main__.plot_root_locus(K, z_c=1)&gt;</code></pre>
+</div>
+</div>
+</section>
+<section id="practical-approach-phase-lag-compensator" class="level3">
+<h3 class="anchored" data-anchor-id="practical-approach-phase-lag-compensator">Practical Approach: Phase Lag Compensator</h3>
+<p>The design of a phase lag compensator involves carefully selecting the locations of the compensator pole and zero to balance transient and steady-state requirements.</p>
+<p>If we look back at our original specification, we did not have a specific requirement to have <span class="math inline">\(K_v=0\)</span> (which would have justified placing a pole at the origin).</p>
+<p>Instead of placing the compensator pole exactly at the origin, placing it close to the origin can provide a more balanced design. This approach allows for flexibility in meeting both steady-state and transient accuracy requirements.</p>
+<p>The compensator takes the form:</p>
+<p><span class="math display">\[
+D(s) = \frac{ s + z_c }{  s + p_c }
+\]</span></p>
+<p>This controller provides a negative angle contribution and for this reason is called Phase-Lag controller.</p>
+<table>
+<tbody><tr>
+<td>
+<img src="./pics/23_Design_with_the_root_locus_example_13.png" alt="23_Design_with_the_root_locus_example_13" style="width:550px;">
+</td>
+</tr>
+</tbody></table>
+</section>
+</section>
+<section id="phase-lag-compensator-practical-realization" class="level2">
+<h2 class="anchored" data-anchor-id="phase-lag-compensator-practical-realization">Phase Lag Compensator: Practical Realization</h2>
+<p>The physical realization of a phase lag compensator typically involves using resistors and capacitors to create a network that mimics the desired transfer function.</p>
+<p>A typical phase lag compensator can be realized using an operational amplifier (Op-Amp) circuit. The design involves selecting appropriate resistor and capacitor values to achieve the desired $s + z_c $ and $ s + p_c $ values.</p>
+<table>
+<tbody><tr>
+<td>
+<img src="./pics/23_Design_with_the_root_locus_example_14.png" alt="23_Design_with_the_root_locus_example_14" style="width:550px;">
+</td>
+</tr>
+</tbody></table>
+
+
+</section>
+
+</main> <!-- /main -->
+<script type="application/vnd.jupyter.widget-state+json">
+{"state":{},"version_major":2,"version_minor":0}
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/andreamunafo\.github\.io\/principles-of-automatic-controls");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/andreamunafo/principles-of-automatic-controls/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

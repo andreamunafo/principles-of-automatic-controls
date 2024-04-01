@@ -1,0 +1,1839 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.552">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>principles-of-automatic-controls - Bode Plot Analysis</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+<meta property="og:title" content="principles-of-automatic-controls - Bode Plot Analysis">
+<meta property="og:description" content="Course in feedback control for the University of Pisa">
+<meta property="og:site_name" content="principles-of-automatic-controls">
+<meta name="twitter:title" content="principles-of-automatic-controls - Bode Plot Analysis">
+<meta name="twitter:description" content="Course in feedback control for the University of Pisa">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">principles-of-automatic-controls</span>
+    </a>
+  </div>
+        <div class="quarto-navbar-tools tools-end">
+</div>
+          <div id="quarto-search" class="" title="Search"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./bode_plots.html">Bode Plot Analysis</a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Feedback Control</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./faq.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Frequently Asked Questions (FAQ)</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./syllabus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Syllabus for “Principles of Automatic Control”</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./toc.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Table of Contents</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./update_and_manage_local_changes_guide.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A Guide to Updating Your Local Repository with Git in Anaconda’s Virtual Environment</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./getting_started_with_python_and_jupyter_notebook.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Getting Started with Python and Jupyter Notebooks</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principles of Automatic Control</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./basics_of_feedback_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Feedback Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./introduction_to_control_problem.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to the control problem</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dynamic_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modeling in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dynamic_response.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Dynamic response of control systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06_inverse_laplace_transform.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Inverse Laplace Transform: Partial fraction decomposition</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./modeling_dynamic_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Modeling of Dynamic Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./control_system_components.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Control System Components</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./models_of_control_devices_and_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Models of Controlled Devices</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./hardware_and_case_studies.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Hardware of Control Systems and Case Studies</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ac_hardware_and_case_studies.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">AC Motion Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./a_first_complete_application.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A Feedback Control System</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./principles_of_feedback_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principles of Feedback Control</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./feedback_systems_and_their_effects.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Feedback systems and their effects</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./introduction_to_control_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./stability.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Stability Analysis in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./stability_and_routh_criterion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Stability Analysis in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./performance_of_feedback_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Performance of Feedback Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./design_of_feedback_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Design Cycle for a Standard Second-Order System</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./20_Design_of_feedback_control_continued.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Understanding the Standard Second-Order System: Recap</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./steady_state_accuracy_and_design_principles.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Steady State Accuracy and Design Principles</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./compensator_design_using_root_locus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compensator Design</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./design_with_the_root_locus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Design with the Root Locus</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./compensators_and_root_locus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compensators and the Root Locus</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./introduction_to_frequency_domain_analysis_in_control_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Frequency Domain Analysis in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./application_of_nyquist_stability_criterion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Application of Nyquist Stability Criterion in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./the_nyquist_stability_criterion_and_relative_stability.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The Nyquist Stability Criterion and Relative Stability</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./bode_plots.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Bode Plot Analysis</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./feedback_system_performance_based_on_frequency_response.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Feedback System Performance Based On Frequency Response</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./compensator_design_using_frequency_response_plots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principles of Automatic Control: Lead and Lag Compensation</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">IT_TCLab_🇮🇹</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/spacecraft_thermal_control_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Il Laboratorio di Controllo della Temperatura</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/tclab_exercises_report_template_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modello di report sugli esercizi TCLab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/tclab_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Il Laboratorio di Controllo della Temperatura</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/understanding_tclab_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Comprendere TCLab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/tclab_lab_1_coding_a_relay_controller_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 1: Codifica di un controller relè</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/system_model_and_identification_tclab_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modellazione del sistema</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/step_testing_tclab_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Passo Test</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/fitting_step_test_data_to_empirical_models_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Adattamento dei dati dei test di fase ai modelli empirici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/tclab_lab_2_model_identification_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 2: Identificazione del modello</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/tclab_lab_2_fitting_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Identificazione del modello: adattamento dei modelli ai dati</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/relay_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Controllo relè</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/pid_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Controllo PID</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/lab-assignment-pid-control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compito di laboratorio: Controllo PID</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/lab-assignment-pi-control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compito di laboratorio 4: Controllo PI</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">IT_🇮🇹</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/faq_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Domande frequenti (FAQ)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/syllabus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Programma del corso “Principi del controllo automatico”</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/update_and_manage_local_changes_guide_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Aggiornare il Proprio Repository Locale Mantenendo le Modifiche Locali</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/getting_started_with_python_and_jupyter_notebook_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Guida introduttiva ai notebook Python e Jupyter</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/intro_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principi di controllo automatico</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/basics_of_feedback_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione ai sistemi di controllo del feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/introduction_to_control_problem_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione al problema del controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/dynamic_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modellazione nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/dynamic_response_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Risposta dinamica dei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/06_inverse_laplace_transform_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Trasformata di Laplace inversa: scomposizione parziale di frazioni</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/modeling_dynamic_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione alla modellazione dei sistemi dinamici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/control_system_components_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Componenti del sistema di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/models_of_control_devices_and_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modelli di dispositivi controllati</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/hardware_and_case_studies_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Hardware dei sistemi di controllo e casi di studio</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/ac_hardware_and_case_studies_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sistemi di controllo del movimento CA</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/a_first_complete_application_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Un sistema di controllo del feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/principles_of_feedback_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principi di controllo del feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/feedback_systems_and_their_effects_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sistemi di feedback e loro effetti</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/introduction_to_control_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione ai sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/stability_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analisi di stabilità nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/stability_and_routh_criterion_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analisi di stabilità nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/performance_of_feedback_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prestazioni dei sistemi di feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/design_of_feedback_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Ciclo di progettazione per un sistema standard del secondo ordine</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/20_Design_of_feedback_control_continued_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Comprensione del sistema standard del secondo ordine: riepilogo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/steady_state_accuracy_and_design_principles_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Precisione dello stato stazionario e principi di progettazione</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/compensator_design_using_root_locus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Progettazione del compensatore</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/design_with_the_root_locus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Progettare con il luogo delle radici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/compensators_and_root_locus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compensatori e luogo delle radici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/introduction_to_frequency_domain_analysis_in_control_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione all’analisi nel dominio della frequenza nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/application_of_nyquist_stability_criterion_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Applicazione del criterio di stabilità di Nyquist nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/the_nyquist_stability_criterion_and_relative_stability_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Il criterio di stabilità di Nyquist e la stabilità relativa</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/bode_plots_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analisi del diagramma di Bode</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/feedback_system_performance_based_on_frequency_response_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prestazioni del sistema di feedback basate sulla risposta in frequenza</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/index_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Syllabus - Fondamenti di Automatica</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">TCLab</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/spacecraft_thermal_control_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The Temperature Control Laboratory</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/tclab_exercises_report_template.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Exercises Report Template</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The Temperature Control Lab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/understanding_tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Understanding TCLab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/tclab_lab_1_coding_a_relay_controller-solution.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 1: Coding a relay controller</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/tclab_lab_1_coding_a_relay_controller.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 1: Coding a relay controller</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/system_model_and_identification_tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">System Modeling</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/step_testing_tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Step Testing</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/fitting_step_test_data_to_empirical_models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Fitting Step Test Data to Empirical Models</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/tclab_lab_2_model_identification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 2: Model Identification</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/tclab_lab_2_model_identification_solutions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 2: Model Identification</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/tclab_lab_2_fitting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Model Identification: Fitting models to data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/relay_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Relay Control</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/pid_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">PID Control</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/lab-assignment-pid-control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab Assignment: PID Control</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/lab-assignment-pi-control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab Assignment 4: PI Control</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#the-nyquist-plot-and-its-computational-intensity" id="toc-the-nyquist-plot-and-its-computational-intensity" class="nav-link active" data-scroll-target="#the-nyquist-plot-and-its-computational-intensity">The Nyquist Plot and Its Computational Intensity</a></li>
+  <li><a href="#bodes-simplification-method" id="toc-bodes-simplification-method" class="nav-link" data-scroll-target="#bodes-simplification-method">Bode’s Simplification Method</a>
+  <ul class="collapse">
+  <li><a href="#the-essence-of-bode-plot-analysis" id="toc-the-essence-of-bode-plot-analysis" class="nav-link" data-scroll-target="#the-essence-of-bode-plot-analysis">The Essence of Bode Plot Analysis</a></li>
+  <li><a href="#magnitude-and-phase-calculations" id="toc-magnitude-and-phase-calculations" class="nav-link" data-scroll-target="#magnitude-and-phase-calculations">Magnitude and Phase Calculations</a></li>
+  </ul></li>
+  <li><a href="#sidebar---decibels-in-control-systems" id="toc-sidebar---decibels-in-control-systems" class="nav-link" data-scroll-target="#sidebar---decibels-in-control-systems">SIDEBAR - Decibels in Control Systems</a></li>
+  <li><a href="#the-structure-of-bode-plots" id="toc-the-structure-of-bode-plots" class="nav-link" data-scroll-target="#the-structure-of-bode-plots">The Structure of Bode Plots</a></li>
+  <li><a href="#building-blocks-of-bode-plots" id="toc-building-blocks-of-bode-plots" class="nav-link" data-scroll-target="#building-blocks-of-bode-plots">Building Blocks of Bode Plots</a></li>
+  <li><a href="#bode-plot" id="toc-bode-plot" class="nav-link" data-scroll-target="#bode-plot">Bode Plot</a>
+  <ul class="collapse">
+  <li><a href="#basic-building-blocks-of-bode-plots" id="toc-basic-building-blocks-of-bode-plots" class="nav-link" data-scroll-target="#basic-building-blocks-of-bode-plots">Basic Building Blocks of Bode Plots</a></li>
+  <li><a href="#building-block-first-order-lag-with-time-constant" id="toc-building-block-first-order-lag-with-time-constant" class="nav-link" data-scroll-target="#building-block-first-order-lag-with-time-constant">Building Block: First-Order Lag with Time Constant</a></li>
+  <li><a href="#simple-zero-1-jωt" id="toc-simple-zero-1-jωt" class="nav-link" data-scroll-target="#simple-zero-1-jωt">Simple Zero (1 + jωT)</a></li>
+  <li><a href="#bode-plot-for-a-double-pole-11-jωt²" id="toc-bode-plot-for-a-double-pole-11-jωt²" class="nav-link" data-scroll-target="#bode-plot-for-a-double-pole-11-jωt²">Bode Plot for a Double Pole (1/(1 + jωT)²)</a></li>
+  <li><a href="#second-order-factors" id="toc-second-order-factors" class="nav-link" data-scroll-target="#second-order-factors">Second-Order Factors</a></li>
+  </ul></li>
+  <li><a href="#phase-margin-and-gain-margin-in-bode-plots" id="toc-phase-margin-and-gain-margin-in-bode-plots" class="nav-link" data-scroll-target="#phase-margin-and-gain-margin-in-bode-plots">Phase Margin and Gain Margin in Bode Plots</a>
+  <ul class="collapse">
+  <li><a href="#constructing-bode-plots-for-specific-transfer-functions" id="toc-constructing-bode-plots-for-specific-transfer-functions" class="nav-link" data-scroll-target="#constructing-bode-plots-for-specific-transfer-functions">Constructing Bode Plots for Specific Transfer Functions</a></li>
+  </ul></li>
+  <li><a href="#check-your-understanding" id="toc-check-your-understanding" class="nav-link" data-scroll-target="#check-your-understanding">Check your understanding</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/andreamunafo/principles-of-automatic-controls/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Bode Plot Analysis</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
+<p>Under the framework of the Nyquist stability criterion, a significant aspect that needs attention is the application of Bode plots for analyzing gain margin, phase margin, and overall system stability.</p>
+<section id="the-nyquist-plot-and-its-computational-intensity" class="level2">
+<h2 class="anchored" data-anchor-id="the-nyquist-plot-and-its-computational-intensity">The Nyquist Plot and Its Computational Intensity</h2>
+<p>The Nyquist plot, an essential tool in control theory, visualizes the frequency response of a system by plotting</p>
+<p><span class="math display">\[ G(j\omega)H(j\omega) \]</span></p>
+<p>which encompasses both the magnitude and phase angle of the transfer function over a range of frequencies.</p>
+<p>Constructing a Nyquist plot requires the calculation of these components for a continuum of frequencies, typically from 0 to infinity. This process, as you might imagine, involves extensive computational efforts.</p>
+</section>
+<section id="bodes-simplification-method" class="level2">
+<h2 class="anchored" data-anchor-id="bodes-simplification-method">Bode’s Simplification Method</h2>
+<p>To alleviate the computational burden associated with Nyquist plots, Hendrik W. Bode introduced a more efficient method. Bode’s approach simplifies the display of frequency response data by transforming the complex plots into straightforward asymptotic lines. This transformation is achieved through logarithmic scaling of the magnitude and phase of the transfer function.</p>
+<p>This semplification makes it possible to do the Fequency Design on the Bode’s Plots and not on the Nyquist Plos.</p>
+<section id="the-essence-of-bode-plot-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="the-essence-of-bode-plot-analysis">The Essence of Bode Plot Analysis</h3>
+<p>Let’s take a generic form for a Transfer Function:</p>
+<p><span class="math display">\[
+G(j\omega)H(j\omega) = \frac{K(1 + j\omega T_1)...}{j\omega(1 + j\omega T_2)...}
+\]</span></p>
+<p>This is a type-1 system but we can easily generalise it to n-th order.</p>
+<p>To analyze this function using Bode plots, we first take the logarithm of both sides:</p>
+<p><span class="math display">\[ \log_{10}(G(j\omega)H(j\omega)) = \log_{10}K + \log_{10}(1 + j\omega T_1) - \log_{10}j\omega - \log_{10}(1 + j\omega T_2) ... \]</span></p>
+<p>This approach breaks down the transfer function into simpler additive components.</p>
+<ul>
+<li><p><strong>Logarithmic Representation:</strong> By taking the logarithm of the transfer function’s components, the multiplicative terms in $ G(j)H(j) $ become additive. This facilitates the creation of Bode plots with minimal calculations.</p></li>
+<li><p><strong>Logarithmic Scale and Straight Lines:</strong> Bode’s method employs logarithmic scales on both axes of the plot. This choice results in individual components of the transfer function, when plotted, appearing as (almost) straight lines. The addition of these linear segments provides a clear and comprehensive visualization of the system’s frequency response.</p></li>
+</ul>
+<p>In Bode plots, the frequency axis is represented on a logarithmic scale, which is essential for analyzing control systems. On such a scale, the notion of ‘zero frequency’ is undefined, and thus, frequencies typically range from a low (but non-zero) value to a high value. This characteristic of the Bode plot offers a significant advantage for control system analysis.</p>
+<p>Control systems often function as low-pass filters, meaning they are primarily concerned with signals in the low-frequency range. However, it’s equally important to consider the impact of high-frequency noise. The logarithmic nature of the Bode plot’s frequency axis allows for an effective representation of both these aspects.</p>
+<p>In a linear frequency scale, such as that used in Nyquist plots, accommodating a wide range of frequencies can lead to a compressed representation of the low-frequency range, where the performance characteristics of a system are most relevant. Conversely, the high-frequency range, which is crucial for understanding disturbance rejection, might not be adequately represented due to space limitations on the graph.</p>
+<p>The logarithmic scale used in Bode plots elegantly addresses these issues. It elongates the low-frequency region, allowing for a more detailed analysis of the system’s behavior in this crucial range. Simultaneously, it also accommodates the high-frequency range effectively. This dual capability enables a comprehensive view of the system’s performance across a wide frequency spectrum, which is particularly beneficial for the analysis and design of control systems.</p>
+</section>
+<section id="magnitude-and-phase-calculations" class="level3">
+<h3 class="anchored" data-anchor-id="magnitude-and-phase-calculations">Magnitude and Phase Calculations</h3>
+<ul>
+<li><strong>Magnitude:</strong> Consider the logarithm of the magnitude of each term.</li>
+</ul>
+<p><span class="math display">\[
+\left|G(j\omega)H(j\omega)\right| = \frac{K\left|1 + j\omega T_1\right|...}{\left|j\omega\right|\left|1 + j\omega T_2\right|...}
+\]</span></p>
+<p><span class="math display">\[
+log_{10} \left|G(j\omega)H(j\omega)\right| = \log_{10}K + \log_{10}\left|1 + j\omega T_1\right| - \log_{10}{\left|j\omega\right|} - \log_{10}{\left|1 + j\omega T_2\right|} ...
+\]</span></p>
+<p>We can convert this to dB (see below):</p>
+<p><span class="math display">\[
+20log_{10} \left|G(j\omega)H(j\omega)\right| = 20\log_{10}K + 20\log_{10}\left|1 + j\omega T_1\right| - 20\log_{10}{\left|j\omega\right|} - 20\log_{10}{\left|1 + j\omega T_2\right|} ...
+\]</span></p>
+<ul>
+<li><strong>Phase:</strong> Sum the phase contributions from each term in the transfer function.</li>
+</ul>
+<p><span class="math display">\[
+\angle{G(j\omega)H(j\omega)} = \tan^{-1}{\omega T_1} - 90^\circ - \tan^{-1}{\omega T_2} ....
+\]</span></p>
+</section>
+</section>
+<section id="sidebar---decibels-in-control-systems" class="level2">
+<h2 class="anchored" data-anchor-id="sidebar---decibels-in-control-systems">SIDEBAR - Decibels in Control Systems</h2>
+<ul>
+<li><p><strong>Unit of Magnitude:</strong> In control systems, the magnitude of a transfer function is often expressed in decibels (dB). The formula for converting a unit-less magnitude $ M $ to decibels is $ 20 _{10}(M) $.</p></li>
+<li><p><strong>Rationale for Using Decibels:</strong> The decibel unit, originating from communication engineering, provides a standardized and practical scale for magnitude representation. Although one could argue for using the natural logarithm or a simple logarithmic scale, the decibel unit’s ubiquity and compatibility with Bode’s method make it the preferred choice.</p></li>
+</ul>
+<p>–</p>
+<ul>
+<li><strong>Definition:</strong> A logarithmic unit used to express the magnitude of a frequency response.</li>
+<li><strong>Formula:</strong> <span class="math inline">\(20 \log{10}M\)</span> dB, where M is the magnitude.</li>
+<li><strong>Significance:</strong> Provides a standardized scale for comparing magnitudes in control systems.</li>
+</ul>
+<p>– END OF SIDEBAR</p>
+</section>
+<section id="the-structure-of-bode-plots" class="level2">
+<h2 class="anchored" data-anchor-id="the-structure-of-bode-plots">The Structure of Bode Plots</h2>
+<p>Bode plots consist of two separate plots: 1. <strong>Magnitude Plot:</strong> This plot has frequency (<span class="math inline">\(\omega\)</span>) on the x-axis and magnitude in decibels on the y-axis. The magnitude plot shows how the gain of the system changes with frequency. 2. <strong>Phase Plot:</strong> This plot also has frequency (<span class="math inline">\(\omega\)</span>) on the x-axis, but the phase angle (<span class="math inline">\(\phi\)</span>) on the y-axis. It demonstrates how the phase of the system changes with frequency.</p>
+
+
+
+<img src="./pics/28_Bode_Plot.png" alt="28_Bode_Plot" style="width:550px;">
+
+
+
+<section id="the-significance-of-logarithmic-scaling" class="level4">
+<h4 class="anchored" data-anchor-id="the-significance-of-logarithmic-scaling">The Significance of Logarithmic Scaling</h4>
+<p>Using a logarithmic scale for the frequency axis (<span class="math inline">\(\log \omega\)</span>) is crucial because it converts the complex frequency response of each term into straight lines, as opposed to curved lines that would be seen on a linear scale. This transformation significantly simplifies the analysis.</p>
+<p>If we did not have <span class="math inline">\(\log \omega\)</span> Bode’s plot would not be as convenient.</p>
+</section>
+<section id="linear-and-logarithmic-scales-in-bode-plots" class="level4">
+<h4 class="anchored" data-anchor-id="linear-and-logarithmic-scales-in-bode-plots">Linear and Logarithmic Scales in Bode Plots</h4>
+<ul>
+<li><p><strong>Magnitude Axis:</strong> The magnitude axis in a Bode plot is linear, as the logarithmic operation is already incorporated in the decibel calculation.</p></li>
+<li><p><strong>Frequency Axis:</strong> The frequency axis is logarithmic, which simplifies the representation of the frequency response.</p></li>
+</ul>
+</section>
+</section>
+<section id="building-blocks-of-bode-plots" class="level2">
+<h2 class="anchored" data-anchor-id="building-blocks-of-bode-plots">Building Blocks of Bode Plots</h2>
+<p>To construct a Bode plot, we consider the following building blocks of a transfer function:</p>
+<ol type="1">
+<li><p>Constant gain factor $ K $.</p></li>
+<li><p>Zero or Pole at the origin $ (j)^{N} $.</p></li>
+<li><p>First-order-like factors $ (1 jT)^{m} $;</p></li>
+<li><p>Second-order-like factors $ ( s^2 + s + 1)^{r} $.</p></li>
+<li><p>Time delay factor $ e^{-j_D} $.</p></li>
+<li><p>Other factors representing zeros and poles in both the left and right half of the s-plane.</p></li>
+</ol>
+<p>Note that we have taken the Time Constant Form of the factors.</p>
+<p>Note also that case 3), includes:</p>
+<p>$ (1 - jT) $ (RHP zero) and $ $ (RHP pole)</p>
+<p>These elements are combined to form the complete Bode plot, with each factor contributing linearly to the overall response.</p>
+<hr>
+</section>
+<section id="bode-plot" class="level2">
+<h2 class="anchored" data-anchor-id="bode-plot">Bode Plot</h2>
+<p>The Bode plot consists of two graphs:</p>
+<ol type="1">
+<li><strong>Magnitude Plot:</strong> This plot has the frequency on a logarithmic scale (x-axis) and the magnitude of the system response in decibels (y-axis).</li>
+<li><strong>Phase Plot:</strong> This plot also has the frequency on a logarithmic scale (x-axis), but the y-axis represents the phase angle in degrees.</li>
+</ol>
+<section id="frequency-range-in-bode-plots" class="level4">
+<h4 class="anchored" data-anchor-id="frequency-range-in-bode-plots">Frequency Range in Bode Plots</h4>
+<ul>
+<li><strong>Frequency Spectrum:</strong> Bode plots cover a wide range of frequencies, from very low (approaching zero) to very high frequencies.</li>
+<li><strong>Significance:</strong> This broad range allows for comprehensive analysis of system dynamics under various conditions.</li>
+</ul>
+<p>This was not the case with Nyquist where the low frequency range was compressed to allow plotting up to infinity.</p>
+</section>
+<section id="basic-building-blocks-of-bode-plots" class="level3">
+<h3 class="anchored" data-anchor-id="basic-building-blocks-of-bode-plots">Basic Building Blocks of Bode Plots</h3>
+<p>Bode plots are constructed by analyzing the basic building blocks of a transfer function and then combining them. Let’s start with the simplest building block.</p>
+<section id="building-block-1-gain-k" class="level4">
+<h4 class="anchored" data-anchor-id="building-block-1-gain-k">Building Block 1: Gain $ K $</h4>
+<p>The gain $ K $ in a transfer function can be represented in a Bode plot as:</p>
+<ul>
+<li><strong>Magnitude:</strong> $ 20 (K) $ dB. This value is constant across all frequencies.</li>
+<li><strong>Phase:</strong> $ 0^$, as the gain doesn’t affect the phase.</li>
+</ul>
+<p>Graphically, on a semi-log paper, the magnitude plot is a horizontal line at $ 20 (K) $ dB, while the phase plot remains at $ 0^$.</p>
+<section id="considerations-for-gain-k" class="level5">
+<h5 class="anchored" data-anchor-id="considerations-for-gain-k">Considerations for Gain $ K $</h5>
+<ul>
+<li>If $ K &gt; 1 $, the magnitude line is above the 0 dB axis.</li>
+<li>If $ K &lt; 1 $, the magnitude line is below the 0 dB axis.</li>
+</ul>
+
+
+
+<img src="./pics/28_Bode_Plot_K.png" alt="28_Bode_Plot_K" style="width:550px;">
+
+
+
+</section>
+</section>
+<section id="building-block-2-zero-or-pole-at-the-origin-jn" class="level4">
+<h4 class="anchored" data-anchor-id="building-block-2-zero-or-pole-at-the-origin-jn">Building Block 2: Zero or Pole at the origin $ (j)^{N} $</h4>
+<p>We start evaluating how $ $ affects the Bode plot and then we generalise it:</p>
+<ul>
+<li><strong>Magnitude:</strong> $ -20 () $ dB.</li>
+<li><strong>Phase:</strong> $ -90^$ for all frequencies.</li>
+</ul>
+<section id="magnitude-analysis" class="level5">
+<h5 class="anchored" data-anchor-id="magnitude-analysis">Magnitude Analysis</h5>
+<p>The magnitude plot is a straight line with a slope of $ -20 $ dB/decade. This slope is determined by the fact that a change in frequency by a factor of 10 (a decade) results in a $ -20 $ dB change in magnitude.</p>
+<p>Note that if you took the Magnitude with respect to <span class="math inline">\(\omega\)</span> it would be a non-linear function (there is the log).</p>
+</section>
+<section id="decade-and-db-per-decade" class="level5">
+<h5 class="anchored" data-anchor-id="decade-and-db-per-decade">Decade and dB per Decade</h5>
+<ul>
+<li><strong>Decade:</strong> A decade refers to a tenfold increase in frequency. For example, moving from 1 Hz to 10 Hz is one decade.</li>
+<li><strong>dB per Decade:</strong> This term describes how the magnitude (in decibels) changes over a decade. A line with a slope of “-20 dB per decade” implies a decrease of 20 dB with every tenfold increase in frequency.</li>
+</ul>
+</section>
+<section id="plotting-db-per-decade" class="level5">
+<h5 class="anchored" data-anchor-id="plotting-db-per-decade">Plotting dB per Decade</h5>
+<ul>
+<li><strong>Constructing the Slope:</strong> To illustrate a slope of -20 dB per decade, select a reference frequency and decrease the magnitude by 20 dB for the next decade.</li>
+<li><strong>Example:</strong> If starting at 0.1 Hz, draw a straight line decreasing by -20 dB at 1 Hz, representing -20 dB per decade.</li>
+</ul>
+</section>
+</section>
+<section id="example-plot-for-one-pole-at-the-origin" class="level4">
+<h4 class="anchored" data-anchor-id="example-plot-for-one-pole-at-the-origin">Example: Plot for One Pole at the Origin</h4>
+<p>Consider a frequency range from $ 0.1 $ to $ 10 $ rad/s. On a semi-log graph: - At $ = 0.1 $ rad/s, the magnitude is $ -20 (0.1) = 20 $ dB. - At $ = 1 $ rad/s, the magnitude is $ -20 (1) = 0 $ dB. - At $ = 10 $ rad/s, the magnitude is $ -20 (10) = -20 $ dB. - Connect these points to form a straight line, representing the magnitude plot.</p>
+
+
+
+<img src="./pics/28_Bode_Plot_1_over_jw.png" alt="28_Bode_Plot_1_over_jw" style="width:550px;">
+
+
+
+<p>We can now generalise and consider $ $:</p>
+<ul>
+<li><strong>Magnitude:</strong> $ -40 () $ dB (i.e., straight line with slope of $ -40 $ dB/decade.</li>
+<li><strong>Phase:</strong> $ -180^$ for all frequencies.</li>
+</ul>
+
+
+
+<img src="./pics/28_Bode_Plot_1_over_jw_2.png" alt="28_Bode_Plot_1_over_jw_2" style="width:550px;">
+
+
+
+<ul>
+<li><strong>Magnitude Change:</strong> For each additional lag term, the slope of the magnitude plot doubles. For <span class="math inline">\(1/j\omega^2\)</span>, the slope is -40 dB per decade.</li>
+<li><strong>Plotting:</strong> Begin at <span class="math inline">\(\omega\)</span> = 1 with a specific dB level and extend the line with a slope of -40 dB per decade.</li>
+</ul>
+<p>And if we have a zero (or multiple zeros at the origin) the shape is the same but the slope becomes positive.</p>
+</section>
+<section id="combination-of-gain-and-pole-at-the-origin-left-fracks-right" class="level4">
+<h4 class="anchored" data-anchor-id="combination-of-gain-and-pole-at-the-origin-left-fracks-right">Combination of Gain and Pole at the Origin <span class="math inline">\(\left( \frac{K}{s} \right)\)</span></h4>
+<p><span class="math display">\[
+G(s) = \frac{K}{s}
+\]</span></p>
+<p>The Bode Plot is obtained summing up the plot for <span class="math inline">\(K\)</span> and the plot for <span class="math inline">\(\frac{1}{s}\)</span>.</p>
+<ul>
+<li><p><strong>Combined Effects:</strong> When combining a gain factor (<span class="math inline">\(K\)</span>) with a term (<span class="math inline">\(1/j\omega\)</span>), the magnitude plot shifts. The phase is -90.</p></li>
+<li><p><strong>Magnitude Equation:</strong> For <span class="math inline">\(G(j\omega) = \frac{K}{j\omega}\)</span>, the magnitude in dB is <span class="math inline">\(-20 log(\omega) + 20 log(K)\)</span>.</p></li>
+</ul>
+<p>This is a straight line of the form: <span class="math inline">\(y = mx + c\)</span>.</p>
+
+
+
+<img src="./pics/28_Bode_Plot_K_over_jw.png" alt="28_Bode_Plot_K_over_jw" style="width:550px;">
+
+
+
+<p>Two poles at the origin:</p>
+<p><span class="math display">\[
+G(s) = \frac{K}{s^2}
+\]</span></p>
+<p>The Magnitude equation is <span class="math inline">\(dB = -40 log(\omega) + 20 log(K)\)</span>.</p>
+
+
+
+<img src="./pics/28_Bode_Plot_K_over_jw_2.png" alt="28_Bode_Plot_K_over_jw_2" style="width:550px;">
+
+
+
+</section>
+<section id="identifying-the-type-of-system-from-bode-plot" class="level4">
+<h4 class="anchored" data-anchor-id="identifying-the-type-of-system-from-bode-plot">Identifying the Type of System from Bode Plot</h4>
+<p>In the low frequency region, the Bode Plot will tell you the type of your system:</p>
+<ul>
+<li><strong>Type-0 System:</strong> Characterized by a horizontal line in the low-frequency region, indicating a constant gain.</li>
+<li><strong>Type-1 System:</strong> Exhibits a line with a slope of -20 dB per decade, indicative of a first-order system.</li>
+<li><strong>Type-2 System:</strong> A slope of -40 dB per decade in the low-frequency region signals a second-order system.</li>
+</ul>
+
+
+
+<img src="./pics/28_Bode_Plot_Types.png" alt="28_Bode_Plot_Types" style="width:550px;">
+
+
+
+</section>
+</section>
+<section id="building-block-first-order-lag-with-time-constant" class="level3">
+<h3 class="anchored" data-anchor-id="building-block-first-order-lag-with-time-constant">Building Block: First-Order Lag with Time Constant</h3>
+<section id="simple-pole-or-simple-lag-11-jωt" class="level4">
+<h4 class="anchored" data-anchor-id="simple-pole-or-simple-lag-11-jωt">Simple Pole or Simple Lag (1/(1 + jωT))</h4>
+<ul>
+<li><strong>Magnitude and Phase:</strong></li>
+</ul>
+<p>For <span class="math inline">\(G(s) = \frac{1}{1 + j\omega T}\)</span>, the Magnitude can be expressed as:</p>
+<p><span class="math display">\[
+|G(s)| = \frac{1}{\sqrt{1 + \omega^2 T^2}}  \Rightarrow -10\log{\left(1 + \omega^2 T^2\right)}
+\]</span></p>
+<p>and the Phase as:</p>
+<p><span class="math display">\[
+\angle{G(s)} = -\tan^{-1}(\omega T)
+\]</span></p>
+<section id="plotting-the-first-order-lag" class="level5">
+<h5 class="anchored" data-anchor-id="plotting-the-first-order-lag">Plotting the First-Order Lag</h5>
+<p><strong>Frequency Ranges:</strong> We divide the frequency spectrum into two ranges based on the product <span class="math inline">\(\omega T\)</span>: - <strong>Case 1: <span class="math inline">\(\omega T &lt;&lt; 1\)</span></strong> (Low-frequency range): In this range, the term <span class="math inline">\(\omega^2T^2\)</span> is negligible, simplifying the equation to <span class="math inline">\(dB ≈ 0\)</span>. Thus, the plot remains at 0 dB for low frequencies.</p>
+<ul>
+<li><strong>Case 2: <span class="math inline">\(\omega T &gt;&gt; 1\)</span></strong> (High-frequency range): Here, the <span class="math inline">\(1\)</span> in the equation becomes negligible, simplifying it to <span class="math inline">\(dB = -20 log(\omega T)\)</span>. This results in a straight line with a slope of -20 dB per decade.</li>
+</ul>
+</section>
+<section id="corner-frequency-and-transition" class="level5">
+<h5 class="anchored" data-anchor-id="corner-frequency-and-transition">Corner Frequency and Transition</h5>
+<ul>
+<li><p><strong>Corner Frequency:</strong> The frequency at which <span class="math inline">\(\omega T = 1\)</span> is known as the corner frequency. It represents a critical transition point in the plot.</p></li>
+<li><p><strong>Magnitude Plot:</strong> The plot transitions from a flat line (0 dB) at low frequencies to a line with a slope of -20 dB per decade beyond the corner frequency.</p></li>
+</ul>
+<p>We can then plot the Magnitude plot:</p>
+
+
+
+<img src="./pics/28_Bode_Plot_simple_lag_magnitude.png" alt="28_Bode_Plot_simple_lag_magnitude" style="width:550px;">
+
+
+
+<p>Let’s consider the equation again:</p>
+<p><span class="math display">\[
+|G(s)|  = \Rightarrow -10\log{\left(1 + \omega^2 T^2\right)}
+\]</span></p>
+<ul>
+<li><p><strong>Case 1:</strong> <span class="math inline">\(|G(s)| = 0\)</span></p></li>
+<li><p><strong>Case 2:</strong> <span class="math inline">\(|G(s)| = -20\log(\omega) - 20\log(T)\)</span></p></li>
+<li><p><strong>Case 3: At <span class="math inline">\(\omega T = 1\)</span>:</strong> The magnitude equation becomes <span class="math inline">\(dB = -10 log \sqrt{2} = -3\)</span> dB. In this case, the phase is <span class="math inline">\(tan^{-1}\left(1\right) = -45^\circ\)</span></p></li>
+</ul>
+<p>We can verify the difference between the real function and the approximation.</p>
+<div id="f8a15e55" class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Constants</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>T <span class="op">=</span> <span class="dv">1</span>  <span class="co"># You can change T as per your requirements</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>corner_frequency <span class="op">=</span> <span class="dv">1</span> <span class="op">/</span> T</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Frequency range from 0.1 to 100</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>omega <span class="op">=</span> np.logspace(<span class="op">-</span><span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">500</span>)  <span class="co"># 500 points between 10^-1 and 10^2</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculating dB values for the actual plot</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>dB_actual <span class="op">=</span> <span class="op">-</span><span class="dv">10</span> <span class="op">*</span> np.log10(<span class="dv">1</span> <span class="op">+</span> omega<span class="op">**</span><span class="dv">2</span> <span class="op">*</span> T<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Asymptotic approximation</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>dB_asymptotic <span class="op">=</span> np.zeros_like(omega)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, w <span class="kw">in</span> <span class="bu">enumerate</span>(omega):</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> w <span class="op">&lt;</span> corner_frequency:</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>        dB_asymptotic[i] <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>        dB_asymptotic[i] <span class="op">=</span> <span class="op">-</span><span class="dv">10</span> <span class="op">*</span> np.log10(w<span class="op">**</span><span class="dv">2</span> <span class="op">*</span> T<span class="op">**</span><span class="dv">2</span>)  <span class="co"># Slope of -20 dB/decade</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting the Bode plot and its asymptotic approximation</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>plt.semilogx(omega, dB_actual, label<span class="op">=</span><span class="st">'Actual Plot'</span>)</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>plt.semilogx(omega, dB_asymptotic, label<span class="op">=</span><span class="st">'Asymptotic Approximation'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Bode Plot with Asymptotic Approximation'</span>)</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Frequency (rad/s)'</span>)</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Magnitude (dB)'</span>)</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>plt.grid(which<span class="op">=</span><span class="st">'both'</span>, axis<span class="op">=</span><span class="st">'both'</span>)</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="28_Bode_Plots_files/figure-html/cell-2-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="error-analysis-in-bode-plots" class="level4">
+<h4 class="anchored" data-anchor-id="error-analysis-in-bode-plots">Error Analysis in Bode Plots</h4>
+<p><span class="math display">\[
+|G(s)|  = -10\log{\left(1 + \omega^2 T^2\right)}
+\]</span></p>
+<p>In Bode plot analysis, the use of asymptotic approximations simplifies the plotting process. However, this approach can introduce errors, especially near the corner frequencies. To enhance the accuracy of the plot, we can add more points and calculate the errors at these points.</p>
+<ul>
+<li><strong>Error Calculations:</strong> Errors in the Bode plot are algebraically added at specific frequencies to create a more accurate representation. For instance, at the corner frequency, the typical error might be -3 dB. Additionally, we can calculate errors at points one octave above and below the corner frequency. <strong>An octave in this context refers to a doubling or halving of the frequency.</strong></li>
+</ul>
+<p>For a more accurate representation, we can take additional points at frequencies <span class="math inline">\(\omega = \frac{1}{2T}\)</span> and <span class="math inline">\(\omega = \frac{2}{T}\)</span>. The errors at these points can be calculated as follows:</p>
+<ul>
+<li><p>At <span class="math inline">\(\omega = \frac{1}{2T}\)</span>:</p>
+<p><span class="math display">\[
+err_{dB} = −10\log(1) - \left (-10\log{\left(1 + \left(\frac{1}{2T}\right)^2 T^2\right)} \right) \approx -1 \text{ dB}
+\]</span></p></li>
+<li><p>At <span class="math inline">\(\omega = \frac{2}{T}\)</span>:</p>
+<p><span class="math display">\[
+err_{dB} = -10\log{\left(\left(\frac{2}{T}\right)^2 T^2\right)} - \left (-10\log{\left(1 + \left(\frac{2}{T}\right)^2 T^2\right)} \right) \approx -1 \text{ dB}
+\]</span></p></li>
+</ul>
+<p>These error calculations help refine the Bode plot, making it a closer match to the actual frequency response of the system.</p>
+<p>Common practice includes adjusting the plot at ω = 1/(2T) and ω = 2/T by a certain dB level to closely match the actual plot.</p>
+</section>
+<section id="phase-plot-analysis" class="level4">
+<h4 class="anchored" data-anchor-id="phase-plot-analysis">Phase Plot Analysis</h4>
+<p>The primary equation for the phase plot in Bode analysis is given by:</p>
+<p><span class="math display">\[
+\angle G(j\omega) = -\tan^{-1}(\omega T)
+\]</span></p>
+<p>This equation implies:</p>
+<ul>
+<li>At <span class="math inline">\(\omega = 0\)</span>, <span class="math inline">\(\angle G(j\omega) = 0^\circ\)</span>, indicating the phase starts at 0 degrees at low frequencies.</li>
+<li>As <span class="math inline">\(\omega \rightarrow \infty\)</span>, <span class="math inline">\(\angle G(j\omega) \rightarrow -90^\circ\)</span>, showing the phase approaches -90 degrees at high frequencies.</li>
+<li>At the specific frequency <span class="math inline">\(\omega = \frac{1}{T}\)</span>, <span class="math inline">\(\angle G(j\omega) = -45^\circ\)</span>, which is the midpoint in the phase transition.</li>
+</ul>
+
+
+
+<img src="./pics/28_Bode_Plot_simple_lag_phase.png" alt="28_Bode_Plot_simple_lag_phase" style="width:550px;">
+
+
+
+</section>
+<section id="construction-of-the-phase-plot" class="level4">
+<h4 class="anchored" data-anchor-id="construction-of-the-phase-plot">Construction of the Phase Plot</h4>
+<ul>
+<li><p><strong>Actual Phase Plot:</strong> The actual phase plot for a simple pole smoothly transitions from 0 degrees at low frequencies to -90 degrees at high frequencies. While certain frequency ranges might allow for constant phase approximations, the true plot exhibits a gradual, continuous change.</p></li>
+<li><p><strong>Approximation Method:</strong> A practical approximation for the phase plot uses a straight line extending from <span class="math inline">\(\omega = \frac{1}{10T}\)</span> to <span class="math inline">\(\omega = \frac{10}{T}\)</span>. This approximation simplifies the plot but can introduce an error of up to approximately <span class="math inline">\(6^\circ\)</span>. Such an error becomes significant when calculating the phase margin, where precision is crucial for assessing system stability.</p></li>
+</ul>
+</section>
+<section id="visualization" class="level4">
+<h4 class="anchored" data-anchor-id="visualization">Visualization</h4>
+<p>The phase plots, both approximated and actual, can be visualized as shown below. The figures illustrate the distinction between the actual phase behavior and its asymptotic approximation, highlighting the simplicity and potential errors involved in the latter approach.</p>
+<ul>
+<li><strong>Asymptotic Approximation:</strong> (Image showing the straight-line approximation from <span class="math inline">\(\frac{1}{10T}\)</span> to <span class="math inline">\(\frac{10}{T}\)</span>)</li>
+</ul>
+
+
+
+<img src="./pics/28_Bode_Plot_simple_lag_phase_better.png?1" alt="28_Bode_Plot_simple_lag_phase_better" style="width:550px;">
+
+
+
+<p><em>Figure: The asymptotic approximation is depicted using a straight line for ease of analysis.</em></p>
+<ul>
+<li><strong>Actual Phase Plot:</strong></li>
+</ul>
+<p><em>Figure: Image representing the smooth transition from 0 to -90 degrees. This is shown using the Python Script Below.</em></p>
+<div id="c2085917" class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Constants</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>T <span class="op">=</span> <span class="dv">1</span>  <span class="co"># Time constant, you can change this as needed</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Frequency range from 0.01 to 1000</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>omega <span class="op">=</span> np.logspace(<span class="op">-</span><span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">500</span>)  <span class="co"># 500 points between 10^-2 and 10^3</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculating the actual phase</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>phase_actual <span class="op">=</span> <span class="op">-</span>np.arctan(omega <span class="op">*</span> T) <span class="op">*</span> (<span class="dv">180</span> <span class="op">/</span> np.pi)  <span class="co"># Convert to degrees</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Straight-line approximation</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>phase_approx <span class="op">=</span> np.zeros_like(omega)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, w <span class="kw">in</span> <span class="bu">enumerate</span>(omega):</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> w <span class="op">&lt;</span> <span class="dv">1</span> <span class="op">/</span> (<span class="dv">10</span> <span class="op">*</span> T):</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>        phase_approx[i] <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> w <span class="op">&gt;</span> <span class="dv">10</span> <span class="op">/</span> T:</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>        phase_approx[i] <span class="op">=</span> <span class="op">-</span><span class="dv">90</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Linear interpolation between -45 at 1/T and -90 at 10/T</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>        phase_approx[i] <span class="op">=</span> np.interp(np.log10(w), [np.log10(<span class="dv">1</span> <span class="op">/</span> (<span class="dv">10</span> <span class="op">*</span> T)), np.log10(<span class="dv">10</span> <span class="op">/</span> T)], [<span class="dv">0</span>, <span class="op">-</span><span class="dv">90</span>])</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting the phase plots</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>plt.semilogx(omega, phase_actual, label<span class="op">=</span><span class="st">'Actual Phase'</span>)</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>plt.semilogx(omega, phase_approx, label<span class="op">=</span><span class="st">'Straight-line Approximation'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Phase Plot for a Simple Pole'</span>)</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Frequency (rad/s)'</span>)</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Phase (degrees)'</span>)</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>plt.grid(which<span class="op">=</span><span class="st">'both'</span>, axis<span class="op">=</span><span class="st">'both'</span>)</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="28_Bode_Plots_files/figure-html/cell-3-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<section id="summary---simple-pole-or-simple-lag-11-jωt" class="level5">
+<h5 class="anchored" data-anchor-id="summary---simple-pole-or-simple-lag-11-jωt">Summary - Simple Pole or Simple Lag (1/(1 + jωT))</h5>
+<p><span class="math display">\[G(s) = \frac{1}{1 + j\omega T}\]</span></p>
+
+
+
+<img src="./pics/28_Bode_Plot_simple_lag_complete.png" alt="28_Bode_Plot_simple_lag_complete" style="width:550px;">
+
+
+
+</section>
+</section>
+</section>
+<section id="simple-zero-1-jωt" class="level3">
+<h3 class="anchored" data-anchor-id="simple-zero-1-jωt">Simple Zero (1 + jωT)</h3>
+<p><span class="math display">\[
+G(s) = 1+j\omega T
+\]</span></p>
+<ul>
+<li><strong>Asymptotic Plot:</strong> For a zero, the asymptotic Bode plot starts with an increasing slope of +20 dB per decade at the corner frequency (1/T).</li>
+<li><strong>Adjusting for Accuracy:</strong> To create a more accurate plot, adjust the asymptotic plot at specific frequencies (such as ω = 1/(2T) and ω = 2/T) by adding dB levels.</li>
+</ul>
+
+
+
+<img src="./pics/28_Bode_Plot_simple_zero_complete.png" alt="28_Bode_Plot_simple_zero_complete" style="width:550px;">
+
+
+
+</section>
+<section id="bode-plot-for-a-double-pole-11-jωt²" class="level3">
+<h3 class="anchored" data-anchor-id="bode-plot-for-a-double-pole-11-jωt²">Bode Plot for a Double Pole (1/(1 + jωT)²)</h3>
+<p><span class="math display">\[
+G(s) = \frac{1}{(1+j\omega T)^2}
+\]</span></p>
+<ul>
+<li><strong>Slope of the Line:</strong> For a double pole, the line in the Bode plot has a slope of -40 dB per decade, with adjustments for errors around this frequency.</li>
+<li><strong>Corner Frequency:</strong> The corner frequency, where ωT = 1, is the point where the slope change occurs.</li>
+</ul>
+<section id="error-analysis-in-bode-plots-1" class="level4">
+<h4 class="anchored" data-anchor-id="error-analysis-in-bode-plots-1">Error Analysis in Bode Plots</h4>
+<ul>
+<li><strong>Error Calculations:</strong> Errors in the Bode plot are algebraically added at specific frequencies to create a more accurate representation. For example, at the corner frequency, the error is -6 dB, with additional errors of -2 dB one octave above and below the corner frequency.</li>
+</ul>
+</section>
+</section>
+<section id="second-order-factors" class="level3">
+<h3 class="anchored" data-anchor-id="second-order-factors">Second-Order Factors</h3>
+<p><span class="math display">\[
+G(s) = \frac{1}{\frac{1}{\omega_n^2}s^2 + \frac{2\zeta}{\omega_n} s + 1}
+\]</span></p>
+</section>
+</section>
+<section id="phase-margin-and-gain-margin-in-bode-plots" class="level2">
+<h2 class="anchored" data-anchor-id="phase-margin-and-gain-margin-in-bode-plots">Phase Margin and Gain Margin in Bode Plots</h2>
+<ul>
+<li><p><strong>Gain Crossover Frequency:</strong> This is the frequency at which the magnitude of the system’s response equals 1 (or 0 dB). It is crucial for stability analysis.</p></li>
+<li><p><strong>Phase Margin:</strong> The phase margin is the additional phase shift required to bring the system to the brink of instability. It is calculated from the phase plot at the gain crossover frequency.</p></li>
+<li><p><strong>Phase Margin Analysis:</strong></p>
+<ul>
+<li>The phase margin represents the additional phase angle that can be added to the system before it reaches a phase angle of -180 degrees.</li>
+<li><strong>Positive Phase Margin:</strong> If the plot is above the -180-degree line at the gain crossover frequency, the phase margin is positive, indicating a stable system.</li>
+<li><strong>Negative Phase Margin:</strong> Conversely, if the plot is below the -180-degree line, it’s a negative phase margin, suggesting potential instability.</li>
+</ul></li>
+<li><p><strong>Defining Phase Crossover Frequency:</strong> The phase crossover frequency is where the phase angle of the system’s response becomes -180 degrees. This frequency is critical in determining the stability of the system.</p></li>
+</ul>
+<section id="gain-margin-analysis" class="level4">
+<h4 class="anchored" data-anchor-id="gain-margin-analysis">Gain Margin Analysis</h4>
+<ul>
+<li><strong>Calculating Gain Margin:</strong> Gain margin is the additional gain that can be added to the system before it becomes unstable. It is measured in decibels (dB).</li>
+<li><strong>Determining Gain Margin:</strong> To find the gain margin, locate the phase crossover frequency on the magnitude plot. The distance (in dB) from this point to the 0 dB line represents the gain margin.</li>
+</ul>
+<hr>
+</section>
+<section id="constructing-bode-plots-for-specific-transfer-functions" class="level3">
+<h3 class="anchored" data-anchor-id="constructing-bode-plots-for-specific-transfer-functions">Constructing Bode Plots for Specific Transfer Functions</h3>
+<section id="example" class="level4">
+<h4 class="anchored" data-anchor-id="example">Example:</h4>
+<p><span class="math display">\[
+G(s) = \frac{k}{s(1 + sT_1)(1 + sT_2)}
+\]</span></p>
+<ul>
+<li><p><strong>Magnitude Plot Construction:</strong> Start by plotting the low-frequency plot for K = 10. Then, add plots for each factor (1/s, 1 + sT1, 1 + sT2) and adjust the slope at each corner frequency.</p></li>
+<li><p><strong>Approach:</strong> At each corner frequency, add or subtract dB levels based on the net change in slope. For example, at a corner frequency where the slope decreases, subtract dB levels to correct the plot.</p></li>
+</ul>
+<hr>
+</section>
+</section>
+</section>
+<section id="check-your-understanding" class="level2">
+<h2 class="anchored" data-anchor-id="check-your-understanding">Check your understanding</h2>
+<p><strong>Pop-up Question:</strong> Why are Bode plots preferred over Nyquist plots for certain analyses in automatic control?</p>
+<p><strong>Answer:</strong> Bode plots simplify the visualization and interpretation of a system’s frequency response by converting complex polar plots into straightforward logarithmic plots. This simplification is especially useful for understanding the system’s gain and phase margins.</p>
+<p><strong>Pop-Up Question:</strong> Why are decibels used in Bode plot analysis?</p>
+<p><strong>Answer:</strong> Decibels provide a logarithmic scale that simplifies the comparison of different magnitudes, making it easier to analyze and design control systems.</p>
+<p><strong>Pop-Up Question:</strong> What does a positive gain margin indicate about a system’s stability?</p>
+<p><strong>Answer:</strong> A positive gain margin indicates that a system can withstand an increase in gain without becoming unstable.</p>
+<p><strong>Pop-up Question:</strong> Why are Decades Used in Bode Plots?</p>
+<p><strong>Answer:</strong> Decades are used because they provide a logarithmic scale for frequency. This allows a wide range of frequencies to be represented compactly, facilitating the analysis of system behavior across different frequency bands.</p>
+<p><strong>Pop-up Question:</strong> Why is the Corner Frequency Important in Bode Plots?</p>
+<p><strong>Answer:</strong> The corner frequency marks the transition point where the behavior of the system changes significantly. It is where the approximation of the system’s frequency response shifts from one regime to another, such as from a flat response to a sloped one.</p>
+<p><strong>Pop-up Question:</strong> What is the Significance of the Gain and Phase Margins in Control Systems?</p>
+<p><strong>Answer:</strong> Gain and phase margins are critical indicators of system stability. A positive phase margin and a substantial gain margin imply that the system can tolerate a certain level of gain increase or phase shift before becoming unstable.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/andreamunafo\.github\.io\/principles-of-automatic-controls");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/andreamunafo/principles-of-automatic-controls/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

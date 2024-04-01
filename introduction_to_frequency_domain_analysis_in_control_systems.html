@@ -1,0 +1,2085 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.552">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>principles-of-automatic-controls - Introduction to Frequency Domain Analysis in Control Systems</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+<script src="https://unpkg.com/@jupyter-widgets/html-manager@*/dist/embed-amd.js" crossorigin="anonymous"></script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+<meta property="og:title" content="principles-of-automatic-controls - Introduction to Frequency Domain Analysis in Control Systems">
+<meta property="og:description" content="Course in feedback control for the University of Pisa">
+<meta property="og:site_name" content="principles-of-automatic-controls">
+<meta name="twitter:title" content="principles-of-automatic-controls - Introduction to Frequency Domain Analysis in Control Systems">
+<meta name="twitter:description" content="Course in feedback control for the University of Pisa">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">principles-of-automatic-controls</span>
+    </a>
+  </div>
+        <div class="quarto-navbar-tools tools-end">
+</div>
+          <div id="quarto-search" class="" title="Search"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./introduction_to_frequency_domain_analysis_in_control_systems.html">Introduction to Frequency Domain Analysis in Control Systems</a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Feedback Control</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./faq.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Frequently Asked Questions (FAQ)</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./syllabus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Syllabus for “Principles of Automatic Control”</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./toc.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Table of Contents</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./update_and_manage_local_changes_guide.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A Guide to Updating Your Local Repository with Git in Anaconda’s Virtual Environment</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./getting_started_with_python_and_jupyter_notebook.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Getting Started with Python and Jupyter Notebooks</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principles of Automatic Control</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./basics_of_feedback_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Feedback Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./introduction_to_control_problem.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to the control problem</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dynamic_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modeling in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dynamic_response.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Dynamic response of control systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06_inverse_laplace_transform.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Inverse Laplace Transform: Partial fraction decomposition</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./modeling_dynamic_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Modeling of Dynamic Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./control_system_components.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Control System Components</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./models_of_control_devices_and_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Models of Controlled Devices</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./hardware_and_case_studies.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Hardware of Control Systems and Case Studies</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ac_hardware_and_case_studies.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">AC Motion Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./a_first_complete_application.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A Feedback Control System</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./principles_of_feedback_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principles of Feedback Control</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./feedback_systems_and_their_effects.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Feedback systems and their effects</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./introduction_to_control_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./stability.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Stability Analysis in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./stability_and_routh_criterion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Stability Analysis in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./performance_of_feedback_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Performance of Feedback Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./design_of_feedback_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Design Cycle for a Standard Second-Order System</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./20_Design_of_feedback_control_continued.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Understanding the Standard Second-Order System: Recap</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./steady_state_accuracy_and_design_principles.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Steady State Accuracy and Design Principles</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./compensator_design_using_root_locus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compensator Design</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./design_with_the_root_locus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Design with the Root Locus</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./compensators_and_root_locus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compensators and the Root Locus</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./introduction_to_frequency_domain_analysis_in_control_systems.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Introduction to Frequency Domain Analysis in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./application_of_nyquist_stability_criterion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Application of Nyquist Stability Criterion in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./the_nyquist_stability_criterion_and_relative_stability.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The Nyquist Stability Criterion and Relative Stability</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./bode_plots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Bode Plot Analysis</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./feedback_system_performance_based_on_frequency_response.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Feedback System Performance Based On Frequency Response</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./compensator_design_using_frequency_response_plots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principles of Automatic Control: Lead and Lag Compensation</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">IT_TCLab_🇮🇹</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/spacecraft_thermal_control_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Il Laboratorio di Controllo della Temperatura</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/tclab_exercises_report_template_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modello di report sugli esercizi TCLab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/tclab_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Il Laboratorio di Controllo della Temperatura</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/understanding_tclab_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Comprendere TCLab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/tclab_lab_1_coding_a_relay_controller_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 1: Codifica di un controller relè</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/system_model_and_identification_tclab_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modellazione del sistema</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/step_testing_tclab_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Passo Test</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/fitting_step_test_data_to_empirical_models_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Adattamento dei dati dei test di fase ai modelli empirici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/tclab_lab_2_model_identification_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 2: Identificazione del modello</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/tclab_lab_2_fitting_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Identificazione del modello: adattamento dei modelli ai dati</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/relay_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Controllo relè</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/pid_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Controllo PID</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/lab-assignment-pid-control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compito di laboratorio: Controllo PID</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_TCLab_🇮🇹/lab-assignment-pi-control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compito di laboratorio 4: Controllo PI</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">IT_🇮🇹</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/faq_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Domande frequenti (FAQ)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/syllabus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Programma del corso “Principi del controllo automatico”</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/update_and_manage_local_changes_guide_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Aggiornare il Proprio Repository Locale Mantenendo le Modifiche Locali</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/getting_started_with_python_and_jupyter_notebook_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Guida introduttiva ai notebook Python e Jupyter</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/intro_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principi di controllo automatico</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/basics_of_feedback_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione ai sistemi di controllo del feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/introduction_to_control_problem_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione al problema del controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/dynamic_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modellazione nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/dynamic_response_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Risposta dinamica dei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/06_inverse_laplace_transform_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Trasformata di Laplace inversa: scomposizione parziale di frazioni</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/modeling_dynamic_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione alla modellazione dei sistemi dinamici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/control_system_components_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Componenti del sistema di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/models_of_control_devices_and_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modelli di dispositivi controllati</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/hardware_and_case_studies_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Hardware dei sistemi di controllo e casi di studio</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/ac_hardware_and_case_studies_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sistemi di controllo del movimento CA</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/a_first_complete_application_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Un sistema di controllo del feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/principles_of_feedback_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principi di controllo del feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/feedback_systems_and_their_effects_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sistemi di feedback e loro effetti</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/introduction_to_control_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione ai sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/stability_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analisi di stabilità nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/stability_and_routh_criterion_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analisi di stabilità nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/performance_of_feedback_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prestazioni dei sistemi di feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/design_of_feedback_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Ciclo di progettazione per un sistema standard del secondo ordine</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/20_Design_of_feedback_control_continued_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Comprensione del sistema standard del secondo ordine: riepilogo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/steady_state_accuracy_and_design_principles_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Precisione dello stato stazionario e principi di progettazione</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/compensator_design_using_root_locus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Progettazione del compensatore</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/design_with_the_root_locus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Progettare con il luogo delle radici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/compensators_and_root_locus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compensatori e luogo delle radici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/introduction_to_frequency_domain_analysis_in_control_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione all’analisi nel dominio della frequenza nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/application_of_nyquist_stability_criterion_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Applicazione del criterio di stabilità di Nyquist nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/the_nyquist_stability_criterion_and_relative_stability_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Il criterio di stabilità di Nyquist e la stabilità relativa</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/bode_plots_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analisi del diagramma di Bode</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/feedback_system_performance_based_on_frequency_response_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prestazioni del sistema di feedback basate sulla risposta in frequenza</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./IT_🇮🇹/index_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Syllabus - Fondamenti di Automatica</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">TCLab</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/spacecraft_thermal_control_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The Temperature Control Laboratory</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/tclab_exercises_report_template.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Exercises Report Template</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The Temperature Control Lab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/understanding_tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Understanding TCLab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/tclab_lab_1_coding_a_relay_controller-solution.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 1: Coding a relay controller</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/tclab_lab_1_coding_a_relay_controller.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 1: Coding a relay controller</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/system_model_and_identification_tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">System Modeling</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/step_testing_tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Step Testing</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/fitting_step_test_data_to_empirical_models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Fitting Step Test Data to Empirical Models</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/tclab_lab_2_model_identification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 2: Model Identification</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/tclab_lab_2_model_identification_solutions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 2: Model Identification</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/tclab_lab_2_fitting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Model Identification: Fitting models to data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/relay_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Relay Control</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/pid_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">PID Control</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/lab-assignment-pid-control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab Assignment: PID Control</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./TCLab/lab-assignment-pi-control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab Assignment 4: PI Control</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#transition-from-time-domain-to-frequency-domain-analysis" id="toc-transition-from-time-domain-to-frequency-domain-analysis" class="nav-link active" data-scroll-target="#transition-from-time-domain-to-frequency-domain-analysis">Transition from Time Domain to Frequency Domain Analysis</a></li>
+  <li><a href="#frequency-domain-formalism" id="toc-frequency-domain-formalism" class="nav-link" data-scroll-target="#frequency-domain-formalism">Frequency Domain Formalism</a></li>
+  <li><a href="#frequency-response-of-linear-systems" id="toc-frequency-response-of-linear-systems" class="nav-link" data-scroll-target="#frequency-response-of-linear-systems">Frequency Response of Linear Systems</a>
+  <ul class="collapse">
+  <li><a href="#mathematical-representation" id="toc-mathematical-representation" class="nav-link" data-scroll-target="#mathematical-representation">Mathematical Representation</a></li>
+  <li><a href="#frequency-response-definition" id="toc-frequency-response-definition" class="nav-link" data-scroll-target="#frequency-response-definition">Frequency Response Definition</a></li>
+  </ul></li>
+  <li><a href="#complete-system-characterization" id="toc-complete-system-characterization" class="nav-link" data-scroll-target="#complete-system-characterization">Complete System Characterization</a></li>
+  <li><a href="#practical-implications" id="toc-practical-implications" class="nav-link" data-scroll-target="#practical-implications">Practical Implications</a></li>
+  <li><a href="#root-locus-vs.-frequency-domain-formalism" id="toc-root-locus-vs.-frequency-domain-formalism" class="nav-link" data-scroll-target="#root-locus-vs.-frequency-domain-formalism">Root Locus vs.&nbsp;Frequency Domain Formalism</a>
+  <ul class="collapse">
+  <li><a href="#importance-of-frequency-domain-analysis" id="toc-importance-of-frequency-domain-analysis" class="nav-link" data-scroll-target="#importance-of-frequency-domain-analysis">Importance of Frequency Domain Analysis</a></li>
+  <li><a href="#advantages-of-frequency-domain-formalism" id="toc-advantages-of-frequency-domain-formalism" class="nav-link" data-scroll-target="#advantages-of-frequency-domain-formalism">Advantages of Frequency Domain Formalism</a></li>
+  <li><a href="#complementary-nature-of-analysis-methods" id="toc-complementary-nature-of-analysis-methods" class="nav-link" data-scroll-target="#complementary-nature-of-analysis-methods">Complementary Nature of Analysis Methods</a></li>
+  </ul></li>
+  <li><a href="#introduction-to-frequency-domain-analysis" id="toc-introduction-to-frequency-domain-analysis" class="nav-link" data-scroll-target="#introduction-to-frequency-domain-analysis">Introduction to Frequency Domain Analysis</a>
+  <ul class="collapse">
+  <li><a href="#basic-steps-of-frequency-domain-analysis" id="toc-basic-steps-of-frequency-domain-analysis" class="nav-link" data-scroll-target="#basic-steps-of-frequency-domain-analysis">Basic Steps of Frequency Domain Analysis</a></li>
+  </ul></li>
+  <li><a href="#nyquist-stability-criterion---stability-in-frequency-domain-analysis" id="toc-nyquist-stability-criterion---stability-in-frequency-domain-analysis" class="nav-link" data-scroll-target="#nyquist-stability-criterion---stability-in-frequency-domain-analysis">Nyquist Stability Criterion - Stability in Frequency Domain Analysis</a></li>
+  <li><a href="#understanding-the-criterion" id="toc-understanding-the-criterion" class="nav-link" data-scroll-target="#understanding-the-criterion">Understanding the Criterion</a>
+  <ul class="collapse">
+  <li><a href="#understanding-gshs---the-open-loop-transfer-function" id="toc-understanding-gshs---the-open-loop-transfer-function" class="nav-link" data-scroll-target="#understanding-gshs---the-open-loop-transfer-function">Understanding G(s)H(s) - The Open-Loop Transfer Function</a></li>
+  <li><a href="#stability-in-open-loop-and-closed-loop-systems" id="toc-stability-in-open-loop-and-closed-loop-systems" class="nav-link" data-scroll-target="#stability-in-open-loop-and-closed-loop-systems">Stability in Open-Loop and Closed-Loop Systems</a></li>
+  <li><a href="#analyzing-closed-loop-stability" id="toc-analyzing-closed-loop-stability" class="nav-link" data-scroll-target="#analyzing-closed-loop-stability">Analyzing Closed-Loop Stability</a></li>
+  </ul></li>
+  <li><a href="#understanding-the-s-plane-and-w-plane" id="toc-understanding-the-s-plane-and-w-plane" class="nav-link" data-scroll-target="#understanding-the-s-plane-and-w-plane">Understanding the S-Plane and W-Plane</a>
+  <ul class="collapse">
+  <li><a href="#the-s-plane" id="toc-the-s-plane" class="nav-link" data-scroll-target="#the-s-plane">The S-Plane</a></li>
+  <li><a href="#the-w-plane" id="toc-the-w-plane" class="nav-link" data-scroll-target="#the-w-plane">The W-Plane</a></li>
+  <li><a href="#stability-analysis-using-1gshs-mapping" id="toc-stability-analysis-using-1gshs-mapping" class="nav-link" data-scroll-target="#stability-analysis-using-1gshs-mapping">Stability Analysis Using <span class="math inline">\(1+G(s)H(s)\)</span> Mapping</a></li>
+  <li><a href="#contour-mapping" id="toc-contour-mapping" class="nav-link" data-scroll-target="#contour-mapping">Contour Mapping</a></li>
+  <li><a href="#focus-on-qualitative-mapping" id="toc-focus-on-qualitative-mapping" class="nav-link" data-scroll-target="#focus-on-qualitative-mapping">Focus on Qualitative Mapping</a></li>
+  <li><a href="#visualization-code-for-mapping-a-contour-from-the-s-plane-to-the-omega-plane." id="toc-visualization-code-for-mapping-a-contour-from-the-s-plane-to-the-omega-plane." class="nav-link" data-scroll-target="#visualization-code-for-mapping-a-contour-from-the-s-plane-to-the-omega-plane.">Visualization code for mapping a contour from the s-plane to the <span class="math inline">\(\omega\)</span>-plane.</a></li>
+  </ul></li>
+  <li><a href="#sample-contour-analysis-in-the-s-plane-and-its-mapping-to-the-omega-plane" id="toc-sample-contour-analysis-in-the-s-plane-and-its-mapping-to-the-omega-plane" class="nav-link" data-scroll-target="#sample-contour-analysis-in-the-s-plane-and-its-mapping-to-the-omega-plane">Sample Contour Analysis in the S-Plane and its Mapping to the <span class="math inline">\(\omega\)</span>-Plane</a>
+  <ul class="collapse">
+  <li><a href="#mapping-a-point-from-s-plane-to-omega-plane" id="toc-mapping-a-point-from-s-plane-to-omega-plane" class="nav-link" data-scroll-target="#mapping-a-point-from-s-plane-to-omega-plane">Mapping a Point from S-Plane to <span class="math inline">\(\omega\)</span>-Plane</a></li>
+  <li><a href="#visualizing-phasors-and-contour-mapping" id="toc-visualizing-phasors-and-contour-mapping" class="nav-link" data-scroll-target="#visualizing-phasors-and-contour-mapping">Visualizing Phasors and Contour Mapping</a></li>
+  <li><a href="#case-of-enclosing-a-zero" id="toc-case-of-enclosing-a-zero" class="nav-link" data-scroll-target="#case-of-enclosing-a-zero">Case of Enclosing a Zero</a></li>
+  <li><a href="#case-of-enclosing-a-pole" id="toc-case-of-enclosing-a-pole" class="nav-link" data-scroll-target="#case-of-enclosing-a-pole">Case of Enclosing a Pole</a></li>
+  <li><a href="#combining-poles-and-zeros" id="toc-combining-poles-and-zeros" class="nav-link" data-scroll-target="#combining-poles-and-zeros">Combining Poles and Zeros</a></li>
+  <li><a href="#implications-for-nyquist-criterion" id="toc-implications-for-nyquist-criterion" class="nav-link" data-scroll-target="#implications-for-nyquist-criterion">Implications for Nyquist Criterion</a></li>
+  </ul></li>
+  <li><a href="#cauchys-argument-principle" id="toc-cauchys-argument-principle" class="nav-link" data-scroll-target="#cauchys-argument-principle">Cauchy’s argument principle</a></li>
+  <li><a href="#the-nyquist-stability-criterion" id="toc-the-nyquist-stability-criterion" class="nav-link" data-scroll-target="#the-nyquist-stability-criterion">The Nyquist Stability Criterion</a></li>
+  <li><a href="#translating-the-nyquist-plot" id="toc-translating-the-nyquist-plot" class="nav-link" data-scroll-target="#translating-the-nyquist-plot">Translating the Nyquist Plot</a></li>
+  <li><a href="#interpretation-of-the-nyquist-stability-criterion" id="toc-interpretation-of-the-nyquist-stability-criterion" class="nav-link" data-scroll-target="#interpretation-of-the-nyquist-stability-criterion">Interpretation of the Nyquist Stability Criterion</a></li>
+  <li><a href="#applying-the-criterion" id="toc-applying-the-criterion" class="nav-link" data-scroll-target="#applying-the-criterion">Applying the Criterion</a>
+  <ul class="collapse">
+  <li><a href="#open-loop-stable-systems" id="toc-open-loop-stable-systems" class="nav-link" data-scroll-target="#open-loop-stable-systems">Open-Loop Stable Systems</a></li>
+  <li><a href="#open-loop-unstable-systems" id="toc-open-loop-unstable-systems" class="nav-link" data-scroll-target="#open-loop-unstable-systems">Open-Loop Unstable Systems</a></li>
+  </ul></li>
+  <li><a href="#check-your-understanding" id="toc-check-your-understanding" class="nav-link" data-scroll-target="#check-your-understanding">Check Your Understanding</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/andreamunafo/principles-of-automatic-controls/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Introduction to Frequency Domain Analysis in Control Systems</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
+<section id="transition-from-time-domain-to-frequency-domain-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="transition-from-time-domain-to-frequency-domain-analysis">Transition from Time Domain to Frequency Domain Analysis</h2>
+<p><strong>Concept 1: Understanding the Shift in Perspective</strong></p>
+<ul>
+<li><p><strong>Time Domain Analysis</strong>: Previously, we’ve discussed the root locus method, which is primarily focused on the time domain. This method is intuitive for visualizing transient performance through closed-loop poles.</p></li>
+<li><p><strong>Frequency Domain Analysis</strong>: Now, we will shift our focus to frequency domain analysis. This approach offers a different perspective, emphasizing the steady-state response of control systems to sinusoidal inputs.</p></li>
+</ul>
+<section id="comparison-and-relevance" class="level4">
+<h4 class="anchored" data-anchor-id="comparison-and-relevance">Comparison and Relevance</h4>
+<ul>
+<li><p><strong>Historical Context</strong>: Historically, frequency domain methods were developed before the root locus, but for pedagogical reasons, we started with the latter.</p></li>
+<li><p><strong>Transient vs.&nbsp;Steady-State Performance</strong>: In frequency domain analysis, understanding transient performance is less direct compared to the root locus method. Understanding the transient in terms of zeros and poles is very straightforward.</p></li>
+</ul>
+<p>In frequency domain analysis, understanding the results requires a more abstract approach, as the method presents an indirect way of interpreting system behavior. This contrasts with the root locus method, where the interpretation of system performance is more straightforward and direct, primarily because it visually represents system dynamics in the time domain.</p>
+</section>
+</section>
+<section id="frequency-domain-formalism" class="level2">
+<h2 class="anchored" data-anchor-id="frequency-domain-formalism">Frequency Domain Formalism</h2>
+<p><strong>Concept 2: Foundations of Frequency Domain Analysis</strong></p>
+<ul>
+<li><p><strong>Robustness of Frequency Domain Methods</strong>: One significant advantage of frequency domain analysis is its robustness, which means less dependency on the accuracy of the system model. This is crucial as obtaining an accurate model can be challenging. This is one of the main reasons why it is probably the most used method in control.</p></li>
+<li><p><strong>Ease of Analysis and Design</strong>: Another advantage is the relative ease of analysis and design in the frequency domain.</p></li>
+</ul>
+</section>
+<section id="frequency-response-of-linear-systems" class="level2">
+<h2 class="anchored" data-anchor-id="frequency-response-of-linear-systems">Frequency Response of Linear Systems</h2>
+<p><strong>Concept 3: Sinusoidal Input and Steady-State Response</strong></p>
+<ul>
+<li><strong>System Response to Sinusoidal Input</strong>:</li>
+</ul>
+<p>Consider a linear system described by a transfer function $ G(s) $. When this system is subjected to a sinusoidal input $ r(t) = R_0 (t) $, the output will have both transient and steady-state components.</p>
+<ul>
+<li><strong>Stable System Assumption</strong>: For a stable system, transient components die out, leaving only the steady-state response. The steady-state output can be represented as $ y(t) = Y_0 (t + ) $.</li>
+</ul>
+<p>The steady-state response of a linear system is also sinusoidal, the only change is in the amplitude and in the phase angle.</p>
+<p>This implies that by understanding the amplitude ratio <span class="math inline">\(\frac{Y_0}{R_0}\)</span> and the phase angle <span class="math inline">\(\phi\)</span>, we can completely describe the input-output relationship for the system’s steady-state response. Specifically, the key to this understanding lies in observing how <span class="math inline">\(\frac{Y_0}{R_0}\)</span> and <span class="math inline">\(\phi\)</span> change as a function of frequency.</p>
+<table>
+<tbody><tr>
+<td>
+<img src="./pics/25_Introduction_to_Frequency_Domain_Analysis_in_Control_Systems_1.png" alt="25_Introduction_to_Frequency_Domain_Analysis_in_Control_Systems_1" style="width:550px;">
+</td>
+</tr>
+</tbody></table>
+<section id="mathematical-representation" class="level3">
+<h3 class="anchored" data-anchor-id="mathematical-representation">Mathematical Representation</h3>
+<ul>
+<li><strong>Amplitude and Phase Change</strong>: The steady-state response to a sinusoidal input is also sinusoidal, with changes in amplitude and phase.</li>
+</ul>
+<p><span class="math display">\[ \text{Amplitude Ratio} = \frac{Y_0}{R_0} \]</span></p>
+<p><span class="math display">\[ \text{Phase Angle} = \phi \]</span></p>
+</section>
+<section id="frequency-response-definition" class="level3">
+<h3 class="anchored" data-anchor-id="frequency-response-definition">Frequency Response Definition</h3>
+<p>We can now define formally define the Frequency response.</p>
+<p><strong>Concept 4: Defining Frequency Response</strong></p>
+<ul>
+<li><strong>Frequency Response Components</strong>: The frequency response of a system can be characterized by how these parameters (amplitude ratio and phase angle) vary with the frequency <span class="math inline">\(\omega\)</span>.</li>
+</ul>
+<p><span class="math display">\[ \text{Frequency Response} = \left\{ \frac{Y_0}{R_0}(\omega), \phi(\omega) \right\} \]</span></p>
+<section id="relating-to-transfer-function" class="level4">
+<h4 class="anchored" data-anchor-id="relating-to-transfer-function">Relating to Transfer Function</h4>
+<ul>
+<li><strong>Link to Transfer Function</strong>:</li>
+</ul>
+<p>The amplitude ratio $ $ is the magnitude of the transfer function $ G(s) $ evaluated at $ s = j$, and $ $ is the phase angle of $ G(j) $:</p>
+<p><span class="math display">\[
+\frac{Y_0}{R_0} = |G(s)|\Big|_{s=j\omega} = |G(j\omega)|
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+\phi = \angle{G(j\omega)}
+\]</span></p>
+<p>which means that the frequency response is completely contained in the mathematical model of the system.</p>
+<p><strong>Frequency response definition</strong></p>
+<p><em>the Magnitude <span class="math inline">\(|G(j\omega)|\)</span> and the <span class="math inline">\(\angle{G(j\omega)}\)</span> constitude the frequency response of the system</em></p>
+<p><strong>Frequency response plots</strong></p>
+<p>When we plot <span class="math inline">\(|G(j\omega)|\)</span> and the <span class="math inline">\(\angle{G(j\omega)}\)</span> with respect to <span class="math inline">\(\omega\)</span> we obtain the Frequency response plots.</p>
+</section>
+</section>
+</section>
+<section id="complete-system-characterization" class="level2">
+<h2 class="anchored" data-anchor-id="complete-system-characterization">Complete System Characterization</h2>
+<p><strong>Concept 5: Frequency Response as a Complete System Characterization</strong></p>
+<ul>
+<li><p><strong>Beyond Steady-State Analysis</strong>: While frequency response is derived from steady-state sinusoidal response, it encapsulates the entire system behavior, including transient response. This is due to the Fourier transform’s ability to link frequency response to time-domain behavior.</p></li>
+<li><p><strong>Experimental Advantages</strong>: Frequency response plots can be experimentally obtained, providing a complete characterization of the system, even when a mathematical model isn’t available.</p></li>
+</ul>
+<p>In our analysis, we examine two key relationships: the magnitude of the transfer function, denoted as $ G(j) $, as it varies with frequency <span class="math inline">\(\omega\)</span>, and the phase angle of $ G(j) $ as it also changes with frequency. These relationships can be graphically represented, giving us what are known as frequency response plots. These plots visually depict how the system responds to different frequencies.</p>
+<p>Initially, it might seem that these frequency response plots only describe the system’s behavior in a steady-state scenario — that is, how the system performs after it has settled following any initial disturbances. However, there’s more to it than meets the eye.</p>
+<p>In reality, these frequency response plots offer a complete characterization of the system, encompassing both steady-state and transient (temporary) responses. This comprehensive understanding is possible because of a powerful mathematical tool known as the Fourier transform. The Fourier transform allows us to relate the frequency response back to the system’s time response. Essentially, this means that from the frequency response data, we can predict how the system will react to any given input over time. To do this for different types of input signals, we use the Fourier series for periodic (repeating) signals, or the Fourier transform for non-periodic (one-time) signals. This way, we get a full picture of the system’s behavior in both the frequency and time domains.</p>
+<p>As we progress, our focus will shift primarily to examining frequency response plots.</p>
+<p>It’s important to understand that these plots, whether derived experimentally or through other means from the system’s sinusoidal response in a steady-state condition, actually represent the entire mathematical behavior of the system. This includes both the transient (short-term) and steady-state (long-term) responses.</p>
+<p>The key to this comprehensive understanding lies in the Fourier transform. The Fourier transform serves as a crucial link, connecting the transient response of the system with its steady-state frequency response. This connection allows us to use the frequency response plots as a complete representation of the system’s behavior, encompassing all aspects of its response over time.</p>
+</section>
+<section id="practical-implications" class="level2">
+<h2 class="anchored" data-anchor-id="practical-implications">Practical Implications</h2>
+<p><strong>Concept 6: Practical Applications and Advantages</strong></p>
+<ul>
+<li><p><strong>Model Independence</strong>: The frequency domain approach is less reliant on a precise mathematical model, which is beneficial when such models are hard to obtain or uncertain.</p></li>
+<li><p><strong>Experimental Accessibility</strong>: Frequency response can be directly measured, bypassing the need for a detailed system model. This is especially useful for systems where the model is unknown or complex.</p></li>
+</ul>
+<p>Consider a situation where you have access to the physical hardware of a system, but its mathematical model is unknown. Under these circumstances, you can’t directly use the root locus method for analysis or design, because the root locus requires a known mathematical model of the system. This model typically takes the form of a transfer function, or a pole-zero model.</p>
+<p>However, if we switch to frequency domain analysis, the process becomes more straightforward. In this approach, you can start with sinusoidal testing of the system. This involves applying sinusoidal inputs to the hardware and measuring the system’s output in terms of magnitude and phase angle. By doing this, you gather frequency response data directly from the hardware.</p>
+<p>Once you have this frequency response data, you can plot frequency response graphs. These graphs provide a complete characterization of the system’s behavior, capturing both its steady-state and transient responses. The advantage here is that you don’t need a pre-established mathematical model, like a transfer function, for analysis and design. This aspect is particularly significant because creating an accurate mathematical model of a system can be a challenging task.</p>
+<p>Let’s say you still want to use the root locus method, but all you have is frequency response data. To proceed, you would need to fit this data into a pole-zero model, which can then be used for root locus design. However, it’s important to recognize that this fitting process is approximate. It’s nearly impossible to achieve a perfect match between the experimental frequency response data and the theoretical pole-zero model. As a result, the model you end up with for the root locus method is an approximation.</p>
+<p>In contrast, frequency domain analysis does not require this intermediate fitting step. You work directly with the raw data obtained from your sinusoidal tests. This direct use of experimental data in frequency domain analysis simplifies the process and avoids the approximations and potential errors involved in fitting data to a pole-zero model.</p>
+<p>I hope it’s clear why the frequency domain approach is so vital for control engineers. This approach isn’t just important, it’s essential. Interestingly, some of the system performance concepts we use in control engineering are also common in communication theory. Communication engineers often deal with sinusoidal inputs or a combination of sinusoidal signals, which aligns well with their focus on sinusoidal transfer functions.</p>
+<p>However, for control engineers, the situation is a bit different. We don’t always work with sinusoidal inputs. In fact, in many cases, the systems we design and analyze may never encounter sinusoidal inputs. Yet, we still prefer the frequency domain formalism due to its numerous advantages.</p>
+<p>One of these advantages is a clearer understanding of a system’s noise characteristics. The frequency domain approach allows us to analyze and interpret the noise filtering characteristics of a system more effectively than we could by looking solely at time-domain effects. For example, concepts like bandwidth are more intuitively understood in the frequency domain. Bandwidth relates to how a system filters out noise, which isn’t as clearly represented by time-domain metrics like rise time.</p>
+<p>In summary, the frequency domain approach offers several key benefits:</p>
+<ul>
+<li><strong>Noise Characteristics</strong>: It provides a clearer view of the system’s noise filtering behavior.</li>
+<li><strong>Flexibility with System Models</strong>: This method can work with less accurate mathematical models or even experimental models.</li>
+<li><strong>Ease of Analysis and Design</strong>: Frequency domain methods often offer simpler and more straightforward techniques for system analysis and design.</li>
+</ul>
+<p>So, while the root locus method is advantageous for directly visualizing transient responses through closed-loop poles, the frequency domain approach excels in other critical areas, particularly in analyzing noise characteristics and offering flexibility with system models.</p>
+</section>
+<section id="root-locus-vs.-frequency-domain-formalism" class="level2">
+<h2 class="anchored" data-anchor-id="root-locus-vs.-frequency-domain-formalism">Root Locus vs.&nbsp;Frequency Domain Formalism</h2>
+<section id="root-locus-method" class="level4">
+<h4 class="anchored" data-anchor-id="root-locus-method">Root Locus Method</h4>
+<ul>
+<li>The root locus method requires a detailed mathematical model of the system, typically a transfer function or a pole-zero model.</li>
+<li>This method is intuitive for visualizing the transient response in terms of closed-loop poles.</li>
+</ul>
+</section>
+<section id="frequency-domain-formalism-1" class="level4">
+<h4 class="anchored" data-anchor-id="frequency-domain-formalism-1">Frequency Domain Formalism</h4>
+<ul>
+<li>In frequency domain analysis, direct mathematical modeling is not a prerequisite.</li>
+<li>Instead, one can employ experimental data obtained from sinusoidal testing of the system.</li>
+<li>This approach is useful when the exact mathematical model of the system is unknown or hard to determine.</li>
+</ul>
+</section>
+<section id="importance-of-frequency-domain-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="importance-of-frequency-domain-analysis">Importance of Frequency Domain Analysis</h3>
+<ul>
+<li><strong>Versatility</strong>: Control engineers often work with inputs that are not sinusoidal, yet the frequency domain approach remains applicable due to its versatility.</li>
+<li><strong>Noise Characteristics</strong>: Understanding the noise characteristics of a system is more straightforward in the frequency domain. This includes bandwidth and noise filtering behavior.</li>
+</ul>
+</section>
+<section id="advantages-of-frequency-domain-formalism" class="level3">
+<h3 class="anchored" data-anchor-id="advantages-of-frequency-domain-formalism">Advantages of Frequency Domain Formalism</h3>
+<ul>
+<li><strong>Noise Filtering</strong>: The frequency domain provides clearer insights into a system’s noise filtering characteristics.</li>
+<li><strong>Model Independence</strong>: It can work with less accurate or experimental models.</li>
+<li><strong>Ease of Analysis and Design</strong>: Offers simpler methods for analysis and design compared to the root locus method.</li>
+</ul>
+</section>
+<section id="complementary-nature-of-analysis-methods" class="level3">
+<h3 class="anchored" data-anchor-id="complementary-nature-of-analysis-methods">Complementary Nature of Analysis Methods</h3>
+<ul>
+<li><strong>Root Locus and Frequency Domain</strong>: These methods are not mutually exclusive but complement each other, each with its unique advantages.</li>
+<li><strong>Continued Evolution</strong>: The field of control engineering is continuously evolving, with no single foolproof design method. Therefore, understanding various methods, including those beyond root locus and frequency domain, is crucial for a control engineer.</li>
+</ul>
+<p><strong>Pop-up Question</strong>: Why is the frequency domain formalism preferred when the mathematical model of the system is unknown?</p>
+<p><strong>Answer</strong>: The frequency domain formalism is preferred because it allows for analysis and design directly from experimental data, bypassing the need for a precise mathematical model.</p>
+</section>
+</section>
+<section id="introduction-to-frequency-domain-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="introduction-to-frequency-domain-analysis">Introduction to Frequency Domain Analysis</h2>
+<section id="basic-steps-of-frequency-domain-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="basic-steps-of-frequency-domain-analysis">Basic Steps of Frequency Domain Analysis</h3>
+<ol type="1">
+<li><strong>Stability Analysis</strong>
+<ul>
+<li>Stability is determined using the Routh-Hurwitz criterion or the root locus itself.</li>
+<li>In frequency domain analysis, we use the Nyquist stability criterion, a central feature of this approach.</li>
+</ul></li>
+<li><strong>Performance Specification</strong>
+<ul>
+<li>Time Domain: Specifications include rise time, settling time, peak overshoot, etc.</li>
+<li>Frequency Domain: Specifications include bandwidth, resonant peak, and resonant frequency. Some of these features will need to be interpreted indirectly when translated to the time domain. This is the main limitation of the frequency domain methods.</li>
+</ul></li>
+<li><strong>Design</strong>
+<ul>
+<li>Similar compensators (lag, lead, lag-lead) are used in both root locus and frequency domain methods. However, the design process is often simpler in the frequency domain.</li>
+</ul>
+In the context of time domain or s-plane domain design, a critical element is the dominance conditions. When these conditions aren’t met, the primary recourse often turns to trial and error, leaving designers with the binary choice of either accepting or rejecting the design as it stands. However, in the frequency domain, the reliance on trial and error is significantly diminished. Instead, we have access to more precise and systematic methods to tackle design challenges, offering a broader range of solutions and adjustments.</li>
+</ol>
+<p><strong>Pop-up Question</strong>: What is a key difference between performance specifications in the time domain and the frequency domain?</p>
+<p><strong>Answer</strong>: In the time domain, specifications are focused on transient response characteristics like rise time and overshoot, whereas in the frequency domain, they are centered around steady-state response characteristics like bandwidth and resonant frequency.</p>
+</section>
+</section>
+<section id="nyquist-stability-criterion---stability-in-frequency-domain-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="nyquist-stability-criterion---stability-in-frequency-domain-analysis">Nyquist Stability Criterion - Stability in Frequency Domain Analysis</h2>
+<p>The Nyquist stability criterion is based on the complex variable theory and Cauchy’s Argument Principle. It provides a way to determine the stability of a system by analyzing the open-loop transfer function in the frequency domain.</p>
+</section>
+<section id="understanding-the-criterion" class="level2">
+<h2 class="anchored" data-anchor-id="understanding-the-criterion">Understanding the Criterion</h2>
+<p><strong>Closed-Loop Transfer Function</strong>:</p>
+<p>Consider a general single-loop system where the closed-loop transfer function is <span class="math display">\[ \frac{Y(s)}{R(s)} = \frac{G(s)}{1 + G(s)H(s)} \]</span>.</p>
+<table>
+<tbody><tr>
+<td>
+<img src="./pics/25_Introduction_to_Frequency_Domain_Analysis_in_Control_Systems_Nyquist_Criterion.png" alt="25_Introduction_to_Frequency_Domain_Analysis_in_Control_Systems_Nyquist_Criterion" style="width:550px;">
+</td>
+</tr>
+</tbody></table>
+<p><strong>Stability Determination</strong>:</p>
+<ul>
+<li><p>The denominator of the closed loop transfer function is: $ 1 + G(s)H(s) $, and this is the equation that we need to focus on.</p></li>
+<li><p>The stability is determined by analyzing the locus of $ 1 + G(s)H(s) $ in the complex plane.</p></li>
+<li><p><em>If no point in the right-half of the s-plane, including the imaginary axis, satisfies $ 1 + G(s)H(s) = 0 $, the system is stable.</em></p></li>
+</ul>
+<p>In other words:</p>
+<ul>
+<li><p><strong>The S-Plane</strong>: Imagine the s-plane as a complex plane where each point ‘s’ represents a complex number with a real part (<span class="math inline">\(\sigma\)</span>) and an imaginary part (<span class="math inline">\(j\omega\)</span>).</p></li>
+<li><p><strong>Regions of Interest</strong>: We are particularly interested in the right-half and the left-half of this s-plane. The right-half includes the imaginary axis (<span class="math inline">\(j\omega\)</span> axis).</p></li>
+<li><p><strong>Stability Definition</strong>: A control system is considered stable if all the closed-loop poles (the solutions of the system’s characteristic equation) lie in the left-half of the s-plane.</p></li>
+</ul>
+<section id="understanding-gshs---the-open-loop-transfer-function" class="level3">
+<h3 class="anchored" data-anchor-id="understanding-gshs---the-open-loop-transfer-function">Understanding G(s)H(s) - The Open-Loop Transfer Function</h3>
+<ul>
+<li><strong>Composition of G(s)H(s)</strong>: This function represents the product of all individual transfer functions in the control loop when the loop is open. It typically includes process, compensator, and sensor transfer functions. This function is known.</li>
+</ul>
+<table>
+<tbody><tr>
+<td>
+<img src="./pics/25_Introduction_to_Frequency_Domain_Analysis_in_Control_Systems_Nyquist_Criterion_1.png" alt="25_Introduction_to_Frequency_Domain_Analysis_in_Control_Systems_Nyquist_Criterion_1" style="width:550px;">
+</td>
+</tr>
+</tbody></table>
+<ul>
+<li><strong>Polynomial Representation</strong>: We often express <span class="math inline">\(G(s)H(s)\)</span> as a ratio of two polynomials, <span class="math inline">\(N(s)\)</span> and <span class="math inline">\(\Delta(s)\)</span>.</li>
+</ul>
+<p><span class="math display">\[G(s)H(s) = \frac{N(s)}{\Delta(s)}\]</span></p>
+<p>In most cases, <span class="math inline">\(G(s)H(s)\)</span> takes this form, except in specific scenarios like dead time represented by $ e^{-s_d} $. For now, we restrict the analysis to <span class="math inline">\(G(s)H(s)\)</span> as a ratio of two polynomials, but we can extend it to the more general case.</p>
+<section id="poles-and-zeros-of-gshs" class="level4">
+<h4 class="anchored" data-anchor-id="poles-and-zeros-of-gshs">Poles and Zeros of G(s)H(s)</h4>
+<ul>
+<li><p><strong>Poles and Zeros</strong>: These are fundamental in determining the behavior of the system. The zeros of <span class="math inline">\(G(s)H(s)\)</span> are the roots of the numerator polynomial <span class="math inline">\(N(s)\)</span>, and the poles are the roots of the denominator polynomial <span class="math inline">\(\Delta(s)\)</span>.</p></li>
+<li><p><strong>Known Quantities</strong>: In open-loop analysis, <em>these poles and zeros are known</em> and form the basis for further stability analysis.</p></li>
+</ul>
+</section>
+</section>
+<section id="stability-in-open-loop-and-closed-loop-systems" class="level3">
+<h3 class="anchored" data-anchor-id="stability-in-open-loop-and-closed-loop-systems">Stability in Open-Loop and Closed-Loop Systems</h3>
+<ul>
+<li><p><strong>Open-Loop Stability</strong>: If the poles of <span class="math inline">\(G(s)H(s)\)</span> lie in the left-half of the s-plane, the system is open-loop stable. Conversely, if any pole lies in the right-half, the system is open-loop unstable.</p></li>
+<li><p><strong>Closed-Loop Stability Focus</strong>: Our primary interest lies in the stability of the system under closed-loop conditions, i.e., when feedback is applied. Even an open-loop unstable system can be stabilized with appropriate feedback.</p></li>
+</ul>
+<p>Note that an open-loop unstable system does not matter - we want to study the stability properties when the loop is closed, i.e., under feedback. At the same time, the open-loop poles (and zeros) are known to me.</p>
+</section>
+<section id="analyzing-closed-loop-stability" class="level3">
+<h3 class="anchored" data-anchor-id="analyzing-closed-loop-stability">Analyzing Closed-Loop Stability</h3>
+<p>The closed loop transfer function is:</p>
+<p><span class="math display">\[ \frac{Y(s)}{R(s)} = \frac{G(s)}{1 + G(s)H(s)} \]</span></p>
+<ul>
+<li><strong>The Function $ 1 + $</strong>: To analyze closed-loop stability, we focus on this function. It represents the denominator of the closed-loop transfer function.</li>
+</ul>
+<p>We can expand this function as:</p>
+<p><span class="math display">\[ 1 + \frac{N(s)}{\Delta(s)} = \frac{\Delta(s) + N(s)}{\Delta(s)}\]</span></p>
+<ul>
+<li><strong>Polynomial Form</strong>: Assuming <span class="math inline">\(\Delta(s)\)</span> is an nth-order polynomial, we can express it in a factorized form as:</li>
+</ul>
+<p><span class="math display">\[ \Delta(s) = (s - \alpha_1)(s - \alpha_2)...(s - \alpha_n) \]</span></p>
+<p>The numerator (<span class="math inline">\(\Delta(s) + N(s)\)</span>)’s order is <span class="math inline">\(n\)</span>. This is because the <span class="math inline">\(\text{order}[N(s)] \le \text{order}[\Delta(s)]\)</span> to ensure physical realisability.</p>
+<p>For this reason we can then re-write our function as:</p>
+<p><span class="math display">\[ 1+G(s)H(s) = 1 + \frac{N(s)}{\Delta(s)} = \frac{\Delta(s) + N(s)}{\Delta(s)} = \frac{(s - \beta_1)(s - \beta_2)...(s - \beta_n)}{(s - \alpha_1)(s - \alpha_2)...(s - \alpha_n)}\]</span></p>
+<p><strong><em>Remember, if any value of ‘s’ in the right-half of the plane or on the imaginary axis satisfies the equation (1 + G(s)H(s) = 0), then the system is deemed unstable. This forms the basis of our conjecture regarding system stability.</em></strong></p>
+<p><strong>Pop-up Question</strong>: Why do we focus on the left-half of the s-plane for stability?</p>
+<p><strong>Answer</strong>: The left-half of the s-plane indicates that all poles have negative real parts, which corresponds to decaying responses in the time domain, a key characteristic of a stable system.</p>
+<p><strong>Pop-up Question</strong>: What is the principle behind the Nyquist Stability Criterion?</p>
+<p><strong>Answer</strong>: The Nyquist Stability Criterion is based on the principle of argument in complex analysis, which relates the number of encirclements of a point by a function in the complex plane to the number of zeroes and poles of that function.</p>
+</section>
+</section>
+<section id="understanding-the-s-plane-and-w-plane" class="level2">
+<h2 class="anchored" data-anchor-id="understanding-the-s-plane-and-w-plane">Understanding the S-Plane and W-Plane</h2>
+<section id="the-s-plane" class="level3">
+<h3 class="anchored" data-anchor-id="the-s-plane">The S-Plane</h3>
+<ul>
+<li><strong>Description</strong>: The s-plane is a complex plane where each point ‘s’ represents a complex number, with a real part (<span class="math inline">\(\sigma\)</span>) and an imaginary part (<span class="math inline">\(j\omega\)</span>).</li>
+<li><strong>Complex Variable Representation</strong>: Each point on the s-plane is a complex variable, represented as σ + jω.</li>
+</ul>
+</section>
+<section id="the-w-plane" class="level3">
+<h3 class="anchored" data-anchor-id="the-w-plane">The W-Plane</h3>
+<ul>
+<li><strong>Relationship with S-Plane</strong>: When we apply the function <span class="math inline">\(1 + G(s)H(s)\)</span> to a point on the s-plane, it maps to a point on another complex plane, called the W-plane.</li>
+<li><strong>Complex Variable on W-Plane</strong>: This mapped point on the W-plane is also a complex variable, represented as <span class="math inline">\(u + jv\)</span>.</li>
+</ul>
+<p>(see picture Left, below.)</p>
+<section id="mapping-from-s-plane-to-w-plane" class="level4">
+<h4 class="anchored" data-anchor-id="mapping-from-s-plane-to-w-plane">Mapping from S-Plane to W-Plane</h4>
+<ul>
+<li><strong>Function Application</strong>: The function <span class="math inline">\(1 + G(s)H(s)\)</span> transforms each point ‘s’ on the s-plane to a corresponding point on the W-plane.</li>
+<li><strong>One-to-One Mapping</strong>: For a rational function (like the one we have), for every point on the s-plane, there is a unique corresponding point on the W-plane.</li>
+</ul>
+<p>(see picture Right, below.)</p>
+<table>
+<tbody><tr>
+<td>
+<img src="./pics/25_Introduction_to_Frequency_Domain_Analysis_in_Control_Systems_Nyquist_Criterion_2.png" alt="25_Introduction_to_Frequency_Domain_Analysis_in_Control_Systems_Nyquist_Criterion_2" style="width:550px;">
+</td>
+<td>
+<img src="./pics/25_Introduction_to_Frequency_Domain_Analysis_in_Control_Systems_Nyquist_Criterion_3.png" alt="25_Introduction_to_Frequency_Domain_Analysis_in_Control_Systems_Nyquist_Criterion_3" style="width:550px;">
+</td>
+</tr>
+</tbody></table>
+</section>
+</section>
+<section id="stability-analysis-using-1gshs-mapping" class="level3">
+<h3 class="anchored" data-anchor-id="stability-analysis-using-1gshs-mapping">Stability Analysis Using <span class="math inline">\(1+G(s)H(s)\)</span> Mapping</h3>
+<ul>
+<li><p><strong>Objective</strong>: To analyze the stability of a system, we examine how the right-half of the s-plane, including the imaginary axis, maps onto the W-plane using <span class="math inline">\(1 + G(s)H(s)\)</span>.</p></li>
+<li><p><strong>Stability Criteria</strong>: If the origin of the W-plane is not covered by this mapping, the system is stable. If the origin is covered, the system is unstable.</p></li>
+</ul>
+<p>This is the equivalent statement of saying “equation <span class="math inline">\(1 + G(s)H(s)\)</span> does not have any roots in the RHP (including the imaginary axis)”.</p>
+</section>
+<section id="contour-mapping" class="level3">
+<h3 class="anchored" data-anchor-id="contour-mapping">Contour Mapping</h3>
+<ul>
+<li><p><strong>Concept of Contours</strong>: A contour in the s-plane, which is a connected set of points (a contour is a continuous path in the s-plane, which can be a simple curve or a closed loop), will map to a corresponding contour in the W-plane due to the one-to-one nature of the mapping.</p></li>
+<li><p><strong>Mapping to W-Plane</strong>: When we map this contour to the W-plane using our transfer function, the resulting path in the W-plane reflects the characteristics of the system’s poles and zeros.</p></li>
+</ul>
+</section>
+<section id="focus-on-qualitative-mapping" class="level3">
+<h3 class="anchored" data-anchor-id="focus-on-qualitative-mapping">Focus on Qualitative Mapping</h3>
+<ul>
+<li><strong>Qualitative Analysis</strong>: Our primary interest is not in the exact one-to-one quantitative mapping but in understanding how the mapping qualitatively affects system stability, particularly around the origin of the <span class="math inline">\(\omega\)</span>-plane. In other words, we would like to know if the origin of the W-plane is covered or not.</li>
+</ul>
+<p>In our analysis, the focus is primarily on the qualitative characteristics of how specific contours in the s-plane, which may encircle key points such as zeros or poles, are transformed and represented in the W-plane.</p>
+<p>Indeed, if we were to emphasize a precise, quantitative one-to-one mapping between these planes, the task would become exceedingly complex. Such an approach would diminish the practical utility and relevance of the Nyquist criterion in system analysis.</p>
+<p><strong>Pop-up Question</strong>: Why do we focus on qualitative rather than quantitative mapping in system analysis?</p>
+<p><strong>Answer</strong>: We focus on qualitative mapping because it reveals how the system behaves near critical points, like the origin of the <span class="math inline">\(\omega\)</span>-plane, which is crucial for assessing system stability.</p>
+<section id="example-of-contour-mapping" class="level4">
+<h4 class="anchored" data-anchor-id="example-of-contour-mapping">Example of Contour Mapping</h4>
+<ul>
+<li><p><strong>Scenario</strong>: Consider a contour in the s-plane enclosing a zero of the function <span class="math inline">\(1 + G(s)H(s)\)</span> and analyze its mapping onto the W-plane.</p></li>
+<li><p><strong>Analysis</strong>: The key is to understand how the angles contributed by different points on this contour result in the mapping on the W-plane.</p></li>
+</ul>
+<p>Our transfer function performs the task of transforming a point from the s-plane to a corresponding point in a new plane, denoted as the <span class="math inline">\(\omega\)</span>-plane.</p>
+<ul>
+<li><p>When we select numerous points on the s-plane that are connected to form a continuous path (known as a <em>contour</em>), these points are mapped to form a continuous path in the <span class="math inline">\(\omega\)</span>-plane as well.</p></li>
+<li><p>Specifically, when we choose points along a contour in the s-plane, which is essentially a line that forms a loop and connects back to itself, this results in a closed loop in the <span class="math inline">\(\omega\)</span>-plane. We refer to this closed loop as a <strong>plot</strong>.</p></li>
+<li><p>Importantly, this plot in the <span class="math inline">\(\omega\)</span>-plane encapsulates crucial information about the system. It conveys both the magnitude and the phase angle associated with each pole and zero of the system.</p></li>
+</ul>
+</section>
+</section>
+<section id="visualization-code-for-mapping-a-contour-from-the-s-plane-to-the-omega-plane." class="level3">
+<h3 class="anchored" data-anchor-id="visualization-code-for-mapping-a-contour-from-the-s-plane-to-the-omega-plane.">Visualization code for mapping a contour from the s-plane to the <span class="math inline">\(\omega\)</span>-plane.</h3>
+<p>We can verify this with Python as shown below.</p>
+<p>This code shows a graphical representation of a contour in the s-plane and its corresponding path in the <span class="math inline">\(\omega\)</span>-plane.</p>
+<div id="b964e321" class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Set up the subplots</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>fig, axs <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">15</span>, <span class="dv">7</span>))</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Improve plot aesthetics (axis, grids, scale)</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(axs)):</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    axs[i].axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'black'</span>, linewidth<span class="op">=</span><span class="fl">1.5</span>, linestyle<span class="op">=</span><span class="st">'--'</span>) <span class="co"># horizontal axis</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    axs[i].axvline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'black'</span>, linewidth<span class="op">=</span><span class="fl">1.5</span>, linestyle<span class="op">=</span><span class="st">'--'</span>) <span class="co"># vertical axis</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    axs[i].axis([<span class="op">-</span><span class="dv">4</span>, <span class="dv">3</span>, <span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>]) <span class="co"># scale the axis</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    axs[i].grid(<span class="va">True</span>, which<span class="op">=</span><span class="st">'both'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, linewidth<span class="op">=</span><span class="fl">0.5</span>) <span class="co"># add grid</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    axs[i].set_aspect(<span class="st">'equal'</span>, <span class="st">'box'</span>)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    axs[i].set_xticks(np.arange(<span class="op">-</span><span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">1</span>))</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    axs[i].set_yticks(np.arange(<span class="op">-</span><span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">1</span>))</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    axs[i].set_xlabel(<span class="st">'Real'</span>)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    axs[i].set_ylabel(<span class="st">'Imaginary'</span>)</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>axs[<span class="dv">0</span>].set_title(<span class="st">'S-Plane'</span>)</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>axs[<span class="dv">1</span>].set_title(<span class="st">'$\omega$-Plane'</span>)</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot poles and zeros in the s-plane with annotations</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>pole <span class="op">=</span> (<span class="op">-</span><span class="dv">3</span>, <span class="dv">0</span>)</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>zero <span class="op">=</span> (<span class="op">-</span><span class="dv">2</span>, <span class="dv">0</span>)</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>axs[<span class="dv">0</span>].plot(pole[<span class="dv">0</span>], pole[<span class="dv">1</span>], <span class="st">'bo'</span>, markersize<span class="op">=</span><span class="dv">12</span>) <span class="co"># blue circle for pole</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>axs[<span class="dv">0</span>].plot(zero[<span class="dv">0</span>], zero[<span class="dv">1</span>], <span class="st">'rx'</span>, markersize<span class="op">=</span><span class="dv">12</span>) <span class="co"># red cross for zero</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>axs[<span class="dv">0</span>].text(pole[<span class="dv">0</span>], pole[<span class="dv">1</span>]<span class="op">+</span><span class="fl">0.1</span>, <span class="st">'  Pole'</span>, verticalalignment<span class="op">=</span><span class="st">'bottom'</span>, horizontalalignment<span class="op">=</span><span class="st">'right'</span>)</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>axs[<span class="dv">0</span>].text(zero[<span class="dv">0</span>], zero[<span class="dv">1</span>]<span class="op">-</span><span class="fl">0.2</span>, <span class="st">'  Zero'</span>, verticalalignment<span class="op">=</span><span class="st">'top'</span>, horizontalalignment<span class="op">=</span><span class="st">'right'</span>)</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Mapping from s-plane to w-plane</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> xi <span class="kw">in</span> np.linspace(<span class="dv">0</span>, <span class="dv">2</span><span class="op">*</span>np.pi, <span class="dv">100</span>):</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>    s_point <span class="op">=</span> np.sin(xi), <span class="dv">3</span><span class="op">*</span>np.cos(xi) <span class="co"># pick one s-point</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>    axs[<span class="dv">0</span>].plot(s_point[<span class="dv">0</span>], s_point[<span class="dv">1</span>], <span class="st">'m.'</span>, markersize<span class="op">=</span><span class="dv">12</span>) <span class="co"># plot the s-point in the s-plane</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Map one s_point to a W_point</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>    W_point <span class="op">=</span> (<span class="bu">complex</span>(s_point[<span class="dv">0</span>], s_point[<span class="dv">1</span>]) <span class="op">+</span> <span class="dv">3</span>)<span class="op">/</span>(<span class="bu">complex</span>(s_point[<span class="dv">0</span>], s_point[<span class="dv">1</span>]) <span class="op">+</span> <span class="dv">2</span>)</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>    axs[<span class="dv">1</span>].plot(np.real(W_point), np.imag(W_point), <span class="st">'r.'</span>, markersize<span class="op">=</span><span class="dv">12</span>) <span class="co"># plot the W_point</span></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="25_Introduction_to_Frequency_Domain_Analysis_in_Control_Systems_files/figure-html/cell-2-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="sample-contour-analysis-in-the-s-plane-and-its-mapping-to-the-omega-plane" class="level2">
+<h2 class="anchored" data-anchor-id="sample-contour-analysis-in-the-s-plane-and-its-mapping-to-the-omega-plane">Sample Contour Analysis in the S-Plane and its Mapping to the <span class="math inline">\(\omega\)</span>-Plane</h2>
+<p>Consider a specific path, or contour, in the s-plane that includes a zero of the transfer function <span class="math inline">\(1 + G(s)H(s)\)</span>. Our goal is to understand how this contour translates into the <span class="math inline">\(\omega\)</span>-plane.</p>
+<table>
+<tbody><tr>
+<td>
+<img src="./pics/25_Introduction_to_Frequency_Domain_Analysis_in_Control_Systems_Nyquist_Criterion_4.png" alt="25_Introduction_to_Frequency_Domain_Analysis_in_Control_Systems_Nyquist_Criterion_4" style="width:550px;">
+</td>
+</tr>
+</tbody></table>
+<p>Given that all poles and zeros of <span class="math inline">\(1 + G(s)H(s)\)</span> are known, we express it as:</p>
+<p><span class="math display">\[
+  1 + G(s)H(s) = \frac{(s-\beta_1)(s-\beta_2)...}{(s-\alpha_1)(s-\alpha_2)...}
+  \]</span></p>
+<section id="mapping-a-point-from-s-plane-to-omega-plane" class="level3">
+<h3 class="anchored" data-anchor-id="mapping-a-point-from-s-plane-to-omega-plane">Mapping a Point from S-Plane to <span class="math inline">\(\omega\)</span>-Plane</h3>
+<ul>
+<li><p><strong>Example with a Specific Point <span class="math inline">\(s_1\)</span></strong>: To illustrate, let’s focus on a particular point <span class="math inline">\(s_1\)</span> on our s-plane contour.</p>
+<p><span class="math display">\[
+1 + G(s_1)H(s_1) = \frac{(s_1-\beta_1)(s_1-\beta_2)...}{(s_1-\alpha_1)(s_1-\alpha_2)...}
+\]</span></p>
+<p>Here, each term $ (s_1-_i) $ represents a ‘numerator phasor’, and each $ (s_1-_i) $ is a ‘denominator phasor’.</p></li>
+<li><p><strong>Calculating the Mapped Point’s Magnitude and Phase</strong>:</p>
+<ul>
+<li><p><strong>Magnitude</strong>: The magnitude of the mapped point on the <span class="math inline">\(\omega\)</span>-plane is derived by multiplying each numerator phasor and dividing by each denominator phasor.</p></li>
+<li><p><strong>Phase</strong>: The phase angle of the mapped point is calculated by summing up the phases of the numerator phasors and subtracting the phases of the denominator phasors.</p></li>
+</ul></li>
+<li><p><strong>Resulting Mapped Point <span class="math inline">\(w_1\)</span></strong>: This process results in a point in the <span class="math inline">\(\omega\)</span>-plane, denoted as <span class="math inline">\(w_1\)</span>.</p></li>
+</ul>
+<table>
+<tbody><tr>
+<td>
+<img src="./pics/25_Introduction_to_Frequency_Domain_Analysis_in_Control_Systems_Nyquist_Criterion_5.png?2" alt="25_Introduction_to_Frequency_Domain_Analysis_in_Control_Systems_Nyquist_Criterion_5" style="width:550px;">
+</td>
+<td>
+<img src="./pics/25_Introduction_to_Frequency_Domain_Analysis_in_Control_Systems_Nyquist_Criterion_6.png?2" alt="25_Introduction_to_Frequency_Domain_Analysis_in_Control_Systems_Nyquist_Criterion_6" style="width:550px;">
+</td>
+</tr>
+</tbody></table>
+</section>
+<section id="visualizing-phasors-and-contour-mapping" class="level3">
+<h3 class="anchored" data-anchor-id="visualizing-phasors-and-contour-mapping">Visualizing Phasors and Contour Mapping</h3>
+<ul>
+<li><p><strong>Graphical Representation</strong>: The phasors corresponding to the point <span class="math inline">\(s_1\)</span> are graphically represented below (Left), showing how they contribute to the mapping process.</p></li>
+<li><p><strong>Contour Movement and Mapping</strong>: As we continue to move along the contour in the s-plane, say in a clockwise direction, we create a corresponding contour in the <span class="math inline">\(\omega\)</span>-plane (Right below).</p></li>
+</ul>
+<table>
+<tbody><tr>
+<td>
+<img src="./pics/25_Introduction_to_Frequency_Domain_Analysis_in_Control_Systems_Nyquist_Criterion_7.png?2" alt="25_Introduction_to_Frequency_Domain_Analysis_in_Control_Systems_Nyquist_Criterion_7" style="width:550px;">
+</td>
+<td>
+<img src="./pics/25_Introduction_to_Frequency_Domain_Analysis_in_Control_Systems_Nyquist_Criterion_8.png?2" alt="25_Introduction_to_Frequency_Domain_Analysis_in_Control_Systems_Nyquist_Criterion_8" style="width:550px;">
+</td>
+</tr>
+</tbody></table>
+<div id="c1e3983c" class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ipywidgets <span class="im">import</span> interact, FloatSlider</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the transfer function</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> transfer_function(s):</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> s <span class="op">+</span> <span class="dv">2</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Zero of the transfer function</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>zero <span class="op">=</span> <span class="op">-</span><span class="dv">2</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the contour in the s-plane (a circle of radius 3)</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> s_plane_contour(theta):</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">3</span> <span class="op">*</span> np.exp(<span class="ot">1j</span> <span class="op">*</span> theta)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Map the contour to the omega-plane using the transfer function</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> omega_plane_mapping(s):</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> transfer_function(s)</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Pre-calculate all the points on the contour for the omega-plane</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>theta_values <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">2</span><span class="op">*</span>np.pi, <span class="dv">300</span>)</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>omega_points <span class="op">=</span> [omega_plane_mapping(s_plane_contour(theta)) <span class="cf">for</span> theta <span class="kw">in</span> theta_values]</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to plot the contours</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_contours(theta):</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    s_point <span class="op">=</span> s_plane_contour(theta)</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>    omega_point <span class="op">=</span> omega_plane_mapping(s_point)</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>    fig, axs <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">6</span>))</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Plotting in the s-plane</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>    axs[<span class="dv">0</span>].plot(np.real(s_point), np.imag(s_point), <span class="st">'ro'</span>, label<span class="op">=</span><span class="st">'Current Point'</span>)  <span class="co"># current point</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>    axs[<span class="dv">0</span>].plot(zero, <span class="dv">0</span>, <span class="st">'gX'</span>, markersize<span class="op">=</span><span class="dv">10</span>, label<span class="op">=</span><span class="st">'Zero'</span>)  <span class="co"># zero of the transfer function</span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>    circle <span class="op">=</span> plt.Circle((<span class="dv">0</span>, <span class="dv">0</span>), <span class="dv">3</span>, color<span class="op">=</span><span class="st">'b'</span>, fill<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>    axs[<span class="dv">0</span>].add_artist(circle)</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>    axs[<span class="dv">0</span>].set_xlim([<span class="op">-</span><span class="dv">4</span>, <span class="dv">4</span>])</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>    axs[<span class="dv">0</span>].set_ylim([<span class="op">-</span><span class="dv">4</span>, <span class="dv">4</span>])</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>    axs[<span class="dv">0</span>].axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'black'</span>)</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>    axs[<span class="dv">0</span>].axvline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'black'</span>)</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>    axs[<span class="dv">0</span>].grid(<span class="va">True</span>)</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>    axs[<span class="dv">0</span>].set_title(<span class="st">'S-Plane'</span>)</span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>    axs[<span class="dv">0</span>].set_xlabel(<span class="st">'Real'</span>)</span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>    axs[<span class="dv">0</span>].set_ylabel(<span class="st">'Imaginary'</span>)</span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>    axs[<span class="dv">0</span>].legend()</span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Plotting in the omega-plane</span></span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>    axs[<span class="dv">1</span>].plot([np.real(wp) <span class="cf">for</span> wp <span class="kw">in</span> omega_points], [np.imag(wp) <span class="cf">for</span> wp <span class="kw">in</span> omega_points], <span class="st">'b-'</span>, alpha<span class="op">=</span><span class="fl">0.7</span>)  <span class="co"># all points</span></span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>    axs[<span class="dv">1</span>].plot(np.real(omega_point), np.imag(omega_point), <span class="st">'ro'</span>, label<span class="op">=</span><span class="st">'Current Point'</span>)  <span class="co"># current point</span></span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>    axs[<span class="dv">1</span>].set_xlim([<span class="op">-</span><span class="dv">5</span>, <span class="dv">5</span>])</span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>    axs[<span class="dv">1</span>].set_ylim([<span class="op">-</span><span class="dv">5</span>, <span class="dv">5</span>])</span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>    axs[<span class="dv">1</span>].axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'black'</span>)</span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>    axs[<span class="dv">1</span>].axvline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'black'</span>)</span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>    axs[<span class="dv">1</span>].grid(<span class="va">True</span>)</span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>    axs[<span class="dv">1</span>].set_title(<span class="st">'$\omega$-Plane'</span>)</span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>    axs[<span class="dv">1</span>].set_xlabel(<span class="st">'Real'</span>)</span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>    axs[<span class="dv">1</span>].set_ylabel(<span class="st">'Imaginary'</span>)</span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>    axs[<span class="dv">1</span>].legend()</span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>    plt.show()</span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a slider for interactive plot</span></span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a>interact(plot_contours, theta<span class="op">=</span>FloatSlider(<span class="bu">min</span><span class="op">=</span><span class="dv">0</span>, <span class="bu">max</span><span class="op">=</span><span class="dv">2</span><span class="op">*</span>np.pi, step<span class="op">=</span><span class="fl">0.01</span>, value<span class="op">=</span><span class="dv">0</span>, description<span class="op">=</span><span class="st">'Theta:'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"2cb5718b757648e79e4b17eb749374b3","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+</script>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>&lt;function __main__.plot_contours(theta)&gt;</code></pre>
+</div>
+</div>
+<p>Let’s consider once again our arbitrary contour:</p>
+<table>
+<tbody><tr>
+<td>
+<img src="./pics/25_Introduction_to_Frequency_Domain_Analysis_in_Control_Systems_Nyquist_Criterion_7.png" alt="25_Introduction_to_Frequency_Domain_Analysis_in_Control_Systems_Nyquist_Criterion_7" style="width:550px;">
+</td>
+<td>
+<img src="./pics/25_Introduction_to_Frequency_Domain_Analysis_in_Control_Systems_Nyquist_Criterion_8b.png" alt="25_Introduction_to_Frequency_Domain_Analysis_in_Control_Systems_Nyquist_Criterion_8" style="width:550px;">
+</td>
+</tr>
+</tbody></table>
+<p>Consider the behavior of individual phasors, such as the $ (s - _1) $ phasor, while moving along a specific contour in the s-plane.</p>
+<ul>
+<li><p>**Phasor $ (s - _1) $**: As we travel along the contour that includes the zero $ _1 $, the phasor $ (s - _1) $ will contribute a total angle change. When you start at a certain point on the contour and move all the way around it, the <em>angle change</em> contributed by $ (s - _1) $ sums up to $ -2$ radians.</p></li>
+<li><p>**Phasor $ (s - _2) $**: Now, if you consider a different phasor, $ (s - _2) $, where $ _2 $ is not enclosed by the contour, the scenario changes. As you follow the same contour starting from one point and returning back to it, the net angle change contributed by $ (s - _2) $ ends up being zero. This is because any positive angle change during one part of the journey is canceled out by a corresponding negative angle change in another part.</p></li>
+</ul>
+<p>This understanding is crucial for the Nyquist stability criterion. It tells us that:</p>
+<ul>
+<li><p>If a zero of the function $ 1 + G(s)H(s) $ is enclosed within the contour, it contributes an angle of $ 2$ radians to the total angle change as we traverse the contour.</p></li>
+<li><p>If all other poles and zeros are outside the contour, they do not contribute to the net angle change.</p></li>
+</ul>
+<p>Therefore, regardless of the shape of the contour, if it encloses a zero of $ 1 + G(s)H(s) $, the resulting mapped contour in the <span class="math inline">\(\omega\)</span>-plane will encircle the origin exactly once, and in a clockwise direction, due to the total angle change of $ -2$ radians.</p>
+</section>
+<section id="case-of-enclosing-a-zero" class="level3">
+<h3 class="anchored" data-anchor-id="case-of-enclosing-a-zero">Case of Enclosing a Zero</h3>
+<ul>
+<li><strong>Enclosing a Zero</strong>: Suppose our contour in the s-plane encircles a zero of the function <span class="math inline">\(1 + G(s)H(s)\)</span>. In this scenario, as we traverse the contour in a clockwise direction, the total angle change contributed by this enclosed zero is $ -2$ radians.</li>
+<li><strong>Resulting Encirclement</strong>: This means that the corresponding contour in the <span class="math inline">\(\omega\)</span>-plane will encircle the origin in the clockwise direction exactly once.</li>
+</ul>
+</section>
+<section id="case-of-enclosing-a-pole" class="level3">
+<h3 class="anchored" data-anchor-id="case-of-enclosing-a-pole">Case of Enclosing a Pole</h3>
+<ul>
+<li><strong>Enclosing a Pole</strong>: Now, imagine instead that the contour encloses a pole (not a zero) of <span class="math inline">\(1 + G(s)H(s)\)</span>. All other zeros and poles are outside this contour.</li>
+</ul>
+<table>
+<tbody><tr>
+<td>
+<img src="./pics/25_Introduction_to_Frequency_Domain_Analysis_in_Control_Systems_Nyquist_Criterion_9.png" alt="25_Introduction_to_Frequency_Domain_Analysis_in_Control_Systems_Nyquist_Criterion_9" style="width:750px;">
+</td>
+</tr>
+</tbody></table>
+<ul>
+<li><strong>Effect on Angle Contribution</strong>: The angle contribution for a pole is the opposite of that for a zero. Therefore, the total angle change is $ +2$ radians, indicating a counter-clockwise encirclement in the <span class="math inline">\(\omega\)</span>-plane.</li>
+<li><strong>Net Encirclement</strong>: This results in one complete counter-clockwise rotation around the origin in the <span class="math inline">\(\omega\)</span>-plane.</li>
+</ul>
+</section>
+<section id="combining-poles-and-zeros" class="level3">
+<h3 class="anchored" data-anchor-id="combining-poles-and-zeros">Combining Poles and Zeros</h3>
+<ul>
+<li><strong>Combining Poles and Zeros</strong>: Consider a contour that encloses both poles and a zero. For example, a contour with two poles and one zero.</li>
+<li><strong>Net Rotation Calculation</strong>: The net rotation in the W-plane is determined by the difference between counter-clockwise rotations (contributed by poles) and clockwise rotations (contributed by zeros). In our example, we have two counter-clockwise rotations (poles) and one clockwise rotation (zero), resulting in one net counter-clockwise rotation (<span class="math inline">\(2 - 1 = 1\)</span>).</li>
+</ul>
+<p><strong>THE CODE BELOW IS NOT WORKING WELL!! FIX IT!!</strong></p>
+<div id="2b63786b" class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ipywidgets <span class="im">import</span> interact, IntSlider, Dropdown</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> transfer_function(s, case):</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> case <span class="op">==</span> <span class="st">'Case 1'</span>:</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> s<span class="op">/</span>(s<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> <span class="dv">6</span><span class="op">*</span>s <span class="op">+</span> <span class="dv">18</span>)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> case <span class="op">==</span> <span class="st">'Case 2'</span>:</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> (s<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> <span class="fl">1.5</span><span class="op">*</span>s <span class="op">+</span> <span class="fl">0.8125</span>)<span class="op">/</span>((s <span class="op">+</span> <span class="dv">1</span>)<span class="op">*</span>(s <span class="op">+</span> <span class="fl">0.8</span>))</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> case <span class="op">==</span> <span class="st">'Case 3'</span>:</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">1</span><span class="op">/</span>((s <span class="op">+</span> <span class="dv">1</span>)<span class="op">*</span>(s <span class="op">+</span> <span class="fl">0.8</span>))</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> case <span class="op">==</span> <span class="st">'Case 4'</span>:</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> s <span class="op">+</span> <span class="dv">3</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> s  <span class="co"># Default case</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_contour_point(angle, case):</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Define the contour based on the selected case</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> case <span class="kw">in</span> [<span class="st">'Case 1'</span>, <span class="st">'Case 3'</span>, <span class="st">'Case 4'</span>]:</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>        radius <span class="op">=</span> <span class="dv">3</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>        center <span class="op">=</span> (<span class="op">-</span><span class="dv">3</span>, <span class="dv">0</span>)</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> case <span class="op">==</span> <span class="st">'Case 2'</span>:</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>        radius <span class="op">=</span> <span class="dv">2</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>        center <span class="op">=</span> (<span class="fl">0.5</span>, <span class="dv">0</span>)</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:        </span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>        radius <span class="op">=</span> <span class="dv">2</span></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>        center <span class="op">=</span> (<span class="dv">0</span>, <span class="dv">0</span>)</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>    angle <span class="op">=</span> np.deg2rad(angle)</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>    s <span class="op">=</span> <span class="bu">complex</span>(center[<span class="dv">0</span>] <span class="op">+</span> radius <span class="op">*</span> np.cos(angle), center[<span class="dv">1</span>] <span class="op">+</span> radius <span class="op">*</span> np.sin(angle))</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>    tnf <span class="op">=</span> transfer_function(s, case)</span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>    fig, axs <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">6</span>))</span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>    axs[<span class="dv">0</span>].set_title(<span class="st">'S-plane'</span>)</span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>    axs[<span class="dv">1</span>].set_title(<span class="st">'W-plane'</span>)</span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Plot the contour and current point in the s-plane</span></span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>    theta <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">2</span><span class="op">*</span>np.pi, <span class="dv">100</span>)</span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>    axs[<span class="dv">0</span>].plot(center[<span class="dv">0</span>] <span class="op">+</span> radius <span class="op">*</span> np.cos(theta), center[<span class="dv">1</span>] <span class="op">+</span> radius <span class="op">*</span> np.sin(theta), <span class="st">'b-'</span>)</span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>    axs[<span class="dv">0</span>].plot(np.real(s), np.imag(s), <span class="st">'ro'</span>)</span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Plot in the omega-plane</span></span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>    omega_points <span class="op">=</span> [transfer_function(<span class="bu">complex</span>(center[<span class="dv">0</span>] <span class="op">+</span> radius <span class="op">*</span> np.cos(t), center[<span class="dv">1</span>] <span class="op">+</span> radius <span class="op">*</span> np.sin(t)), case) <span class="cf">for</span> t <span class="kw">in</span> theta]</span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>    axs[<span class="dv">1</span>].plot([np.real(w) <span class="cf">for</span> w <span class="kw">in</span> omega_points], [np.imag(w) <span class="cf">for</span> w <span class="kw">in</span> omega_points], <span class="st">'b-'</span>)</span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a><span class="co">#     axs[1].plot(np.real(tnf), np.imag(tnf), 'ro')</span></span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> ax <span class="kw">in</span> axs:</span>
+<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>        ax.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'black'</span>, linewidth<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>        ax.axvline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'black'</span>, linewidth<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>        ax.grid(<span class="va">True</span>)</span>
+<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>        ax.set_xlabel(<span class="st">'Real'</span>)</span>
+<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>        ax.set_ylabel(<span class="st">'Imaginary'</span>)</span>
+<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a>    plt.show()</span>
+<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a><span class="co"># Interactive widgets</span></span>
+<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a>angle_slider <span class="op">=</span> FloatSlider(<span class="bu">min</span><span class="op">=</span><span class="dv">0</span>, <span class="bu">max</span><span class="op">=</span><span class="dv">360</span>, step<span class="op">=</span><span class="dv">1</span>, value<span class="op">=</span><span class="dv">0</span>, description<span class="op">=</span><span class="st">'Angle:'</span>)</span>
+<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a>case_dropdown <span class="op">=</span> Dropdown(options<span class="op">=</span>[<span class="st">'Case 1'</span>, <span class="st">'Case 2'</span>, <span class="st">'Case 3'</span>, <span class="st">'Case 4'</span>], value<span class="op">=</span><span class="st">'Case 1'</span>, description<span class="op">=</span><span class="st">'Case:'</span>)</span>
+<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a>interact(plot_contour_point, angle<span class="op">=</span>angle_slider, case<span class="op">=</span>case_dropdown)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"a01b2966fc3941548886036dc241fad0","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+</script>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>&lt;function __main__.plot_contour_point(angle, case)&gt;</code></pre>
+</div>
+</div>
+</section>
+<section id="implications-for-nyquist-criterion" class="level3">
+<h3 class="anchored" data-anchor-id="implications-for-nyquist-criterion">Implications for Nyquist Criterion</h3>
+<p>These observations form the basis of the Nyquist stability criterion. It’s important to note that while we’ve discussed the qualitative aspects of the mapping, the exact shape of the contour in the W-plane is not our primary concern.</p>
+<p>With this understanding, we are now prepared to delve into stating and applying the Nyquist stability criterion in control system analysis.</p>
+</section>
+</section>
+<section id="cauchys-argument-principle" class="level2">
+<h2 class="anchored" data-anchor-id="cauchys-argument-principle">Cauchy’s argument principle</h2>
+<p><strong>We can tell the relative difference between the number of poles and zeros inside of a contour by counting how many time the plot circles the origin and in which direction.</strong></p>
+</section>
+<section id="the-nyquist-stability-criterion" class="level2">
+<h2 class="anchored" data-anchor-id="the-nyquist-stability-criterion">The Nyquist Stability Criterion</h2>
+<p>We are going to apply Cauchy’s Argument Principle to a specific contour in the s-plane, as illustrated on the left in the figure below.</p>
+<p>This contour encircles the entire right half-plane (RHP), including the imaginary axis. This contour is called the <em>Nyquist Contour</em>.</p>
+<p>For the initial analysis, we’ll assume that there are no poles located on the contour itself. We will consider the implications of having poles on the contour at a later stage.</p>
+<p>Through the function <span class="math inline">\(1 + G(s)H(s)\)</span>, this specific contour in the s-plane is mapped to the <span class="math inline">\(\omega\)</span>-plane, shown on the right in the picture.</p>
+<table>
+<tbody><tr>
+<td>
+<img src="./pics/25_Introduction_to_Frequency_Domain_Analysis_in_Control_Systems_Nyquist_Criterion_10.png" alt="25_Introduction_to_Frequency_Domain_Analysis_in_Control_Systems_Nyquist_Criterion_10" style="width:750px;">
+</td>
+</tr>
+</tbody></table>
+<p>Key Points to Note:</p>
+<ul>
+<li><strong>Open-Loop Poles</strong>: The poles of <span class="math inline">\(1 + G(s)H(s)\)</span> are the same as the open-loop poles of the system, which we know from the zeros and poles of <span class="math inline">\(G(s)H(s)\)</span>.</li>
+<li><strong>Closed-Loop Poles</strong>: The zeros of <span class="math inline">\(1 + G(s)H(s)\)</span> correspond to the closed-loop poles of the system. These zeros are not known beforehand and are what we aim to determine for stability analysis.</li>
+</ul>
+<p>According to the Nyquist Criterion:</p>
+<ul>
+<li><p>If the mapping in the W-Plane encircles the origin <span class="math inline">\(N\)</span> times in a counter-clockwise direction, this number of encirclements (<span class="math inline">\(N\)</span>) is mathematically expressed as the number of poles of <span class="math inline">\(1 + G(s)H(s)\)</span> (denoted as <span class="math inline">\(P\)</span>) minus the number of its zeros (denoted as <span class="math inline">\(Z\)</span>). This relationship is captured in the Nyquist equation:</p>
+<p><span class="math display">\[
+N = P - Z
+\]</span></p></li>
+<li><p>The Nyquist equation forms the basis of the Nyquist Criterion, which asserts that <em>the total number of counter-clockwise encirclements of the origin in the W-Plane by the function <span class="math inline">\(1 + G(s)H(s)\)</span> is equal to the difference between the number of its poles and zeros</em>.</p></li>
+</ul>
+<p>Therefore, to determine the closed-loop stability of the system, it’s necessary to map the contour onto the W-plane and count the number of times (<span class="math inline">\(N\)</span>) this mapping encircles the origin.</p>
+<p>From the Nyquist equation we obtain directly how many zeros of <span class="math inline">\(1+G(s)H(s)\)</span> are in the right half plane.</p>
+<section id="side-comments" class="level4">
+<h4 class="anchored" data-anchor-id="side-comments">Side Comments</h4>
+<ul>
+<li><p>Regarding the scenario where a zero of <span class="math inline">\(1 + G(s)H(s)\)</span> (pole in closed loop) lies on the contour, it will be important to consider its impact. If a zero is on the contour, this implies that the contour will pass through the origin in the W-Plane. Such a situation typically indicates a condition of marginal stability for the system. In other words, when the contour in the s-plane, transformed by the function <span class="math inline">\(1 + G(s)H(s)\)</span>, passes through the origin in the W-Plane, it represents a special case where the function’s zeros (which are the closed-loop poles) coincide with the contour. This scenario requires careful analysis as it relates to the system’s stability margin.</p></li>
+<li><p>Another important consideration arises when a pole of the open-loop transfer function $ G(s)H(s) $ falls on the Nyquist contour. In such instances, the mapping of that point to the W-Plane results in an infinite value. This occurrence requires special attention in the analysis of the system’s stability.</p></li>
+<li><p>Zeros of <span class="math inline">\(G(s)H(s)\)</span> do not create any problem. Unlike poles, which can map to infinity on the W-plane and complicate the analysis (as infinite values need special consideration), zeros do not result in such extreme values in the mapping process. Therefore, they do not add complexity to the graphical interpretation of the Nyquist plot.</p></li>
+</ul>
+</section>
+</section>
+<section id="translating-the-nyquist-plot" class="level2">
+<h2 class="anchored" data-anchor-id="translating-the-nyquist-plot">Translating the Nyquist Plot</h2>
+<p>In our study of control systems, we have focused on analyzing the Nyquist Plot of the function</p>
+<p><span class="math display">\[
+1 + G(s)H(s)
+\]</span></p>
+<p>and observed its behavior in terms of the number of times it encircles the origin in the W-plane.</p>
+<p>Creating the plot of this function can be challenging due to its complexity. To simplify our analysis, we can instead consider the Nyquist Plot of just the function $ G(s)H(s) $. This approach involves counting the encirclements around the critical point <span class="math inline">\(-1 + 0j\)</span> on the complex plane.</p>
+<p>This method not only simplifies the plotting process but also provides us with the essential information needed to assess the stability of the control system.</p>
+</section>
+<section id="interpretation-of-the-nyquist-stability-criterion" class="level2">
+<h2 class="anchored" data-anchor-id="interpretation-of-the-nyquist-stability-criterion">Interpretation of the Nyquist Stability Criterion</h2>
+<p>The criterion relates to the frequency response of a system and is expressed as:</p>
+<p><span class="math display">\[
+N = P - Z
+\]</span></p>
+<p>where: - <span class="math inline">\(N\)</span> is the number of counter-clockwise encirclements of the $-1+0j $point in the W-plane. - <span class="math inline">\(P\)</span> is the number of poles of <span class="math inline">\(1 + G(s)H(s)\)</span> in the right half of the s-plane. - <span class="math inline">\(Z\)</span> is the number of zeros of <span class="math inline">\(1 + G(s)H(s)\)</span> in the same plane.</p>
+</section>
+<section id="applying-the-criterion" class="level2">
+<h2 class="anchored" data-anchor-id="applying-the-criterion">Applying the Criterion</h2>
+<p>To apply this criterion, we follow these steps:</p>
+<ol type="1">
+<li><p><strong>Mapping the Contour</strong>: Consider a contour in the s-plane that encompasses the right half, including the imaginary axis. We assume no poles lie directly on this contour initially (we’ll address the scenario with poles on the contour later).</p></li>
+<li><p><strong>Transformation to W-Plane</strong>: This contour is then mapped onto the W-plane via the function <span class="math inline">\(G(s)H(s)\)</span>.</p></li>
+<li><p><strong>Counting Encirclements</strong>: The number of times this mapped contour encircles the point -1 in the W-plane (in a counter-clockwise direction) gives us <span class="math inline">\(N\)</span>. This also means that <span class="math inline">\(N\)</span> is positive when the contour encircles the point -1 in the counter-clockwise direction.</p></li>
+<li><p><strong>Determining Stability</strong>:</p>
+<ul>
+<li>We use the equation <span class="math inline">\(N = P - Z\)</span> to determine <span class="math inline">\(Z\)</span> the zeros of <span class="math inline">\(1 + G(s)H(s)\)</span> in the RHP, which correspond to the closed loop poles in the RHP.</li>
+</ul></li>
+</ol>
+<section id="open-loop-stable-systems" class="level3">
+<h3 class="anchored" data-anchor-id="open-loop-stable-systems">Open-Loop Stable Systems</h3>
+<ul>
+<li><p>For an open-loop stable system (where <span class="math inline">\(P = 0\)</span>), the closed-loop system is stable if the Nyquist plot in the W-plane does not encircle the origin.</p></li>
+<li><p>When <span class="math inline">\(P=0\)</span> (open loop system is stable)</p></li>
+<li><p><span class="math inline">\(Z=N \Rightarrow N=0\)</span> or no encirclements of the point <span class="math inline">\(-1\)</span> to have a stable closed loop system (for stability <span class="math inline">\(Z=0\)</span>).</p></li>
+<li><p>This is the case we come across most often.</p></li>
+</ul>
+<p>For example, given an open-loop stable system we would like a Nyquist plot as:</p>
+<table>
+<tbody><tr>
+<td>
+<img src="./pics/25_Introduction_to_Frequency_Domain_Analysis_in_Control_Systems_Nyquist_Criterion_11.png" alt="25_Introduction_to_Frequency_Domain_Analysis_in_Control_Systems_Nyquist_Criterion_11" style="width:750px;">
+</td>
+</tr>
+</tbody></table>
+</section>
+<section id="open-loop-unstable-systems" class="level3">
+<h3 class="anchored" data-anchor-id="open-loop-unstable-systems">Open-Loop Unstable Systems</h3>
+<ul>
+<li><p>For an open-loop unstable system, say with one pole in the right-half plane (<span class="math inline">\(P = 1\)</span>), the system is stable under closed-loop operation if the G(s)H(s) plot encircles the point <span class="math inline">\(-1 + j0\)</span> once in the counter-clockwise direction.</p></li>
+<li><p>In order to guarantee that there are no zeros (roots of <span class="math inline">\(1+G(s)H(s)\)</span>) in the right half plane (<span class="math inline">\(Z=0\)</span>), we need to have exactly 1 counter-clockwise (CCW) encirclement of the point -1 for each open loop pole in the right half plane:</p></li>
+</ul>
+<p><span class="math display">\[
+P = N
+\]</span></p>
+</section>
+</section>
+<section id="check-your-understanding" class="level2">
+<h2 class="anchored" data-anchor-id="check-your-understanding">Check Your Understanding</h2>
+<ol type="1">
+<li><p><strong>Question</strong>: What does <span class="math inline">\(N = P - Z\)</span> signify in the Nyquist criterion?</p>
+<p><strong>Answer</strong>: It represents the relationship between the number of counter-clockwise encirclements of the origin in the W-plane, the number of poles, and the number of zeros of the open-loop transfer function in the right half of the s-plane.</p></li>
+<li><p><strong>Question</strong>: For an open-loop stable system, what is the key condition for closed-loop stability?</p>
+<p><strong>Answer</strong>: The Nyquist plot of <span class="math inline">\(G(s)H(s)\)</span> in the W-plane should not encircle the point <span class="math inline">\(-1 + j0\)</span>.</p></li>
+</ol>
+
+
+</section>
+
+</main> <!-- /main -->
+<script type="application/vnd.jupyter.widget-state+json">
+{"state":{},"version_major":2,"version_minor":0}
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/andreamunafo\.github\.io\/principles-of-automatic-controls");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/andreamunafo/principles-of-automatic-controls/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

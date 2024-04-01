@@ -1,0 +1,2175 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.552">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>principles-of-automatic-controls - Sistemi di controllo del movimento CA</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+<meta property="og:title" content="principles-of-automatic-controls - Sistemi di controllo del movimento CA">
+<meta property="og:description" content="Course in feedback control for the University of Pisa">
+<meta property="og:site_name" content="principles-of-automatic-controls">
+<meta name="twitter:title" content="principles-of-automatic-controls - Sistemi di controllo del movimento CA">
+<meta name="twitter:description" content="Course in feedback control for the University of Pisa">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">principles-of-automatic-controls</span>
+    </a>
+  </div>
+        <div class="quarto-navbar-tools tools-end">
+</div>
+          <div id="quarto-search" class="" title="Search"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../IT_🇮🇹/faq_it.html">IT_🇮🇹</a></li><li class="breadcrumb-item"><a href="../IT_🇮🇹/ac_hardware_and_case_studies_it.html">Sistemi di controllo del movimento CA</a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Feedback Control</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../faq.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Frequently Asked Questions (FAQ)</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../syllabus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Syllabus for “Principles of Automatic Control”</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../toc.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Table of Contents</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../update_and_manage_local_changes_guide.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A Guide to Updating Your Local Repository with Git in Anaconda’s Virtual Environment</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../getting_started_with_python_and_jupyter_notebook.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Getting Started with Python and Jupyter Notebooks</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principles of Automatic Control</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../basics_of_feedback_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Feedback Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../introduction_to_control_problem.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to the control problem</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../dynamic_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modeling in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../dynamic_response.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Dynamic response of control systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../06_inverse_laplace_transform.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Inverse Laplace Transform: Partial fraction decomposition</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../modeling_dynamic_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Modeling of Dynamic Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../control_system_components.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Control System Components</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../models_of_control_devices_and_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Models of Controlled Devices</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../hardware_and_case_studies.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Hardware of Control Systems and Case Studies</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ac_hardware_and_case_studies.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">AC Motion Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../a_first_complete_application.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A Feedback Control System</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../principles_of_feedback_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principles of Feedback Control</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../feedback_systems_and_their_effects.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Feedback systems and their effects</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../introduction_to_control_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../stability.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Stability Analysis in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../stability_and_routh_criterion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Stability Analysis in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../performance_of_feedback_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Performance of Feedback Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../design_of_feedback_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Design Cycle for a Standard Second-Order System</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../20_Design_of_feedback_control_continued.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Understanding the Standard Second-Order System: Recap</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../steady_state_accuracy_and_design_principles.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Steady State Accuracy and Design Principles</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../compensator_design_using_root_locus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compensator Design</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../design_with_the_root_locus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Design with the Root Locus</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../compensators_and_root_locus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compensators and the Root Locus</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../introduction_to_frequency_domain_analysis_in_control_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Frequency Domain Analysis in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../application_of_nyquist_stability_criterion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Application of Nyquist Stability Criterion in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../the_nyquist_stability_criterion_and_relative_stability.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The Nyquist Stability Criterion and Relative Stability</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../bode_plots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Bode Plot Analysis</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../feedback_system_performance_based_on_frequency_response.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Feedback System Performance Based On Frequency Response</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../compensator_design_using_frequency_response_plots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principles of Automatic Control: Lead and Lag Compensation</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">IT_TCLab_🇮🇹</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/spacecraft_thermal_control_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Il Laboratorio di Controllo della Temperatura</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/tclab_exercises_report_template_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modello di report sugli esercizi TCLab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/tclab_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Il Laboratorio di Controllo della Temperatura</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/understanding_tclab_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Comprendere TCLab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/tclab_lab_1_coding_a_relay_controller_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 1: Codifica di un controller relè</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/system_model_and_identification_tclab_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modellazione del sistema</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/step_testing_tclab_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Passo Test</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/fitting_step_test_data_to_empirical_models_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Adattamento dei dati dei test di fase ai modelli empirici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/tclab_lab_2_model_identification_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 2: Identificazione del modello</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/tclab_lab_2_fitting_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Identificazione del modello: adattamento dei modelli ai dati</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/relay_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Controllo relè</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/pid_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Controllo PID</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/lab-assignment-pid-control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compito di laboratorio: Controllo PID</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/lab-assignment-pi-control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compito di laboratorio 4: Controllo PI</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">IT_🇮🇹</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/faq_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Domande frequenti (FAQ)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/syllabus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Programma del corso “Principi del controllo automatico”</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/update_and_manage_local_changes_guide_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Aggiornare il Proprio Repository Locale Mantenendo le Modifiche Locali</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/getting_started_with_python_and_jupyter_notebook_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Guida introduttiva ai notebook Python e Jupyter</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/intro_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principi di controllo automatico</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/basics_of_feedback_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione ai sistemi di controllo del feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/introduction_to_control_problem_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione al problema del controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/dynamic_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modellazione nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/dynamic_response_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Risposta dinamica dei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/06_inverse_laplace_transform_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Trasformata di Laplace inversa: scomposizione parziale di frazioni</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/modeling_dynamic_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione alla modellazione dei sistemi dinamici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/control_system_components_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Componenti del sistema di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/models_of_control_devices_and_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modelli di dispositivi controllati</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/hardware_and_case_studies_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Hardware dei sistemi di controllo e casi di studio</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/ac_hardware_and_case_studies_it.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Sistemi di controllo del movimento CA</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/a_first_complete_application_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Un sistema di controllo del feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/principles_of_feedback_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principi di controllo del feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/feedback_systems_and_their_effects_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sistemi di feedback e loro effetti</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/introduction_to_control_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione ai sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/stability_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analisi di stabilità nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/stability_and_routh_criterion_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analisi di stabilità nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/performance_of_feedback_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prestazioni dei sistemi di feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/design_of_feedback_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Ciclo di progettazione per un sistema standard del secondo ordine</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/20_Design_of_feedback_control_continued_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Comprensione del sistema standard del secondo ordine: riepilogo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/steady_state_accuracy_and_design_principles_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Precisione dello stato stazionario e principi di progettazione</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/compensator_design_using_root_locus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Progettazione del compensatore</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/design_with_the_root_locus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Progettare con il luogo delle radici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/compensators_and_root_locus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compensatori e luogo delle radici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/introduction_to_frequency_domain_analysis_in_control_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione all’analisi nel dominio della frequenza nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/application_of_nyquist_stability_criterion_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Applicazione del criterio di stabilità di Nyquist nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/the_nyquist_stability_criterion_and_relative_stability_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Il criterio di stabilità di Nyquist e la stabilità relativa</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/bode_plots_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analisi del diagramma di Bode</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/feedback_system_performance_based_on_frequency_response_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prestazioni del sistema di feedback basate sulla risposta in frequenza</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/index_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Syllabus - Fondamenti di Automatica</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">TCLab</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/spacecraft_thermal_control_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The Temperature Control Laboratory</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/tclab_exercises_report_template.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Exercises Report Template</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The Temperature Control Lab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/understanding_tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Understanding TCLab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/tclab_lab_1_coding_a_relay_controller-solution.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 1: Coding a relay controller</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/tclab_lab_1_coding_a_relay_controller.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 1: Coding a relay controller</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/system_model_and_identification_tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">System Modeling</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/step_testing_tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Step Testing</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/fitting_step_test_data_to_empirical_models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Fitting Step Test Data to Empirical Models</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/tclab_lab_2_model_identification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 2: Model Identification</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/tclab_lab_2_model_identification_solutions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 2: Model Identification</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/tclab_lab_2_fitting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Model Identification: Fitting models to data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/relay_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Relay Control</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/pid_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">PID Control</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/lab-assignment-pid-control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab Assignment: PID Control</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/lab-assignment-pi-control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab Assignment 4: PI Control</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#confronto-tra-sistemi-cc-e-ca" id="toc-confronto-tra-sistemi-cc-e-ca" class="nav-link active" data-scroll-target="#confronto-tra-sistemi-cc-e-ca">Confronto tra sistemi CC e CA</a>
+  <ul class="collapse">
+  <li><a href="#componenti-del-sistema-dc" id="toc-componenti-del-sistema-dc" class="nav-link" data-scroll-target="#componenti-del-sistema-dc">Componenti del sistema DC:</a></li>
+  <li><a href="#componenti-del-sistema-ac" id="toc-componenti-del-sistema-ac" class="nav-link" data-scroll-target="#componenti-del-sistema-ac">Componenti del sistema AC:</a></li>
+  </ul></li>
+  <li><a href="#il-servomotore-bifase" id="toc-il-servomotore-bifase" class="nav-link" data-scroll-target="#il-servomotore-bifase">Il servomotore bifase</a>
+  <ul class="collapse">
+  <li><a href="#commenti" id="toc-commenti" class="nav-link" data-scroll-target="#commenti">Commenti</a></li>
+  </ul></li>
+  <li><a href="#motori-ac-e-controllo-di-precisione" id="toc-motori-ac-e-controllo-di-precisione" class="nav-link" data-scroll-target="#motori-ac-e-controllo-di-precisione">Motori AC e controllo di precisione</a>
+  <ul class="collapse">
+  <li><a href="#tensione-di-fase-di-controllo-e_c" id="toc-tensione-di-fase-di-controllo-e_c" class="nav-link" data-scroll-target="#tensione-di-fase-di-controllo-e_c"><strong>1. Tensione di fase di controllo (<span class="math inline">\(e_c\)</span>):</strong></a></li>
+  <li><a href="#tensione-modulata-e_m" id="toc-tensione-modulata-e_m" class="nav-link" data-scroll-target="#tensione-modulata-e_m"><strong>2. Tensione modulata (<span class="math inline">\(e_m\)</span>):</strong></a></li>
+  <li><a href="#tensione-di-riferimento-e_r" id="toc-tensione-di-riferimento-e_r" class="nav-link" data-scroll-target="#tensione-di-riferimento-e_r"><strong>3. Tensione di riferimento (<span class="math inline">\(E_r\)</span>):</strong></a></li>
+  <li><a href="#perché-la-tensione-di-riferimento-è-applicata-solo-alla-fase-di-riferimento" id="toc-perché-la-tensione-di-riferimento-è-applicata-solo-alla-fase-di-riferimento" class="nav-link" data-scroll-target="#perché-la-tensione-di-riferimento-è-applicata-solo-alla-fase-di-riferimento"><strong>Perché la tensione di riferimento è applicata solo alla fase di riferimento?</strong></a></li>
+  <li><a href="#ruolo-dellalimentazione-ca" id="toc-ruolo-dellalimentazione-ca" class="nav-link" data-scroll-target="#ruolo-dellalimentazione-ca"><strong>Ruolo dell’alimentazione CA:</strong></a></li>
+  <li><a href="#in-sintesi" id="toc-in-sintesi" class="nav-link" data-scroll-target="#in-sintesi"><strong>In sintesi:</strong></a></li>
+  </ul></li>
+  <li><a href="#modulazione-di-ampiezza-am" id="toc-modulazione-di-ampiezza-am" class="nav-link" data-scroll-target="#modulazione-di-ampiezza-am">Modulazione di ampiezza (AM)</a>
+  <ul class="collapse">
+  <li><a href="#processo-di-modulazione" id="toc-processo-di-modulazione" class="nav-link" data-scroll-target="#processo-di-modulazione">Processo di modulazione:</a></li>
+  <li><a href="#circuito-di-modulazione-pratico" id="toc-circuito-di-modulazione-pratico" class="nav-link" data-scroll-target="#circuito-di-modulazione-pratico">Circuito di modulazione pratico:</a></li>
+  <li><a href="#caratteristiche-coppia-velocità-del-motore-ca" id="toc-caratteristiche-coppia-velocità-del-motore-ca" class="nav-link" data-scroll-target="#caratteristiche-coppia-velocità-del-motore-ca">Caratteristiche coppia-velocità del motore CA</a></li>
+  <li><a href="#equazione-della-coppia-lineare-per-motori-ca" id="toc-equazione-della-coppia-lineare-per-motori-ca" class="nav-link" data-scroll-target="#equazione-della-coppia-lineare-per-motori-ca">Equazione della coppia lineare per motori CA</a></li>
+  <li><a href="#equazione-del-motore-ca" id="toc-equazione-del-motore-ca" class="nav-link" data-scroll-target="#equazione-del-motore-ca">Equazione del motore CA</a></li>
+  <li><a href="#schema-a-blocchi-del-motore-ca" id="toc-schema-a-blocchi-del-motore-ca" class="nav-link" data-scroll-target="#schema-a-blocchi-del-motore-ca">Schema a blocchi del motore CA</a></li>
+  <li><a href="#ritorniamo-al-modello-del-motore" id="toc-ritorniamo-al-modello-del-motore" class="nav-link" data-scroll-target="#ritorniamo-al-modello-del-motore">Ritorniamo al modello del motore</a></li>
+  <li><a href="#comprendere-la-tensione-di-fase-di-controllo" id="toc-comprendere-la-tensione-di-fase-di-controllo" class="nav-link" data-scroll-target="#comprendere-la-tensione-di-fase-di-controllo">Comprendere la tensione di fase di controllo</a></li>
+  <li><a href="#barra-laterale-comprensione-dellingresso-del-motore-ca-segnale-modulato-dalla-portante" id="toc-barra-laterale-comprensione-dellingresso-del-motore-ca-segnale-modulato-dalla-portante" class="nav-link" data-scroll-target="#barra-laterale-comprensione-dellingresso-del-motore-ca-segnale-modulato-dalla-portante">Barra laterale: comprensione dell’ingresso del motore CA: segnale modulato dalla portante</a></li>
+  </ul></li>
+  <li><a href="#rilevatore-di-errori-ca-e-trasmettitori-trasformatori-sincroni-per-sistemi-di-controllo-della-posizione" id="toc-rilevatore-di-errori-ca-e-trasmettitori-trasformatori-sincroni-per-sistemi-di-controllo-della-posizione" class="nav-link" data-scroll-target="#rilevatore-di-errori-ca-e-trasmettitori-trasformatori-sincroni-per-sistemi-di-controllo-della-posizione">Rilevatore di errori CA e trasmettitori-trasformatori sincroni per sistemi di controllo della posizione</a>
+  <ul class="collapse">
+  <li><a href="#trasmettitore-sincronizzato" id="toc-trasmettitore-sincronizzato" class="nav-link" data-scroll-target="#trasmettitore-sincronizzato">Trasmettitore sincronizzato</a></li>
+  <li><a href="#trasformatore-di-controllo-sincronizzato" id="toc-trasformatore-di-controllo-sincronizzato" class="nav-link" data-scroll-target="#trasformatore-di-controllo-sincronizzato">Trasformatore di controllo sincronizzato</a></li>
+  <li><a href="#meccanica-della-coppia-sincronizzata" id="toc-meccanica-della-coppia-sincronizzata" class="nav-link" data-scroll-target="#meccanica-della-coppia-sincronizzata">Meccanica della coppia sincronizzata</a></li>
+  <li><a href="#trasmettitore-sincronizzato-funzionante" id="toc-trasmettitore-sincronizzato-funzionante" class="nav-link" data-scroll-target="#trasmettitore-sincronizzato-funzionante">Trasmettitore sincronizzato funzionante</a></li>
+  <li><a href="#induzione-di-tensione-al-cambio-di-posizione" id="toc-induzione-di-tensione-al-cambio-di-posizione" class="nav-link" data-scroll-target="#induzione-di-tensione-al-cambio-di-posizione">Induzione di tensione al cambio di posizione</a></li>
+  <li><a href="#per-sistemi-di-controllo-del-feedback" id="toc-per-sistemi-di-controllo-del-feedback" class="nav-link" data-scroll-target="#per-sistemi-di-controllo-del-feedback">Per sistemi di controllo del feedback</a></li>
+  <li><a href="#derivazione-della-funzione-di-trasferimento" id="toc-derivazione-della-funzione-di-trasferimento" class="nav-link" data-scroll-target="#derivazione-della-funzione-di-trasferimento">Derivazione della funzione di trasferimento</a></li>
+  <li><a href="#rappresentazione-simbolica-del-rilevatore-di-errore-di-sincronizzazione" id="toc-rappresentazione-simbolica-del-rilevatore-di-errore-di-sincronizzazione" class="nav-link" data-scroll-target="#rappresentazione-simbolica-del-rilevatore-di-errore-di-sincronizzazione">Rappresentazione simbolica del rilevatore di errore di sincronizzazione</a></li>
+  </ul></li>
+  <li><a href="#trasformatore-differenziale-variabile-lineare-lvdt" id="toc-trasformatore-differenziale-variabile-lineare-lvdt" class="nav-link" data-scroll-target="#trasformatore-differenziale-variabile-lineare-lvdt">Trasformatore differenziale variabile lineare (LVDT)</a></li>
+  <li><a href="#tachimetrica" id="toc-tachimetrica" class="nav-link" data-scroll-target="#tachimetrica">Tachimetrica</a></li>
+  <li><a href="#revisione-del-controllo-motore" id="toc-revisione-del-controllo-motore" class="nav-link" data-scroll-target="#revisione-del-controllo-motore">Revisione del controllo motore</a>
+  <ul class="collapse">
+  <li><a href="#modellazione-matematica-del-motore" id="toc-modellazione-matematica-del-motore" class="nav-link" data-scroll-target="#modellazione-matematica-del-motore">Modellazione matematica del motore</a></li>
+  </ul></li>
+  <li><a href="#applicazione-nel-mondo-reale-controllo-di-un-teleobiettivo" id="toc-applicazione-nel-mondo-reale-controllo-di-un-teleobiettivo" class="nav-link" data-scroll-target="#applicazione-nel-mondo-reale-controllo-di-un-teleobiettivo">Applicazione nel mondo reale: controllo di un teleobiettivo</a>
+  <ul class="collapse">
+  <li><a href="#il-problema-del-controllo" id="toc-il-problema-del-controllo" class="nav-link" data-scroll-target="#il-problema-del-controllo">Il problema del controllo</a>
+  <ul class="collapse">
+  <li><a href="#comprendere-la-coppia-sincronizzata" id="toc-comprendere-la-coppia-sincronizzata" class="nav-link" data-scroll-target="#comprendere-la-coppia-sincronizzata">Comprendere la coppia sincronizzata</a></li>
+  <li><a href="#ruolo-dellamplificatore" id="toc-ruolo-dellamplificatore" class="nav-link" data-scroll-target="#ruolo-dellamplificatore">Ruolo dell’amplificatore</a></li>
+  <li><a href="#segnali" id="toc-segnali" class="nav-link" data-scroll-target="#segnali">Segnali</a></li>
+  <li><a href="#motore-ac-come-demodulatore" id="toc-motore-ac-come-demodulatore" class="nav-link" data-scroll-target="#motore-ac-come-demodulatore">Motore AC come demodulatore</a></li>
+  <li><a href="#modello-matematico-e-diagramma-a-blocchi" id="toc-modello-matematico-e-diagramma-a-blocchi" class="nav-link" data-scroll-target="#modello-matematico-e-diagramma-a-blocchi">Modello matematico e diagramma a blocchi</a></li>
+  <li><a href="#progettazione-del-controllo" id="toc-progettazione-del-controllo" class="nav-link" data-scroll-target="#progettazione-del-controllo">Progettazione del controllo</a></li>
+  </ul></li>
+  <li><a href="#utilizzo-di-un-motore-cc" id="toc-utilizzo-di-un-motore-cc" class="nav-link" data-scroll-target="#utilizzo-di-un-motore-cc">Utilizzo di un motore CC</a>
+  <ul class="collapse">
+  <li><a href="#collegamento-della-coppia-sincrona-al-motore-cc" id="toc-collegamento-della-coppia-sincrona-al-motore-cc" class="nav-link" data-scroll-target="#collegamento-della-coppia-sincrona-al-motore-cc">Collegamento della coppia sincrona al motore CC:</a></li>
+  <li><a href="#diagramma-a-blocchi" id="toc-diagramma-a-blocchi" class="nav-link" data-scroll-target="#diagramma-a-blocchi">Diagramma a blocchi</a></li>
+  </ul></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/andreamunafo/principles-of-automatic-controls/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../IT_🇮🇹/faq_it.html">IT_🇮🇹</a></li><li class="breadcrumb-item"><a href="../IT_🇮🇹/ac_hardware_and_case_studies_it.html">Sistemi di controllo del movimento CA</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Sistemi di controllo del movimento CA</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
+<p>Nei notebook precedenti abbiamo discusso dei sistemi di controllo del movimento utilizzando hardware specifico. Abbiamo accennato all’utilizzo di un motore CC come attuatore, una dinamo tachimetrica CC come sensore di velocità, un potenziometro per il rilevamento della posizione e altro hardware associato. La nostra esplorazione era principalmente radicata nei componenti basati su DC.</p>
+<p>Questo notebook si concentra su un diverso set di hardware per avere <em>AC Motion Control Systems</em>.</p>
+<section id="confronto-tra-sistemi-cc-e-ca" class="level2">
+<h2 class="anchored" data-anchor-id="confronto-tra-sistemi-cc-e-ca">Confronto tra sistemi CC e CA</h2>
+<p>Prima di immergerci in profondità, ricordiamo le nostre discussioni precedenti. Nei sistemi di controllo del movimento, abbiamo analizzato due tipologie principali: <strong>Sistemi di controllo della posizione</strong> e <strong>Sistemi di controllo della velocità</strong>. Il principio rimane lo stesso, ma l’hardware e talvolta le complessità cambiano quando si passa dai componenti CC a quelli CA.</p>
+<section id="componenti-del-sistema-dc" class="level3">
+<h3 class="anchored" data-anchor-id="componenti-del-sistema-dc">Componenti del sistema DC:</h3>
+<ul>
+<li>Attuatore: motore CC</li>
+<li>Sensore di velocità: dinamo tachimetrica CC</li>
+<li>Sensore di posizione: potenziometro</li>
+</ul>
+</section>
+<section id="componenti-del-sistema-ac" class="level3">
+<h3 class="anchored" data-anchor-id="componenti-del-sistema-ac">Componenti del sistema AC:</h3>
+<ul>
+<li>Attuatore: servomotore bifase</li>
+<li>Sensore di velocità e posizione: Synchro (e altri dispositivi di cui parleremo)</li>
+</ul>
+</section>
+</section>
+<section id="il-servomotore-bifase" class="level2">
+<h2 class="anchored" data-anchor-id="il-servomotore-bifase">Il servomotore bifase</h2>
+<p>Il nostro primo punto di discussione è il servomotore bifase.</p>
+<p>Questo attuatore ha il compito di produrre la coppia necessaria per azionare il carico.</p>
+<img src="../pics/11_AC_hardware_and_case_studies_motor.png" alt="11_AC_hardware_and_case_studies_motor" style="width: 850px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<p>Si chiama ‘bifase’ perché, come evidente dal nome, funziona utilizzando due fasi. Una fase è denominata “fase di controllo” e la sua importanza diventerà presto evidente. L’altra è denominata “fase di riferimento”. Il rotore trasporta il carico, che può essere direttamente sul rotore o tramite un treno di ingranaggi.</p>
+<hr>
+<p>Il motivo principale alla base dell’utilizzo di due fasi (o del concetto di “fase divisa”) in alcuni tipi di motori CA è generare un campo magnetico rotante essenziale per il funzionamento del motore. In un motore CA trifase, le tre fasi creano naturalmente un campo magnetico rotante. In un motore CA monofase, il campo magnetico si alterna semplicemente ma non ruota. Per superare questo problema, i motori bifase utilizzano due avvolgimenti, con una differenza di fase, per simulare il campo rotante.</p>
+<p>Ruolo delle due fasi: - Coppia di avviamento: uno dei motivi principali per avere due avvolgimenti (o fasi) è produrre una coppia di avviamento. I motori monofase, senza alcun meccanismo di sfasamento, non hanno intrinsecamente una coppia di avviamento, il che significa che non inizieranno a ruotare da soli. - Campo magnetico rotante: introducendo una differenza di fase tra i due avvolgimenti, solitamente attraverso un condensatore o progettando diversamente gli avvolgimenti, si crea uno sfasamento tra le correnti nei due avvolgimenti. Questa differenza di fase si traduce in un campo magnetico rotante essenziale per il funzionamento del motore.</p>
+<hr>
+<p>Per semplificazione, rappresentiamo i parametri di carico come “J” e “B”. Il rotore genera una coppia <span class="math inline">\(T_M\)</span> e affronta una coppia di disturbo <span class="math inline">\(T_\omega\)</span> che si oppone a <span class="math inline">\(T_M\)</span>.</p>
+<ul>
+<li>Data questa configurazione, il successivo componente di interesse è il <strong>condensatore di sfasamento</strong>** nella fase di riferimento. Il suo ruolo è fondamentale. Garantisce che possiamo derivare un’alimentazione bifase da una sorgente di tensione monofase. Questo condensatore induce una differenza di fase di 90 gradi tra le due fasi.</li>
+</ul>
+<p>La fase di riferimento riceve un’alimentazione di tensione del tipo <span class="math inline">\(E_r\cos\omega_{c}t\)</span>, dove <span class="math inline">\(\omega_{c}\)</span> è denominata frequenza dell’onda portante e <span class="math inline">\(E_r\)</span>è la tensione di riferimento.</p>
+<ul>
+<li>La fase di controllo è collegata ad un Modulatore. L’ingresso al modulatore è la tensione di controllo <span class="math inline">\(e_c\)</span>. Si tratta sempre di una tensione a bassa frequenza in un sistema di controllo.</li>
+</ul>
+<section id="commenti" class="level3">
+<h3 class="anchored" data-anchor-id="commenti">Commenti</h3>
+<ul>
+<li>Ricordare che in un sistema di controllo l’obiettivo è rendere zero l’errore. Ad esempio, l’errore potrebbe essere un errore di posizione o di velocità.</li>
+<li>Se il sistema di controllo funziona bene, l’errore sarà un segnale a bassa frequenza e un segnale piccolo.</li>
+</ul>
+<p>Se consideriamo <span class="math inline">\(e_c\)</span> come segnale di errore ed entriamo come ingresso per il motore vorrei modulare questo segnale con la frequenza <span class="math inline">\(\omega_c\)</span>, la frequenza portante.</p>
+</section>
+</section>
+<section id="motori-ac-e-controllo-di-precisione" class="level2">
+<h2 class="anchored" data-anchor-id="motori-ac-e-controllo-di-precisione">Motori AC e controllo di precisione</h2>
+<p>Questo notebook si concentra sui motori CA bifase utilizzati in applicazioni di controllo di precisione. In questo contesto, il controllo modulato viene implementato per ottenere una caratteristica prestazionale desiderata, in particolare in sistemi come i servoazionamenti. Abbattiamo i componenti:</p>
+<section id="tensione-di-fase-di-controllo-e_c" class="level3">
+<h3 class="anchored" data-anchor-id="tensione-di-fase-di-controllo-e_c"><strong>1. Tensione di fase di controllo (<span class="math inline">\(e_c\)</span>):</strong></h3>
+<p>Questa è essenzialmente la tensione di “ingresso” o di “controllo”. Contiene le informazioni su come vuoi che si comporti il ​​motore. Ad esempio, se vuoi che il motore ruoti ad una certa velocità o si sposti in una certa posizione, questo è codificato in <span class="math inline">\(e_c\)</span>. È il tuo modo di dire al motore cosa fare.</p>
+</section>
+<section id="tensione-modulata-e_m" class="level3">
+<h3 class="anchored" data-anchor-id="tensione-modulata-e_m"><strong>2. Tensione modulata (<span class="math inline">\(e_m\)</span>):</strong></h3>
+<p>Questa è la tensione di “uscita”, che viene generata dopo aver modulato la tensione di controllo con un riferimento. La modulazione ha molteplici scopi:</p>
+<ul>
+<li><p><strong>Prestazioni migliorate:</strong> Modulando con una portante ad alta frequenza, è possibile migliorare le prestazioni del motore. Ad esempio, la modulazione ad alta frequenza può ridurre le ondulazioni di coppia nel motore.</p></li>
+<li><p><strong>Immunità al rumore:</strong> i segnali ad alta frequenza tendono ad essere meno suscettibili al rumore a bassa frequenza. Ciò è vantaggioso in un ambiente industriale in cui potrebbero essere presenti numerosi disturbi elettrici.</p></li>
+</ul>
+<p>La tensione di fase di controllo (<span class="math inline">\(e_c\)</span>) codifica il comportamento desiderato del motore. Ciò potrebbe rappresentare la velocità, la coppia o la posizione desiderata. Quando questa tensione di controllo viene combinata (modulata) con la tensione di riferimento ad alta frequenza (<span class="math inline">\(E_r\)</span>), la tensione modulata risultante (<span class="math inline">\(e_m\)</span>) viene applicata al secondo avvolgimento (spesso chiamato fase di controllo o modulazione).</p>
+</section>
+<section id="tensione-di-riferimento-e_r" class="level3">
+<h3 class="anchored" data-anchor-id="tensione-di-riferimento-e_r"><strong>3. Tensione di riferimento (<span class="math inline">\(E_r\)</span>):</strong></h3>
+<p><span class="math inline">\(E_r\)</span> è l’onda portante. Si tratta di un segnale ad alta frequenza che non contiene intrinsecamente alcuna informazione sul controllo del motore. Tuttavia, quando <span class="math inline">\(e_c\)</span> (il segnale di controllo a bassa frequenza) viene modulato con <span class="math inline">\(E_r\)</span>, il risultato è <span class="math inline">\(e_m\)</span>, che ha proprietà sia del segnale di controllo che dell’onda portante.</p>
+</section>
+<section id="perché-la-tensione-di-riferimento-è-applicata-solo-alla-fase-di-riferimento" class="level3">
+<h3 class="anchored" data-anchor-id="perché-la-tensione-di-riferimento-è-applicata-solo-alla-fase-di-riferimento"><strong>Perché la tensione di riferimento è applicata solo alla fase di riferimento?</strong></h3>
+<p>Applicando la tensione di riferimento a una sola fase (spesso chiamata fase di riferimento), la modulazione è più efficace nel creare un controllo differenziale o relativo tra le fasi. Questo differenziale può essere più efficace nel creare la coppia e la velocità desiderate nel motore.</p>
+<ul>
+<li><p>Un motore CA bifase ha due avvolgimenti, generalmente posizionati a 90 gradi l’uno dall’altro. Le correnti attraverso questi avvolgimenti, quando sono fuori fase, producono campi magnetici che si combinano per formare un campo magnetico rotante risultante. Questo campo rotante è ciò che fa girare il rotore.</p></li>
+<li><p>L’applicazione della tensione di riferimento, tipicamente un segnale ad alta frequenza, a questa fase stabilisce una linea di base o campo magnetico di “riferimento”.</p></li>
+</ul>
+<p>Applicando la tensione di riferimento solo alla fase di riferimento, la configurazione del motore può creare un campo magnetico differenziale. Questo campo magnetico differenziale, rispetto al riferimento, governa effettivamente il comportamento del motore.</p>
+<p>Quando la tensione di riferimento ad alta frequenza viene applicata alla fase di riferimento e la tensione di controllo modulata viene applicata all’altra fase, l’orientamento e l’ampiezza del campo magnetico risultante dipendono dal segnale modulato. Ciò consente un controllo preciso della posizione o della velocità del motore in base alle caratteristiche del segnale modulato.</p>
+<p>Se la tensione di riferimento fosse applicata ad entrambe le fasi, non produrrebbe un effetto differenziale e non produrrebbe il controllo di precisione desiderato.</p>
+<p>In sostanza, designando un avvolgimento come “riferimento” e l’altro come “controllo”, e quindi applicando tensioni appropriate a ciascuno, il sistema può creare un campo magnetico rotante con direzione e ampiezza controllabili, che è essenziale per un controllo di precisione in applicazioni come i servosistemi.</p>
+</section>
+<section id="ruolo-dellalimentazione-ca" class="level3">
+<h3 class="anchored" data-anchor-id="ruolo-dellalimentazione-ca"><strong>Ruolo dell’alimentazione CA:</strong></h3>
+<p>Nonostante tutte queste metodologie di controllo, il motore richiede comunque energia per funzionare. L’alimentazione CA fornisce la potenza necessaria per azionare il motore. Tutte le tensioni sopra menzionate (<span class="math inline">\(e_c\)</span>, <span class="math inline">\(e_m\)</span>, <span class="math inline">\(E_r\)</span>) riguardano il controllo e la modulazione, ma nessuna di esse fornisce direttamente la potenza necessaria per far girare il motore. È qui che entra in gioco l’alimentazione CA.</p>
+</section>
+<section id="in-sintesi" class="level3">
+<h3 class="anchored" data-anchor-id="in-sintesi"><strong>In sintesi:</strong></h3>
+<p>Pensa all’intero processo come analogo a una radio FM. Nella trasmissione FM (modulazione di frequenza), si dispone di un segnale di base ad alta frequenza (simile a <span class="math inline">\(E_r\)</span>), che viene modulato da un segnale audio a bassa frequenza (simile a <span class="math inline">\(e_c\)</span>). Il risultato è un segnale modulato ad alta frequenza (come <span class="math inline">\(e_m\)</span>) che può essere trasmesso. La radio demodula quindi questo segnale per estrarre e riprodurre l’audio. Allo stesso modo, nello scenario di controllo del motore, la modulazione viene utilizzata per combinare le informazioni di controllo con una portante ad alta frequenza per migliorare le prestazioni del motore. La potenza effettiva per far funzionare tutto, tuttavia, proviene dall’alimentazione CA principale.</p>
+</section>
+</section>
+<section id="modulazione-di-ampiezza-am" class="level2">
+<h2 class="anchored" data-anchor-id="modulazione-di-ampiezza-am">Modulazione di ampiezza (AM)</h2>
+<p>In AM, l’ampiezza dell’onda portante ad alta frequenza (<span class="math inline">\(E_r\)</span>) viene variata in base all’ampiezza istantanea del segnale di controllo (<span class="math inline">\(e_c\)</span>).</p>
+<p>Per modulare la portante utilizzando il segnale di errore, prenderemo il prodotto del segnale di errore e del segnale della portante. Ciò si traduce in un segnale modulato in ampiezza (AM).</p>
+<p>L’inviluppo di un segnale modulato in ampiezza (AM) corrisponde all’ampiezza istantanea del segnale, che nel nostro caso è rappresentata dal segnale di errore.</p>
+<section id="processo-di-modulazione" class="level3">
+<h3 class="anchored" data-anchor-id="processo-di-modulazione">Processo di modulazione:</h3>
+<ol type="1">
+<li><strong>Onda portante (<span class="math inline">\(E_r\)</span>)</strong>:</li>
+</ol>
+<p>Si tratta di una forma d’onda sinusoidale ad alta frequenza, che funge da segnale di riferimento. Matematicamente può essere rappresentato come:</p>
+<p><span class="math display">\[
+E_r(t) = A_c\sin(2\pi f_ct)
+\]</span></p>
+<p>Dove - <span class="math inline">\(A_c\)</span> = Ampiezza dell’onda portante - <span class="math inline">\(f_c\)</span> = frequenza dell’onda portante</p>
+<ol start="2" type="1">
+<li><p><strong>Segnale di controllo (<span class="math inline">\(e_c\)</span>)</strong>: questo è il segnale che vuoi che il motore segua. Potrebbe rappresentare la velocità, la posizione, ecc. desiderate.</p></li>
+<li><p><strong>Segnale modulato (<span class="math inline">\(e_m\)</span>)</strong>: il risultato del processo di modulazione. Al mattino: <span class="math display">\[
+e_m(t) = \big[ A_c+e_c(t)\big]\sin(2\pi f_ct)
+\]</span></p></li>
+</ol>
+</section>
+<section id="circuito-di-modulazione-pratico" class="level3">
+<h3 class="anchored" data-anchor-id="circuito-di-modulazione-pratico">Circuito di modulazione pratico:</h3>
+<p>Un circuito comune utilizzato per ottenere la modulazione di ampiezza è il <strong>circuito moltiplicatore</strong>. Questo circuito moltiplica due segnali di ingresso per produrre un segnale di uscita.</p>
+<ol type="1">
+<li>Inserisci <span class="math inline">\(E_r\)</span> e <span class="math inline">\(e_c\)</span> nei due input del moltiplicatore</li>
+<li>L’uscita <span class="math inline">\(e_m\)</span> è il prodotto dei due segnali di ingresso</li>
+<li>la sua uscita, che contiene componenti di frequenza sia di <span class="math inline">\(E_r\)</span> che di <span class="math inline">\(e_c\)</span>, viene quindi fatta passare attraverso un filtro passa banda per estrarre, se necessario, il segnale modulato desiderato.</li>
+</ol>
+<p>Al giorno d’oggi, con i ricetrasmettitori di comunicazione che sono molto digitalizzati, la modulazione viene eseguita principalmente nel dominio digitale utilizzando un blocco di tipo DSP.</p>
+<div id="5868f8c3" class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Time values</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">1000</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the error signal (decreasing oscillating signal starting from its maximum)</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>error_signal <span class="op">=</span> (<span class="dv">1</span> <span class="op">/</span> (<span class="dv">1</span> <span class="op">+</span> <span class="fl">0.2</span> <span class="op">*</span> t)) <span class="op">*</span> np.sin(<span class="dv">2</span> <span class="op">*</span> np.pi <span class="op">*</span> <span class="fl">.2</span> <span class="op">*</span> t <span class="op">+</span> np.pi<span class="op">/</span><span class="dv">2</span>)  <span class="co"># Added phase shift of pi/2</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the carrier signal</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>omega_c <span class="op">=</span> <span class="dv">2</span> <span class="op">*</span> np.pi <span class="op">*</span> <span class="dv">5</span>  <span class="co"># carrier frequency (for example, 10Hz)</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>carrier_signal <span class="op">=</span> np.cos(omega_c <span class="op">*</span> t)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Modulate the carrier using the error signal</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>modulated_signal <span class="op">=</span> error_signal <span class="op">*</span> carrier_signal</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">8</span>))</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the error signal</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>plt.plot(t, error_signal, label<span class="op">=</span><span class="vs">r'Error Signal $e_c$'</span>, color<span class="op">=</span><span class="st">'blue'</span>)</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="vs">r'Error Signal $e_c$'</span>)</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Time'</span>)</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Amplitude'</span>)</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Draw x=0 and y=0 axes</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>plt.axvline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'black'</span>, linewidth<span class="op">=</span><span class="dv">2</span>, linestyle<span class="op">=</span><span class="st">'-'</span>)</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>plt.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'black'</span>, linewidth<span class="op">=</span><span class="dv">2</span>, linestyle<span class="op">=</span><span class="st">'-'</span>)</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the carrier signal</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">2</span>)</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>plt.plot(t, carrier_signal, label<span class="op">=</span><span class="st">'Carrier Signal: cos(ωc t)'</span>, color<span class="op">=</span><span class="st">'green'</span>)</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Carrier Signal'</span>)</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Time'</span>)</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Amplitude'</span>)</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="co"># Draw x=0 and y=0 axes</span></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>plt.axvline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'black'</span>, linewidth<span class="op">=</span><span class="dv">2</span>, linestyle<span class="op">=</span><span class="st">'-'</span>)</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>plt.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'black'</span>, linewidth<span class="op">=</span><span class="dv">2</span>, linestyle<span class="op">=</span><span class="st">'-'</span>)</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the modulated signal</span></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">3</span>)</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>plt.plot(t, modulated_signal, label<span class="op">=</span><span class="st">'Modulated Signal'</span>, color<span class="op">=</span><span class="st">'red'</span>)</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="vs">r'Amplitude Modulated Signal $e_m$'</span>)</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Time'</span>)</span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Amplitude'</span>)</span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a><span class="co"># Draw x=0 and y=0 axes</span></span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>plt.axvline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'black'</span>, linewidth<span class="op">=</span><span class="dv">2</span>, linestyle<span class="op">=</span><span class="st">'-'</span>)</span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>plt.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'black'</span>, linewidth<span class="op">=</span><span class="dv">2</span>, linestyle<span class="op">=</span><span class="st">'-'</span>)</span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the positive envelope (absolute value of the error signal)</span></span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>plt.plot(t, np.<span class="bu">abs</span>(error_signal), <span class="st">'--'</span>, label<span class="op">=</span><span class="st">'Positive Envelope'</span>, color<span class="op">=</span><span class="st">'blue'</span>, linewidth<span class="op">=</span><span class="fl">1.5</span>)</span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the negative envelope (negative of the absolute value of the error signal)</span></span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a>plt.plot(t, <span class="op">-</span>np.<span class="bu">abs</span>(error_signal), <span class="st">'--'</span>, label<span class="op">=</span><span class="st">'Negative Envelope'</span>, color<span class="op">=</span><span class="st">'green'</span>, linewidth<span class="op">=</span><span class="fl">1.5</span>)</span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="11_AC_hardware_and_case_studies_it_files/figure-html/cell-2-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li><p>Si noti che quando cambia il segno di <span class="math inline">\(e_c\)</span>, la fase del segnale modulato <span class="math inline">\(e_m\)</span> si inverte (il massimo di <span class="math inline">\(e_c\)</span> è il minimo di <span class="math inline">\(e_m\)</span>).</p></li>
+<li><p>A causa di questa inversione di fase si verifica il flusso magnetico e si inverte anche la direzione del motore. Questo è un controllo bidirezionale:</p>
+<ul>
+<li>quando <span class="math inline">\(e_c&gt;0\)</span> il motore si muove in una direzione</li>
+<li>quando <span class="math inline">\(e_c&lt;0\)</span> il motore si muove nella direzione opposta</li>
+</ul></li>
+<li><p><span class="math inline">\(e_m\)</span> è un’onda modulata con portante alla frequenza <span class="math inline">\(\omega_c\)</span></p></li>
+<li><p>la tensione di riferimento <span class="math inline">\(e_c\)</span> è alla frequenza <span class="math inline">\(\omega_c\)</span></p></li>
+</ul>
+<p><strong>Insomma:</strong> Queste due tensioni applicate alle due fasi del motore produrranno una coppia sul motore. La coppia sarà una funzione di <span class="math inline">\(e_c\)</span> (<span class="math inline">\(e_r\)</span> è una tensione fissa) e la sua direzione sarà una funzione del segno di <span class="math inline">\(e_c\)</span>.</p>
+</section>
+<section id="caratteristiche-coppia-velocità-del-motore-ca" class="level3">
+<h3 class="anchored" data-anchor-id="caratteristiche-coppia-velocità-del-motore-ca">Caratteristiche coppia-velocità del motore CA</h3>
+<p>Una vista comparativa con il motore DC mostra che mentre quest’ultimo presenta caratteristiche di coppia-velocità quasi lineari, la curva del motore AC è evidentemente non lineare.</p>
+<p>La curva coppia-velocità di un tipico motore DC shunt è relativamente semplice rispetto a un motore AC. La coppia dipende in modo più o meno lineare dalla corrente di armatura e, all’aumentare della velocità, la coppia generalmente diminuisce in modo lineare a causa della forza elettromotrice (FEM) del motore che si oppone alla tensione di alimentazione.</p>
+<p>Le caratteristiche lineari dei motori DC sono un vantaggio perché il modello è più semplice.</p>
+<p>Se facessimo un esperimento queste sono le curve tipiche che otterremmo:</p>
+<img src="../pics/11_AC_hardware_and_case_studies_motor_torque_speed_dc_ac_linear_2.png" alt="11_AC_hardware_and_case_studies_motor_torque_speed_dc_ac_linear_2" style="width:750px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<p>Una volta determinate sperimentalmente le curve coppia-velocità per i motori, i dati risultanti possono aprire la strada alla formulazione di modelli matematici precisi.</p>
+<p>Una caratteristica così non lineare dei motori CA può rappresentare una sfida, soprattutto se desideriamo farli funzionare su un’ampia gamma. Ma uno degli aspetti positivi dei motori CA è il loro comportamento quasi lineare attorno alla velocità zero, che li rende adatti ai sistemi di controllo della posizione.</p>
+<p>A regime, la velocità è zero e la posizione del carico è uguale alla posizione comandata: il motore non si muove. Intorno a questo punto si ha un comportamento lineare che possiamo utilizzare e modellare.</p>
+<p>Per questo motivo ci concentreremo solo sui modelli lineari dei motori AC, assumendo che il punto di funzionamento sia velocità = 0.</p>
+</section>
+<section id="equazione-della-coppia-lineare-per-motori-ca" class="level3">
+<h3 class="anchored" data-anchor-id="equazione-della-coppia-lineare-per-motori-ca">Equazione della coppia lineare per motori CA</h3>
+<p>Dato che per il nostro problema di controllo della posizione possiamo assumere che il punto operativo sia <span class="math inline">\(\text{speed}=0\)</span>, l’equazione della coppia è una funzione della tensione di controllo <span class="math inline">\(e_c\)</span> e della velocità $ $:</p>
+<p><span class="math display">\[
+T_M = K_1e_c-K_2\dot{\theta}
+\]</span></p>
+<p>Dove: - <span class="math inline">\(K_2\)</span> è il fattore determinante per mettere in relazione coppia e velocità ed è la pendenza dell’approssimazione lineare delle curve Coppia-Velocità nel grafico dei motori CA sopra (quando la velocità <span class="math inline">\(\approx\)</span> 0). - La tensione di controllo <span class="math inline">\(e_c\)</span> è fondamentale perché fa sì che si sposti da una curva all’altra (nel diagramma sopra <span class="math inline">\(e_{c_1}&gt;e_{c_2}&gt;e_{c_3}\)</span>) - Quando la tensione di controllo aumenta, la coppia aumenta - Quando la velocità aumenta, la coppia diminuisce</p>
+<p>Una volta determinate sperimentalmente le curve, possiamo ottenere i parametri corrispondenti per il nostro modello lineare.</p>
+<ul>
+<li>Dalle curve Coppia-Velocità nel grafico dei Motori AC sopra possiamo dedurre direttamente la costante <span class="math inline">\(K_2\)</span></li>
+<li>Per ottenere <span class="math inline">\(K_1\)</span>, è possibile tracciare il grafico della tensione di fase di controllo <span class="math inline">\(e_c\)</span> rispetto alla coppia <span class="math inline">\(T_m\)</span> (vedere il grafico sotto). La pendenza della linea risultante in condizioni di velocità costante (diciamo <span class="math inline">\(\omega = 0\)</span>), fornirà il valore per <span class="math inline">\(K_1\)</span>. Questo approccio presuppone un modello di linearità per un dispositivo, che vale per determinati intervalli di funzionamento.</li>
+</ul>
+<img src="../pics/11_AC_hardware_and_case_studies_motor_torque_speed_ac_linear_2.png" alt="11_AC_hardware_and_case_studies_motor_torque_speed_ac_linear_2" style="width:350px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+</section>
+<section id="equazione-del-motore-ca" class="level3">
+<h3 class="anchored" data-anchor-id="equazione-del-motore-ca">Equazione del motore CA</h3>
+<p>Siamo ora pronti a scrivere il modello matematico del motore AC:</p>
+<p><span class="math display">\[
+T_M = K_1e_c-K_2\dot{\theta} = J \ddot{\theta} + B\dot{\theta} + T_W
+\]</span></p>
+<p>dove ora abbiamo aggiunto il carico e: - <span class="math inline">\(T_M\)</span> è la Coppia sviluppata dal motore - <span class="math inline">\(e_c\)</span> è la tensione della fase di controllo - <span class="math inline">\(\dot{\theta}\)</span> è la velocità del motore - <span class="math inline">\(K_1\)</span> e <span class="math inline">\(K_2\)</span> sono costanti determinate sperimentalmente - <span class="math inline">\(J \ddot{\theta}\)</span> è il carico inerziale - <span class="math inline">\(B\dot{\theta}\)</span> è lo smorzamento - <span class="math inline">\(T_W\)</span> è la coppia di disturbo sul sistema.</p>
+<p>Possiamo riscrivere l’equazione di cui sopra come:</p>
+<p><span class="math display">\[
+K_1e_c = J \ddot{\theta} + (B+K_2)\dot{\theta} + T_W
+\]</span></p>
+<p>dove <span class="math inline">\(e_c\)</span> è il mio input.</p>
+</section>
+<section id="schema-a-blocchi-del-motore-ca" class="level3">
+<h3 class="anchored" data-anchor-id="schema-a-blocchi-del-motore-ca">Schema a blocchi del motore CA</h3>
+<p>L’intero discorso può essere rappresentato visivamente utilizzando un diagramma a blocchi, evidenziando le relazioni tra <span class="math inline">\(e_c\)</span>, <span class="math inline">\(\theta\)</span>, <span class="math inline">\(\omega\)</span> e altri parametri di sistema.</p>
+<img src="../pics/11_AC_hardware_and_case_studies_motor_torque_speed_dc_ac_linear_block_diagram_corrected.png" alt="11_AC_hardware_and_case_studies_motor_torque_speed_dc_ac_linear_block_diagram_corrected" style="width:550px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<p>Attraverso lo schema a blocchi che rappresenta il sistema, è possibile ricavare una funzione di trasferimento, che collega <span class="math inline">\(e_c\)</span> (ingresso) e <span class="math inline">\(\omega\)</span> o <span class="math inline">\(\theta\)</span> (uscita).</p>
+<ol type="1">
+<li>Funzione di trasferimento tra <span class="math inline">\(\omega\)</span> e <span class="math inline">\(e_c\)</span>:</li>
+</ol>
+<p><span class="math display">\[
+\frac{\omega}{e_c} = \frac{K_1}{Js+B+K_2}
+\]</span></p>
+<ul>
+<li><p>Tieni presente che <span class="math inline">\(K_2\)</span> aumenta lo smorzamento meccanico del sistema, ricordando il comportamento del motore controllato dall’armatura CC.</p></li>
+<li><p><span class="math inline">\(K_2\)</span> aggiunge direttamente allo smorzamento, influenzando la stabilità e la risposta del sistema. Inoltre la costante di tempo del sistema diventa <span class="math display">\[
+\tau = \frac{J}{B+K_2}
+\]</span></p></li>
+</ul>
+<p>indicando che <span class="math inline">\(K_2\)</span> influenza la velocità con cui il sistema risponde ai cambiamenti.</p>
+<p>🤔 <strong>Domanda popup</strong>: In che modo l’entità di <span class="math inline">\(K_2\)</span> influisce sullo smorzamento e sulla costante di tempo del sistema?</p>
+<p><strong>Risposta</strong>: <span class="math inline">\(K_2\)</span> aumenta direttamente lo smorzamento, influenzando la stabilità e la risposta del sistema. Inoltre, la costante di tempo del sistema diventa <span class="math inline">\(\tau = \frac{J}{B+K_2}\)</span> indicando che <span class="math inline">\(K_2\)</span> influenza la velocità con cui il sistema risponde ai cambiamenti.</p>
+<section id="barra-laterale-un-tipico-motore-a-induzione" class="level4">
+<h4 class="anchored" data-anchor-id="barra-laterale-un-tipico-motore-a-induzione">Barra laterale: un tipico motore a induzione</h4>
+<p>Le caratteristiche della velocità di coppia di un normale motore a induzione sono riportate nel grafico sottostante.</p>
+<img src="../pics/11_AC_hardware_and_case_studies_motor_torque_induction_motor.png" alt="11_AC_hardware_and_case_studies_motor_torque_induction_motor" style="width:550px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<p>Possiamo utilizzare questo motore a induzione bifase per applicazioni servo?</p>
+<p>Per rispondere a questa domanda consideriamo la funzione di trasferimento</p>
+<p><span class="math display">\[
+\frac{\omega}{e_c} = \frac{K_1}{Js+B+K_2}
+\]</span></p>
+<p>dove <span class="math inline">\(K_2\)</span> aumenta lo smorzamento.</p>
+<p>Se <span class="math inline">\(K_2\)</span> è negativo, a seconda della sua relazione con <span class="math inline">\(B\)</span> (ricorda che entra in <span class="math inline">\(B+K_2\)</span>), potrebbe portare a instabilità.</p>
+<p>Una curva caratteristica, soprattutto quella che presenta una pendenza negativa, può introdurre uno smorzamento negativo, portando a oscillazioni eccessive e possibilmente culminando in instabilità o oscillazioni eccessive (oscillazioni) nel sistema. <span class="math inline">\(B\)</span> dovrebbe essere estremamente alto per contrastare gli effetti di un <span class="math inline">\(K_2\)</span> negativo.</p>
+<p>Per questo motivo, un normale motore a induzione non viene mai utilizzato per applicazioni servo (sistemi controllati in posizione o velocità).</p>
+<p>🤔 <strong>Domanda popup</strong>: Perché un normale motore a induzione potrebbe non essere adatto per applicazioni servo?</p>
+<p><strong>Risposta</strong>: Un normale motore a induzione potrebbe presentare caratteristiche in cui la pendenza diventa negativa, introducendo la possibilità di smorzamento negativo, che potrebbe portare a instabilità o oscillazioni eccessive nel sistema, soprattutto nel contesto di applicazioni servo dove è importante un controllo preciso .</p>
+<p>Ricordiamo che le caratteristiche coppia-velocità dei servomotori AC da noi utilizzati sono riportate nella figura sotto (a sinistra):</p>
+<img src="../pics/11_AC_hardware_and_case_studies_motor_torque_speed_dc_ac_linear_2.png?1" alt="11_AC_hardware_and_case_studies_motor_torque_speed_dc_ac_linear_2" style="width:750px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<ul>
+<li>Queste caratteristiche hanno <span class="math inline">\(K_2\)</span> sempre positivo.</li>
+</ul>
+</section>
+<section id="ottenimento-di-caratteristiche-di-coppia-velocità-con-pendenza-positiva" class="level4">
+<h4 class="anchored" data-anchor-id="ottenimento-di-caratteristiche-di-coppia-velocità-con-pendenza-positiva">Ottenimento di caratteristiche di coppia-velocità con pendenza positiva</h4>
+<ul>
+<li>Queste caratteristiche sono ottenute direttamente dal motore a induzione, in particolare utilizzando un’elevata resistenza del rotore.</li>
+</ul>
+<p>Una maggiore resistenza del rotore garantisce che le caratteristiche di risposta del motore rimangano positive.</p>
+<p>In sostanza, un servomotore è un motore a induzione con elevata resistenza del rotore. Una tale scelta progettuale garantisce che le caratteristiche del servomotore presentino sempre una pendenza positiva. Tuttavia, questa scelta comporta dei compromessi:</p>
+<ul>
+<li>L’elevata resistenza del rotore significa che l’efficienza complessiva del sistema sarà ridotta.</li>
+<li>Nonostante la riduzione dell’efficienza, il design è essenziale per applicazioni specifiche come i servosistemi in cui una pendenza negativa potrebbe essere dannosa.</li>
+</ul>
+<p>— FINE DELLA BARRA LATERALE</p>
+</section>
+</section>
+<section id="ritorniamo-al-modello-del-motore" class="level3">
+<h3 class="anchored" data-anchor-id="ritorniamo-al-modello-del-motore">Ritorniamo al modello del motore</h3>
+<p>Diamo un’occhiata alla rappresentazione matematica del motore:</p>
+<p>Il modello motorio è dato da:</p>
+<p><span class="math display">\[
+\frac{\omega}{e_c} = \frac{K_m}{\tau_m s + 1}
+\]</span></p>
+<p>Dove: - <span class="math inline">\(\omega\)</span> è la velocità del motore - <span class="math inline">\(e_c\)</span> rappresenta la tensione di controllo - <span class="math inline">\(K_m\)</span> è il guadagno del motore - <span class="math inline">\(\tau_m\)</span> è la costante di tempo meccanica del motore.</p>
+<p>Questo è un sistema del primo ordine tra velocità e tensione di controllo.</p>
+<p>🤔 <strong>Domanda popup</strong>: Perché l’equazione tra <span class="math inline">\(\theta\)</span> (posizione) e la tensione di controllo è un sistema del secondo ordine?</p>
+<p><strong>Risposta</strong>: L’equazione per <span class="math inline">\(\theta\)</span> incorpora un ulteriore fattore ‘s’ dovuto alla relazione integrale tra velocità e posizione.</p>
+<p>Il modello motorio compreso tra <span class="math inline">\(e_c\)</span> e <span class="math inline">\(\theta\)</span> è dato da:</p>
+<p><span class="math display">\[
+\frac{\theta}{e_c} = \frac{K_m}{s\big(\tau_m s + 1\big)}
+\]</span></p>
+<p>E questo è lo stesso del motore DC controllato da armatura (che è un modello di secondo ordine).</p>
+</section>
+<section id="comprendere-la-tensione-di-fase-di-controllo" class="level3">
+<h3 class="anchored" data-anchor-id="comprendere-la-tensione-di-fase-di-controllo">Comprendere la tensione di fase di controllo</h3>
+<ul>
+<li><span class="math inline">\(e_c\)</span> o la tensione di fase di controllo è tipicamente un segnale a bassa frequenza.</li>
+</ul>
+<img src="../pics/11_AC_hardware_and_case_studies_motor_more_notes.png" alt="11_AC_hardware_and_case_studies_motor_more_notes" style="width:750px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<ul>
+<li>Considerare la situazione in cui la tensione di fase di controllo potrebbe essere direttamente un segnale modulato ad alta frequenza.</li>
+</ul>
+<p>In questo caso l’input è <span class="math inline">\(e_m\)</span> e l’output è <span class="math inline">\(\theta\)</span>. Vediamo qual è la funzione di trasferimento tra di loro.</p>
+</section>
+<section id="barra-laterale-comprensione-dellingresso-del-motore-ca-segnale-modulato-dalla-portante" class="level3">
+<h3 class="anchored" data-anchor-id="barra-laterale-comprensione-dellingresso-del-motore-ca-segnale-modulato-dalla-portante">Barra laterale: comprensione dell’ingresso del motore CA: segnale modulato dalla portante</h3>
+<p>Per comprendere l’input al motore consideriamo un sistema di feedback:</p>
+<img src="../pics/11_AC_hardware_and_case_studies_motor_understanding_input.png" alt="11_AC_hardware_and_case_studies_motor_understanding_input" style="width:750px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<ul>
+<li><p>L’ingresso al motore è la tensione di fase di controllo <span class="math inline">\(e_c\)</span>. Ciò tuttavia dipende dal dispositivo (ad esempio un amplificatore) tra la giunzione sommatrice e il motore.</p></li>
+<li><p>La tensione di fase di controllo <span class="math inline">\(e_c\)</span> dipende dal ‘Dispositivo’. Questo dispositivo potrebbe produrre un segnale a bassa frequenza esattamente come abbiamo discusso finora.</p></li>
+<li><p>Supponiamo invece che questo dispositivo produca un Segnale Modulato a Portante e questo sia il segnale utilizzato come tensione di fase di controllo <span class="math inline">\(e_c\)</span></p></li>
+</ul>
+<p>Se il segnale in ingresso è quello riportato di seguito (segnale modulato in ampiezza):</p>
+<ul>
+<li>L’effettiva informazione di controllo è incorporata nell’inviluppo del segnale modulato.</li>
+<li>La frequenza portante (come 50 Hz, 400 Hz, 1000 Hz) è principalmente un aspetto operativo e dipende dalla progettazione del motore. È la frequenza operativa del motore. Dipende da cosa ci ha fornito il produttore.</li>
+<li>La frequenza operativa (la frequenza portante) può essere selezionata ad esempio in base alla frequenza del rumore. Se sappiamo che il motore funzionerà in un ambiente in cui sono presenti disturbi a bassa frequenza, dovrei scegliere una frequenza portante alta. In ambienti come i sistemi aeronautici, c’è abbondante rumore a bassa frequenza. L’uso di un motore ad alta frequenza come 1000 Hz aiuta a ridurre l’impatto di questo rumore. Per le applicazioni a terra in genere utilizziamo una frequenza più bassa. Dipende dall’applicazione.</li>
+</ul>
+<p>In questo caso il modello matematico del sistema può essere assunto come il rapporto tra la velocità (<span class="math inline">\(\omega\)</span>) o la posizione (<span class="math inline">\(\theta\)</span>) - uscita - e l’inviluppo del segnale modulato della portante - ingresso -.</p>
+<p>In sintesi:</p>
+<ul>
+<li>se il segnale di ingresso è direttamente un segnale a bassa frequenza e viene inviato al motore CA tramite un modulatore, quel segnale a bassa frequenza verrà preso come ingresso per il motore</li>
+<li>se il segnale di ingresso al motore è un segnale modulato con portante, allora il nostro ingresso dal punto di vista del controllo è l’inviluppo del segnale modulato. Questo è ciò che trasporta l’informazione, ad esempio rappresenta la differenza tra la posizione comandata e la posizione effettiva.</li>
+</ul>
+<section id="collegamento-al-modello-matematico" class="level4">
+<h4 class="anchored" data-anchor-id="collegamento-al-modello-matematico">Collegamento al modello matematico</h4>
+<p>Per ribadire, il modello matematico che utilizziamo, <span class="math inline">\(\frac{\omega}{e_c} = \frac{K_m}{\tau_m s+ 1}\)</span>, si concentra sulla relazione tra la velocità del motore (<span class="math inline">\(\omega\)</span>) e l’informazione- che trasporta il segnale <span class="math inline">\(e_c\)</span>. La frequenza del segnale portante non è di primaria importanza per le nostre applicazioni di controllo.</p>
+<div id="a82be5a2" class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Time values</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">1000</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the error signal (decreasing oscillating signal starting from its maximum)</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>error_signal <span class="op">=</span> (<span class="dv">1</span> <span class="op">/</span> (<span class="dv">1</span> <span class="op">+</span> <span class="fl">0.2</span> <span class="op">*</span> t)) <span class="op">*</span> np.sin(<span class="dv">2</span> <span class="op">*</span> np.pi <span class="op">*</span> <span class="fl">.2</span> <span class="op">*</span> t <span class="op">+</span> np.pi<span class="op">/</span><span class="dv">2</span>)  <span class="co"># Added phase shift of pi/2</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the carrier signal</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>omega_c <span class="op">=</span> <span class="dv">2</span> <span class="op">*</span> np.pi <span class="op">*</span> <span class="dv">5</span>  <span class="co"># carrier frequency (for example, 10Hz)</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>carrier_signal <span class="op">=</span> np.cos(omega_c <span class="op">*</span> t)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Modulate the carrier using the error signal</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>modulated_signal <span class="op">=</span> error_signal <span class="op">*</span> carrier_signal</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">3</span>))</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the modulated signal</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>plt.plot(t, modulated_signal, label<span class="op">=</span><span class="st">'Modulated Signal'</span>, color<span class="op">=</span><span class="st">'red'</span>)</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="vs">r'Amplitude Modulated Signal $e_m$'</span>)</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Time'</span>)</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Amplitude'</span>)</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Draw x=0 and y=0 axes</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>plt.axvline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'black'</span>, linewidth<span class="op">=</span><span class="dv">2</span>, linestyle<span class="op">=</span><span class="st">'-'</span>)</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>plt.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'black'</span>, linewidth<span class="op">=</span><span class="dv">2</span>, linestyle<span class="op">=</span><span class="st">'-'</span>)</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the positive envelope (absolute value of the error signal)</span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>plt.plot(t, np.<span class="bu">abs</span>(error_signal), <span class="st">'--'</span>, label<span class="op">=</span><span class="st">'Positive Envelope'</span>, color<span class="op">=</span><span class="st">'blue'</span>, linewidth<span class="op">=</span><span class="fl">1.5</span>)</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the negative envelope (negative of the absolute value of the error signal)</span></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>plt.plot(t, <span class="op">-</span>np.<span class="bu">abs</span>(error_signal), <span class="st">'--'</span>, label<span class="op">=</span><span class="st">'Negative Envelope'</span>, color<span class="op">=</span><span class="st">'green'</span>, linewidth<span class="op">=</span><span class="fl">1.5</span>)</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="11_AC_hardware_and_case_studies_it_files/figure-html/cell-3-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Segnale modulato della portante (CMS) - ulteriori commenti</strong></p>
+<p>Il concetto di segnale modulato con portante (CMS) emerge spesso nel contesto dei sistemi di comunicazione e controllo, in particolare quando dobbiamo trasmettere o utilizzare un segnale che, di per sé, non è adatto alla trasmissione diretta o all’applicazione a causa di alcune limitazioni.</p>
+<p><strong>Segnale modulato della portante (CMS)</strong>: in sostanza, la modulazione comporta la modifica di alcuni aspetti di un’onda portante a frequenza più alta in proporzione al segnale del messaggio a frequenza più bassa che si desidera inviare. L’onda portante, da sola, non trasporta alcuna informazione utile. Sono le modifiche apportate ad esso (modulazione) dal segnale del messaggio che trasmette l’informazione desiderata.</p>
+<p><strong>Perché modulare?</strong>: Consideriamo un’analogia. Immagina di voler mandare una barchetta di carta attraverso un grande stagno. Se lo metti semplicemente nell’acqua, potrebbe non andare lontano. Ma se lo posizioni sopra una barca a motore più grande (il trasportatore), può viaggiare efficacemente attraverso lo stagno. In questa analogia, la barchetta di carta è come il segnale a bassa frequenza e la barca più grande è il segnale portante.</p>
+<p><strong>Segnale a bassa frequenza rispetto a CMS</strong>: in molte applicazioni pratiche, i segnali a bassa frequenza sono difficili da trasmettere, applicare o rilevare per diversi motivi: - Potrebbero non indurre efficacemente una risposta in alcuni sistemi. - Potrebbero essere più suscettibili alle interferenze o al rumore. Modulando un segnale portante con il segnale a bassa frequenza, possiamo superare queste limitazioni.</p>
+<p><strong>Relazione con i motori</strong>: se parli dell’utilizzo del CMS nel contesto del controllo motorio, il concetto può essere visto come simile alla modulazione di larghezza di impulso (PWM). Con PWM, una portante ad alta frequenza (un’onda quadra) viene modulata in modo tale che il suo ciclo di lavoro (la proporzione del tempo in cui è “acceso” rispetto a “spento”) rappresenta il segnale di controllo desiderato, spesso per controllare la velocità o la posizione del motore .</p>
+<p>Per i motori, ciò presenta vantaggi: - Permette un controllo più efficiente e rapido. - La natura ad alta frequenza della portante garantisce un trasferimento efficiente di energia e può ridurre l’usura dei componenti del motore. - La potenza effettiva applicata al motore può essere controllata con precisione semplicemente variando il ciclo di lavoro.</p>
+</section>
+</section>
+</section>
+<section id="rilevatore-di-errori-ca-e-trasmettitori-trasformatori-sincroni-per-sistemi-di-controllo-della-posizione" class="level2">
+<h2 class="anchored" data-anchor-id="rilevatore-di-errori-ca-e-trasmettitori-trasformatori-sincroni-per-sistemi-di-controllo-della-posizione">Rilevatore di errori CA e trasmettitori-trasformatori sincroni per sistemi di controllo della posizione</h2>
+<p>Un componente chiave necessario per comprendere ed eseguire i sistemi di controllo della posizione è il rilevatore di errori CA. Nel discorso presentato, il rilevatore di errore CA viene spiegato attraverso l’introduzione di due dispositivi: il trasmettitore sincronizzato e il trasformatore di controllo sincronizzato.</p>
+<section id="trasmettitore-sincronizzato" class="level3">
+<h3 class="anchored" data-anchor-id="trasmettitore-sincronizzato">Trasmettitore sincronizzato</h3>
+<p>Il trasmettitore è un dispositivo che trasmette un segnale elettrico corrispondente all’angolo di rotazione del suo albero.</p>
+<p>Dall’esterno, un trasmettitore (o ricevitore) sincronizzato assomiglia molto a un normale piccolo motore</p>
+<img src="../pics/11_AC_hardware_and_case_studies_synchro_transmitter_CHAPTER-10-PAGE-215-FIGURE-10B2.jpg" alt="11_AC_hardware_and_case_studies_synchro_transmitter_CHAPTER-10-PAGE-215-FIGURE-10B2.jpg" style="width:750px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<p><em>Figura da <a href="https://eugeneleeslover.com/USNAVY/CHAPTER-10-B.html">APPARECCHIATURA DI CONTROLLO AUTOMATICO USNavy</a></em></p>
+<ul>
+<li><p>Un trasmettitore sincronizzato è un trasmettitore CA. È costruito con un rotore a forma di manubrio, attraverso il quale viene fornita una tensione CA tramite anelli collettori. Lo statore ha tre avvolgimenti, mostrati schematicamente come S1, S2 e S3.</p></li>
+<li><p>I tre avvolgimenti, con distribuzione spaziale di 120 gradi, permettono di codificare la posizione del rotore in modo rappresentabile attraverso tre diverse tensioni. Non stai cambiando la tensione CA, cambi la posizione del rotore. Quando si modifica la posizione del rotore, le tre tensioni sui tre terminali cambiano di conseguenza.</p></li>
+<li><p>La tensione CA (una tensione fissa) fornita al rotore produce un flusso magnetico che, quando collegato agli avvolgimenti dello statore, induce una forza elettromotrice ai terminali 1, 2 e 3. Le tensioni a questi terminali trasportano l’informazione della posizione del rotore , rappresentato come theta (<span class="math inline">\(\theta\)</span>).</p></li>
+</ul>
+<img src="../pics/11_AC_hardware_and_case_studies_synchro_transmitter_diagram.png" alt="11_AC_hardware_and_case_studies_synchro_transmitter_diagram" style="width:450px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<p>Rispetto allo schema sopra, prendendo <span class="math inline">\(S_2\)</span> come asse di riferimento: - Quando <span class="math inline">\(\theta=0\)</span>, il flusso massimo (cioè la tensione massima) è su <span class="math inline">\(S_2\)</span> con valore: $ e_{S_2n} = KE_r(_c t) $, dove <span class="math inline">\(K\)</span> è una costante che regola l’ampiezza secondo necessità. - Quando <span class="math inline">\(\theta=0\)</span>, il flusso (cioè la tensione) su <span class="math inline">\(S_2\)</span> vale: <span class="math inline">\(0\)</span></p>
+<p>In generale, la relazione matematica tra la posizione del rotore (<span class="math inline">\(\theta\)</span>) e la tensione (rispetto al neutro <span class="math inline">\(n\)</span>) può essere espressa come:</p>
+<p><span class="math display">\[
+\begin{align}
+e_{S_2n} &amp;= KE_r\sin(\omega_c t) \cos(\theta)\\
+e_{S_1n} &amp;= KE_r\sin(\omega_c t) \cos(\theta -120^o)\\
+e_{S_3n} &amp;= KE_r\sin(\omega_c t) \cos(\theta -240^o)
+\end{align}
+\]</span></p>
+<p>poiché non abbiamo accesso a <em>neutral</em>, abbiamo:</p>
+<p><span class="math display">\[
+\begin{align}
+e_{S_1S_2} &amp;= \sqrt{3}KE_r\sin(\omega_c t) \sin(\theta+240^o)\\
+e_{S_2S_3} &amp;= \sqrt{3}KE_r\sin(\omega_c t) \sin(\theta+120^o)\\
+e_{S_3S_1} &amp;= \sqrt{3}KE_r\sin(\omega_c t) \sin(\theta)
+\end{align}
+\]</span></p>
+<p>Possiamo calcolare l’espressione precedente come:</p>
+<p><span class="math display">\[
+e_{S_1S_2} = e_{S_1n} + e_{nS_2} = e_{S_1n} - e_{S_2n}
+\]</span></p>
+<p>Con riferimento alle equazioni (4-6):</p>
+<ul>
+<li><p>quando <span class="math inline">\(\theta=0\)</span>, <span class="math inline">\(e_{S_3S_1} =0\)</span> e il rotore è nella sua posizione <em>null</em> (posizione di riferimento del rotore).</p></li>
+<li><p>quando il rotore è nella posizione nulla, la tensione massima è sull’avvolgimento <span class="math inline">\(S_2\)</span> e la tensione tra <span class="math inline">\(S_3\)</span> e <span class="math inline">\(S_1\)</span>, <span class="math inline">\(e_{S_3S_1} =0\)</span></p></li>
+</ul>
+<p>Si noti inoltre che cambia solo l’ampiezza delle tensioni. Questo è un dispositivo monofase. Le tre tensioni sono in fase.</p>
+<p><strong>Un trasmettitore sincronizzato ha come ingresso la rotazione del suo albero (<span class="math inline">\(\theta\)</span>) e come uscita le tre tensioni</strong></p>
+</section>
+<section id="trasformatore-di-controllo-sincronizzato" class="level3">
+<h3 class="anchored" data-anchor-id="trasformatore-di-controllo-sincronizzato">Trasformatore di controllo sincronizzato</h3>
+<p>Nell’ambito del sistema di controllo della posizione, un altro dispositivo essenziale è il trasformatore di controllo del sincronismo. Questo dispositivo condivide molte somiglianze con il trasmettitore sincronizzato, ad eccezione della costruzione del rotore. Il rotore in questo trasformatore è più cilindrico. Questa costruzione garantisce un’impedenza costante vista da un dispositivo di condizionamento del segnale allegato, garantendo che questa impedenza rimanga inalterata dalla posizione del rotore.</p>
+<p>Se il rotore non è cilindrico, l’impedenza vista dal dispositivo di condizionamento del segnale è funzione della posizione del rotore.</p>
+<img src="../pics/11_AC_hardware_and_case_studies_synchro_transmitter_controller_diagram.png" alt="11_AC_hardware_and_case_studies_synchro_transmitter_controller_diagram" style="width:750px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<p><strong>Si noti che nulla vieta di utilizzare un rotore cilindrico anche nel trasmettitore Synchro sopra descritto. Tuttavia in quel caso non era un requisito e l’utilizzo di un rotore con bilanciere probabilmente è meno costoso.</strong></p>
+<p>Il dispositivo di condizionamento del segnale elabora l’uscita dal trasformatore di controllo sincronizzato e aziona un motore. Questo motore controlla la posizione del rotore nel trasformatore di controllo sincronizzato. I due avvolgimenti dello statore del trasmettitore sincronizzato e del trasformatore di controllo sincronizzato sono interconnessi, con la posizione del rotore di uno che rappresenta il riferimento e l’altro la posizione controllata.</p>
+<p>Nel trasformatore di controllo, l’uscita del dispositivo di condizionamento del segnale va a un motore che controlla la posizione del rotore cilindrico.</p>
+<p>L’ingresso per l’intero sistema, composto sia da un trasmettitore che da un trasformatore, è la differenza dei movimenti dei due alberi <span class="math inline">\(\theta_R\)</span> e <span class="math inline">\(\theta_C\)</span>, e l’uscita è il segnale all’ingresso del condizionatore , che è proporzionale alla differenza delle due posizioni dell’albero.</p>
+<section id="richiamo-della-coppia-di-potenziometri" class="level4">
+<h4 class="anchored" data-anchor-id="richiamo-della-coppia-di-potenziometri">Richiamo della coppia di potenziometri</h4>
+<p>Potresti ricordare la nostra discussione su una coppia di potenziometri. Illustrare:</p>
+<img src="../pics/11_AC_hardware_and_case_studies_potentiometers.png" alt="11_AC_hardware_and_case_studies_potentiometers" style="width:550px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<p>Dal nostro studio, il segnale <span class="math inline">\(e\)</span> può essere rappresentato come:</p>
+<p><span class="math display">\[
+e = K_p\big(\theta_R - \theta_C\big)
+\]</span></p>
+<p>qui <span class="math inline">\(K_p\)</span> è una costante potenziometrica e l’espressione enfatizza la differenza tra le due posizioni dell’albero.</p>
+</section>
+</section>
+<section id="meccanica-della-coppia-sincronizzata" class="level3">
+<h3 class="anchored" data-anchor-id="meccanica-della-coppia-sincronizzata">Meccanica della coppia sincronizzata</h3>
+<p>La coppia sincronizzata funziona in modo simile, ma gestisce specificamente la corrente alternata e si concentra sui segnali ad alta frequenza.</p>
+<p>Continuiamo a fare riferimento alla nostra coppia Synchro:</p>
+<img src="../pics/11_AC_hardware_and_case_studies_synchro_transmitter_controller_diagram.png" alt="11_AC_hardware_and_case_studies_synchro_transmitter_controller_diagram" style="width:750px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<ul>
+<li><span class="math inline">\(\theta_R\)</span> indica la posizione di riferimento.</li>
+<li><span class="math inline">\(\theta_C\)</span> simboleggia la posizione controllata.</li>
+</ul>
+<p>Il nostro obiettivo finale è sfruttare questo dispositivo come rilevatore di errori, ottenendo un segnale che rappresenti la differenza (o errore) tra <span class="math inline">\(\theta_R\)</span> e <span class="math inline">\(\theta_C\)</span>.</p>
+<p>Se disponiamo di questo, abbiamo in effetti tutto ciò di cui abbiamo bisogno per completare il nostro ciclo di feedback del controllo della posizione, dove <span class="math inline">\(\theta_R\)</span> è l’input e <span class="math inline">\(\theta_C\)</span> è l’output che vogliamo controllare.</p>
+</section>
+<section id="trasmettitore-sincronizzato-funzionante" class="level3">
+<h3 class="anchored" data-anchor-id="trasmettitore-sincronizzato-funzionante">Trasmettitore sincronizzato funzionante</h3>
+<p>Considerando il trasmettitore sincronizzato, immagina il seguente schema di flusso:</p>
+<img src="../pics/11_AC_hardware_and_case_studies_synchro_error_diagram.png?2" alt="11_AC_hardware_and_case_studies_synchro_error_diagram" style="width:750px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<p>Il trasmettitore sincronizzato invia uno schema di flusso specifico in base alla sua posizione. Il trasformatore di controllo sincronizzato riceve uno schema di flusso simile. L’angolo tra il trasmettitore sincronizzato e il trasformatore di controllo sincronizzato è rappresentato dagli angoli θ (per il trasmettitore) e α (per il trasformatore di controllo).</p>
+<p><em>Dato che la forza elettromagnetica indotta a causa di questo modello di flusso è diretta al trasformatore di controllo del sincronismo, possiamo concludere che il modello di flusso in quest’ultimo sarà identico.</em></p>
+<p>Con una determinata posizione del rotore del trasformatore di controllo del sincronismo, la tensione indotta nel suo rotore può essere rappresentata come <span class="math inline">\(e\)</span>.</p>
+<p><strong>🤔 Domanda pop-up</strong>: Qual è la tensione indotta nel rotore del trasformatore di controllo quando il trasmettitore sincronizzato è in posizione nulla?</p>
+<p><strong>Risposta</strong>: La tensione indotta è zero. Quando il trasmettitore sincronizzato è nella sua posizione nulla o zero, il modello di flusso si allinea in modo tale che non venga indotta alcuna tensione nell’avvolgimento del rotore del trasformatore di controllo sincronizzato.</p>
+</section>
+<section id="induzione-di-tensione-al-cambio-di-posizione" class="level3">
+<h3 class="anchored" data-anchor-id="induzione-di-tensione-al-cambio-di-posizione">Induzione di tensione al cambio di posizione</h3>
+<p>Se il trasmettitore sincronizzato ruota di <span class="math inline">\(\theta\)</span> e il rotore del trasmettitore di controllo ruota di <span class="math inline">\(\alpha\)</span>, l’angolo netto tra il trasmettitore e l’asse del trasformatore di controllo è <span class="math inline">\(90-\theta-\alpha\)</span>.</p>
+<p>In questo caso la tensione indotta <span class="math inline">\(e_m\)</span> è data da:</p>
+<p><span class="math display">\[
+e_m = K^{'}E_R\cos(90-\theta-\alpha)\sin(\omega_c t)
+\]</span></p>
+<p>Qui, quando la differenza angolare tra <span class="math inline">\(\theta\)</span> e <span class="math inline">\(\alpha\)</span> è di 90 gradi, chiamiamo lo stato operativo della coppia sincronizzata come “posizione zero elettrico”. In questa posizione la tensione indotta nell’avvolgimento del rotore sarà zero.</p>
+<p>E questo è ciò di cui abbiamo parlato anche prima (vedi equazioni 1-6).</p>
+<p>In altre parole:</p>
+<p>Se il rotore del trasmettitore sincronizzato ruota di un angolo <span class="math inline">\(\theta\)</span> e il rotore del trasformatore di controllo sincronizzato ruota di un angolo <span class="math inline">\(\alpha\)</span>, l’angolo netto tra gli assi del trasmettitore e il trasformatore di controllo è dato da $90−+$. La tensione <span class="math inline">\(e_m\)</span> indotta nel trasformatore di controllo in queste condizioni è:</p>
+<p><span class="math display">\[
+e_m = K^{'}E_R\cos(90-\theta-\alpha)\sin(\omega_c t)
+\]</span></p>
+<p>Dove: - <span class="math inline">\(K^{'}\)</span> è una costante. - <span class="math inline">\(E_R\)</span> è la tensione relativa al trasmettitore. - <span class="math inline">\(\omega_c\)</span> è la frequenza operativa.</p>
+<p><strong>Semplificazione</strong>: l’espressione precedente può essere semplificata in:</p>
+<p><span class="math display">\[
+e_m = K^{'}E_R\sin(\theta-\alpha)\sin(\omega_c t)
+\]</span></p>
+<p>Da questa rappresentazione risulta evidente che la tensione indotta <span class="math inline">\(e_m\)</span> è funzione della differenza degli angoli <span class="math inline">\(\theta\)</span> e <span class="math inline">\(\alpha\)</span>.</p>
+</section>
+<section id="per-sistemi-di-controllo-del-feedback" class="level3">
+<h3 class="anchored" data-anchor-id="per-sistemi-di-controllo-del-feedback">Per sistemi di controllo del feedback</h3>
+<p>Nel contesto di un sistema di controllo feedback, la differenza tra gli angoli <span class="math inline">\(\theta\)</span> e <span class="math inline">\(\alpha\)</span> rappresenta l’errore <span class="math inline">\(\phi\)</span>.</p>
+<p>Non appena <span class="math inline">\(\theta - \alpha = \phi\)</span> è diverso da zero, un buon sistema di controllo proverà a riportarlo a zero. Questo perché un buon sistema di controllo cercherà di minimizzare questo errore.</p>
+<p>Nel contesto di un sistema di controllo feedback, la differenza tra gli angoli <span class="math inline">\(\theta\)</span> e <span class="math inline">\(\alpha\)</span> sarà piccola (designata come <span class="math inline">\(\phi\)</span>). Questo perché un buon sistema di controllo cercherà di minimizzare questo errore.</p>
+<p>Quando questa differenza è piccola, <span class="math inline">\(\sin(\theta-\alpha) \approx \phi\)</span> e l’espressione per <span class="math inline">\(e_m\)</span> possono essere approssimati come:</p>
+<p><span class="math display">\[
+e_m = K^{'}E_R\phi(t)\sin(\omega_c t)
+\]</span></p>
+<p><strong>Ciò semplifica la complessa relazione sinusoidale non lineare trasformandola in lineare, soprattutto se si considera il dispositivo come un rilevatore di errori in un meccanismo di feedback.</strong></p>
+<p>Nota che questa è un’approssimazione che vale solo se <span class="math inline">\(\phi\)</span> è piccolo. In un sistema di controllo che cerca attivamente di ridurre <span class="math inline">\(\phi\)</span> questo è un presupposto ragionevole. Quando la coppia sincrona non fa parte di un sistema di controllo feedback e <span class="math inline">\(\phi\)</span> può assumere qualsiasi valore, questa ipotesi non è più valida.</p>
+</section>
+<section id="derivazione-della-funzione-di-trasferimento" class="level3">
+<h3 class="anchored" data-anchor-id="derivazione-della-funzione-di-trasferimento">Derivazione della funzione di trasferimento</h3>
+<p>Ora rivolgiamo la nostra attenzione alla configurazione input-output del dispositivo.</p>
+<p>Dato il modello:</p>
+<p><span class="math display">\[
+e_m = K^{'}E_R\phi(t)\sin(\omega_c t)
+\]</span></p>
+<p>L’input per il dispositivo è <span class="math inline">\(\phi(t)\)</span>, che rappresenta l’errore tra le posizioni dell’albero di riferimento e l’albero di feedback o controllato.</p>
+<p>L’uscita è <span class="math inline">\(e_m\)</span>, disponibile sui terminali del rotore del trasformatore di controllo.</p>
+<p>Tuttavia, derivare una funzione di trasferimento per questo sistema è più complicato. La relazione tra <span class="math inline">\(e_m\)</span> e <span class="math inline">\(\phi\)</span> include un termine <span class="math inline">\(\sin(\omega_c t)\)</span>, rendendo complessa la rappresentazione matematica (notare che si tratta di un’operazione di modulazione).</p>
+<p>Come abbiamo discusso in precedenza, qui <span class="math inline">\(\omega_c\)</span> indica la frequenza operativa del dispositivo, che potrebbe essere valori come 50 Hz, 400 Hz o 1000 Hz. Poiché si tratta della frequenza operativa, non fornisce intrinsecamente informazioni sull’errore del sistema.</p>
+<ul>
+<li>possiamo scrivere: <span class="math display">\[
+e_m = K^{'}E_R\phi(t)\sin(\omega_c t) = e_c(t)\sin(\omega_c t)
+\]</span></li>
+</ul>
+<p>che sarà del formato (uscita del rilevatore di errore di sincronizzazione):</p>
+<img src="../pics/11_AC_hardware_and_case_studies_synchro_pair_error_signal.png?1" alt="11_AC_hardware_and_case_studies_synchro_pair_error_signal" style="width:750px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<ul>
+<li>L’errore <span class="math inline">\(\phi(t)\)</span> è dato da <span class="math inline">\(e_c(t)\)</span>, che è l’inviluppo del segnale sopra. Il corriere non contiene alcuna informazione sull’azione di controllo. Se presente solo perché il dispositivo funziona alla frequenza <span class="math inline">\(\omega_c\)</span>.</li>
+</ul>
+<p>Questa realizzazione implica che per un modello matematico dovremmo preoccuparci principalmente dell’inviluppo <span class="math inline">\(e_c\)</span> e non dell’intero output modulato <span class="math inline">\(e_m\)</span>. Pertanto, il modello diventa più semplice, trattando <span class="math inline">\(\phi\)</span> come input e <span class="math inline">\(e_c\)</span> come output.</p>
+<p>E ora possiamo scrivere la funzione di trasferimento del Synchro Error Detector come:</p>
+<p><span class="math display">\[
+\frac{E_c(s)}{\phi} = K_s
+\]</span></p>
+<p>Questa costante <span class="math inline">\(K_s\)</span>, nota come sensibilità del rilevatore di errore di sincronizzazione, svolge un ruolo fondamentale nella comprensione del flusso di informazioni nel sistema. Questa costante non dipende dalla frequenza portante.</p>
+<p>Questa sensibilità, simile alla costante potenziometrica <span class="math inline">\(K_P\)</span> nella coppia di potenziometri, rimane costante indipendentemente dalla frequenza portante.</p>
+<p>Per ribadire, mentre la frequenza portante, <span class="math inline">\(\omega_c\)</span>, è essenziale per il funzionamento del dispositivo, la nostra attenzione analitica è più sull’inviluppo di errore <span class="math inline">\(e_c\)</span> piuttosto che sul segnale modulato <span class="math inline">\(e_m\)</span>. Questa distinzione deriva dalla natura dei sistemi di controllo: è l’errore, non la frequenza portante, a fornire informazioni preziose sulle prestazioni del sistema.</p>
+</section>
+<section id="rappresentazione-simbolica-del-rilevatore-di-errore-di-sincronizzazione" class="level3">
+<h3 class="anchored" data-anchor-id="rappresentazione-simbolica-del-rilevatore-di-errore-di-sincronizzazione">Rappresentazione simbolica del rilevatore di errore di sincronizzazione</h3>
+<img src="../pics/11_AC_hardware_and_case_studies_synchro_pair_symbol.png" alt="11_AC_hardware_and_case_studies_synchro_pair_symbol" style="width:750px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+</section>
+</section>
+<section id="trasformatore-differenziale-variabile-lineare-lvdt" class="level2">
+<h2 class="anchored" data-anchor-id="trasformatore-differenziale-variabile-lineare-lvdt">Trasformatore differenziale variabile lineare (LVDT)</h2>
+<p>Dopo aver compreso il movimento rotatorio del rilevatore di errore di sincronizzazione, possiamo esplorare ulteriormente un dispositivo lineare che dimostra un’azione simile. Questo dispositivo, chiamato Trasformatore differenziale variabile lineare (LVDT), fornisce un segnale di uscita proporzionale al movimento lineare.</p>
+<p>IMMAGINE</p>
+<p>Il funzionamento dell’LVDT è intuitivo. Quando il nucleo è posizionato centralmente, la tensione netta è zero a causa dell’eguale collegamento delle linee di flusso ad entrambe le bobine secondarie (gli avvolgimenti secondari sono in opposizione di fase). Lo spostamento del nucleo in una direzione collega più linee di flusso a una bobina, risultando in una tensione di una polarità specifica. Il movimento opposto inverte la polarità. La <strong>polarità</strong> e l’ampiezza della tensione indicano rispettivamente la direzione e l’entità dello spostamento del nucleo.</p>
+<ul>
+<li><strong>polarità</strong>: ti dà la direzione</li>
+<li><strong>magnitudine</strong>: fornisce l’entità dello spostamento</li>
+</ul>
+<p>Proprio come il dispositivo sincronizzato fornisce un output relativo al movimento angolare, l’LVDT fornisce un output basato sul movimento lineare. La relazione può essere rappresentata come:</p>
+<p><span class="math display">\[
+e_m = KE_ry(t)\sin(\omega_c t)
+\]</span></p>
+<ul>
+<li><span class="math inline">\(e_m\)</span> è l’uscita che è un segnale modulato.</li>
+</ul>
+<p>Analogamente alla discussione precedente, ci concentriamo sulla busta <span class="math inline">\(e\)</span>, che è</p>
+<p><span class="math display">\[e=KE_ry(t)=K_sy(t)\]</span></p>
+<p>che è la parte che trasporta le informazioni, per costruire il nostro modello matematico (<span class="math inline">\(K_s\)</span> è la sensibilità del dispositivo).</p>
+</section>
+<section id="tachimetrica" class="level2">
+<h2 class="anchored" data-anchor-id="tachimetrica">Tachimetrica</h2>
+<p>Prendiamoci un momento per osservare da vicino la dinamo tachimetrica. La dinamo tachimetrica è un dispositivo che traduce la velocità di rotazione in un segnale elettrico, comunemente utilizzato per il feedback nei sistemi di controllo del motore.</p>
+<img src="../pics/11_AC_hardware_and_case_studies_tachogenerator.png" alt="11_AC_hardware_and_case_studies_tachogenerator" style="width:450px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<p>L’ingresso per la dinamo tachimetrica è indicato come <span class="math inline">\(\dot{\theta}\)</span>.</p>
+<p>La dinamo tachimetrica ha un avvolgimento di riferimento e accetta come ingresso <span class="math inline">\(E_r\sin(\omega_c t)\)</span>.</p>
+<p>L’uscita è un segnale modulato, rappresentato come <span class="math inline">\(e_m\)</span> e dipende dalla frequenza <span class="math inline">\(\omega_c\)</span> (la portante) e <span class="math inline">\(\dot{\theta}\)</span> (l’ingresso meccanico al rotore). L’espressione completa per <span class="math inline">\(e_m\)</span> è:</p>
+<p><span class="math display">\[
+e_m = KE_r\omega(t)\sin(\omega_c t)
+\]</span></p>
+<p>Questo segnale modulato contrasta con l’uscita di una dinamo tachimetrica CC, che era un segnale diretto a bassa frequenza proporzionale alla velocità. L’uscita della dinamo tachimetrica CC era direttamente proporzionale alla velocità, l’uscita era un segnale CC. Tuttavia, la modellazione matematica fornisce una rappresentazione simile per entrambi.</p>
+<p>La dinamo tachimetrica DC produce un segnale diretto a bassa frequenza proporzionale alla velocità, mentre la dinamo tachimetrica AC produce un segnale modulato.</p>
+<p>Il segnale di errore, <span class="math inline">\(e\)</span>, è rappresentato come:</p>
+<p><span class="math display">\[
+e= K_t \omega(t)
+\]</span></p>
+<p>(simile al motore DC).</p>
+<p>Qui è essenziale capire che l’informazione del segnale viene trasportata dall’inviluppo, non dalla portante. Pertanto, si presume che la demodulazione estragga questo inviluppo.</p>
+</section>
+<section id="revisione-del-controllo-motore" class="level1">
+<h1>Revisione del controllo motore</h1>
+<p>Siamo ora pronti per rivisitare il controllo del motore CA.</p>
+<p>Il motore bifase ha un avvolgimento di riferimento e un condensatore di sfasamento. Questo condensatore aiuta a ottenere lo sfasamento desiderato per il controllo.</p>
+<img src="../pics/11_AC_hardware_and_case_studies_ac_motor.png" alt="11_AC_hardware_and_case_studies_ac_motor" style="width:450px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<p>L’ingresso del motore arriva direttamente o tramite un modulatore ed è essenziale riconoscere che non è necessario alcun modulatore se un rilevatore di errore di sincronismo alimenta la tensione di fase di controllo. Questo perché il rilevatore di errore di sincronizzazione fornisce direttamente un segnale modulato.</p>
+<p>Allo stesso tempo, anche se abbiamo un ingresso modulato <span class="math inline">\(e_m\)</span> il modello matematico considererà solo l’inviluppo di quel segnale perché quella è la parte di informazione.</p>
+<p>🤔 <strong>Domanda popup</strong>: Perché potrebbe non essere necessario un modulatore con un rilevatore di errore di sincronizzazione?</p>
+<p><strong>Risposta</strong>: Perché il rilevatore di errore di sincronizzazione emette direttamente un segnale modulato adatto al motore.</p>
+<section id="modellazione-matematica-del-motore" class="level3">
+<h3 class="anchored" data-anchor-id="modellazione-matematica-del-motore">Modellazione matematica del motore</h3>
+<p>L’equazione coppia-velocità per il motore è rappresentata come:</p>
+<p><span class="math display">\[
+T_M = K_1e_c - K_2\dot{\theta} = J\ddot{\theta} + B \dot{\theta} + T_W
+\]</span></p>
+<p>Dove - <span class="math inline">\(T_M\)</span> è la coppia del motore - <span class="math inline">\(e_c\)</span> è l’inviluppo dell’ingresso alla tensione di fase di controllo - <span class="math inline">\(K_1\)</span> e <span class="math inline">\(K_2\)</span> sono costanti</p>
+<p>Possiamo rappresentare il modello precedente come il seguente diagramma a blocchi in cui esplicitiamo la coppia <span class="math inline">\(T_M\)</span> generata dal motore.</p>
+<img src="../pics/11_AC_hardware_and_case_studies_ac_motor_1.png" alt="11_AC_hardware_and_case_studies_ac_motor_1" style="width:650px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<p>Si noti che il motore ha un circuito di feedback intrinseco, identico alla situazione che abbiamo avuto con i motori controllati dall’armatura.</p>
+<p>Se vogliamo avere <span class="math inline">\(\theta\)</span>:</p>
+<img src="../pics/11_AC_hardware_and_case_studies_ac_motor_2.png" alt="11_AC_hardware_and_case_studies_ac_motor_2" style="width:650px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<p>Questo è il diagramma che viene solitamente utilizzato quando un motore CA viene utilizzato nei controlli di feedback.</p>
+</section>
+</section>
+<section id="applicazione-nel-mondo-reale-controllo-di-un-teleobiettivo" class="level1">
+<h1>Applicazione nel mondo reale: controllo di un teleobiettivo</h1>
+<p>Abbiamo assemblato il nostro toolkit e acquisito una solida conoscenza dei suoi componenti. Ora è il momento di avventurarci in uno scenario pratico.</p>
+<section id="il-problema-del-controllo" class="level2">
+<h2 class="anchored" data-anchor-id="il-problema-del-controllo">Il problema del controllo</h2>
+<p>Consideriamo una situazione in cui abbiamo un teleobiettivo pesante. L’obiettivo è controllare con precisione la posizione di questa telecamera. Per raggiungere questo obiettivo, utilizzeremo un motore CA. Per garantire un movimento fluido e preciso, prenderemo in considerazione anche altri dispositivi e meccanismi per aiutare il motore.</p>
+<img src="../pics/11_AC_hardware_and_case_studies_telephoto_camera.png" alt="11_AC_hardware_and_case_studies_telephoto_camera" style="width:750px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<p>Il sistema ha i seguenti componenti:</p>
+<ul>
+<li>Un treno di ingranaggi per l’ingrandimento della coppia e la riduzione della velocità. Gli ingranaggi primario e secondario hanno rispettivamente i denti <span class="math inline">\(N_1\)</span> e <span class="math inline">\(N_2\)</span>.</li>
+<li>Un disturbo, <span class="math inline">\(T_W\)</span>, che agisce sul sistema.</li>
+<li>Un motore CA che genera una coppia etichettata come <span class="math inline">\(T_M\)</span> e ha una posizione di <span class="math inline">\(\theta_M\)</span>. Il motore ha due avvolgimenti, un avvolgimento di riferimento con il condensatore di sfasamento e un avvolgimento di fase di controllo che ha il segnale modulato <span class="math inline">\(e_m\)</span>. Il segnale modulato dovrebbe essere proporzionale all’errore tra la posizione comandata e la posizione effettiva <span class="math inline">\(\theta_L\)</span>.</li>
+<li>Un cannocchiale che fornisce un segnale di comando <span class="math inline">\(\theta_R\)</span>.</li>
+<li>L’errore <span class="math inline">\(\theta_R - \theta_L\)</span> dovrebbe riflettersi attraverso la tensione <span class="math inline">\(e_m\)</span>. Ciò si ottiene utilizzando una coppia sincro, comprendente un trasmettitore sincro e un trasformatore di controllo sincro. Il controllo di sincronizzazione è collegato meccanicamente alla fotocamera per leggere la posizione della fotocamera <span class="math inline">\(\theta_L\)</span>. Il trasmettitore sincronizzato è collegato a un cannocchiale che fornisce l’ingresso di riferimento <span class="math inline">\(\theta_R\)</span>.</li>
+</ul>
+<p>🤔 <strong>Domanda popup</strong>: Come diamo il comando? <strong>Risposta</strong>: Il telescopio fornisce il segnale di riferimento. Un rilevatore di errore di sincronizzazione che misura la differenza tra la posizione comandata e quella effettiva.</p>
+<p>🤔 <strong>Domanda popup</strong>: Perché è necessario un treno di ingranaggi nel sistema? <strong>Risposta</strong>: è necessario un treno di ingranaggi per aumentare la coppia perché il motore da solo non può produrre la coppia sostanziale necessaria per ruotare il pesante teleobiettivo.</p>
+<section id="comprendere-la-coppia-sincronizzata" class="level3">
+<h3 class="anchored" data-anchor-id="comprendere-la-coppia-sincronizzata">Comprendere la coppia sincronizzata</h3>
+<p>La coppia sincronizzata, composta da un trasmettitore e un trasformatore di controllo, è fondamentale. Il trasmettitore viene influenzato da <span class="math inline">\(\theta_R\)</span> e il rotore del trasformatore di controllo da <span class="math inline">\(\theta_L\)</span>. Ciò crea un segnale modulato, che è essenzialmente un mix di una frequenza portante costante e un’ampiezza che dipende dall’errore tra <span class="math inline">\(\theta_R\)</span> e <span class="math inline">\(\theta_L\)</span>.</p>
+</section>
+<section id="ruolo-dellamplificatore" class="level3">
+<h3 class="anchored" data-anchor-id="ruolo-dellamplificatore">Ruolo dell’amplificatore</h3>
+<p>Poiché il segnale modulato potrebbe non avere potenza sufficiente per azionare il motore CA, viene introdotto un amplificatore. Migliora la forza del segnale, garantendo che il motore funzioni in modo efficace.</p>
+</section>
+<section id="segnali" class="level3">
+<h3 class="anchored" data-anchor-id="segnali">Segnali</h3>
+<p>Come detto, i segnali in questo caso non necessitano di modulazione o demodulazione. Questo perché sono intrinsecamente compatibili con i dispositivi con cui interagiscono. L’equazione <span class="math inline">\(\theta_R - \theta_L\)</span> coinvolge segnali CC e l’uscita del controllo sincronizzato è un segnale modulato che può essere utilizzato per azionare il motore.</p>
+<p>Il dispositivo sincronizzato funge infatti da modulatore. Accetta un segnale DC (<span class="math inline">\(\theta_R - \theta_C\)</span>) ed emette un segnale modulato con frequenza <span class="math inline">\(\omega_c\)</span>. Questo segnale viene quindi amplificato da un amplificatore CA per produrre un altro segnale modulato.</p>
+<p>Si noti che la frequenza di riferimento per questi due dispositivi (sincro e motore) deve essere <span class="math inline">\(\omega_c\)</span> per compatibilità.</p>
+</section>
+<section id="motore-ac-come-demodulatore" class="level3">
+<h3 class="anchored" data-anchor-id="motore-ac-come-demodulatore">Motore AC come demodulatore</h3>
+<p>Il ruolo del motore CA può essere paragonato a un demodulatore poiché elabora il segnale modulato per produrre una coppia <span class="math inline">\(T_M\)</span> e una posizione (<span class="math inline">\(\theta_M\)</span>), entrambi segnali CC. Ciò implica che il dispositivo sincronizzato (modulatore) e il motore CA (demodulatore) funzionano in modo armonioso, garantendo che l’ingresso e l’uscita dell’intero sistema rimangano segnali CC.</p>
+</section>
+<section id="modello-matematico-e-diagramma-a-blocchi" class="level3">
+<h3 class="anchored" data-anchor-id="modello-matematico-e-diagramma-a-blocchi">Modello matematico e diagramma a blocchi</h3>
+<p>Sulla base delle discussioni precedenti, per ricavare un modello matematico, rimuoviamo la frequenza portante.</p>
+<p>Per fare ciò, inizieremo con uno schema a blocchi e poi lo ridurremo ad una opportuna funzione di trasferimento.</p>
+<img src="../pics/11_AC_hardware_and_case_studies_telephoto_camera_block_diagram.png" alt="11_AC_hardware_and_case_studies_telephoto_camera_block_diagram
+" style="width:750px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<p>In particolare, <span class="math inline">\(\theta R\)</span> viene confrontato con <span class="math inline">\(\theta_L\)</span> per produrre un segnale di errore. Il segnale risultante subisce varie trasformazioni che coinvolgono costanti come <span class="math inline">\(K_s\)</span>, <span class="math inline">\(K_A\)</span> e <span class="math inline">\(K_1\)</span>. E infine possiamo includere segnali di disturbo e meccanismi di feedback:</p>
+<p>Il disturbo <span class="math inline">\(T_W\)</span> agisce indirettamente sul motore attraverso un riduttore, provocando un disturbo riflesso di <span class="math inline">\(nT_W\)</span>. Allo stesso modo, parametri come <span class="math inline">\(J_L\)</span> e <span class="math inline">\(B_L\)</span> del teleobiettivo, quando riflessi sull’albero del motore, si trasformano in valori equivalenti <span class="math inline">\(J\)</span> e <span class="math inline">\(B\)</span>.</p>
+<p>L’obiettivo principale di questo sistema di controllo è che <span class="math inline">\(\theta_L\)</span> (posizione del teleobiettivo) imiti perfettamente <span class="math inline">\(\theta_R\)</span> (posizione del telescopio). È auspicabile che non vi siano transitori in questo movimento e l’errore in stato stazionario dovrebbe essere minimo o pari a zero. Questo delinea il <em>problema di progettazione del controllo</em>.</p>
+</section>
+<section id="progettazione-del-controllo" class="level3">
+<h3 class="anchored" data-anchor-id="progettazione-del-controllo">Progettazione del controllo</h3>
+<p>Si noti che questo diagramma a blocchi include un controller sotto forma di controller proporzionale. Questo è l’amplificatore puro <span class="math inline">\(K_A\)</span>. In futuro potrebbe essere sostituito con un controller più avanzato che potrebbe impiegare azioni di controllo proporzionali, integrali, derivate o anche altre azioni avanzate che terranno conto delle specifiche prestazionali desiderate.</p>
+</section>
+</section>
+<section id="utilizzo-di-un-motore-cc" class="level2">
+<h2 class="anchored" data-anchor-id="utilizzo-di-un-motore-cc">Utilizzo di un motore CC</h2>
+<p>Consideriamo un sistema di controllo del feedback in cui vogliamo guidare un carico specifico. Possiamo immaginare questo carico come un componente che deve essere azionato da un’entità esterna, ad esempio un motore.</p>
+<img src="../pics/11_AC_hardware_and_case_studies_telephoto_camera_block_diagram_DC_motor.png" alt="11_AC_hardware_and_case_studies_telephoto_camera_block_diagram_DC_motor
+" style="width:750px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<p>I parametri forniti per questo carico sono:</p>
+<ul>
+<li>Momento d’inerzia: <span class="math inline">\(J_L\)</span></li>
+<li>Coefficiente di smorzamento: <span class="math inline">\(B_L\)</span></li>
+<li>Coppia di disturbo: <span class="math inline">\(T_W\)</span></li>
+<li>Posizione: <span class="math inline">\(\theta_L\)</span></li>
+</ul>
+<p>🤔 <strong>Domanda popup</strong>: Qual è il significato di ciascuno di questi parametri nel determinare il comportamento del carico?</p>
+<p><strong>Risposta</strong>: Il momento d’inerzia (<span class="math inline">\(J_L\)</span>) ci dà un’idea della resistenza del carico alle variazioni di movimento. Il coefficiente di smorzamento (<span class="math inline">\(B_L\)</span>) è una misura della forza resistente quando il carico è in movimento. La coppia di disturbo (<span class="math inline">\(T_W\)</span>) è una forza esterna che influenza il carico. La posizione (<span class="math inline">\(\theta_L\)</span>) ci dice lo stato attuale o la posizione del carico.</p>
+<p>Ci sono stati dati due vincoli per il nostro sistema di controllo: - Dobbiamo utilizzare un <strong>motore CC</strong> e non un motore CA come attuatore. Il motivo è che i motori CC presentano caratteristiche di coppia-velocità lineari e possono gestire una coppia maggiore per una determinata dimensione rispetto a un motore CA. - Invece di un rilevatore di errore potenziometrico, utilizzeremo un <strong>rilevatore di errore sincro</strong>. Il rilevatore di errore di sincronismo è preferito per la sua migliore risoluzione, linearità, robustezza e assenza di problemi di contatto comunemente riscontrati nei rilevatori di errore potenziometrici.</p>
+<p>Dobbiamo determinare come interfacciare il segnale di uscita del trasformatore di controllo sincronizzato con l’armatura del motore CC, dopo l’amplificazione.</p>
+<ul>
+<li>Vogliamo utilizzare il motore DC come attuatore e la coppia sincronizzata come rilevatore di errori.</li>
+<li>Assumiamo inoltre che il nostro titolare del trattamento sia un titolare del trattamento PD</li>
+</ul>
+<p>Nello schema seguente, come colleghiamo insieme i componenti?</p>
+<img src="../pics/11_AC_hardware_and_case_studies_telephoto_camera_block_diagram_DC_motor_1.png" alt="11_AC_hardware_and_case_studies_telephoto_camera_block_diagram_DC_motor_1
+" style="width:750px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<section id="collegamento-della-coppia-sincrona-al-motore-cc" class="level3">
+<h3 class="anchored" data-anchor-id="collegamento-della-coppia-sincrona-al-motore-cc">Collegamento della coppia sincrona al motore CC:</h3>
+<p>Per interfacciare la coppia sincrona al motore DC:</p>
+<ol type="1">
+<li><p>Estrarre l’inviluppo dell’uscita del trasformatore di controllo del sincronismo utilizzando un demodulatore. Questo è fondamentale perché siamo interessati al segnale informativo sull’errore e non al segnale portante.</p></li>
+<li><p>Alimentare la busta estratta ad un circuito PD (Proporzionale Derivativo). Questo circuito produrrà un’uscita proporzionale sia all’errore che alla sua derivata.</p></li>
+</ol>
+<p><em>Nota: l’azione PD dovrebbe agire solo sulle informazioni relative all’errore. Dovremmo evitare di prendere la derivata del segnale portante. Vogliamo solo prendere la derivata dell’inviluppo.</em></p>
+<p>Si noti inoltre che, se non avessimo utilizzato un controller PD, avremmo potuto utilizzare direttamente un amplificatore CA e un raddrizzatore per ottenere direttamente un segnale CC. Ciò tuttavia funzionerebbe solo se non fosse richiesta un’azione derivativa. Se invece è richiesta una derivata, allora la derivata deve essere presa sul segnale informativo.</p>
+<ol start="3" type="1">
+<li>Amplificare l’uscita del circuito PD utilizzando un amplificatore con amplificazione <span class="math inline">\(K_A\)</span>.</li>
+<li>Collegare il segnale amplificato all’ingresso della tensione di armatura <span class="math inline">\(e_a\)</span> del motore CC, che guiderà quindi il carico attraverso il treno di ingranaggi.</li>
+<li>Ricollegare l’albero di uscita del motore al trasformatore di controllo sincronizzato per chiudere il circuito di feedback.</li>
+</ol>
+<img src="../pics/11_AC_hardware_and_case_studies_telephoto_camera_block_diagram_DC_motor_2.png" alt="11_AC_hardware_and_case_studies_telephoto_camera_block_diagram_DC_motor_2
+" style="width:750px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<p>🤔 <strong>Domanda popup</strong>: Perché è necessario estrarre l’inviluppo dell’uscita del trasformatore di controllo sincronizzato?</p>
+<p><strong>Risposta</strong>: La busta contiene le informazioni sull’errore, fondamentali per il feedback. Estraendo l’inviluppo, eliminiamo i componenti non necessari del segnale portante e ci concentriamo solo sul segnale informativo desiderato.</p>
+<section id="considerazioni-importanti" class="level4">
+<h4 class="anchored" data-anchor-id="considerazioni-importanti">Considerazioni importanti:</h4>
+<ul>
+<li><strong>Amplificatore invertente</strong>: quando si deriva la funzione di trasferimento per il controller PD Op-Amp, noterai l’introduzione di un segno negativo. Per risolvere questo problema, utilizzare un amplificatore invertente. Ciò garantirà che la funzione di trasferimento rimanga positiva.</li>
+<li><strong>Funzione di trasferimento del demodulatore</strong>: Idealmente, la funzione di trasferimento del demodulatore (che estrae l’inviluppo dal segnale modulato) è l’unità (l’ingresso è l’inviluppo e l’uscita è l’inviluppo).</li>
+</ul>
+</section>
+</section>
+<section id="diagramma-a-blocchi" class="level3">
+<h3 class="anchored" data-anchor-id="diagramma-a-blocchi">Diagramma a blocchi</h3>
+<img src="../pics/11_AC_hardware_and_case_studies_telephoto_camera_block_diagram_DC_motor_3.png" alt="11_AC_hardware_and_case_studies_telephoto_camera_block_diagram_DC_motor_3
+" style="width:750px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<p>Ed ecco se esplicitiamo lo schema a blocchi del motore DC:</p>
+<img src="../pics/11_AC_hardware_and_case_studies_telephoto_camera_block_diagram_DC_motor_3_1.png" alt="11_AC_hardware_and_case_studies_telephoto_camera_block_diagram_DC_motor_3_1
+" style="width:850px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+
+
+</section>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/andreamunafo\.github\.io\/principles-of-automatic-controls");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/andreamunafo/principles-of-automatic-controls/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

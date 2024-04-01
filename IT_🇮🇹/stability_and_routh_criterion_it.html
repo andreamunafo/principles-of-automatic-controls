@@ -1,0 +1,2396 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.552">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>principles-of-automatic-controls - Analisi di stabilità nei sistemi di controllo</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+<meta property="og:title" content="principles-of-automatic-controls - Analisi di stabilità nei sistemi di controllo">
+<meta property="og:description" content="Course in feedback control for the University of Pisa">
+<meta property="og:site_name" content="principles-of-automatic-controls">
+<meta name="twitter:title" content="principles-of-automatic-controls - Analisi di stabilità nei sistemi di controllo">
+<meta name="twitter:description" content="Course in feedback control for the University of Pisa">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">principles-of-automatic-controls</span>
+    </a>
+  </div>
+        <div class="quarto-navbar-tools tools-end">
+</div>
+          <div id="quarto-search" class="" title="Search"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../IT_🇮🇹/faq_it.html">IT_🇮🇹</a></li><li class="breadcrumb-item"><a href="../IT_🇮🇹/stability_and_routh_criterion_it.html">Analisi di stabilità nei sistemi di controllo</a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Feedback Control</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../faq.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Frequently Asked Questions (FAQ)</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../syllabus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Syllabus for “Principles of Automatic Control”</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../toc.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Table of Contents</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../update_and_manage_local_changes_guide.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A Guide to Updating Your Local Repository with Git in Anaconda’s Virtual Environment</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../getting_started_with_python_and_jupyter_notebook.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Getting Started with Python and Jupyter Notebooks</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principles of Automatic Control</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../basics_of_feedback_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Feedback Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../introduction_to_control_problem.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to the control problem</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../dynamic_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modeling in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../dynamic_response.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Dynamic response of control systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../06_inverse_laplace_transform.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Inverse Laplace Transform: Partial fraction decomposition</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../modeling_dynamic_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Modeling of Dynamic Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../control_system_components.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Control System Components</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../models_of_control_devices_and_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Models of Controlled Devices</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../hardware_and_case_studies.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Hardware of Control Systems and Case Studies</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ac_hardware_and_case_studies.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">AC Motion Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../a_first_complete_application.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A Feedback Control System</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../principles_of_feedback_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principles of Feedback Control</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../feedback_systems_and_their_effects.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Feedback systems and their effects</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../introduction_to_control_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../stability.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Stability Analysis in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../stability_and_routh_criterion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Stability Analysis in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../performance_of_feedback_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Performance of Feedback Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../design_of_feedback_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Design Cycle for a Standard Second-Order System</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../20_Design_of_feedback_control_continued.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Understanding the Standard Second-Order System: Recap</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../steady_state_accuracy_and_design_principles.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Steady State Accuracy and Design Principles</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../compensator_design_using_root_locus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compensator Design</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../design_with_the_root_locus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Design with the Root Locus</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../compensators_and_root_locus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compensators and the Root Locus</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../introduction_to_frequency_domain_analysis_in_control_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Frequency Domain Analysis in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../application_of_nyquist_stability_criterion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Application of Nyquist Stability Criterion in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../the_nyquist_stability_criterion_and_relative_stability.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The Nyquist Stability Criterion and Relative Stability</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../bode_plots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Bode Plot Analysis</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../feedback_system_performance_based_on_frequency_response.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Feedback System Performance Based On Frequency Response</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../compensator_design_using_frequency_response_plots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principles of Automatic Control: Lead and Lag Compensation</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">IT_TCLab_🇮🇹</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/spacecraft_thermal_control_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Il Laboratorio di Controllo della Temperatura</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/tclab_exercises_report_template_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modello di report sugli esercizi TCLab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/tclab_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Il Laboratorio di Controllo della Temperatura</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/understanding_tclab_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Comprendere TCLab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/tclab_lab_1_coding_a_relay_controller_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 1: Codifica di un controller relè</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/system_model_and_identification_tclab_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modellazione del sistema</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/step_testing_tclab_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Passo Test</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/fitting_step_test_data_to_empirical_models_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Adattamento dei dati dei test di fase ai modelli empirici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/tclab_lab_2_model_identification_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 2: Identificazione del modello</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/tclab_lab_2_fitting_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Identificazione del modello: adattamento dei modelli ai dati</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/relay_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Controllo relè</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/pid_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Controllo PID</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/lab-assignment-pid-control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compito di laboratorio: Controllo PID</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/lab-assignment-pi-control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compito di laboratorio 4: Controllo PI</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">IT_🇮🇹</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/faq_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Domande frequenti (FAQ)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/syllabus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Programma del corso “Principi del controllo automatico”</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/update_and_manage_local_changes_guide_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Aggiornare il Proprio Repository Locale Mantenendo le Modifiche Locali</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/getting_started_with_python_and_jupyter_notebook_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Guida introduttiva ai notebook Python e Jupyter</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/intro_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principi di controllo automatico</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/basics_of_feedback_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione ai sistemi di controllo del feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/introduction_to_control_problem_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione al problema del controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/dynamic_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modellazione nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/dynamic_response_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Risposta dinamica dei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/06_inverse_laplace_transform_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Trasformata di Laplace inversa: scomposizione parziale di frazioni</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/modeling_dynamic_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione alla modellazione dei sistemi dinamici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/control_system_components_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Componenti del sistema di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/models_of_control_devices_and_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modelli di dispositivi controllati</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/hardware_and_case_studies_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Hardware dei sistemi di controllo e casi di studio</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/ac_hardware_and_case_studies_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sistemi di controllo del movimento CA</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/a_first_complete_application_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Un sistema di controllo del feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/principles_of_feedback_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principi di controllo del feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/feedback_systems_and_their_effects_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sistemi di feedback e loro effetti</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/introduction_to_control_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione ai sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/stability_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analisi di stabilità nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/stability_and_routh_criterion_it.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Analisi di stabilità nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/performance_of_feedback_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prestazioni dei sistemi di feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/design_of_feedback_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Ciclo di progettazione per un sistema standard del secondo ordine</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/20_Design_of_feedback_control_continued_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Comprensione del sistema standard del secondo ordine: riepilogo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/steady_state_accuracy_and_design_principles_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Precisione dello stato stazionario e principi di progettazione</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/compensator_design_using_root_locus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Progettazione del compensatore</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/design_with_the_root_locus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Progettare con il luogo delle radici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/compensators_and_root_locus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compensatori e luogo delle radici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/introduction_to_frequency_domain_analysis_in_control_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione all’analisi nel dominio della frequenza nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/application_of_nyquist_stability_criterion_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Applicazione del criterio di stabilità di Nyquist nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/the_nyquist_stability_criterion_and_relative_stability_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Il criterio di stabilità di Nyquist e la stabilità relativa</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/bode_plots_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analisi del diagramma di Bode</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/feedback_system_performance_based_on_frequency_response_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prestazioni del sistema di feedback basate sulla risposta in frequenza</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/index_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Syllabus - Fondamenti di Automatica</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">TCLab</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/spacecraft_thermal_control_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The Temperature Control Laboratory</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/tclab_exercises_report_template.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Exercises Report Template</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The Temperature Control Lab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/understanding_tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Understanding TCLab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/tclab_lab_1_coding_a_relay_controller-solution.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 1: Coding a relay controller</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/tclab_lab_1_coding_a_relay_controller.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 1: Coding a relay controller</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/system_model_and_identification_tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">System Modeling</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/step_testing_tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Step Testing</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/fitting_step_test_data_to_empirical_models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Fitting Step Test Data to Empirical Models</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/tclab_lab_2_model_identification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 2: Model Identification</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/tclab_lab_2_model_identification_solutions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 2: Model Identification</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/tclab_lab_2_fitting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Model Identification: Fitting models to data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/relay_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Relay Control</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/pid_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">PID Control</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/lab-assignment-pid-control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab Assignment: PID Control</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/lab-assignment-pi-control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab Assignment 4: PI Control</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#determinazione-della-stabilità" id="toc-determinazione-della-stabilità" class="nav-link active" data-scroll-target="#determinazione-della-stabilità">Determinazione della stabilità</a></li>
+  <li><a href="#criterio-di-stabilità-di-routh" id="toc-criterio-di-stabilità-di-routh" class="nav-link" data-scroll-target="#criterio-di-stabilità-di-routh">Criterio di stabilità di Routh</a>
+  <ul class="collapse">
+  <li><a href="#condizioni-necessarie" id="toc-condizioni-necessarie" class="nav-link" data-scroll-target="#condizioni-necessarie">Condizioni necessarie</a></li>
+  <li><a href="#condizioni-sufficienti-costruzione-del-routh-array" id="toc-condizioni-sufficienti-costruzione-del-routh-array" class="nav-link" data-scroll-target="#condizioni-sufficienti-costruzione-del-routh-array">Condizioni sufficienti: costruzione del Routh Array</a></li>
+  <li><a href="#esempio-illustrativo" id="toc-esempio-illustrativo" class="nav-link" data-scroll-target="#esempio-illustrativo">Esempio illustrativo</a></li>
+  <li><a href="#analisi-della-stabilità-con-la-tabella-di-routh" id="toc-analisi-della-stabilità-con-la-tabella-di-routh" class="nav-link" data-scroll-target="#analisi-della-stabilità-con-la-tabella-di-routh">Analisi della stabilità con la tabella di Routh</a></li>
+  <li><a href="#esempio-illustrativo-2" id="toc-esempio-illustrativo-2" class="nav-link" data-scroll-target="#esempio-illustrativo-2">Esempio illustrativo 2</a></li>
+  </ul></li>
+  <li><a href="#criterio-di-stabilità-di-routh-gestire-le-radici-sullasse-immaginario" id="toc-criterio-di-stabilità-di-routh-gestire-le-radici-sullasse-immaginario" class="nav-link" data-scroll-target="#criterio-di-stabilità-di-routh-gestire-le-radici-sullasse-immaginario">Criterio di stabilità di Routh: gestire le radici sull’asse immaginario</a>
+  <ul class="collapse">
+  <li><a href="#esempio-illustrativo-3" id="toc-esempio-illustrativo-3" class="nav-link" data-scroll-target="#esempio-illustrativo-3">Esempio illustrativo 3</a></li>
+  <li><a href="#comprendere-la-riga-tutto-zero" id="toc-comprendere-la-riga-tutto-zero" class="nav-link" data-scroll-target="#comprendere-la-riga-tutto-zero">Comprendere la riga Tutto-Zero</a></li>
+  <li><a href="#esempio-illustrativo-3-1" id="toc-esempio-illustrativo-3-1" class="nav-link" data-scroll-target="#esempio-illustrativo-3-1">Esempio illustrativo 3</a></li>
+  <li><a href="#uno-zero-in-una-riga" id="toc-uno-zero-in-una-riga" class="nav-link" data-scroll-target="#uno-zero-in-una-riga">Uno zero in una riga</a></li>
+  <li><a href="#perturbazione-dei-coefficienti-dellequazione-caratteristica" id="toc-perturbazione-dei-coefficienti-dellequazione-caratteristica" class="nav-link" data-scroll-target="#perturbazione-dei-coefficienti-dellequazione-caratteristica">Perturbazione dei coefficienti dell’equazione caratteristica</a></li>
+  <li><a href="#esempio-illustrativo-1" id="toc-esempio-illustrativo-1" class="nav-link" data-scroll-target="#esempio-illustrativo-1">Esempio illustrativo</a></li>
+  </ul></li>
+  <li><a href="#estendere-il-criterio-di-routh-oltre-la-stabilità-assoluta" id="toc-estendere-il-criterio-di-routh-oltre-la-stabilità-assoluta" class="nav-link" data-scroll-target="#estendere-il-criterio-di-routh-oltre-la-stabilità-assoluta">Estendere il criterio di Routh oltre la stabilità assoluta</a>
+  <ul class="collapse">
+  <li><a href="#stabilità-relativa" id="toc-stabilità-relativa" class="nav-link" data-scroll-target="#stabilità-relativa">Stabilità relativa</a></li>
+  <li><a href="#esempio-illustrativo-4" id="toc-esempio-illustrativo-4" class="nav-link" data-scroll-target="#esempio-illustrativo-4">Esempio illustrativo 4</a></li>
+  </ul></li>
+  <li><a href="#analisi-della-sensibilità-e-della-stabilità-dei-parametri" id="toc-analisi-della-sensibilità-e-della-stabilità-dei-parametri" class="nav-link" data-scroll-target="#analisi-della-sensibilità-e-della-stabilità-dei-parametri">Analisi della sensibilità e della stabilità dei parametri</a>
+  <ul class="collapse">
+  <li><a href="#lequazione-caratteristica-e-larray-routh" id="toc-lequazione-caratteristica-e-larray-routh" class="nav-link" data-scroll-target="#lequazione-caratteristica-e-larray-routh">L’equazione caratteristica e l’array Routh</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/andreamunafo/principles-of-automatic-controls/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../IT_🇮🇹/faq_it.html">IT_🇮🇹</a></li><li class="breadcrumb-item"><a href="../IT_🇮🇹/stability_and_routh_criterion_it.html">Analisi di stabilità nei sistemi di controllo</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Analisi di stabilità nei sistemi di controllo</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
+<p>Continuiamo il nostro viaggio nel mondo dei sistemi di controllo approfondendo l’analisi di stabilità. Costruiamo sulle conclusioni a cui siamo arrivati ​​l’ultima volta.</p>
+<p>Consideriamo un sistema ad anello chiuso caratterizzato dalla sua funzione di trasferimento. Per semplicità, assumiamo un sistema a feedback unitario in cui $ G(s) $ è la funzione di trasferimento ad anello aperto, $ R $ è l’input e $ Y $ è l’output.</p>
+<img src="../pics/17_Stability_and_Routh_Criterion_system.png" alt="17_Stability_and_Routh_Criterion_system" style="width:450px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<p>La funzione di trasferimento ad anello chiuso è data da:</p>
+<p><span class="math display">\[
+\frac{Y(s)}{R(s)} = \frac{G(s)}{1 + G(s)}
+\]</span></p>
+<p>L’equazione caratteristica del nostro sistema è $ 1 + G(s) = 0 $. Le radici di questa equazione, note anche come poli a circuito chiuso, determinano la stabilità del sistema.</p>
+<section id="criteri-di-stabilità-richiamo-dellultima-lezione" class="level4">
+<h4 class="anchored" data-anchor-id="criteri-di-stabilità-richiamo-dellultima-lezione">Criteri di stabilità (<strong>Richiamo dell’ultima lezione</strong>)</h4>
+<p>La stabilità è determinata dalla posizione di queste radici nel piano complesso.</p>
+<ol type="1">
+<li><strong>Sistema stabile:</strong> un sistema è stabile se <em>tutte</em> le radici dell’equazione caratteristica giacciono rigorosamente nel semipiano sinistro (LHP).</li>
+</ol>
+<ul>
+<li>Ricorda i commenti che non abbiamo stabilità asintotica e stabilità BIBO.</li>
+</ul>
+<ol start="2" type="1">
+<li><p><strong>Sistema instabile:</strong> Un sistema è instabile se almeno una radice si trova nel semipiano destro (RHP) o almeno una coppia di radici si trova sull’asse immaginario (asse <span class="math inline">\(j\omega\)</span>).</p></li>
+<li><p><strong>Sistema Marginalmente Stabile:</strong> Questo è un caso speciale in cui tutte le radici caratteristiche sono nella LHP, ad eccezione di alcune radici semplici sull’asse immaginario. Queste sono radici distinte e non ripetitive.</p></li>
+</ol>
+<p><strong>🤔 Domanda pop-up:</strong> Perché è fondamentale che le radici sull’asse <span class="math inline">\(j\omega\)</span> siano semplici per la stabilità marginale?</p>
+<p><strong>Risposta:</strong> Le radici semplici sull’asse <span class="math inline">\(j\omega\)</span> danno come risultato output limitati per determinate classi di input, rendendo il sistema marginalmente stabile in condizioni specifiche.</p>
+</section>
+<section id="determinazione-della-stabilità" class="level2">
+<h2 class="anchored" data-anchor-id="determinazione-della-stabilità">Determinazione della stabilità</h2>
+<p>Procediamo ora per determinare la stabilità. L’equazione caratteristica può generalmente essere rappresentata come un polinomio di ordine ennesimo:</p>
+<p><span class="math display">\[
+\Delta(s) = a_0 s^n + a_1 s^{n-1} + \dots + a_{n-1} s + a_n = 0
+\]</span></p>
+<ul>
+<li><p>Questa equazione deriva da $ 1 + G(s) = 0 $ e rappresenta i poli del nostro sistema a circuito chiuso.</p></li>
+<li><p>Vorremmo sapere se gli zeri di queste equazioni caratteristiche sono stabili oppure no.</p></li>
+</ul>
+<p><strong>Nota:</strong> gli zeri del sistema a circuito chiuso non vengono considerati nell’analisi di stabilità, poiché influiscono solo sull’entità, non sulla modalità, della risposta.</p>
+<section id="controllabilità-osservabilità-e-zeri" class="level4">
+<h4 class="anchored" data-anchor-id="controllabilità-osservabilità-e-zeri">Controllabilità, osservabilità e zeri</h4>
+<p>Un presupposto cruciale nella nostra analisi è che gli zeri non annullano i poli, una condizione tipicamente riscontrata nei sistemi controllabili e osservabili. Se uno zero annulla un polo instabile può portare a valutazioni errate di stabilità.</p>
+<p>Questo è il punto di convergenza sia per la stabilità asintotica che per la stabilità BIBO (Bounded Input Bounded Output). Negli scenari in cui queste condizioni non sono soddisfatte, i due tipi di stabilità divergono nelle loro interpretazioni. Nello specifico, nella stabilità BIBO, l’annullamento di un polo da parte di uno zero non si manifesta nel comportamento del sistema. Tuttavia, quando si considera la stabilità interna, che viene analizzata utilizzando un modello delle variabili di stato, l’impatto di tale polo annullato diventa evidente sulla stabilità complessiva del sistema.</p>
+<p>La presunzione che un sistema sia sia controllabile che osservabile generalmente vale per la maggior parte dei sistemi del mondo reale.</p>
+</section>
+</section>
+<section id="criterio-di-stabilità-di-routh" class="level2">
+<h2 class="anchored" data-anchor-id="criterio-di-stabilità-di-routh">Criterio di stabilità di Routh</h2>
+<p>Rivolgiamo ora la nostra attenzione al criterio di stabilità di Routh, un metodo prezioso nel campo dell’analisi di stabilità. Mentre i moderni strumenti numerici possono calcolare senza sforzo le radici di un’equazione, il criterio di Routh aiuta oltre questi metodi numerici, specialmente in contesti orientati alla progettazione. Ci consente sia di valutare la stabilità che di identificare i parametri di progettazione che garantiscono una configurazione stabile del sistema.</p>
+<p>Considera la nostra equazione caratteristica: <span class="math inline">\(a_0 s^n + a_1 s^{n-1} + \dots + a_{n-1} s + a_n = 0\)</span>. I coefficienti di questa equazione sono intrinsecamente legati agli attributi fisici del sistema. Un’indagine comune potrebbe comportare la determinazione degli intervalli consentiti per questi coefficienti che garantiscono la stabilità del sistema. In questi casi, fare affidamento esclusivamente su strumenti numerici può rivelarsi inadeguato, poiché in genere richiedono valori numerici predefiniti per i coefficienti, cosa non sempre fattibile negli scenari di progettazione. Il criterio di stabilità Routh affronta questa lacuna, fornendo informazioni sulle implicazioni di stabilità dei diversi parametri del sistema.</p>
+<section id="costruire-larray-routh" class="level4">
+<h4 class="anchored" data-anchor-id="costruire-larray-routh">Costruire l’array Routh</h4>
+<p>Iniziamo con la nostra equazione caratteristica:</p>
+<p><span class="math display">\[
+a_0 s^n + a_1 s^{n-1} + \dots + a_{n-1} s + a_n = 0
+\]</span></p>
+<ul>
+<li>Assicurarsi che $ a_n $ per evitare radici banali in $ s = 0 <span class="math inline">\(.
+-\)</span>a_0 &gt; 0$. Se $ a_0 $ non è positivo possiamo semplicemente moltiplicare per <span class="math inline">\(-1\)</span> e questo non cambia l’analisi.</li>
+</ul>
+<p><strong>🤔 Domanda pop-up:</strong> Perché è importante che il coefficiente principale $ a_0 $ sia positivo nell’analisi di stabilità di Routh?</p>
+<p><strong>Risposta:</strong> Un $ a_0 $ positivo garantisce che l’array Routh inizi con un valore positivo, che è fondamentale per determinare correttamente il numero di cambi di segno e, di conseguenza, la stabilità del sistema.</p>
+</section>
+<section id="condizioni-necessarie" class="level3">
+<h3 class="anchored" data-anchor-id="condizioni-necessarie">Condizioni necessarie</h3>
+<ul>
+<li><strong>Tutti i coefficienti devono essere positivi:</strong> affinché un sistema sia stabile, ogni coefficiente nel polinomio caratteristico deve essere positivo e diverso da zero. Un coefficiente zero o negativo è una bandiera rossa, che indica potenziale instabilità. Nota che se non avessimo $ a_0 &gt; 0 $ allora questa condizione diventa: tutti i coefficienti devono avere lo stesso segno.</li>
+</ul>
+</section>
+<section id="condizioni-sufficienti-costruzione-del-routh-array" class="level3">
+<h3 class="anchored" data-anchor-id="condizioni-sufficienti-costruzione-del-routh-array">Condizioni sufficienti: costruzione del Routh Array</h3>
+<p>Data l’equazione caratteristica:</p>
+<p><span class="math display">\[
+a_0 s^n + a_1 s^{n-1} + \dots + a_{n-1} s + a_n = 0
+\]</span></p>
+<p>Ora costruiamo l’array di Routh, un metodo strutturato per analizzare la stabilità di un’equazione polinomiale. L’array Routh viene costruito riga per riga, utilizzando i coefficienti del polinomio caratteristico.</p>
+<ol type="1">
+<li><p><strong>Prime due righe:</strong> le prime due righe derivano direttamente dal polinomio. Per un polinomio di grado $ n $, la prima riga contiene i coefficienti delle potenze pari di $ s $ (ad esempio, $ a_0, a_2, a_4, $), mentre la seconda riga contiene i coefficienti delle potenze dispari di $ s $ ( ad esempio, $ a_1, a_3, a_5, $).</p></li>
+<li><p><strong>Righe successive:</strong> ciascun elemento delle righe successive viene calcolato utilizzando una formula specifica. Per la terza riga (corrispondente a $ s^{n-2} $), ciascun elemento viene calcolato come segue:</p>
+<ul>
+<li>Il primo elemento della terza riga è dato da $ $.</li>
+<li>Il secondo elemento è $ $, e così via.</li>
+</ul>
+<p><strong>Nota:</strong> Se manca un coefficiente (ovvero, la potenza di $ s $ non appare nel polinomio), trattalo come zero in questi calcoli.</p></li>
+<li><p><strong>Indicizzazione delle righe:</strong> L’indicizzazione delle righe (ad esempio, $ s^{n-1}, s^{n-2}, $) serve come guida ma non corrisponde alle potenze di $ s $ nel polinomio originale dopo le prime due righe.</p></li>
+</ol>
+<p>Ecco un esempio di come apparirebbe la struttura della tabella Routh per un generico polinomio di ordine $ n $ -esimo:</p>
+<table class="table">
+<colgroup>
+<col style="width: 19%">
+<col style="width: 13%">
+<col style="width: 13%">
+<col style="width: 13%">
+<col style="width: 6%">
+<col style="width: 32%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Order of <span class="math inline">\(s\)</span></th>
+<th>Column 1</th>
+<th>Column 2</th>
+<th>Column 3</th>
+<th>…</th>
+<th>Column <span class="math inline">\(\frac{n}{2}+1\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(s^n\)</span></td>
+<td><span class="math inline">\(a_0\)</span></td>
+<td><span class="math inline">\(a_2\)</span></td>
+<td><span class="math inline">\(a_4\)</span></td>
+<td>…</td>
+<td><span class="math inline">\(a_{2k}\)</span> or 0</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(s^{n-1}\)</span></td>
+<td><span class="math inline">\(a_1\)</span></td>
+<td><span class="math inline">\(a_3\)</span></td>
+<td><span class="math inline">\(a_5\)</span></td>
+<td>…</td>
+<td><span class="math inline">\(a_{2k+1}\)</span> or 0</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(s^{n-2}\)</span></td>
+<td><span class="math inline">\(b_1 = \frac{a_1 a_2 - a_0 a_3}{a_1}\)</span></td>
+<td><span class="math inline">\(b_2 = \frac{a_1 a_4 - a_0 a_5}{a_1}\)</span></td>
+<td></td>
+<td>…</td>
+<td></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(s^{n-3}\)</span></td>
+<td></td>
+<td></td>
+<td></td>
+<td>…</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>…</td>
+<td></td>
+<td></td>
+<td></td>
+<td>…</td>
+<td></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(s^1\)</span></td>
+<td></td>
+<td></td>
+<td></td>
+<td>…</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(s^0\)</span></td>
+<td></td>
+<td></td>
+<td></td>
+<td>…</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>$ k $</strong> è la parte intera di $ $.</li>
+<li>Un coefficiente mancante è 0.</li>
+</ul>
+</section>
+<section id="esempio-illustrativo" class="level3">
+<h3 class="anchored" data-anchor-id="esempio-illustrativo">Esempio illustrativo</h3>
+<p>Illustriamolo con uno specifico polinomio del 4° ordine:</p>
+<p><span class="math display">\[
+s^4 + 8 s^3 + 18 s^2 + 16 s + 5 = 0
+\]</span></p>
+<ol type="1">
+<li><strong>Prime due righe:</strong>
+<ul>
+<li>Riga per $ s^4 $: $ 1 $ (coefficiente di $ s^4 $), $ 18 $ (coefficiente di $ s^2 $), $ 5 $ (termine costante).</li>
+<li>Riga per $ s^3 $: $ 8 $ (coefficiente di $ s^3 $), $ 16 $ (coefficiente di $ s^1 $), $ 0 $ (poiché non esiste $ s^{-1} termine $).</li>
+</ul></li>
+<li><strong>Riga per $ s^2 $:</strong>
+<ul>
+<li>Primo elemento: $ = = 16 $.</li>
+<li>Secondo elemento: $ = = 5 $.</li>
+<li>Il terzo elemento è zero (poiché non ci sono più elementi da utilizzare nel calcolo).</li>
+</ul></li>
+<li><strong>Riga per $ s^1 $:</strong>
+<ul>
+<li>Primo elemento: $ = = 13,5 $.</li>
+<li>Il secondo elemento è zero (poiché gli elementi corrispondenti sopra sono zero o non esistono).</li>
+</ul></li>
+<li><strong>Riga per $ s^0 $:</strong>
+<ul>
+<li>È necessario solo il primo elemento, che è uguale al secondo elemento della riga precedente: $ 5 $.</li>
+</ul></li>
+</ol>
+<p>Ecco l’array Routh corretto:</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Order of $ s $</th>
+<th>Column 1</th>
+<th>Column 2</th>
+<th>Column 3</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>$ s^4 $</td>
+<td>1</td>
+<td>18</td>
+<td>5</td>
+</tr>
+<tr class="even">
+<td>$ s^3 $</td>
+<td>8</td>
+<td>16</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td>$ s^2 $</td>
+<td>16</td>
+<td>5</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>$ s^1 $</td>
+<td>13.5</td>
+<td>0</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>$ s^0 $</td>
+<td>5</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Poiché non ci sono cambiamenti di segno nella prima colonna dell’array Routh, questo sistema è stabile. Il criterio di stabilità di Routh ci dice che tutte le radici dell’equazione caratteristica si trovano nella metà sinistra del piano complesso, indicando stabilità.</p>
+</section>
+<section id="analisi-della-stabilità-con-la-tabella-di-routh" class="level3">
+<h3 class="anchored" data-anchor-id="analisi-della-stabilità-con-la-tabella-di-routh">Analisi della stabilità con la tabella di Routh</h3>
+<p>Dopo aver costruito l’array Routh, esaminiamo i segni della prima colonna per trarre conclusioni sulla stabilità del sistema.</p>
+<ul>
+<li>Se non ci sono cambiamenti di segno nella prima colonna dell’array Routh, il sistema è stabile.</li>
+<li>Se ci sono cambiamenti di segno, il sistema non è stabile e il numero di radici nella destra è uguale al numero di cambiamenti di segno. I criteri quindi forniscono informazioni sul numero di radici instabili, ma non danno la posizione delle radici.</li>
+</ul>
+<div id="c26b71ab" class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> routh_array(coefficients):</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    n <span class="op">=</span> <span class="bu">len</span>(coefficients)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    routh <span class="op">=</span> []</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># First two rows</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    r1 <span class="op">=</span> [coefficients[i] <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>, n, <span class="dv">2</span>)]</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    r2 <span class="op">=</span> [coefficients[i] <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, n, <span class="dv">2</span>)]</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    routh.append(r1)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    routh.append(r2 <span class="op">+</span> [<span class="dv">0</span>] <span class="op">*</span> (<span class="bu">len</span>(r1) <span class="op">-</span> <span class="bu">len</span>(r2)))  <span class="co"># Padding zeros</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Other rows</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">2</span>, n):</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>        row <span class="op">=</span> []</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(r1) <span class="op">-</span> <span class="dv">1</span>):</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Calculate element</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>            first <span class="op">=</span> routh[i<span class="op">-</span><span class="dv">1</span>][<span class="dv">0</span>]</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>            upper <span class="op">=</span> routh[i<span class="op">-</span><span class="dv">2</span>][j<span class="op">+</span><span class="dv">1</span>]</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>            left <span class="op">=</span> routh[i<span class="op">-</span><span class="dv">1</span>][j<span class="op">+</span><span class="dv">1</span>] <span class="cf">if</span> j<span class="op">+</span><span class="dv">1</span> <span class="op">&lt;</span> <span class="bu">len</span>(routh[i<span class="op">-</span><span class="dv">1</span>]) <span class="cf">else</span> <span class="dv">0</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>            element <span class="op">=</span> ((upper <span class="op">*</span> first) <span class="op">-</span> left <span class="op">*</span> routh[i<span class="op">-</span><span class="dv">2</span>][<span class="dv">0</span>]) <span class="op">/</span> first</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>            row.append(element)</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>        routh.append(row <span class="op">+</span> [<span class="dv">0</span>] <span class="op">*</span> (<span class="bu">len</span>(r1) <span class="op">-</span> <span class="bu">len</span>(row)))  <span class="co"># Padding zeros</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Check for row of zeros</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="bu">all</span>(r <span class="op">==</span> <span class="dv">0</span> <span class="cf">for</span> r <span class="kw">in</span> row):</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="st">"Row of zeros detected. Special procedure needed."</span>)</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> routh</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> routh</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Example usage</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>coeffs <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">8</span>, <span class="dv">18</span>, <span class="dv">16</span>, <span class="dv">5</span>]</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>routh <span class="op">=</span> routh_array(coeffs)</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="co"># Printing the Routh array</span></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> row <span class="kw">in</span> routh:</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(row)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1, 18, 5]
+[8, 16, 0]
+[16.0, 5.0, 0]
+[13.5, 0.0, 0]
+[5.0, 0.0, 0]</code></pre>
+</div>
+</div>
+</section>
+<section id="esempio-illustrativo-2" class="level3">
+<h3 class="anchored" data-anchor-id="esempio-illustrativo-2">Esempio illustrativo 2</h3>
+<p>Per calcolare l’array Routh per il polinomio $ 3s^4 + 10s^3 + 5s^2 + 5s + 2 = 0 $, possiamo usare lo stesso metodo di prima.</p>
+<p>Eseguiamo i calcoli passo dopo passo:</p>
+<ol type="1">
+<li><strong>Prime due righe:</strong>
+<ul>
+<li>Riga per $ s^4 $: $ 3 $ (coefficiente di $ s^4 $), $ 5 $ (coefficiente di $ s^2 $), $ 2 $ (termine costante).</li>
+<li>Riga per $ s^3 $: $ 10 $ (coefficiente di $ s^3 $), $ 5 $ (coefficiente di $ s^1 $), $ 0 $ (poiché non esiste $ s^{-1} termine $).</li>
+</ul></li>
+<li><strong>Riga per $ s^2 $:</strong>
+<ul>
+<li>Primo elemento: $ = = 3,5 $.</li>
+<li>Secondo elemento: $ = = 2 $.</li>
+<li>Il terzo elemento è zero (poiché non ci sono più elementi da utilizzare nel calcolo).</li>
+</ul></li>
+<li><strong>Riga per $ s^1 $:</strong>
+<ul>
+<li>Primo elemento: $ = = -0.71 $.</li>
+<li>Il secondo elemento è zero (poiché gli elementi corrispondenti sopra sono zero o non esistono).</li>
+</ul></li>
+<li><strong>Riga per $ s^0 $:</strong>
+<ul>
+<li>È necessario solo il primo elemento, che è uguale al primo elemento della riga precedente: $ 2 $.</li>
+</ul></li>
+</ol>
+<p>Ecco l’array Routh completato:</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Order of $ s $</th>
+<th>Column 1</th>
+<th>Column 2</th>
+<th>Column 3</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>$ s^4 $</td>
+<td>3</td>
+<td>5</td>
+<td>2</td>
+</tr>
+<tr class="even">
+<td>$ s^3 $</td>
+<td>10</td>
+<td>5</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td>$ s^2 $</td>
+<td>3.5</td>
+<td>2</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>$ s^1 $</td>
+<td>-0.71</td>
+<td>0</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>$ s^0 $</td>
+<td>2</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Poiché ci sono due cambiamenti di segno nella prima colonna dell’array Routh (da positivo a negativo tra $ s^2 $ e $ s^1 $ e uno da negativo a positivo tra $ s^1 $ e $ s^0 $ ) , questo sistema è instabile.</p>
+<p>Il criterio di stabilità di Routh indica che ci sono due radici dell’equazione caratteristica nella metà destra del piano complesso, portando alla conclusione di instabilità.</p>
+<p><strong>Nota che in questo caso, dato che la seconda riga è divisibile per 5, avremmo potuto scrivere anche la seguente tabella:</strong></p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Order of $ s $</th>
+<th>Column 1</th>
+<th>Column 2</th>
+<th>Column 3</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>$ s^4 $</td>
+<td>3</td>
+<td>5</td>
+<td>2</td>
+</tr>
+<tr class="even">
+<td>$ s^3 $</td>
+<td>2</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td>$ s^2 $</td>
+<td>3.5</td>
+<td>2</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>$ s^1 $</td>
+<td><span class="math inline">\(-\frac{1}{7}\)</span></td>
+<td>0</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>$ s^0 $</td>
+<td>2</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>E finalmente possiamo provare la nostra funzione <code>routh_array</code>:</p>
+<div id="69a8db4b" class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>routh_array([<span class="dv">3</span>, <span class="dv">10</span>, <span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">2</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>[[3, 5, 2],
+ [10, 5, 0],
+ [3.5, 2.0, 0],
+ [-0.7142857142857143, 0.0, 0],
+ [2.0, 0.0, 0]]</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="criterio-di-stabilità-di-routh-gestire-le-radici-sullasse-immaginario" class="level2">
+<h2 class="anchored" data-anchor-id="criterio-di-stabilità-di-routh-gestire-le-radici-sullasse-immaginario">Criterio di stabilità di Routh: gestire le radici sull’asse immaginario</h2>
+<p>Ci addentriamo in scenari più complessi in cui le radici dell’equazione caratteristica possono trovarsi sull’asse immaginario (asse jω). Questa discussione ci condurrà attraverso il processo di gestione di questi casi speciali.</p>
+<section id="esempio-illustrativo-3" class="level3">
+<h3 class="anchored" data-anchor-id="esempio-illustrativo-3">Esempio illustrativo 3</h3>
+<p>Consideriamo un sistema rappresentato dall’equazione caratteristica</p>
+<p><span class="math display">\[
+\Delta(i) = s^5 + s^4 + 4s^3 + 24s^2 + 3s + 63 = 0
+\]</span></p>
+<p>Quando applichiamo il criterio di stabilità di Routh a questo sistema, ci troviamo di fronte ad una situazione unica. In questo caso, una riga completa nell’array Routh potrebbe risultare composta da tutti zeri, indicando la possibilità di radici sull’asse jω. Questo è un indicatore significativo, poiché implica che il sistema potrebbe mostrare stabilità o instabilità marginale.</p>
+<table class="table">
+<colgroup>
+<col style="width: 34%">
+<col style="width: 21%">
+<col style="width: 21%">
+<col style="width: 21%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Ordine di $ s $</th>
+<th>Colonna 1</th>
+<th>Colonna 2</th>
+<th>Colonna 3</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>$ s^5 $</td>
+<td>1</td>
+<td>4</td>
+<td>3</td>
+</tr>
+<tr class="even">
+<td>$ s^4 $</td>
+<td>1</td>
+<td>24</td>
+<td>63</td>
+</tr>
+<tr class="odd">
+<td>$ s^3 $</td>
+<td><span class="math inline">\(\cancel{-20} \rightarrow -1\)</span></td>
+<td><span class="math inline">\(\cancel{-60} \rightarrow -3\)</span></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>$ s^2 $</td>
+<td><span class="math inline">\(\cancel{21} \rightarrow 1\)</span></td>
+<td>$ $</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td>$ s^1 $</td>
+<td><span class="math inline">\(0\)</span></td>
+<td>0</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>$ s^0 $</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="comprendere-la-riga-tutto-zero" class="level3">
+<h3 class="anchored" data-anchor-id="comprendere-la-riga-tutto-zero">Comprendere la riga Tutto-Zero</h3>
+<ul>
+<li><p>Se incontriamo una riga tutta zero in qualsiasi passaggio, il coefficiente della riga successiva non è definito e dobbiamo costruire un polinomio ausiliario dalla riga immediatamente sopra la riga tutta zero e utilizzare la sua derivata per continuare la costruzione dell’array Routh.</p></li>
+<li><p>Ciò indica la potenziale presenza di radici sull’asse jω.</p></li>
+<li><p><strong>Implicazione di righe tutte zero:</strong> quando si incontra una riga tutta zero nell’array Routh, ciò suggerisce che l’equazione caratteristica potrebbe avere radici simmetriche attorno all’asse immaginario. Ciò potrebbe significare una coppia di radici che giacciono esattamente sull’asse jω o coppie coniugate complesse simmetriche lungo questo asse.</p></li>
+<li><p><strong>Incertezza sulla stabilità:</strong> la presenza di una riga tutta zero non classifica immediatamente il sistema come stabile o instabile. Invece, indica che sono necessarie ulteriori analisi per determinare la stabilità del sistema.</p></li>
+</ul>
+<img src="../pics/17_Stability_and_Routh_Criterion_system_1.png" alt="17_Stability_and_Routh_Criterion_system_1" style="width:750px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<ul>
+<li><p>Quando una riga è tutta zeri, non possiamo trarre conclusioni sulla stabilità del sistema e sono necessarie ulteriori indagini.</p></li>
+<li><p>Tieni presente che il sistema non può essere stabile.</p></li>
+<li><p>A causa della simmetria, una riga tutta zero sarà sempre associata a una potenza dispari di s.</p></li>
+</ul>
+<section id="costruire-il-polinomio-ausiliario" class="level4">
+<h4 class="anchored" data-anchor-id="costruire-il-polinomio-ausiliario">Costruire il polinomio ausiliario</h4>
+<ul>
+<li>Per affrontare la riga tutta zero, costruiamo un polinomio ausiliario dai coefficienti della riga appena sopra la riga tutta zero. Ad esempio, se la riga con tutti zero è su $ s^2 $, esamineremo la riga $ s^3 $ per questi coefficienti, se la riga con tutti zero è su $ s^1 $ (come nel nostro caso precedente ), esaminiamo $ s^2 $.</li>
+</ul>
+<p>Con riferimento al nostro esempio sopra, il polinomio ausiliario è:</p>
+<p><span class="math display">\[ A(s) = s^2 + 3 \]</span></p>
+<ul>
+<li><p>Nota che <span class="math inline">\(s^2\)</span> proviene dall’ordine della riga appena sopra la riga composta da tutti zero (nel nostro caso <span class="math inline">\(s^2\)</span>).</p></li>
+<li><p><strong>Il polinomio ausiliario è un fattore dell’equazione caratteristica originale <span class="math inline">\(\Delta(s)\)</span>.</strong></p></li>
+<li><p>Poiché in questo caso le radici del polinomio ausiliario sono immaginarie, possiamo concludere che anche le radici dell’equazione caratteristica si trovano sull’asse immaginario (e siamo nel caso <em>medio</em> sopra), e il sistema è marginalmente stabile o instabile nel caso abbiamo più poli immaginari. Infatti per trarre conclusioni sulla stabilità bisogna trarre conclusioni anche sulle restanti radici dell’equazione caratteristica (quelle del polinomio ausiliario sono un sottoinsieme).</p></li>
+</ul>
+</section>
+<section id="conclusione-sulla-stabilità" class="level4">
+<h4 class="anchored" data-anchor-id="conclusione-sulla-stabilità">Conclusione sulla stabilità</h4>
+<p>Una volta ottenuto il polinomio ausiliario ci sono due modi per trarre conclusioni sulla stabilità:</p>
+<ol type="1">
+<li><p>Dividiamo l’equazione caratteristica totale per il polinomio ausiliario, otteniamo il resto e applichiamo il criterio di Routh al polinomio resto</p></li>
+<li><p>Prendiamo la derivata del polinomio ausiliario <span class="math inline">\(\frac{dA}{ds}\)</span> e sostituiamo la riga tutta zero con i coefficienti di questa derivata. Questa modifica ci permette di continuare con la costruzione dell’array Routh.</p></li>
+</ol>
+<p>Nel nostro caso:</p>
+<p><span class="math display">\[\frac{dA}{ds} = 2s + 0\]</span></p>
+<p>e possiamo completare l’array Routh:</p>
+<table class="table">
+<colgroup>
+<col style="width: 34%">
+<col style="width: 21%">
+<col style="width: 21%">
+<col style="width: 21%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Ordine di $ s $</th>
+<th>Colonna 1</th>
+<th>Colonna 2</th>
+<th>Colonna 3</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>$ s^5 $</td>
+<td>1</td>
+<td>4</td>
+<td>3</td>
+</tr>
+<tr class="even">
+<td>$ s^4 $</td>
+<td>1</td>
+<td>24</td>
+<td>63</td>
+</tr>
+<tr class="odd">
+<td>$ s^3 $</td>
+<td><span class="math inline">\(\cancel{-20} \rightarrow -1\)</span></td>
+<td><span class="math inline">\(\cancel{-60} \rightarrow -3\)</span></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>$ s^2 $</td>
+<td><span class="math inline">\(\cancel{21} \rightarrow 1\)</span></td>
+<td>$ $</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td>$ s^1 $</td>
+<td>2</td>
+<td>0</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>$ s^0 $</td>
+<td>3</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>Dopo aver sostituito la riga composta da tutti zero e aver completato l’array Routh, rivalutiamo la prima colonna per i cambiamenti di segno. Il numero di cambiamenti di segno ora ci dà informazioni sulla stabilità del sistema, considerando le radici sull’asse immaginario.</p></li>
+<li><p>Nel nostro caso ci sono due cambi di segno. Concludiamo che il polinomio originale ha:</p>
+<ul>
+<li>due radici nella RHP (dall’array Routh)</li>
+<li>due radici sull’asse immaginario (dal polinomio ausiliario)</li>
+<li>una radice nella sinistra sinistra (quella rimanente)</li>
+</ul></li>
+</ul>
+<p>Il sistema è instabile.</p>
+</section>
+<section id="caso-speciale-in-cui-la-riga-s_0-è-tutta-zeri" class="level4">
+<h4 class="anchored" data-anchor-id="caso-speciale-in-cui-la-riga-s_0-è-tutta-zeri">Caso speciale in cui la riga <span class="math inline">\(s_0\)</span> è tutta zeri?</h4>
+<ul>
+<li><p><strong>Infattibilità di una riga tutta zero <span class="math inline">\(s_0\)</span>:</strong> una riga tutta zero al livello <span class="math inline">\(s_0\)</span> (l’ultima riga dell’array Routh) non è praticamente fattibile. Se dovesse verificarsi, implicherebbe una singola radice all’origine, il che contraddice la situazione di righe tutte zero poiché una singola radice non crea questo scenario.</p></li>
+<li><p><strong>Considerazione sulla simmetria:</strong> La simmetria coinvolta nella distribuzione della radice dell’equazione caratteristica implica che una riga tutta zero corrisponderà a una potenza pari di <span class="math inline">\(s_0\)</span>. Pertanto, le radici associate ad una riga tutta zero avranno sempre una certa simmetria rispetto all’asse immaginario.</p></li>
+</ul>
+<hr>
+<p>Il criterio di stabilità di Routh è uno strumento analitico fondamentale utilizzato nell’ingegneria di controllo per valutare la stabilità dei sistemi lineari. Ecco un riepilogo dei punti chiave che abbiamo visto finora:</p>
+<ol type="1">
+<li><p><strong>Scopo</strong>: il criterio di Routh viene utilizzato per determinare se un sistema è stabile, instabile o marginalmente stabile senza calcolare esplicitamente le radici della sua equazione caratteristica.</p></li>
+<li><p><strong>Equazione caratteristica</strong>: la stabilità viene analizzata in base all’equazione caratteristica della funzione di trasferimento del sistema, tipicamente rappresentata come un polinomio in $ s $ (la variabile di Laplace).</p></li>
+<li><p><strong>Costruzione dell’array Routh</strong>: il criterio prevede la costruzione di un array tabulare, noto come array Routh, utilizzando i coefficienti dell’equazione caratteristica. L’array è formato riga per riga, con le prime due righe riempite con i coefficienti del polinomio, alternando potenze pari e dispari di $ s $.</p></li>
+<li><p><strong>Analisi di stabilità</strong>:</p>
+<ul>
+<li>Se tutti gli elementi nella prima colonna dell’array Routh sono positivi, il sistema è stabile (nessun polo nella metà destra del piano s).</li>
+<li>La presenza di cambiamenti di segno nella prima colonna indica instabilità. Il numero di cambiamenti di segno corrisponde al numero di poli nella metà destra del piano s.</li>
+<li>Se una riga è composta interamente da zeri, indica radici simmetriche rispetto all’asse immaginario e richiede un’ulteriore analisi.</li>
+</ul></li>
+<li><p><strong>Gestione di casi speciali</strong>:</p>
+<ul>
+<li><strong>Riga tutta zero</strong>: quando una riga nell’array Routh è tutta zero, suggerisce radici simmetriche attorno all’asse immaginario. Un polinomio ausiliario viene formato dalla riga sopra la riga composta da tutti zero e la sua derivata viene utilizzata per continuare la costruzione dell’array Routh.</li>
+<li><strong>Stabilità marginale</strong>: una riga tutta zero può indicare stabilità marginale, dove le radici si trovano sull’asse immaginario. Tuttavia, sono necessarie ulteriori indagini per confermarlo.</li>
+</ul></li>
+<li><p><strong>Polinomio ausiliario</strong>: questo polinomio deriva dalla riga sopra la riga di tutti zero. La derivata del polinomio ausiliario viene utilizzata per sostituire la riga tutta zero e continuare la costruzione dell’array Routh.</p></li>
+<li><p><strong>Limitazioni</strong>: Sebbene il criterio Routh possa indicare il numero e la posizione (metà piano sinistro o semipiano destro) delle radici, non fornisce i valori esatti di queste radici.</p></li>
+</ol>
+</section>
+</section>
+<section id="esempio-illustrativo-3-1" class="level3">
+<h3 class="anchored" data-anchor-id="esempio-illustrativo-3-1">Esempio illustrativo 3</h3>
+<p>Consideriamo il sistema caratterizzato dal polinomio</p>
+<p><span class="math display">\[
+s^6 + 2s^5 + 8s^4 + 12s^3 + 20s^2 + 16s + 16 = 0
+\]</span></p>
+<p>Mentre costruiamo l’array Routh, incontriamo una riga tutta zero in $ s^3 $.</p>
+<table class="table">
+<colgroup>
+<col style="width: 31%">
+<col style="width: 17%">
+<col style="width: 17%">
+<col style="width: 17%">
+<col style="width: 17%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Order of $ s $</th>
+<th>Column 1</th>
+<th>Column 2</th>
+<th>Column 3</th>
+<th>Column 4</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>$ s^6 $</td>
+<td>1</td>
+<td>8</td>
+<td>20</td>
+<td>16</td>
+</tr>
+<tr class="even">
+<td>$ s^5 $</td>
+<td><span class="math inline">\(\cancel{2} \rightarrow 1\)</span></td>
+<td><span class="math inline">\(\cancel{12} \rightarrow 6\)</span></td>
+<td><span class="math inline">\(\cancel{16} \rightarrow 8\)</span></td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td>$ s^4 $</td>
+<td><span class="math inline">\(\cancel{2} \rightarrow 1\)</span></td>
+<td><span class="math inline">\(\cancel{12} \rightarrow 6\)</span></td>
+<td><span class="math inline">\(\cancel{16} \rightarrow 8\)</span></td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>$ s^3 $</td>
+<td>0</td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>$ s^2 $</td>
+<td>…</td>
+<td>…</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>$ s^1 $</td>
+<td>…</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>$ s^0 $</td>
+<td>…</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>L’array Routh deve essere completato con ulteriori calcoli a partire dalla riga $ s^3 $ modificata. Questo processo fornirà le informazioni necessarie per valutare la stabilità del sistema.</p>
+<p>In questo caso, formiamo un polinomio ausiliario dalla riga $ s^4 $, che risulta essere:</p>
+<p><span class="math display">\[ A(s) = s^4 + 6s^2 + 8 \]</span></p>
+<p>Il passo successivo consiste nel ricavare la derivata di questo polinomio ausiliario:</p>
+<p><span class="math display">\[ \frac{dA}{ds} = 4s^3 + 12s + 0 \]</span></p>
+<table class="table">
+<colgroup>
+<col style="width: 31%">
+<col style="width: 17%">
+<col style="width: 17%">
+<col style="width: 17%">
+<col style="width: 17%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Order of $ s $</th>
+<th>Column 1</th>
+<th>Column 2</th>
+<th>Column 3</th>
+<th>Column 4</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>$ s^6 $</td>
+<td>1</td>
+<td>8</td>
+<td>20</td>
+<td>16</td>
+</tr>
+<tr class="even">
+<td>$ s^5 $</td>
+<td><span class="math inline">\(\cancel{2} \rightarrow 1\)</span></td>
+<td><span class="math inline">\(\cancel{12} \rightarrow 6\)</span></td>
+<td><span class="math inline">\(\cancel{16} \rightarrow 8\)</span></td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td>$ s^4 $</td>
+<td><span class="math inline">\(\cancel{2} \rightarrow 1\)</span></td>
+<td><span class="math inline">\(\cancel{12} \rightarrow 6\)</span></td>
+<td><span class="math inline">\(\cancel{16} \rightarrow 8\)</span></td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>$ s^3 $</td>
+<td>$ $</td>
+<td><span class="math inline">\(\cancel{12} \rightarrow 3\)</span></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>$ s^2 $</td>
+<td>3</td>
+<td>8</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>$ s^1 $</td>
+<td><span class="math inline">\(\frac{1}{3}\)</span></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>$ s^0 $</td>
+<td>8</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Conclusioni</strong></p>
+<ul>
+<li><p>La prima colonna dell’array Routh è tutta positiva (nessun cambiamento di segno). Ciò significa che il polinomio <span class="math inline">\(\frac{\Delta(s)}{A(s)}\)</span> non ha radici nella RHP.</p></li>
+<li><p>Quando guardiamo il polinomio ausiliario: $ A(s) = s^4 + 6s^2 + 8 $, possiamo risolvere le sue radici:</p>
+<ul>
+<li>imposta $s^2=z A(s) = z^2 + 6z + 8 $ con radici: <span class="math inline">\(s=\pm j\sqrt{2};\;\;\;s=\pm j2\)</span></li>
+<li>il polinomio ausiliario ha solo radici immaginarie (caso centrale nel diagramma che abbiamo disegnato sopra)</li>
+</ul></li>
+<li><p>Il sistema è quindi <strong>marginalmente stabile</strong>, oscillando a una frequenza <span class="math inline">\(\sqrt{2}\;\;rad/s\)</span> e a <span class="math inline">\(2\;\;rad/s\)</span> (l’uscita rimane limitata). Utilizzeremo questo punto durante la fase di progettazione.</p></li>
+</ul>
+</section>
+<section id="uno-zero-in-una-riga" class="level3">
+<h3 class="anchored" data-anchor-id="uno-zero-in-una-riga">Uno zero in una riga</h3>
+<p>Una situazione speciale si verifica quando solo l’elemento pivot (il primo elemento) di una riga nell’array Routh è zero, mentre almeno uno degli elementi successivi nella stessa riga è diverso da zero. Questo scenario richiede un approccio distinto per la continuazione della costruzione dell’array Routh. Ecco i dettagli:</p>
+<ul>
+<li><p>L’elemento pivot in un array Routh si riferisce al primo elemento di qualsiasi riga. Un elemento pivot zero con almeno un elemento diverso da zero nella stessa riga presenta un caso unico nella formulazione dell’array.</p></li>
+<li><p>Un elemento pivot pari a zero rende impossibile l’utilizzo della formula matriciale Routh standard per la riga successiva, poiché comporta la divisione per l’elemento pivot.</p></li>
+<li><p>La presenza di un elemento pivot zero non suggerisce immediatamente radici simmetriche o radici sull’asse immaginario, a differenza di una riga tutta zero. Rappresenta invece una condizione numerica risultante dai coefficienti specifici dell’equazione caratteristica.</p></li>
+</ul>
+<section id="gestire-lelemento-pivot-zero" class="level4">
+<h4 class="anchored" data-anchor-id="gestire-lelemento-pivot-zero">Gestire l’elemento pivot zero</h4>
+<ul>
+<li><p><strong>Approccio</strong>: per continuare la costruzione dell’array Routh, in genere sostituiamo l’elemento pivot zero con un piccolo numero positivo, indicato come $ $. Questa sostituzione consente al calcolo di procedere senza l’indeterminatezza causata dalla divisione per zero.</p></li>
+<li><p><strong>Significato di $ $</strong>: Il valore di $ $ è considerato infinitesimo, tendente di fatto allo zero. Questa sostituzione è una tecnica matematica per superare l’ostacolo computazionale e non cambia la natura fondamentale del sistema analizzato.</p></li>
+</ul>
+<p><strong>🤔 Domanda pop-up</strong>: Cosa rappresenta la sostituzione di $ $ al posto di un elemento pivot zero nell’array Routh?</p>
+<p><strong>Risposta</strong>: La sostituzione di $ $ rappresenta un metodo per aggirare il problema computazionale della divisione per zero. Consente la continuazione della costruzione dell’array Routh e aiuta a trarre conclusioni sulla stabilità del sistema.</p>
+<p>Analizziamo questo scenario attraverso un esempio:</p>
+<p>Consideriamo il sistema caratterizzato dal polinomio</p>
+<p><span class="math display">\[
+s^5 + 3s^4 + 2s^3 + 6s^2 + 6s + 9 = 0
+\]</span></p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Order of $ s $</th>
+<th>Column 1</th>
+<th>Column 2</th>
+<th>Column 3</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>$ s^5 $</td>
+<td>1</td>
+<td>2</td>
+<td>6</td>
+</tr>
+<tr class="even">
+<td>$ s^4 $</td>
+<td>3</td>
+<td>6</td>
+<td>9</td>
+</tr>
+<tr class="odd">
+<td>$ s^3 $</td>
+<td>0</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>$ s^2 $</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>$ s^1 $</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>$ s^0 $</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Non possiamo fare alcuna valutazione di stabilità. La presenza di uno 0 come elemento cardine rappresenta una condizione numerica risultante dai coefficienti specifici dell’equazione caratteristica.</p>
+<p>In questo caso, sostituiamo il pivot zero nella riga con <span class="math inline">\(\epsilon\)</span> e continuiamo a costruire l’array. Ciò corrisponde a perturbare i coefficienti del polinomio.</p>
+</section>
+</section>
+<section id="perturbazione-dei-coefficienti-dellequazione-caratteristica" class="level3">
+<h3 class="anchored" data-anchor-id="perturbazione-dei-coefficienti-dellequazione-caratteristica">Perturbazione dei coefficienti dell’equazione caratteristica</h3>
+<ol type="1">
+<li><p><strong>Stabilità delle radici</strong>: è improbabile che le radici di un polinomio nel semipiano sinistro o destro “saltino” da un lato all’altro del piano complesso con una piccola perturbazione nei coefficienti. Questa stabilità delle posizioni delle radici nel piano complesso costituisce la base di questo approccio.</p></li>
+<li><p><strong>Effetto di piccoli cambiamenti</strong>: Se i coefficienti del polinomio caratteristico sono leggermente alterati (diciamo dell’1% o meno), si prevede che le posizioni fisiche delle radici nel piano complesso cambino solo leggermente. Ciò implica che le radici originariamente nel semipiano sinistro probabilmente rimarranno lì, e allo stesso modo per quelle nel semipiano destro.</p></li>
+<li><p><strong>Preoccupazione con le radici sull’asse immaginario</strong>: il rischio in questo metodo di perturbazione sorge se l’equazione caratteristica originale ha radici esattamente sull’asse immaginario (asse jω). Una piccola variazione nei coefficienti potrebbe spostare queste radici nel semipiano destro o sinistro, alterando la conclusione sulla stabilità. Se così fosse, non sapresti se queste radici immaginarie si sono spostate a sinistra o a destra.</p></li>
+<li><p><strong>Assunzione dell’assenza di radici sull’asse immaginario</strong>: se si sa in anticipo che non ci sono radici sull’asse immaginario, perturbare leggermente i coefficienti non dovrebbe influenzare in modo significativo le conclusioni sulla stabilità complessiva del sistema.</p>
+<ul>
+<li>Nota che una riga tutta zero indicherà se potrebbero esserci radici sull’asse immaginario</li>
+</ul></li>
+<li><p><strong>Gestione di uno Zero Pivot nell’array Routh</strong>: In pratica, se una riga nell’array Routh ha un elemento pivot zero, questo problema può spesso essere risolto sostituendo lo zero con un piccolo numero positivo, $ $. Questo approccio equivale effettivamente ad una piccola perturbazione dei coefficienti dell’equazione caratteristica.</p></li>
+<li><p><strong>Importanza della riga tutta zero</strong>: se c’è una riga tutta zero nell’array Routh, di solito indica le radici sull’asse immaginario. Pertanto, nei casi senza una riga composta da tutti zero, possiamo essere più sicuri che la perturbazione dei coefficienti (come con la sostituzione $ $) non porterà a conclusioni errate riguardo alla stabilità.</p></li>
+<li><p><strong>Applicazione pratica</strong>: questa tecnica è particolarmente utile nei calcoli automatizzati o negli algoritmi in cui gestire un elemento pivot zero è computazionalmente problematico. Introducendo $ $, è possibile completare l’array Routh e valutarne la stabilità.</p></li>
+<li><p><strong>Valutazione del rischio</strong>: il punto chiave qui è la valutazione del rischio quando si applica questa perturbazione. Se esiste la possibilità che le radici si trovino sull’asse immaginario, è necessario essere cauti, poiché la perturbazione potrebbe portare a conclusioni errate sulla stabilità.</p></li>
+</ol>
+<p>Per ora supporremo che non vi siano radici sull’asse immaginario e perturberemo i coefficienti del polinomio.</p>
+<p>In questo caso, sostituiamo il pivot zero nella riga con <span class="math inline">\(\epsilon\)</span> e continuiamo a costruire l’array.</p>
+<p>Dopo aver sostituito il pivot zero con <span class="math inline">\(\epsilon\)</span>, rivalutiamo la prima colonna per i cambiamenti di segno. Le conclusioni tratte da questo array Routh modificato aiutano a valutare la stabilità del sistema.</p>
+<p><strong>Considerazione di ( ) nell’analisi limite</strong>: È importante notare che l’uso di $ $ nel contesto di un processo limitante, dove tende allo zero, rende il suo segno (positivo o negativo ) irrilevante. Questo perché, nei casi in cui l’equazione caratteristica del sistema non ha radici sull’asse immaginario, il segno specifico della piccola perturbazione introdotta da $ $ non incide in modo significativo sull’analisi di stabilità.</p>
+<img src="../pics/17_Stability_and_Routh_Criterion_system_zero_pivot_11.png" alt="17_Stability_and_Routh_Criterion_system_zero_pivot_11" style="width:450px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<p>Completiamo quindi l’array Routh:</p>
+<img src="../pics/17_Stability_and_Routh_Criterion_system_zero_pivot_2.png" alt="17_Stability_and_Routh_Criterion_system_zero_pivot_2" style="width:450px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<p><strong>Conclusioni sulla stabilità</strong>: Possiamo ora trarre conclusioni sulla stabilità. Dato che abbiamo scelto $ &gt; 0 $ allora abbiamo due cambi di segno, il che significa che il sistema ha due radici sulla destra, e quindi il sistema è instabile.</p>
+<p><strong>Significato di una riga tutta zero</strong>: se, nel processo di lasciare che $ $ si avvicini allo zero, incontriamo una riga che diventa interamente zero, ciò suggerisce la potenziale esistenza di radici sull’asse immaginario. In tali scenari, qualsiasi conclusione sulla stabilità derivata sulla base del limite $ $ dovrebbe essere affrontata con cautela, poiché potrebbe non riflettere accuratamente il comportamento del sistema. In questo contesto è fondamentale considerare la direzione da cui $ $) si avvicina allo zero (sia dal lato positivo che negativo). Il segno di $ $ diventa importante perché, a seconda che $ $ tenda a zero dalla direzione positiva o negativa, può influenzare l’analisi delle radici che giacciono vicine all’asse immaginario. Questa sensibilità al segno di $ $ è particolarmente rilevante quando si ha a che fare con radici che possono attraversare l’asse immaginario a causa di perturbazioni così piccole, alterando così le caratteristiche di stabilità del sistema. Pertanto, nei casi con una riga tutta zero, la valutazione della stabilità dovrebbe includere un attento esame di come questi piccoli cambiamenti in $ $ influenzano la posizione delle radici rispetto all’asse immaginario.</p>
+<p>In questi casi, formuliamo un polinomio ausiliario utilizzando la riga immediatamente sopra la riga tutta zero. Questo polinomio ausiliario aiuta ad analizzare ulteriormente il comportamento del sistema.</p>
+<p>Il passo successivo prevede la divisione del polinomio caratteristico originale per questo polinomio ausiliario per isolare le radici rimanenti. Il criterio di stabilità di Routh viene quindi riapplicato a questo polinomio del resto.</p>
+</section>
+<section id="esempio-illustrativo-1" class="level3">
+<h3 class="anchored" data-anchor-id="esempio-illustrativo-1">Esempio illustrativo</h3>
+<p>Consideriamo il polinomio:</p>
+<p><span class="math display">\[
+\Delta(i) = s^6 + s^5 +3s^4 + 3s^3 + 3s^2 + 2s+ 1
+\]</span></p>
+<img src="../pics/17_Stability_and_Routh_Criterion_system_zero_pivot_3.png" alt="17_Stability_and_Routh_Criterion_system_zero_pivot_3" style="width:450px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<p>Quando $ $ si avvicina a zero, gli elementi nella riga $ s^1 $ dell’array Routh convergono a zero. Questa situazione suggerisce una potenziale presenza di radici sull’asse immaginario nel piano s. Per risolvere questo problema è necessario un esame più attento del polinomio ausiliario. Nei casi in cui non si trovano radici sull’asse immaginario, tipicamente si procede sostituendo la riga tutta zero con i coefficienti derivati ​​dalla derivata del polinomio ausiliario. Tuttavia, se le radici sull’asse immaginario sono effettivamente presenti, adottiamo un approccio diverso: il polinomio caratteristico originale viene diviso per il polinomio ausiliario e il criterio di stabilità di Routh viene quindi applicato a questo polinomio del resto risultante.</p>
+<p>Nell’esempio specifico analizzato, quando si considera il limite di $ $ che si avvicina allo zero nella riga $ s^2 $, il polinomio ausiliario è formulato come $ A(s) = s^2 + 1 = 0 $.</p>
+<ol type="1">
+<li><p><strong>Radici del polinomio ausiliario</strong>:</p>
+<ul>
+<li>Il polinomio ausiliario $ A(s) = s^2 + 1 = 0 $ ha radici in $ s = j $, indicando la presenza di radici sull’asse immaginario nel piano s. Queste radici sono posizionate simmetricamente rispetto all’asse reale.</li>
+</ul></li>
+<li><p><strong>Divisione del polinomio originale</strong>:</p>
+<ul>
+<li>Data la presenza di radici dell’asse immaginario, il polinomio caratteristico originale deve essere diviso per il polinomio ausiliario. Questa divisione isola la restante parte del polinomio, che esclude le radici già individuate dal polinomio ausiliario. <em>Questa divisione produrrà un nuovo polinomio che rappresenta la parte del sistema non considerata dal polinomio ausiliario.</em></li>
+</ul>
+<p><span class="math display">\[
+\frac{\Delta(s)}{A(s)} = s^4 + s^3 + 2s^2 + 2s + 1
+\]</span></p></li>
+<li><p><strong>Applicazione del criterio di stabilità di Routh al polinomio del resto</strong>:</p>
+<ul>
+<li>Una volta diviso il polinomio originale per $ A(s) = s^2 + 1 $, il polinomio risultante è soggetto al criterio di stabilità di Routh. Questa analisi rivelerà la stabilità del sistema per quanto riguarda le radici che non si trovano sull’asse immaginario.</li>
+</ul></li>
+</ol>
+<img src="../pics/17_Stability_and_Routh_Criterion_system_zero_pivot_4.png" alt="17_Stability_and_Routh_Criterion_system_zero_pivot_4" style="width:450px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<ol start="4" type="1">
+<li><strong>Interpretare i risultati</strong>:
+<ul>
+<li>Se tutti gli elementi nella prima colonna del nuovo array Routh sono positivi, ciò indica che le restanti radici (escluse quelle sull’asse immaginario) si trovano nel semipiano sinistro, suggerendo stabilità per questa parte del sistema.</li>
+<li>Se nella prima colonna ci sono cambiamenti di segno, indica instabilità dovuta al fatto che le radici si trovano nel semipiano destro.</li>
+</ul></li>
+</ol>
+<p>In questo caso, quando <span class="math inline">\(\epsilon \rightarrow 0\)</span>, ci sono due cambi di segno nella prima colonna dell’array. Ci sono quindi due radici nella RHP.</p>
+<p>Il polinomio originale <span class="math inline">\(\Delta(s)\)</span> ha quindi due radici nella RHP e due radici nell’asse immaginario.</p>
+<hr>
+</section>
+</section>
+<section id="estendere-il-criterio-di-routh-oltre-la-stabilità-assoluta" class="level2">
+<h2 class="anchored" data-anchor-id="estendere-il-criterio-di-routh-oltre-la-stabilità-assoluta">Estendere il criterio di Routh oltre la stabilità assoluta</h2>
+<section id="stabilità-relativa" class="level3">
+<h3 class="anchored" data-anchor-id="stabilità-relativa">Stabilità relativa</h3>
+<p>Il criterio di stabilità di Routh viene utilizzato per confermare la stabilità assoluta di un sistema, verificando che tutte le radici della sua equazione caratteristica siano localizzate nella metà sinistra del piano s. Dopo aver stabilito che un sistema è assolutamente stabile, con tutte le sue radici caratteristiche nel semipiano sinistro, il passo successivo è valutarne la stabilità relativa. La stabilità relativa si concentra sulla comprensione delle caratteristiche della risposta transitoria del sistema.</p>
+<p>In altre parole, la stabilità relativa si riferisce al grado di stabilità del sistema, indicando quanto velocemente la risposta di un sistema si stabilizza al suo stato stazionario o quanto è resiliente alle oscillazioni e alle perturbazioni.</p>
+<ul>
+<li><p><strong>Significato delle posizioni delle radici</strong>: Nel piano s, la posizione dei poli del sistema (radici dell’equazione caratteristica) determina la sua stabilità relativa. I poli più a sinistra nel piano s indicano un decadimento più rapido dei transitori, il che implica una maggiore stabilità relativa.</p></li>
+<li><p><strong>Costante di tempo e risposta</strong>: la risposta transitoria di una modalità in un sistema può essere rappresentata come $ e^{-pt} $, dove $ p $ è il polo e $ t $ è il tempo. Questo può essere riscritto come $ e^{-} $, dove $ $, la costante di tempo, è l’inverso della parte reale del polo. Un $ $ più piccolo significa una risposta più rapida.</p></li>
+<li><p><strong>Utilizzo del criterio di stabilità di Routh</strong>: il criterio di stabilità di Routh può essere esteso per valutare la stabilità relativa esaminando quanto vicine sono le radici all’asse immaginario. Il criterio può accertare se le radici si trovano a sinistra di una linea verticale specificata nel piano s (ad esempio, $ s = -$), che rappresenta un limite dello smorzamento desiderato (vedi diagramma sotto). Saprai se i tuoi poli sono più veloci di $ e^{-t} $</p></li>
+</ul>
+<img src="../pics/17_Stability_and_Routh_Criterion_system_zero_pivot_5.png" alt="17_Stability_and_Routh_Criterion_system_zero_pivot_5" style="width:450px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<p><strong>🤔 Domanda pop-up</strong>: In che modo la posizione dei poli nel piano s è correlata alla stabilità relativa?</p>
+<p><strong>Risposta</strong>: Più a sinistra si trovano i poli nel piano s, più velocemente decade la risposta transitoria del sistema, indicando una maggiore stabilità relativa. I poli più vicini all’asse immaginario suggeriscono un decadimento più lento dei transitori, implicando una stabilità relativa inferiore.</p>
+</section>
+<section id="esempio-illustrativo-4" class="level3">
+<h3 class="anchored" data-anchor-id="esempio-illustrativo-4">Esempio illustrativo 4</h3>
+<p>Consideriamo il polinomio:</p>
+<p><span class="math display">\[
+s^3 + 7s^2 + 25s + 39 = 0
+\]</span></p>
+<ul>
+<li><strong>Estensione del criterio di Routh per la stabilità relativa</strong>:
+<ul>
+<li>Per analizzare la stabilità relativa, possiamo modificare il criterio di Routh per valutare se i poli si trovano a sinistra di una linea specifica nel piano s, ad esempio $ s = -$.</li>
+<li>Sostituendo $ s = - $ nell’equazione caratteristica, spostiamo l’analisi su un nuovo piano ($ $-piano). Qui, $ $ è un valore predefinito che rappresenta il livello desiderato di smorzamento o velocità di risposta.</li>
+</ul></li>
+</ul>
+<p>Ad esempio, per <span class="math inline">\(\sigma=1\)</span>, possiamo cambiare la coordinata in $ s = - 1 $ e riscrivere l’equazione caratteristica come:</p>
+<p><span class="math display">\[
+\hat{s}^3 + 4\hat{s}^2 + 14\hat{s} + 20 = 0
+\]</span></p>
+<p>e applichiamo il criterio di Routh a questo nuovo polinomio.</p>
+<p>Possiamo quindi verificare che, in questo caso, non ci sono cambiamenti di segno nella prima colonna dell’array Routh. Ciò significa che il polinomio originale non ha radici a destra della linea <span class="math inline">\(s=-1\)</span>.</p>
+<ul>
+<li>L’array Routh stabilisce se il nuovo polinomio non ha radici a destra di <span class="math inline">\(\hat{s}=0\)</span>.</li>
+<li>Se imposti <span class="math inline">\(\hat{s}=0\)</span> in $ s = - 1 $, questo ci darà: <span class="math inline">\(s=-1\)</span></li>
+</ul>
+<p><strong>🤔 Domanda pop-up</strong>: In che modo la scelta di $ $ influisce sull’analisi della stabilità relativa?</p>
+<p><strong>Risposta</strong>: La scelta di $ $ stabilisce un punto di riferimento per la velocità di risposta o smorzamento desiderata nel sistema. Analizzando le posizioni delle radici relative a $ s = -$, possiamo determinare se la risposta del sistema è più veloce o più lenta rispetto a questo benchmark, valutando così la sua relativa stabilità.</p>
+</section>
+</section>
+<section id="analisi-della-sensibilità-e-della-stabilità-dei-parametri" class="level2">
+<h2 class="anchored" data-anchor-id="analisi-della-sensibilità-e-della-stabilità-dei-parametri">Analisi della sensibilità e della stabilità dei parametri</h2>
+<p>Nella nostra continua esplorazione dei sistemi di controllo, approfondiamo un aspetto importante: la sensibilità della stabilità del sistema alle variazioni dei parametri. Ci concentreremo su un sistema di feedback caratterizzato da un parametro $ K $. Il nostro obiettivo è determinare l’intervallo di $ K $ che garantisce la stabilità del sistema.</p>
+<section id="lequazione-caratteristica-e-larray-routh" class="level3">
+<h3 class="anchored" data-anchor-id="lequazione-caratteristica-e-larray-routh">L’equazione caratteristica e l’array Routh</h3>
+<p>Consideriamo un sistema di feedback in cui:</p>
+<p><span class="math display">\[ G(s) = \frac{K}{s(s^2+s+1)(s+4)} \]</span></p>
+<p>e $ K $ è il nostro parametro di progettazione e vorremmo sceglierlo in modo tale che il sistema rimanga stabile.</p>
+<p>La stabilità del sistema è governata dall’equazione caratteristica $ 1 + G(s) = 0 $. Per questo sistema, l’equazione caratteristica diventa una funzione di $ K $:</p>
+<p><span class="math display">\[
+s^4 + 5s^3 + 5s^2 + 4s + K = 0
+\]</span></p>
+<p>Costruiamo l’array Routh per questo sistema, tenendo presente che sarà una funzione di $ K $:</p>
+<span class="math display">\[\begin{array}{c|ccc}
+s^4 &amp; 1 &amp; 5 &amp; K\\
+s^3 &amp; 5 &amp; 4 &amp; \\
+s^2 &amp; \frac{21}{5} &amp; K &amp; \\
+s^1 &amp; \frac{84/5 - 5K}{\frac{21}{5}} &amp; 0 \\
+s^0 &amp; K &amp; \\
+\end{array}\]</span>
+<section id="vincoli-di-stabilità-sul-parametro-k" class="level4">
+<h4 class="anchored" data-anchor-id="vincoli-di-stabilità-sul-parametro-k">Vincoli di stabilità sul parametro $K $</h4>
+<p>L’analisi dell’array di Routh rivela i vincoli su $K $.</p>
+<p>Per garantire la stabilità:</p>
+<ol type="1">
+<li><p>$K $ deve essere maggiore di zero. Ciò si allinea con i sistemi fisici in cui, in genere, il guadagno dell’amplificatore (<span class="math inline">\(K\)</span>) è positivo.</p></li>
+<li><p>Ulteriori vincoli derivano dall’array Routh. Ad esempio, il primo elemento della colonna corrispondente a $s^1 $ dovrebbe essere positivo, producendo la condizione $K &lt; $.</p></li>
+</ol>
+<p>Pertanto, per la stabilità del sistema, $K $ deve trovarsi all’interno dell’intervallo $0 &lt; K &lt; $.</p>
+</section>
+<section id="implicazioni-sulla-progettazione" class="level4">
+<h4 class="anchored" data-anchor-id="implicazioni-sulla-progettazione">Implicazioni sulla progettazione</h4>
+<ul>
+<li><p><strong>Intervallo di stabilità</strong>: Nell’intervallo $0 &lt; K &lt; $ becomes critical in system design. Any performance specifications must be met within this range to avoid instability.</p></li>
+<li><p><strong>Pole Movement with Varying $K $</strong>: As $K $ increases within this range, the closed-loop poles drift towards the right half-plane. A $K $ value of $ $ brings the poles to the <span class="math inline">\(j\omega\)</span> axis, indicating a marginally stable system. In the case where <span class="math inline">\(K = \frac{84}{25}\)</span> we would obtain an all-zero row in the Routh array. The corresponding roots would be on the <span class="math inline">\(j\omega\)</span> axis (more specifically they would be <span class="math inline">\(\pm j \omega_0\)</span>).</p></li>
+<li><p><strong>System Behavior Beyond the Stability Range</strong>: For $K &gt; $, il sistema diventa instabile, oscillando con una frequenza di <span class="math inline">\(\omega_0\)</span> radianti al secondo.</p></li>
+</ul>
+<p><strong>🤔 Domanda pop-up</strong>: Cosa succede alla stabilità di un sistema quando il parametro <span class="math inline">\(K\)</span> supera il suo limite superiore di stabilità?</p>
+<p><strong>Risposta</strong>: Quando $K $ supera il suo limite superiore di stabilità (in questo caso, $ $), il sistema passa da uno stato marginalmente stabile a uno stato instabile, caratterizzato da oscillazioni ad uno specifico frequenza determinata dai poli del sistema.</p>
+</section>
+<section id="estendere-lanalisi-considerare-gli-elementi-di-ritardo" class="level4">
+<h4 class="anchored" data-anchor-id="estendere-lanalisi-considerare-gli-elementi-di-ritardo">Estendere l’analisi: considerare gli elementi di ritardo</h4>
+<p>Infine estendiamo la nostra analisi ad un sistema più complesso dove:</p>
+<p><span class="math display">\[G(s) = \frac{K}{s(s+1)} \]</span></p>
+<p>e <span class="math display">\[H(s) = e^{-s\tau_D} \]</span></p>
+<p>dove stiamo introducendo un elemento di ritardo $_D $.</p>
+<img src="../pics/17_Stability_and_Routh_Criterion_system_delay.png" alt="17_Stability_and_Routh_Criterion_system_delay" style="width:450px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<p>L’equazione caratteristica è:</p>
+<p><span class="math display">\[
+1+G(s)H(s) = 1 + \frac{Ke^{-s\tau_D}}{s(s+1)} = 0
+\]</span></p>
+<ul>
+<li><p>La presenza di ritardo rende l’equazione caratteristica non polinomiale.</p></li>
+<li><p>Tuttavia, approssimando il termine di ritardo $e^{-s_D} $ utilizzando l’approssimazione del primo ordine di Padé, possiamo tornare alla forma polinomiale, consentendo l’applicazione del criterio di Routh.</p></li>
+<li><p>Più specificamente, un’approssimazione approssimativa di <span class="math inline">\(e^{-s\tau_D}\)</span> è:</p></li>
+</ul>
+<p><span class="math display">\[
+e^{-s\tau_D} \approx 1 - s\tau_D
+\]</span></p>
+<p>o uno migliore:</p>
+<p><span class="math display">\[
+e^{-s\tau_D} \approx \frac{1 - s\frac{\tau_D}{2}}{1 + s\frac{\tau_D}{2}} = \frac{1 - sT}{1 +st}
+\]</span></p>
+<p>Ora abbiamo due parametri sconosciuti: <span class="math inline">\(K\)</span> e <span class="math inline">\(T\)</span>.</p>
+<p><strong>Esercizio</strong>: applica il criterio di stabilità di Routh all’equazione caratteristica approssimata che coinvolge $K $ e <span class="math inline">\(T\)</span>. Determinare l’intervallo di stabilità per questi parametri.</p>
+<p><span class="math display">\[
+Ts^3 + (1+T)s^2 + (1-KT)s + K = 0
+\]</span></p>
+<span class="math display">\[\begin{array}{c|cc}
+s^3 &amp; T &amp; 1-KT \\
+s^2 &amp; 1+T &amp; K \\
+s^1 &amp; \frac{1+T-2KT-KT^2}{1+T} &amp; 0 \\
+s^0 &amp; K &amp; \\
+\end{array}\]</span>
+<p>Perché il sistema sia stabile:</p>
+<ul>
+<li><span class="math inline">\(T&gt;0\)</span> (fisicamente ha senso) -<span class="math inline">\(K&gt;0\)</span></li>
+<li><span class="math inline">\(\frac{1+T-2KT-KT^2}{1+T} &gt;0\)</span> <span class="math inline">\(\Rightarrow\)</span> <span class="math inline">\(1+T-KT(T+2)&gt;0\)</span> <span class="math inline">\(\Rightarrow\)</span> <span class="math inline">\(KT = \frac{ T+2}{T+1}\)</span> (caso marginale).</li>
+</ul>
+<p>Possiamo tracciare questo:</p>
+<div id="39d2d9e5" class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the range of T, avoiding T = 0 and T = -1 to prevent division by zero</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>T <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">400</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>T <span class="op">=</span> T[np.logical_and(T <span class="op">!=</span> <span class="dv">0</span>, T <span class="op">!=</span> <span class="op">-</span><span class="dv">1</span>)]</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate K as a function of T</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>K <span class="op">=</span> (T <span class="op">+</span> <span class="dv">2</span>) <span class="op">/</span> (T <span class="op">*</span> (T <span class="op">+</span> <span class="dv">1</span>))</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>plt.plot(T, K, label<span class="op">=</span><span class="st">'K(T) = (T + 2) / (T * (T + 1))'</span>)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>plt.fill_between(T, <span class="dv">1</span>, K, color<span class="op">=</span><span class="st">'lightblue'</span>, alpha<span class="op">=</span><span class="fl">0.5</span>, label<span class="op">=</span><span class="st">'Stable Range (below curve)'</span>)</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'T'</span>)</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'K'</span>)</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Plot of K(T) = (T + 2) / (T * (T + 1))'</span>)</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>plt.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'black'</span>, linewidth<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>plt.axvline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'black'</span>, linewidth<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="17_Stability_and_Routh_Criterion_it_files/figure-html/cell-4-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Nota su ritardo e stabilità</strong>: - Questo esempio illustra come l’aumento del ritardo (<span class="math inline">\(\tau_D\)</span>) riduca il margine di stabilità, evidenziando l’effetto destabilizzante del ritardo nei sistemi di controllo. - Il sistema sarà stabile per un valore inferiore a <span class="math inline">\(K\)</span>. - I tempi morti causano instabilità nel sistema e dovrebbero essere ridotti il ​​più possibile. - Qualsiasi coppia <span class="math inline">\((K, T)\)</span> deve trovarsi nell’intervallo stabile.</p>
+
+
+</section>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/andreamunafo\.github\.io\/principles-of-automatic-controls");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/andreamunafo/principles-of-automatic-controls/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

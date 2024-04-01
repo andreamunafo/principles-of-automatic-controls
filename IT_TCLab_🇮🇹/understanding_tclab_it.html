@@ -1,0 +1,1971 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.552">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>principles-of-automatic-controls - Comprendere TCLab</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+<meta property="og:title" content="principles-of-automatic-controls - Comprendere TCLab">
+<meta property="og:description" content="Course in feedback control for the University of Pisa">
+<meta property="og:site_name" content="principles-of-automatic-controls">
+<meta name="twitter:title" content="principles-of-automatic-controls - Comprendere TCLab">
+<meta name="twitter:description" content="Course in feedback control for the University of Pisa">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">principles-of-automatic-controls</span>
+    </a>
+  </div>
+        <div class="quarto-navbar-tools tools-end">
+</div>
+          <div id="quarto-search" class="" title="Search"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../IT_TCLab_🇮🇹/spacecraft_thermal_control_systems_it.html">IT_TCLab_🇮🇹</a></li><li class="breadcrumb-item"><a href="../IT_TCLab_🇮🇹/understanding_tclab_it.html">Comprendere TCLab</a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Feedback Control</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../faq.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Frequently Asked Questions (FAQ)</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../syllabus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Syllabus for “Principles of Automatic Control”</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../toc.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Table of Contents</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../update_and_manage_local_changes_guide.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A Guide to Updating Your Local Repository with Git in Anaconda’s Virtual Environment</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../getting_started_with_python_and_jupyter_notebook.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Getting Started with Python and Jupyter Notebooks</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principles of Automatic Control</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../basics_of_feedback_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Feedback Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../introduction_to_control_problem.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to the control problem</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../dynamic_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modeling in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../dynamic_response.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Dynamic response of control systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../06_inverse_laplace_transform.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Inverse Laplace Transform: Partial fraction decomposition</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../modeling_dynamic_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Modeling of Dynamic Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../control_system_components.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Control System Components</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../models_of_control_devices_and_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Models of Controlled Devices</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../hardware_and_case_studies.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Hardware of Control Systems and Case Studies</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ac_hardware_and_case_studies.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">AC Motion Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../a_first_complete_application.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A Feedback Control System</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../principles_of_feedback_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principles of Feedback Control</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../feedback_systems_and_their_effects.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Feedback systems and their effects</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../introduction_to_control_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../stability.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Stability Analysis in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../stability_and_routh_criterion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Stability Analysis in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../performance_of_feedback_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Performance of Feedback Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../design_of_feedback_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Design Cycle for a Standard Second-Order System</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../20_Design_of_feedback_control_continued.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Understanding the Standard Second-Order System: Recap</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../steady_state_accuracy_and_design_principles.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Steady State Accuracy and Design Principles</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../compensator_design_using_root_locus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compensator Design</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../design_with_the_root_locus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Design with the Root Locus</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../compensators_and_root_locus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compensators and the Root Locus</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../introduction_to_frequency_domain_analysis_in_control_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Frequency Domain Analysis in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../application_of_nyquist_stability_criterion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Application of Nyquist Stability Criterion in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../the_nyquist_stability_criterion_and_relative_stability.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The Nyquist Stability Criterion and Relative Stability</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../bode_plots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Bode Plot Analysis</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../feedback_system_performance_based_on_frequency_response.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Feedback System Performance Based On Frequency Response</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../compensator_design_using_frequency_response_plots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principles of Automatic Control: Lead and Lag Compensation</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">IT_TCLab_🇮🇹</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/spacecraft_thermal_control_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Il Laboratorio di Controllo della Temperatura</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/tclab_exercises_report_template_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modello di report sugli esercizi TCLab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/tclab_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Il Laboratorio di Controllo della Temperatura</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/understanding_tclab_it.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Comprendere TCLab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/tclab_lab_1_coding_a_relay_controller_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 1: Codifica di un controller relè</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/system_model_and_identification_tclab_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modellazione del sistema</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/step_testing_tclab_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Passo Test</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/fitting_step_test_data_to_empirical_models_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Adattamento dei dati dei test di fase ai modelli empirici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/tclab_lab_2_model_identification_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 2: Identificazione del modello</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/tclab_lab_2_fitting_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Identificazione del modello: adattamento dei modelli ai dati</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/relay_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Controllo relè</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/pid_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Controllo PID</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/lab-assignment-pid-control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compito di laboratorio: Controllo PID</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/lab-assignment-pi-control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compito di laboratorio 4: Controllo PI</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">IT_🇮🇹</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/faq_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Domande frequenti (FAQ)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/syllabus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Programma del corso “Principi del controllo automatico”</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/update_and_manage_local_changes_guide_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Aggiornare il Proprio Repository Locale Mantenendo le Modifiche Locali</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/getting_started_with_python_and_jupyter_notebook_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Guida introduttiva ai notebook Python e Jupyter</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/intro_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principi di controllo automatico</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/basics_of_feedback_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione ai sistemi di controllo del feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/introduction_to_control_problem_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione al problema del controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/dynamic_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modellazione nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/dynamic_response_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Risposta dinamica dei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/06_inverse_laplace_transform_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Trasformata di Laplace inversa: scomposizione parziale di frazioni</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/modeling_dynamic_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione alla modellazione dei sistemi dinamici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/control_system_components_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Componenti del sistema di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/models_of_control_devices_and_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modelli di dispositivi controllati</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/hardware_and_case_studies_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Hardware dei sistemi di controllo e casi di studio</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/ac_hardware_and_case_studies_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sistemi di controllo del movimento CA</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/a_first_complete_application_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Un sistema di controllo del feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/principles_of_feedback_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principi di controllo del feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/feedback_systems_and_their_effects_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sistemi di feedback e loro effetti</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/introduction_to_control_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione ai sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/stability_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analisi di stabilità nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/stability_and_routh_criterion_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analisi di stabilità nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/performance_of_feedback_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prestazioni dei sistemi di feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/design_of_feedback_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Ciclo di progettazione per un sistema standard del secondo ordine</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/20_Design_of_feedback_control_continued_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Comprensione del sistema standard del secondo ordine: riepilogo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/steady_state_accuracy_and_design_principles_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Precisione dello stato stazionario e principi di progettazione</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/compensator_design_using_root_locus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Progettazione del compensatore</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/design_with_the_root_locus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Progettare con il luogo delle radici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/compensators_and_root_locus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compensatori e luogo delle radici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/introduction_to_frequency_domain_analysis_in_control_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione all’analisi nel dominio della frequenza nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/application_of_nyquist_stability_criterion_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Applicazione del criterio di stabilità di Nyquist nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/the_nyquist_stability_criterion_and_relative_stability_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Il criterio di stabilità di Nyquist e la stabilità relativa</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/bode_plots_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analisi del diagramma di Bode</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/feedback_system_performance_based_on_frequency_response_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prestazioni del sistema di feedback basate sulla risposta in frequenza</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/index_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Syllabus - Fondamenti di Automatica</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">TCLab</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/spacecraft_thermal_control_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The Temperature Control Laboratory</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/tclab_exercises_report_template.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Exercises Report Template</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The Temperature Control Lab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/understanding_tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Understanding TCLab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/tclab_lab_1_coding_a_relay_controller-solution.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 1: Coding a relay controller</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/tclab_lab_1_coding_a_relay_controller.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 1: Coding a relay controller</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/system_model_and_identification_tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">System Modeling</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/step_testing_tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Step Testing</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/fitting_step_test_data_to_empirical_models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Fitting Step Test Data to Empirical Models</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/tclab_lab_2_model_identification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 2: Model Identification</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/tclab_lab_2_model_identification_solutions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 2: Model Identification</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/tclab_lab_2_fitting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Model Identification: Fitting models to data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/relay_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Relay Control</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/pid_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">PID Control</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/lab-assignment-pid-control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab Assignment: PID Control</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/lab-assignment-pi-control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab Assignment 4: PI Control</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#il-pacchetto-python-tclab" id="toc-il-pacchetto-python-tclab" class="nav-link active" data-scroll-target="#il-pacchetto-python-tclab">Il pacchetto Python TCLab</a>
+  <ul class="collapse">
+  <li><a href="#i-componenti-principali-di-tclab" id="toc-i-componenti-principali-di-tclab" class="nav-link" data-scroll-target="#i-componenti-principali-di-tclab">I componenti principali di TCLab</a>
+  <ul class="collapse">
+  <li><a href="#configurazioni-operative-di-tclab" id="toc-configurazioni-operative-di-tclab" class="nav-link" data-scroll-target="#configurazioni-operative-di-tclab">Configurazioni operative di TCLab</a></li>
+  </ul></li>
+  <li><a href="#come-funziona-tclab" id="toc-come-funziona-tclab" class="nav-link" data-scroll-target="#come-funziona-tclab">Come funziona TCLab</a></li>
+  <li><a href="#schemi-tclab" id="toc-schemi-tclab" class="nav-link" data-scroll-target="#schemi-tclab">Schemi TCLab</a></li>
+  </ul></li>
+  <li><a href="#configurazione-di-tclab" id="toc-configurazione-di-tclab" class="nav-link" data-scroll-target="#configurazione-di-tclab">Configurazione di TCLab</a>
+  <ul class="collapse">
+  <li><a href="#sezione-1-installazione-di-python-utilizzando-conda" id="toc-sezione-1-installazione-di-python-utilizzando-conda" class="nav-link" data-scroll-target="#sezione-1-installazione-di-python-utilizzando-conda">Sezione 1: Installazione di Python utilizzando Conda</a></li>
+  <li><a href="#installazione-di-python-su-mac" id="toc-installazione-di-python-su-mac" class="nav-link" data-scroll-target="#installazione-di-python-su-mac">Installazione di Python su Mac</a>
+  <ul class="collapse">
+  <li><a href="#passaggio-1-installa-anaconda" id="toc-passaggio-1-installa-anaconda" class="nav-link" data-scroll-target="#passaggio-1-installa-anaconda">Passaggio 1: installa Anaconda</a></li>
+  <li><a href="#passaggio-2-configurazione-dellambiente-facoltativo" id="toc-passaggio-2-configurazione-dellambiente-facoltativo" class="nav-link" data-scroll-target="#passaggio-2-configurazione-dellambiente-facoltativo">Passaggio 2: configurazione dell’ambiente (facoltativo)</a></li>
+  </ul></li>
+  <li><a href="#installazione-di-python-su-windows" id="toc-installazione-di-python-su-windows" class="nav-link" data-scroll-target="#installazione-di-python-su-windows">Installazione di Python su Windows</a>
+  <ul class="collapse">
+  <li><a href="#passaggio-1-installa-anaconda-1" id="toc-passaggio-1-installa-anaconda-1" class="nav-link" data-scroll-target="#passaggio-1-installa-anaconda-1">Passaggio 1: installa Anaconda</a></li>
+  <li><a href="#passaggio-2-configurazione-dellambiente-facoltativo-1" id="toc-passaggio-2-configurazione-dellambiente-facoltativo-1" class="nav-link" data-scroll-target="#passaggio-2-configurazione-dellambiente-facoltativo-1">Passaggio 2: configurazione dell’ambiente (facoltativo)</a></li>
+  </ul></li>
+  <li><a href="#installazione-di-python-su-linux" id="toc-installazione-di-python-su-linux" class="nav-link" data-scroll-target="#installazione-di-python-su-linux">Installazione di Python su Linux</a>
+  <ul class="collapse">
+  <li><a href="#passaggio-1-installa-anaconda-2" id="toc-passaggio-1-installa-anaconda-2" class="nav-link" data-scroll-target="#passaggio-1-installa-anaconda-2">Passaggio 1: installa Anaconda</a></li>
+  <li><a href="#passaggio-2-configurazione-dellambiente-facoltativo-2" id="toc-passaggio-2-configurazione-dellambiente-facoltativo-2" class="nav-link" data-scroll-target="#passaggio-2-configurazione-dellambiente-facoltativo-2">Passaggio 2: configurazione dell’ambiente (facoltativo)</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#sezione-2-configurazione-di-tclab" id="toc-sezione-2-configurazione-di-tclab" class="nav-link" data-scroll-target="#sezione-2-configurazione-di-tclab">Sezione 2: Configurazione di TCLab</a>
+  <ul class="collapse">
+  <li><a href="#configurazione-dellambiente-conda" id="toc-configurazione-dellambiente-conda" class="nav-link" data-scroll-target="#configurazione-dellambiente-conda">Configurazione dell’ambiente Conda</a>
+  <ul class="collapse">
+  <li><a href="#installazione-del-pacchetto-tclab" id="toc-installazione-del-pacchetto-tclab" class="nav-link" data-scroll-target="#installazione-del-pacchetto-tclab">Installazione del pacchetto TCLab</a></li>
+  </ul></li>
+  <li><a href="#test-iniziali-con-tclab" id="toc-test-iniziali-con-tclab" class="nav-link" data-scroll-target="#test-iniziali-con-tclab">Test iniziali con TCLab</a>
+  <ul class="collapse">
+  <li><a href="#passaggio-1-collega-tclab" id="toc-passaggio-1-collega-tclab" class="nav-link" data-scroll-target="#passaggio-1-collega-tclab">Passaggio 1: collega TCLab</a></li>
+  <li><a href="#passaggio-2-testare-la-connessione-tclab" id="toc-passaggio-2-testare-la-connessione-tclab" class="nav-link" data-scroll-target="#passaggio-2-testare-la-connessione-tclab">Passaggio 2: testare la connessione TCLab</a></li>
+  </ul></li>
+  <li><a href="#utilizzo-del-simulatore-tclab" id="toc-utilizzo-del-simulatore-tclab" class="nav-link" data-scroll-target="#utilizzo-del-simulatore-tclab">Utilizzo del simulatore TCLab</a>
+  <ul class="collapse">
+  <li><a href="#importazione" id="toc-importazione" class="nav-link" data-scroll-target="#importazione">Importazione</a></li>
+  <li><a href="#utilizzo-di-tclab-con-listruzione-with-di-python" id="toc-utilizzo-di-tclab-con-listruzione-with-di-python" class="nav-link" data-scroll-target="#utilizzo-di-tclab-con-listruzione-with-di-python">Utilizzo di TCLab con l’istruzione <code>with</code> di Python</a></li>
+  </ul></li>
+  <li><a href="#lettura-delle-temperature" id="toc-lettura-delle-temperature" class="nav-link" data-scroll-target="#lettura-delle-temperature">Lettura delle temperature</a></li>
+  <li><a href="#impostazione-dei-riscaldatori" id="toc-impostazione-dei-riscaldatori" class="nav-link" data-scroll-target="#impostazione-dei-riscaldatori">Impostazione dei riscaldatori</a></li>
+  <li><a href="#sincronizzazione-in-tempo-reale-utilizzando-clock" id="toc-sincronizzazione-in-tempo-reale-utilizzando-clock" class="nav-link" data-scroll-target="#sincronizzazione-in-tempo-reale-utilizzando-clock">Sincronizzazione in tempo reale utilizzando <code>clock</code></a>
+  <ul class="collapse">
+  <li><a href="#utilizzo-di-clock-con-tclab" id="toc-utilizzo-di-clock-con-tclab" class="nav-link" data-scroll-target="#utilizzo-di-clock-con-tclab">Utilizzo di <code>clock</code> con TCLab</a></li>
+  </ul></li>
+  <li><a href="#lo-historian-di-tclab" id="toc-lo-historian-di-tclab" class="nav-link" data-scroll-target="#lo-historian-di-tclab">Lo <code>Historian</code> di TCLab</a></li>
+  <li><a href="#il-plotter-di-tclab" id="toc-il-plotter-di-tclab" class="nav-link" data-scroll-target="#il-plotter-di-tclab">Il <code>Plotter</code> di TCLab</a></li>
+  <li><a href="#utilizzo-di-tclab-offline" id="toc-utilizzo-di-tclab-offline" class="nav-link" data-scroll-target="#utilizzo-di-tclab-offline">Utilizzo di TCLab offline</a></li>
+  <li><a href="#esecuzione-della-diagnostica" id="toc-esecuzione-della-diagnostica" class="nav-link" data-scroll-target="#esecuzione-della-diagnostica">Esecuzione della diagnostica</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/andreamunafo/principles-of-automatic-controls/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../IT_TCLab_🇮🇹/spacecraft_thermal_control_systems_it.html">IT_TCLab_🇮🇹</a></li><li class="breadcrumb-item"><a href="../IT_TCLab_🇮🇹/understanding_tclab_it.html">Comprendere TCLab</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Comprendere TCLab</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
+<section id="il-pacchetto-python-tclab" class="level1">
+<h1>Il pacchetto Python TCLab</h1>
+<p>Lo schema allegato mostra come accedere al laboratorio di controllo della temperatura utilizzando la libreria TCLab.</p>
+<p><img src="./pics/B.00-TCLabOverview.png" style="float: right;padding-left:30px;"></p>
+<p><strong><em>Quaderni Jupyter e script Python:</em></strong> Il livello più alto è costituito dal codice che scrivi per implementare gli algoritmi di controllo. Questa operazione può essere eseguita nei notebook Jupyter/Python, direttamente da Python utilizzando un ambiente di sviluppo come Spyder o PyCharm. Questo repository contiene diversi esempi, lezioni e progetti degli studenti.</p>
+<p><strong><em>TCLab:</em></strong> <a href="https://github.com/jckantor/TCLab">TCLab</a> è costituito da una libreria Python intitolata “tclab” che fornisce accesso di alto livello a sensori, riscaldatori e un orologio pseudo-in tempo reale. Il pacchetto include la classe <code>TCLab()</code> che crea un oggetto per accedere al dispositivo, un iteratore <code>clock</code> per la sincronizzazione con un orologio in tempo reale, la classe <code>Historian()</code> per creare oggetti per la registrazione dei dati e un <code>Plotter( )</code> per visualizzare i dati in tempo reale.</p>
+<p><strong><em>Schizzo TCLab:</em></strong> Il repository github <a href="https://github.com/jckantor/TCLab-sketch">TCLab-sketch</a> fornisce il firmware per garantire il funzionamento intrinsecamente sicuro della scheda e dello scudo Arduino. Lo schizzo viene scaricato su Arduino utilizzando l’<a href="https://www.arduino.cc/en/Main/Software">Arduino IDE</a>. Il caricamento del firmware su Arduino è un’operazione che si effettua una sola volta.</p>
+<p><strong><em>Arduino:</em></strong> La piattaforma hardware per il Laboratorio di Termoregolazione. Gli strumenti e le librerie Python sono stati testati con le schede Arduino Uno e Arduino Leonardo.</p>
+<p><em>Da: <a href="https://jckantor.github.io/CBE32338/">CBE32338</a></em></p>
+<section id="i-componenti-principali-di-tclab" class="level2">
+<h2 class="anchored" data-anchor-id="i-componenti-principali-di-tclab">I componenti principali di TCLab</h2>
+<p><img src="../TCLab/pics/tclab_heater.png" style="float: right; padding-left:0px; width:500px;"> <img src="../TCLab/pics/tclab_temperature_sensor.png" style="float: right; padding-left:0px; width:500px;"> <img src="../TCLab/pics/tclab_radiator.png" style="float: right; padding-left:0px; width:500px;"></p>
+<p>Il Temperature Control Lab (TCLab) è un sistema integrato composto da diversi componenti chiave, ciascuno dei quali contribuisce in modo significativo alla sua funzionalità:</p>
+<ol type="1">
+<li><strong>Microcontrollore Arduino</strong>:
+<ul>
+<li><strong>Scopo</strong>: Serve come unità di elaborazione centrale per TCLab.</li>
+<li><strong>Funzionalità</strong>: elabora i dati di input dai sensori di temperatura e gestisce il funzionamento dei riscaldatori.</li>
+<li><strong>Connettività</strong>: utilizza una connessione USB per il trasferimento dei dati e consente il controllo in tempo reale tramite script Python.</li>
+</ul></li>
+<li><strong>Riscaldatori</strong>:
+<ul>
+<li><strong>Descrizione</strong>: TCLab è dotato di due riscaldatori, ciascuno in grado di generare energia termica regolabile.</li>
+<li><strong>Ruolo</strong>: Agire come principale fonte di calore per gli esperimenti, replicando scenari che richiedono la regolazione della temperatura. Funzionano come gli <strong>attuatori</strong> del sistema.</li>
+</ul></li>
+<li><strong>Sensori di temperatura</strong>:
+<ul>
+<li><strong>Tipo</strong>: questi sensori sono termistori, un tipo di resistore la cui resistenza varia con le variazioni di temperatura.</li>
+<li><strong>Intervallo di misurazione</strong>: in grado di misurare temperature comprese tra $ -40^$C e <span class="math inline">\(150^\circ\)</span>C.</li>
+<li><strong>Funzionalità</strong>: posizionato vicino a ciascun riscaldatore per misurare con precisione la temperatura, fornendo un feedback essenziale per il controllo della temperatura.</li>
+</ul></li>
+<li><strong>Dissipatori di calore</strong>:
+<ul>
+<li><strong>Tipo</strong>: Composto da dissipatori di calore a transistor.</li>
+<li><strong>Scopo</strong>: impiegato per dissipare in modo efficiente il calore lontano dai transistor.</li>
+</ul></li>
+<li><strong>LED (diodo a emissione luminosa)</strong>:</li>
+</ol>
+<ul>
+<li><strong>Scopo</strong>: Serve come indicatore visivo per vari stati o azioni, come segnalare l’attivazione di un riscaldatore.</li>
+</ul>
+<section id="configurazioni-operative-di-tclab" class="level3">
+<h3 class="anchored" data-anchor-id="configurazioni-operative-di-tclab">Configurazioni operative di TCLab</h3>
+<p>TCLab può essere configurato in varie modalità a seconda degli obiettivi formativi:</p>
+<ol type="1">
+<li><strong>Ingresso singolo Uscita singola (SISO)</strong>:
+<ul>
+<li>Utilizza solo un riscaldatore e un sensore. Ideale per semplici esperimenti di controllo e per apprendere le basi del controllo della temperatura.</li>
+</ul></li>
+<li><strong>Ingresso singolo Uscita singola (SISO) con disturbo</strong>:
+<ul>
+<li>Utilizza un riscaldatore/sensore come sistema di controllo primario e il secondo riscaldatore come fonte di disturbo esterno. Questa configurazione è utile per comprendere come i fattori esterni influenzano i sistemi di controllo.</li>
+</ul></li>
+<li><strong>Ingressi multipli Uscite multiple (MIMO)</strong>:
+<ul>
+<li>Implica l’utilizzo simultaneo di riscaldatori e sensori. Questa configurazione più avanzata non è trattata qui ma è utile per studi di sistemi di controllo complessi.</li>
+</ul></li>
+</ol>
+<p>Ogni componente del TCLab svolge un ruolo specifico, rendendolo uno strumento versatile per insegnare e sperimentare vari aspetti dell’ingegneria di controllo. Sia per l’apprendimento fondamentale che per l’esplorazione avanzata, TCLab offre una piattaforma pratica per comprendere la dinamica e il controllo dei sistemi basati sulla temperatura.</p>
+</section>
+</section>
+<section id="come-funziona-tclab" class="level2">
+<h2 class="anchored" data-anchor-id="come-funziona-tclab">Come funziona TCLab</h2>
+<ul>
+<li><strong>Flusso operativo</strong>:
+<ol type="1">
+<li><strong>Segnale di ingresso</strong>: uno script Python invia un comando ad Arduino, impostando il livello di potenza desiderato per i riscaldatori.</li>
+<li><strong>Azione di riscaldamento</strong>: i riscaldatori generano calore corrispondente ai comandi del livello di potenza ricevuti.</li>
+<li><strong>Misurazione della temperatura</strong>: i termistori misurano le temperature risultanti vicino ai riscaldatori.</li>
+<li><strong>Ciclo di feedback</strong>: queste letture della temperatura vengono inviate al computer.</li>
+<li><strong>Regolazioni</strong>: l’algoritmo di controllo nello script Python regola la potenza del riscaldatore in base al feedback della temperatura, cercando di raggiungere e mantenere una temperatura target.</li>
+</ol></li>
+</ul>
+<p><strong>[Inserisci qui il diagramma di flusso o il diagramma che mostra il ciclo di feedback]</strong></p>
+<hr>
+</section>
+<section id="schemi-tclab" class="level2">
+<h2 class="anchored" data-anchor-id="schemi-tclab">Schemi TCLab</h2>
+<table>
+<tbody><tr>
+<td>
+<img src="../TCLab/pics/tclab_schematic.png" alt="tclab_schematic" style="width: 450px;">
+</td>
+</tr>
+</tbody></table>
+</section>
+</section>
+<section id="configurazione-di-tclab" class="level1">
+<h1>Configurazione di TCLab</h1>
+<p>Questa guida fornisce istruzioni passo passo per configurare il Laboratorio di Controllo della Temperatura (TCLab), partendo dall’installazione di Python su diversi sistemi operativi fino alla conduzione dei test iniziali con TCLab e il suo simulatore.</p>
+<section id="sezione-1-installazione-di-python-utilizzando-conda" class="level2">
+<h2 class="anchored" data-anchor-id="sezione-1-installazione-di-python-utilizzando-conda">Sezione 1: Installazione di Python utilizzando Conda</h2>
+</section>
+<section id="installazione-di-python-su-mac" class="level2">
+<h2 class="anchored" data-anchor-id="installazione-di-python-su-mac">Installazione di Python su Mac</h2>
+<section id="passaggio-1-installa-anaconda" class="level3">
+<h3 class="anchored" data-anchor-id="passaggio-1-installa-anaconda">Passaggio 1: installa Anaconda</h3>
+<ul>
+<li><strong>Scarica Anaconda</strong>: visita la <a href="https://www.anaconda.com/products/individual">Pagina di download di Anaconda</a> e scarica il programma di installazione per Mac.</li>
+<li><strong>Esegui il programma di installazione</strong>: apri il file scaricato e segui le istruzioni visualizzate sullo schermo.</li>
+<li><strong>Verifica installazione</strong>:
+<ul>
+<li>Apri Terminale.</li>
+<li>Digita “conda –version” e premi Invio. Se Anaconda è stato installato correttamente, vedrai il numero di versione.</li>
+</ul></li>
+</ul>
+</section>
+<section id="passaggio-2-configurazione-dellambiente-facoltativo" class="level3">
+<h3 class="anchored" data-anchor-id="passaggio-2-configurazione-dellambiente-facoltativo">Passaggio 2: configurazione dell’ambiente (facoltativo)</h3>
+<ul>
+<li><strong>Crea un nuovo ambiente</strong>: nel Terminale, digita <code>conda create -n tclab_env python=3.8</code> e premi Invio.</li>
+<li><strong>Attiva ambiente</strong>: digita “conda activate tclab_env” e premi Invio.</li>
+</ul>
+</section>
+</section>
+<section id="installazione-di-python-su-windows" class="level2">
+<h2 class="anchored" data-anchor-id="installazione-di-python-su-windows">Installazione di Python su Windows</h2>
+<section id="passaggio-1-installa-anaconda-1" class="level3">
+<h3 class="anchored" data-anchor-id="passaggio-1-installa-anaconda-1">Passaggio 1: installa Anaconda</h3>
+<ul>
+<li><strong>Scarica Anaconda</strong>: visita la <a href="https://www.anaconda.com/products/individual">Pagina di download di Anaconda</a> e scarica il programma di installazione per Windows.</li>
+<li><strong>Esegui il programma di installazione</strong>: apri il file scaricato e segui le istruzioni visualizzate sullo schermo.</li>
+<li><strong>Verifica installazione</strong>:
+<ul>
+<li>Apri il prompt di Anaconda.</li>
+<li>Digita “conda –version” e premi Invio.</li>
+</ul></li>
+</ul>
+</section>
+<section id="passaggio-2-configurazione-dellambiente-facoltativo-1" class="level3">
+<h3 class="anchored" data-anchor-id="passaggio-2-configurazione-dellambiente-facoltativo-1">Passaggio 2: configurazione dell’ambiente (facoltativo)</h3>
+<ul>
+<li><strong>Crea un nuovo ambiente</strong>: nel prompt di Anaconda, digita “conda create -n tclab_env python=3.8” e premi Invio.</li>
+<li><strong>Attiva ambiente</strong>: digita “conda activate tclab_env” e premi Invio.</li>
+</ul>
+</section>
+</section>
+<section id="installazione-di-python-su-linux" class="level2">
+<h2 class="anchored" data-anchor-id="installazione-di-python-su-linux">Installazione di Python su Linux</h2>
+<section id="passaggio-1-installa-anaconda-2" class="level3">
+<h3 class="anchored" data-anchor-id="passaggio-1-installa-anaconda-2">Passaggio 1: installa Anaconda</h3>
+<ul>
+<li><strong>Scarica Anaconda</strong>: visita la <a href="https://www.anaconda.com/products/individual">Pagina di download di Anaconda</a> e scarica il programma di installazione per Linux.</li>
+<li><strong>Esegui programma di installazione</strong>: apri Terminale, vai alla directory contenente il file scaricato ed esegui lo script utilizzando <code>bash Anaconda3-XXXX.sh</code>.</li>
+<li><strong>Verifica installazione</strong>:
+<ul>
+<li>Nel Terminale, digita “conda –version”.</li>
+</ul></li>
+</ul>
+</section>
+<section id="passaggio-2-configurazione-dellambiente-facoltativo-2" class="level3">
+<h3 class="anchored" data-anchor-id="passaggio-2-configurazione-dellambiente-facoltativo-2">Passaggio 2: configurazione dell’ambiente (facoltativo)</h3>
+<ul>
+<li><strong>Crea un nuovo ambiente</strong>: nel Terminale, digita <code>conda create -n tclab_env python=3.8</code> e premi Invio.</li>
+<li><strong>Attiva ambiente</strong>: digita “conda activate tclab_env” e premi Invio.</li>
+</ul>
+<hr>
+</section>
+</section>
+</section>
+<section id="sezione-2-configurazione-di-tclab" class="level1">
+<h1>Sezione 2: Configurazione di TCLab</h1>
+<section id="configurazione-dellambiente-conda" class="level2">
+<h2 class="anchored" data-anchor-id="configurazione-dellambiente-conda">Configurazione dell’ambiente Conda</h2>
+<p>Per configurare l’ambiente Conda per questo corso, attenersi alla seguente procedura:</p>
+<ol type="1">
+<li>Scarica il file <code>tclab_environment.yml</code> da questo repository.</li>
+<li>Apri il terminale o il prompt di Anaconda e vai alla directory in cui si trova il file.</li>
+</ol>
+<p>Il file <code>tclab_environment.yml</code> assomiglia a questo:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode tclab_environment.yml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nome</span><span class="kw">:</span><span class="at"> tclab_env</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">canali</span><span class="kw">:</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> valori predefiniti</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">dipendenze</span><span class="kw">:</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> pitone=3.10</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> pip</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> insensato</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> matplotlib</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> scipito</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> panda</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">pip</span><span class="kw">:</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="at">    -tclab</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol start="3" type="1">
+<li><p>Crea l’ambiente dal file <code>tclab_environment.yml</code>:</p>
+<p><code>conda env create -f tclab_environment.yml</code></p></li>
+<li><p>Attiva il nuovo ambiente:</p>
+<p><code>conda attiva tclab</code></p></li>
+<li><p>Per verificare che l’ambiente sia stato installato correttamente, è possibile utilizzare:</p>
+<p><code>conda env list</code></p></li>
+</ol>
+<section id="installazione-del-pacchetto-tclab" class="level3">
+<h3 class="anchored" data-anchor-id="installazione-del-pacchetto-tclab">Installazione del pacchetto TCLab</h3>
+<ol type="1">
+<li><p><strong>Attivazione dell’ambiente</strong>:</p>
+<ul>
+<li><p>Assicurati che il tuo ambiente Anaconda sia attivo. Apri il tuo Terminale (o il prompt di Anaconda su Windows) e attiva il tuo ambiente:</p>
+<pre><code>conda attiva tclab_env</code></pre></li>
+</ul></li>
+<li><p><strong>Installazione di TCLab</strong>:</p>
+<ul>
+<li><p>La libreria <code>tclab</code> si interfaccia con l’hardware del Temperature Control Lab. Installalo inserendo il seguente comando da una finestra (MacOS) o da una finestra di comando (PC):</p>
+<pre><code>pip installa tclab</code></pre></li>
+<li><p>Premi Invio per eseguire il comando e completare l’installazione.</p></li>
+</ul>
+<p>In alternativa, l’installazione può essere eseguita da un notebook Jupyter/Python con il comando</p>
+<pre><code>!pip installa tclab</code></pre>
+<p>Ci sono aggiornamenti occasionali alla libreria. Questi possono essere installati aggiungendo un <code>--upgrade</code> ai comandi precedenti e dimostrati nella cella successiva.</p></li>
+</ol>
+<div id="7735a7f6" class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install tclab <span class="op">--</span>upgrade</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Requirement already satisfied: tclab in /Users/andreamunafo/opt/anaconda3/envs/tclab/lib/python3.10/site-packages (1.0.0)
+Requirement already satisfied: pyserial in /Users/andreamunafo/opt/anaconda3/envs/tclab/lib/python3.10/site-packages (from tclab) (3.5)</code></pre>
+</div>
+</div>
+<section id="installazione-di-librerie-utili-aggiuntive" class="level4">
+<h4 class="anchored" data-anchor-id="installazione-di-librerie-utili-aggiuntive">Installazione di librerie utili aggiuntive</h4>
+<p>Per un’esperienza completa con TCLab e per supportare vari aspetti dell’ingegneria di controllo e dell’analisi dei dati, verranno installate anche le seguenti librerie:</p>
+<ol type="1">
+<li><strong>insensibile</strong>:
+<ul>
+<li><p>Significato: una libreria fondamentale per i calcoli numerici in Python.</p></li>
+<li><p>Comando di installazione:</p>
+<pre><code>pip installa numpy</code></pre></li>
+</ul></li>
+<li><strong>matplotlib</strong>:
+<ul>
+<li><p>Significato: fondamentale per creare rappresentazioni visive dei dati, in particolare per l’analisi degli esperimenti TCLab.</p></li>
+<li><p>Comando di installazione:</p>
+<pre><code>pip installa matplotlib</code></pre></li>
+</ul></li>
+<li><strong>scipy</strong>:
+<ul>
+<li><p>Significato: fornisce un’ampia gamma di strumenti per il calcolo scientifico, compresi metodi per risolvere equazioni differenziali ordinarie, utili nella modellizzazione dei sistemi.</p></li>
+<li><p>Comando di installazione:</p>
+<pre><code>pip installa scipy</code></pre></li>
+</ul></li>
+<li><strong>panda</strong>:
+<ul>
+<li><p>Significato: offre funzionalità estese per la manipolazione e l’analisi dei dati, ideali per la gestione di set di dati complessi.</p></li>
+<li><p>Comando di installazione:</p>
+<pre><code>pip installa panda</code></pre></li>
+</ul></li>
+<li><strong>geco</strong>:
+<ul>
+<li><p>Significatività: pacchetto avanzato per l’ottimizzazione e il controllo, adatto all’implementazione di strategie di controllo predittivo del modello.</p></li>
+<li><p>Comando di installazione:</p>
+<pre><code>pip installa gekko</code></pre></li>
+</ul></li>
+</ol>
+</section>
+</section>
+</section>
+<section id="test-iniziali-con-tclab" class="level2">
+<h2 class="anchored" data-anchor-id="test-iniziali-con-tclab">Test iniziali con TCLab</h2>
+<section id="passaggio-1-collega-tclab" class="level3">
+<h3 class="anchored" data-anchor-id="passaggio-1-collega-tclab">Passaggio 1: collega TCLab</h3>
+<ul>
+<li><strong>Connetti TCLab</strong>: collega il dispositivo TCLab al computer utilizzando un cavo USB.</li>
+</ul>
+</section>
+<section id="passaggio-2-testare-la-connessione-tclab" class="level3">
+<h3 class="anchored" data-anchor-id="passaggio-2-testare-la-connessione-tclab">Passaggio 2: testare la connessione TCLab</h3>
+<ul>
+<li><strong>Scrivi script di prova</strong>:
+<ul>
+<li>Apri il tuo IDE Python o Jupyter Notebook.</li>
+<li>Scrivi il seguente codice Python ed esegui lo script. Se stampa la temperatura, TCLab è collegato correttamente.</li>
+</ul></li>
+</ul>
+<div id="457ddd4c" class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> tclab</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> tclab.TCLab() <span class="im">as</span> lab:</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Connected! Heater 1 is at </span><span class="sc">{</span>lab<span class="sc">.</span>T1<span class="sc">}</span><span class="ss">°C"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="utilizzo-del-simulatore-tclab" class="level2">
+<h2 class="anchored" data-anchor-id="utilizzo-del-simulatore-tclab">Utilizzo del simulatore TCLab</h2>
+<ul>
+<li><strong>Perché utilizzare un simulatore</strong>: il simulatore TCLab è utile quando non si dispone dell’hardware fisico.</li>
+<li><strong>Installa simulatore</strong>: nel terminale o nel prompt di Anaconda, digita nuovamente <code>pip install tclab</code> (include il simulatore).</li>
+<li><strong>Script di prova con simulatore</strong>:</li>
+</ul>
+<div id="3bdb3466" class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tclab <span class="im">import</span> setup, clock</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>TCLab <span class="op">=</span> setup(connected<span class="op">=</span><span class="va">False</span>, speedup<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> TCLab() <span class="im">as</span> lab:</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> t <span class="kw">in</span> clock(<span class="dv">200</span>, <span class="dv">2</span>):</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Time </span><span class="sc">{</span>t<span class="sc">}</span><span class="ss"> seconds. T1: </span><span class="sc">{</span>lab<span class="sc">.</span>T1<span class="sc">}</span><span class="ss">°C"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>TCLab version 1.0.0
+Simulated TCLab
+Time 0 seconds. T1: 20.949499999999997°C
+Time 2.01 seconds. T1: 20.949499999999997°C
+Time 4.04 seconds. T1: 20.949499999999997°C
+Time 6.03 seconds. T1: 20.949499999999997°C
+Time 8.06 seconds. T1: 20.949499999999997°C
+Time 10.07 seconds. T1: 20.949499999999997°C
+Time 12.02 seconds. T1: 20.949499999999997°C
+Time 14.03 seconds. T1: 20.949499999999997°C
+Time 16.15 seconds. T1: 20.949499999999997°C
+Time 18.04 seconds. T1: 20.949499999999997°C
+Time 20.2 seconds. T1: 20.949499999999997°C
+Time 22.01 seconds. T1: 20.949499999999997°C
+Time 24.19 seconds. T1: 20.949499999999997°C
+Time 26.24 seconds. T1: 20.949499999999997°C
+Time 28.16 seconds. T1: 20.949499999999997°C
+Time 30.03 seconds. T1: 20.949499999999997°C
+Time 32.12 seconds. T1: 20.949499999999997°C
+Time 34.2 seconds. T1: 20.6272°C
+Time 36.04 seconds. T1: 20.949499999999997°C
+Time 38.02 seconds. T1: 20.6272°C
+Time 40.21 seconds. T1: 20.949499999999997°C
+Time 42.14 seconds. T1: 20.949499999999997°C
+Time 44.01 seconds. T1: 20.6272°C
+Time 46.3 seconds. T1: 20.949499999999997°C
+Time 48.22 seconds. T1: 20.949499999999997°C
+Time 50.07 seconds. T1: 20.949499999999997°C
+Time 52.27 seconds. T1: 20.949499999999997°C
+Time 54.09 seconds. T1: 20.949499999999997°C
+Time 56.28 seconds. T1: 20.949499999999997°C
+Time 58.19 seconds. T1: 20.949499999999997°C
+Time 60.04 seconds. T1: 20.949499999999997°C
+Time 62.2 seconds. T1: 20.949499999999997°C
+Time 64.11 seconds. T1: 20.949499999999997°C
+Time 66.08 seconds. T1: 20.949499999999997°C
+Time 68.23 seconds. T1: 20.6272°C
+Time 70.13 seconds. T1: 20.949499999999997°C
+Time 72.07 seconds. T1: 20.949499999999997°C
+Time 74.05 seconds. T1: 20.949499999999997°C
+Time 76.1 seconds. T1: 20.6272°C
+Time 78.1 seconds. T1: 20.6272°C
+Time 80.22 seconds. T1: 20.949499999999997°C
+Time 82.28 seconds. T1: 20.949499999999997°C
+Time 84.22 seconds. T1: 20.949499999999997°C
+Time 86.16 seconds. T1: 20.949499999999997°C
+Time 88.23 seconds. T1: 20.949499999999997°C
+Time 90.0 seconds. T1: 20.949499999999997°C
+Time 92.27 seconds. T1: 20.949499999999997°C
+Time 94.0 seconds. T1: 20.949499999999997°C
+Time 96.16 seconds. T1: 20.949499999999997°C
+Time 98.02 seconds. T1: 20.949499999999997°C
+Time 100.1 seconds. T1: 20.949499999999997°C
+Time 102.24 seconds. T1: 20.949499999999997°C
+Time 104.0 seconds. T1: 20.6272°C
+Time 106.18 seconds. T1: 20.949499999999997°C
+Time 108.27 seconds. T1: 20.949499999999997°C
+Time 110.27 seconds. T1: 20.949499999999997°C
+Time 112.1 seconds. T1: 20.949499999999997°C
+Time 114.22 seconds. T1: 20.949499999999997°C
+Time 116.24 seconds. T1: 20.949499999999997°C
+Time 118.18 seconds. T1: 20.949499999999997°C
+Time 120.19 seconds. T1: 20.949499999999997°C
+Time 122.06 seconds. T1: 20.949499999999997°C
+Time 124.22 seconds. T1: 20.6272°C
+Time 126.19 seconds. T1: 20.949499999999997°C
+Time 128.18 seconds. T1: 20.949499999999997°C
+Time 130.25 seconds. T1: 20.949499999999997°C
+Time 132.02 seconds. T1: 20.6272°C
+Time 134.2 seconds. T1: 20.949499999999997°C
+Time 136.27 seconds. T1: 20.949499999999997°C
+Time 138.01 seconds. T1: 20.6272°C
+Time 140.2 seconds. T1: 20.949499999999997°C
+Time 142.18 seconds. T1: 20.949499999999997°C
+Time 144.2 seconds. T1: 20.949499999999997°C
+Time 146.23 seconds. T1: 20.949499999999997°C
+Time 148.24 seconds. T1: 20.949499999999997°C
+Time 150.19 seconds. T1: 20.949499999999997°C
+Time 152.28 seconds. T1: 20.949499999999997°C
+Time 154.25 seconds. T1: 20.949499999999997°C
+Time 156.23 seconds. T1: 20.6272°C
+Time 158.04 seconds. T1: 20.949499999999997°C
+Time 160.11 seconds. T1: 20.949499999999997°C
+Time 162.04 seconds. T1: 20.949499999999997°C
+Time 164.05 seconds. T1: 20.949499999999997°C
+Time 166.01 seconds. T1: 20.949499999999997°C
+Time 168.23 seconds. T1: 20.6272°C
+Time 170.08 seconds. T1: 20.949499999999997°C
+Time 172.01 seconds. T1: 20.949499999999997°C
+Time 174.14 seconds. T1: 20.949499999999997°C
+Time 176.01 seconds. T1: 20.949499999999997°C
+Time 178.22 seconds. T1: 20.949499999999997°C
+Time 180.2 seconds. T1: 20.949499999999997°C
+Time 182.2 seconds. T1: 20.949499999999997°C
+Time 184.21 seconds. T1: 20.949499999999997°C
+Time 186.08 seconds. T1: 20.949499999999997°C
+Time 188.29 seconds. T1: 20.949499999999997°C
+Time 190.24 seconds. T1: 20.949499999999997°C
+Time 192.18 seconds. T1: 20.949499999999997°C
+Time 194.09 seconds. T1: 20.949499999999997°C
+Time 196.22 seconds. T1: 20.949499999999997°C
+Time 198.26 seconds. T1: 20.949499999999997°C
+Time 200.02 seconds. T1: 20.6272°C
+TCLab Model disconnected successfully.</code></pre>
+</div>
+</div>
+<section id="importazione" class="level3">
+<h3 class="anchored" data-anchor-id="importazione">Importazione</h3>
+<p>Una volta installato, il pacchetto <code>tclab</code> può essere importato in Python e un’istanza creata con le istruzioni Python</p>
+<pre><code>da tclab importa TCLab
+laboratorio = TCLab()</code></pre>
+<p>TCLab() tenta di trovare un dispositivo connesso a una porta seriale e restituire una connessione. Se non viene trovato alcun dispositivo viene generato un errore. La connessione deve essere chiusa quando non è più in uso.</p>
+<p>La cella seguente dimostra questo processo e utilizza la funzione tclab <code>LED()</code> per far lampeggiare il LED sul laboratorio di controllo della temperatura per un periodo di 10 secondi a un livello di luminosità del 100%.</p>
+<div id="ab8378d0" class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tclab <span class="im">import</span> TCLab</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>lab <span class="op">=</span> TCLab()</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>lab.LED(<span class="dv">100</span>)</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>lab.close()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>TCLab version 1.0.0
+--- Serial Ports ---
+/dev/cu.BLTH n/a n/a
+/dev/cu.BlueBeatsStudio n/a n/a
+/dev/cu.Bluetooth-Incoming-Port n/a n/a</code></pre>
+</div>
+<div class="cell-output cell-output-error">
+<pre><code>RuntimeError: No Arduino device found.</code></pre>
+</div>
+</div>
+</section>
+<section id="utilizzo-di-tclab-con-listruzione-with-di-python" class="level3">
+<h3 class="anchored" data-anchor-id="utilizzo-di-tclab-con-listruzione-with-di-python">Utilizzo di TCLab con l’istruzione <code>with</code> di Python</h3>
+<p>L’istruzione Python <code>with</code> fornisce un mezzo conveniente per impostare e chiudere una connessione al Laboratorio di controllo della temperatura. In particolare, l’istruzione with stabilisce un contesto in cui viene creata un’istanza tclab, assegnata a una variabile e chiusa automaticamente al completamento. L’istruzione “with” è il modo preferito per collegare il laboratorio di controllo della temperatura per la maggior parte degli usi.</p>
+<div id="78acab18" class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tclab <span class="im">import</span> TCLab</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> TCLab() <span class="im">as</span> lab:</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    lab.LED(<span class="dv">100</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="lettura-delle-temperature" class="level2">
+<h2 class="anchored" data-anchor-id="lettura-delle-temperature">Lettura delle temperature</h2>
+<p>Una volta creata e connessa un’istanza tclab a un dispositivo, è possibile accedere ai sensori di temperatura nel laboratorio di controllo della temperatura con gli attributi “.T1” e “.T2”. Ad esempio, data un’istanza “lab”, si accede alle temperature come</p>
+<pre><code>T1 = lab.T1
+T2 = lab.T2</code></pre>
+<p>“lab.T1” e “lab.T2” sono proprietà di sola lettura. Qualsiasi tentativo di impostarli su un valore restituirà un errore Python.</p>
+<div id="4704a7bd" class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tclab <span class="im">import</span> TCLab</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> TCLab() <span class="im">as</span> a:</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Temperature 1: </span><span class="sc">{0:0.2f}</span><span class="st"> C"</span>.<span class="bu">format</span>(a.T1))</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Temperature 2: </span><span class="sc">{0:0.2f}</span><span class="st"> C"</span>.<span class="bu">format</span>(a.T2))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="impostazione-dei-riscaldatori" class="level2">
+<h2 class="anchored" data-anchor-id="impostazione-dei-riscaldatori">Impostazione dei riscaldatori</h2>
+<p>Per motivi tradizionali, esistono due modi per impostare i livelli di potenza dei riscaldatori.</p>
+<p>Il primo modo è utilizzare le funzioni<code>.Q1()</code> e <code>.Q2()</code> di un’istanza <code>TCLab</code>. Ad esempio, entrambi i riscaldatori possono essere impostati al 100% della potenza tramite le funzioni</p>
+<pre><code>laboratorio = TCLab()
+lab.Q1(100)
+lab.Q2(100)</code></pre>
+<p>Il firmware del dispositivo limita i riscaldatori a un intervallo compreso tra 0 e 100%. È possibile accedere al valore corrente degli attributi tramite</p>
+<pre><code>Q1 = lab.Q1()
+Q2 = lab.Q2()</code></pre>
+<p>Note importanti: 1. Il LED sul laboratorio di controllo della temperatura passa da fioco a luminoso quando uno dei riscaldatori è acceso. 2. La chiusura dell’istanza TCLab spegne i riscaldatori. 3. Il livello di potenza dei due riscaldatori potrebbe essere diverso. Le versioni attuali del firmware limitano la potenza massima del primo riscaldatore a 4 watt e la potenza massima del secondo riscaldatore a 2 watt. 4. Oltre ai vincoli imposti dal firmware, l’alimentatore potrebbe non essere in grado di fornire tutta la potenza necessaria per far funzionare entrambi i riscaldatori al 100% 5. I valori recuperati da queste funzioni potrebbero essere diversi dai valori impostati a causa dei limiti di potenza imposti dal firmware del dispositivo.</p>
+<div id="ba381d41" class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tclab <span class="im">import</span> TCLab</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> TCLab() <span class="im">as</span> a:</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Starting Temperature 1: </span><span class="sc">{0:0.2f}</span><span class="st"> C"</span>.<span class="bu">format</span>(a.T1),flush<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Starting Temperature 2: </span><span class="sc">{0:0.2f}</span><span class="st"> C"</span>.<span class="bu">format</span>(a.T2),flush<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>    a.Q1(<span class="dv">100</span>)</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>    a.Q2(<span class="dv">100</span>)</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Set Heater 1:"</span>, a.Q1(), <span class="st">"%"</span>,flush<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Set Heater 2:"</span>, a.Q2(), <span class="st">"%"</span>,flush<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>    t_heat <span class="op">=</span> <span class="dv">30</span></span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Heat for"</span>, t_heat, <span class="st">"seconds"</span>)</span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>    time.sleep(t_heat)</span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Turn Heaters Off"</span>)</span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>    a.Q1(<span class="dv">0</span>)</span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>    a.Q2(<span class="dv">0</span>)</span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Set Heater 1:"</span>, a.Q1(), <span class="st">"%"</span>,flush<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Set Heater 2:"</span>, a.Q2(), <span class="st">"%"</span>,flush<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Final Temperature 1: </span><span class="sc">{0:0.2f}</span><span class="st"> C"</span>.<span class="bu">format</span>(a.T1))</span>
+<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Final Temperature 2: </span><span class="sc">{0:0.2f}</span><span class="st"> C"</span>.<span class="bu">format</span>(a.T2))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>In alternativa, i riscaldatori possono essere impostati utilizzando gli attributi “.U1” e “.U2” di un’istanza “TCLab”.</p>
+<div id="5a6854a2" class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>lab <span class="op">=</span> TCLab()</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Setting power levels on heaters 1 and 2'</span>)</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>lab.U1 <span class="op">=</span> <span class="dv">50</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>lab.U2 <span class="op">=</span> <span class="dv">25</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Current power level on Heater 1 is: '</span>, lab.U1, <span class="st">'%'</span>)</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Current power level on Heater 1 is: '</span>, lab.U2, <span class="st">'%'</span>)</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>lab.close()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="sincronizzazione-in-tempo-reale-utilizzando-clock" class="level2">
+<h2 class="anchored" data-anchor-id="sincronizzazione-in-tempo-reale-utilizzando-clock">Sincronizzazione in tempo reale utilizzando <code>clock</code></h2>
+<p>Il modulo <code>tclab</code> include <code>clock</code> per sincronizzare i calcoli in tempo reale. “clock(tperiod, tstep)” genera una sequenza di iterazioni su un periodo di “tperiod” secondi in modo uniforme per “tstep” secondi. Se “tstep” viene omesso, il periodo predefinito è impostato su 1 secondo.</p>
+<div id="f499fc5b" class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tclab <span class="im">import</span> clock</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>tperiod <span class="op">=</span> <span class="dv">6</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>tstep <span class="op">=</span> <span class="dv">2</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> t <span class="kw">in</span> clock(tperiod,tstep):</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(t, <span class="st">"sec."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Ci sono alcune considerazioni da tenere a mente quando si usa <code>clock</code>. Ancora più importante, per sua natura Python non è un ambiente in tempo reale. “clock” fa del suo meglio per rimanere sincronizzato con i tick equidistanti dell’orologio in tempo reale. Se, per qualche motivo, il ciclo resta indietro rispetto all’orologio in tempo reale, il generatore salterà l’evento per tornare in sincronia con l’orologio in tempo reale. Pertanto il numero totale di iterazioni potrebbe essere inferiore al previsto. Questo comportamento è illustrato nella cella seguente.</p>
+<div id="4450f3dd" class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tclab <span class="im">import</span> TCLab, clock</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>tfinal <span class="op">=</span> <span class="dv">12</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>tstep <span class="op">=</span> <span class="dv">2</span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> t <span class="kw">in</span> clock(tfinal, tstep):</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(t, <span class="st">"sec."</span>)</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># insert a long time out between 3 and 5 seconds into the event loop</span></span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (t <span class="op">&gt;</span> <span class="dv">3</span>) <span class="kw">and</span> (t <span class="op">&lt;</span> <span class="dv">5</span>):</span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>        time.sleep(<span class="fl">2.2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="utilizzo-di-clock-con-tclab" class="level3">
+<h3 class="anchored" data-anchor-id="utilizzo-di-clock-con-tclab">Utilizzo di <code>clock</code> con TCLab</h3>
+<div id="ef717b1d" class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tclab <span class="im">import</span> TCLab, clock</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>tperiod <span class="op">=</span> <span class="dv">20</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="co"># connect to the temperature control lab</span></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> TCLab() <span class="im">as</span> a:</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># turn heaters on</span></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>    a.Q1(<span class="dv">100</span>)</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>    a.Q2(<span class="dv">100</span>)</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Set Heater 1 to </span><span class="sc">{0:f}</span><span class="st"> %"</span>.<span class="bu">format</span>(a.Q1()))</span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Set Heater 2 to </span><span class="sc">{0:f}</span><span class="st"> %"</span>.<span class="bu">format</span>(a.Q2()))</span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># report temperatures for the next tperiod seconds</span></span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>    sfmt <span class="op">=</span> <span class="st">"   </span><span class="sc">{0:5.1f}</span><span class="st"> sec:   T1 = </span><span class="sc">{1:0.1f}</span><span class="st"> C    T2 = </span><span class="sc">{2:0.1f}</span><span class="st"> C"</span></span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> t <span class="kw">in</span> clock(tperiod):</span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(sfmt.<span class="bu">format</span>(t, a.T1, a.T2), flush<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="lo-historian-di-tclab" class="level2">
+<h2 class="anchored" data-anchor-id="lo-historian-di-tclab">Lo <code>Historian</code> di TCLab</h2>
+<p>La classe “Historian” fornisce mezzi per la registrazione dei dati. Data un’istanza “lab” di un oggetto TCLab, “lab.sources” è un elenco di tutte le origini dati e i metodi per accedere ai dati.</p>
+<pre><code>laboratorio = TCLab()
+h = Historian(lab.fonti)</code></pre>
+<p>Lo storico inizializza un registro dati. Il registro dati viene aggiornato emettendo un comando</p>
+<pre><code>h.update(t)</code></pre>
+<p>dove “t” indica l’ora corrente. La cella successiva registra 10 secondi di dati con un livello di potenza variabile nel riscaldatore 1, quindi salva i dati in un file.</p>
+<div id="164da46c" class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tclab <span class="im">import</span> TCLab, clock, Historian</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> TCLab() <span class="im">as</span> lab:</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>    h <span class="op">=</span> Historian(lab.sources)</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> t <span class="kw">in</span> clock(<span class="dv">10</span>):</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>        lab.Q1(<span class="dv">100</span> <span class="cf">if</span> t <span class="op">&lt;=</span> <span class="dv">5</span> <span class="cf">else</span> <span class="dv">0</span>)</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>        h.update(t)</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>h.to_csv(<span class="st">'data.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Una volta salvati, i dati possono essere letti e tracciati utilizzando la <a href="https://pandas.pydata.org/">Libreria di analisi dei dati di Pandas</a> come dimostrato in questa cella.</p>
+<div id="90bb415f" class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> pd.read_csv(<span class="st">'data.csv'</span>)</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>data.index <span class="op">=</span> data[<span class="st">'Time'</span>]</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(data)</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>data[[<span class="st">'Q1'</span>,<span class="st">'Q2'</span>]].plot(grid<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="il-plotter-di-tclab" class="level2">
+<h2 class="anchored" data-anchor-id="il-plotter-di-tclab">Il <code>Plotter</code> di TCLab</h2>
+<p>La classe “Plotter” aggiunge un tracciamento in tempo reale dei dati sperimentali. Un plotter viene creato da un’istanza di uno storico come segue</p>
+<pre><code>h = Historian(lab.fonti)
+p = Plotter(h)</code></pre>
+<p>Aggiornando il plotter si aggiorna anche lo storico associato.</p>
+<pre><code>p.update(t)</code></pre>
+<p>L’esempio seguente mostra come funziona.</p>
+<div id="652b1ce5" class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tclab <span class="im">import</span> TCLab, clock, Historian, Plotter</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> TCLab() <span class="im">as</span> lab:</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>    h <span class="op">=</span> Historian(lab.sources)</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>    p <span class="op">=</span> Plotter(h, <span class="dv">10</span>)</span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> t <span class="kw">in</span> clock(<span class="dv">10</span>):</span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>        lab.Q1(<span class="dv">100</span> <span class="cf">if</span> t <span class="op">&lt;=</span> <span class="dv">5</span> <span class="cf">else</span> <span class="dv">0</span>)</span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>        p.update(t)</span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a>h.to_csv(<span class="st">'data.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="utilizzo-di-tclab-offline" class="level2">
+<h2 class="anchored" data-anchor-id="utilizzo-di-tclab-offline">Utilizzo di TCLab offline</h2>
+<div id="9aa7b74d" class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tclab <span class="im">import</span> clock, setup, Historian, Plotter</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>TCLab <span class="op">=</span> setup(connected<span class="op">=</span><span class="va">False</span>, speedup<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>SP <span class="op">=</span> <span class="dv">40</span></span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> TCLab() <span class="im">as</span> a:</span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>    h <span class="op">=</span> Historian(a.sources)</span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>    p <span class="op">=</span> Plotter(h)</span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> t <span class="kw">in</span> clock(<span class="dv">120</span>,<span class="dv">2</span>):</span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>        PV <span class="op">=</span> a.T1</span>
+<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a>        MV <span class="op">=</span> <span class="dv">100</span> <span class="cf">if</span> SP <span class="op">&gt;</span> PV <span class="cf">else</span> <span class="dv">0</span></span>
+<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a>        a.U1 <span class="op">=</span> MV</span>
+<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a>        p.update()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="01_Understanding_TCLab_it_files/figure-html/cell-16-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>TCLab Model disconnected successfully.</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="01_Understanding_TCLab_it_files/figure-html/cell-16-output-3.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="esecuzione-della-diagnostica" class="level2">
+<h2 class="anchored" data-anchor-id="esecuzione-della-diagnostica">Esecuzione della diagnostica</h2>
+<div id="27c27ff0" class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> tclab</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Version = "</span>, tclab.__version__)</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>tclab.diagnose()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Version =  1.0.0
+
+Checking connection
+-------------------
+Looking for Arduino on any port...
+--- Serial Ports ---
+/dev/cu.BLTH n/a n/a
+/dev/cu.BlueBeatsStudio n/a n/a
+/dev/cu.Bluetooth-Incoming-Port n/a n/a
+No known Arduino was found in the ports listed above.</code></pre>
+</div>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/andreamunafo\.github\.io\/principles-of-automatic-controls");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/andreamunafo/principles-of-automatic-controls/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

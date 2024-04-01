@@ -1,0 +1,1987 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.552">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>principles-of-automatic-controls - Introduzione ai sistemi di controllo</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+<meta property="og:title" content="principles-of-automatic-controls - Introduzione ai sistemi di controllo">
+<meta property="og:description" content="Course in feedback control for the University of Pisa">
+<meta property="og:site_name" content="principles-of-automatic-controls">
+<meta name="twitter:title" content="principles-of-automatic-controls - Introduzione ai sistemi di controllo">
+<meta name="twitter:description" content="Course in feedback control for the University of Pisa">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">principles-of-automatic-controls</span>
+    </a>
+  </div>
+        <div class="quarto-navbar-tools tools-end">
+</div>
+          <div id="quarto-search" class="" title="Search"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../IT_🇮🇹/faq_it.html">IT_🇮🇹</a></li><li class="breadcrumb-item"><a href="../IT_🇮🇹/introduction_to_control_systems_it.html">Introduzione ai sistemi di controllo</a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Feedback Control</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../faq.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Frequently Asked Questions (FAQ)</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../syllabus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Syllabus for “Principles of Automatic Control”</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../toc.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Table of Contents</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../update_and_manage_local_changes_guide.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A Guide to Updating Your Local Repository with Git in Anaconda’s Virtual Environment</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../getting_started_with_python_and_jupyter_notebook.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Getting Started with Python and Jupyter Notebooks</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principles of Automatic Control</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../basics_of_feedback_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Feedback Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../introduction_to_control_problem.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to the control problem</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../dynamic_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modeling in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../dynamic_response.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Dynamic response of control systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../06_inverse_laplace_transform.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Inverse Laplace Transform: Partial fraction decomposition</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../modeling_dynamic_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Modeling of Dynamic Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../control_system_components.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Control System Components</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../models_of_control_devices_and_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Models of Controlled Devices</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../hardware_and_case_studies.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Hardware of Control Systems and Case Studies</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ac_hardware_and_case_studies.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">AC Motion Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../a_first_complete_application.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A Feedback Control System</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../principles_of_feedback_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principles of Feedback Control</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../feedback_systems_and_their_effects.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Feedback systems and their effects</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../introduction_to_control_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../stability.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Stability Analysis in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../stability_and_routh_criterion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Stability Analysis in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../performance_of_feedback_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Performance of Feedback Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../design_of_feedback_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Design Cycle for a Standard Second-Order System</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../20_Design_of_feedback_control_continued.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Understanding the Standard Second-Order System: Recap</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../steady_state_accuracy_and_design_principles.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Steady State Accuracy and Design Principles</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../compensator_design_using_root_locus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compensator Design</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../design_with_the_root_locus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Design with the Root Locus</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../compensators_and_root_locus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compensators and the Root Locus</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../introduction_to_frequency_domain_analysis_in_control_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Frequency Domain Analysis in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../application_of_nyquist_stability_criterion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Application of Nyquist Stability Criterion in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../the_nyquist_stability_criterion_and_relative_stability.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The Nyquist Stability Criterion and Relative Stability</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../bode_plots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Bode Plot Analysis</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../feedback_system_performance_based_on_frequency_response.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Feedback System Performance Based On Frequency Response</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../compensator_design_using_frequency_response_plots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principles of Automatic Control: Lead and Lag Compensation</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">IT_TCLab_🇮🇹</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/spacecraft_thermal_control_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Il Laboratorio di Controllo della Temperatura</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/tclab_exercises_report_template_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modello di report sugli esercizi TCLab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/tclab_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Il Laboratorio di Controllo della Temperatura</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/understanding_tclab_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Comprendere TCLab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/tclab_lab_1_coding_a_relay_controller_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 1: Codifica di un controller relè</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/system_model_and_identification_tclab_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modellazione del sistema</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/step_testing_tclab_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Passo Test</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/fitting_step_test_data_to_empirical_models_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Adattamento dei dati dei test di fase ai modelli empirici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/tclab_lab_2_model_identification_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 2: Identificazione del modello</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/tclab_lab_2_fitting_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Identificazione del modello: adattamento dei modelli ai dati</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/relay_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Controllo relè</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/pid_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Controllo PID</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/lab-assignment-pid-control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compito di laboratorio: Controllo PID</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/lab-assignment-pi-control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compito di laboratorio 4: Controllo PI</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">IT_🇮🇹</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/faq_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Domande frequenti (FAQ)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/syllabus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Programma del corso “Principi del controllo automatico”</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/update_and_manage_local_changes_guide_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Aggiornare il Proprio Repository Locale Mantenendo le Modifiche Locali</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/getting_started_with_python_and_jupyter_notebook_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Guida introduttiva ai notebook Python e Jupyter</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/intro_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principi di controllo automatico</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/basics_of_feedback_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione ai sistemi di controllo del feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/introduction_to_control_problem_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione al problema del controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/dynamic_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modellazione nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/dynamic_response_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Risposta dinamica dei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/06_inverse_laplace_transform_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Trasformata di Laplace inversa: scomposizione parziale di frazioni</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/modeling_dynamic_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione alla modellazione dei sistemi dinamici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/control_system_components_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Componenti del sistema di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/models_of_control_devices_and_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modelli di dispositivi controllati</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/hardware_and_case_studies_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Hardware dei sistemi di controllo e casi di studio</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/ac_hardware_and_case_studies_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sistemi di controllo del movimento CA</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/a_first_complete_application_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Un sistema di controllo del feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/principles_of_feedback_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principi di controllo del feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/feedback_systems_and_their_effects_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sistemi di feedback e loro effetti</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/introduction_to_control_systems_it.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Introduzione ai sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/stability_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analisi di stabilità nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/stability_and_routh_criterion_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analisi di stabilità nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/performance_of_feedback_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prestazioni dei sistemi di feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/design_of_feedback_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Ciclo di progettazione per un sistema standard del secondo ordine</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/20_Design_of_feedback_control_continued_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Comprensione del sistema standard del secondo ordine: riepilogo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/steady_state_accuracy_and_design_principles_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Precisione dello stato stazionario e principi di progettazione</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/compensator_design_using_root_locus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Progettazione del compensatore</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/design_with_the_root_locus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Progettare con il luogo delle radici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/compensators_and_root_locus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compensatori e luogo delle radici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/introduction_to_frequency_domain_analysis_in_control_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione all’analisi nel dominio della frequenza nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/application_of_nyquist_stability_criterion_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Applicazione del criterio di stabilità di Nyquist nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/the_nyquist_stability_criterion_and_relative_stability_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Il criterio di stabilità di Nyquist e la stabilità relativa</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/bode_plots_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analisi del diagramma di Bode</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/feedback_system_performance_based_on_frequency_response_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prestazioni del sistema di feedback basate sulla risposta in frequenza</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/index_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Syllabus - Fondamenti di Automatica</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">TCLab</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/spacecraft_thermal_control_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The Temperature Control Laboratory</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/tclab_exercises_report_template.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Exercises Report Template</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The Temperature Control Lab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/understanding_tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Understanding TCLab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/tclab_lab_1_coding_a_relay_controller-solution.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 1: Coding a relay controller</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/tclab_lab_1_coding_a_relay_controller.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 1: Coding a relay controller</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/system_model_and_identification_tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">System Modeling</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/step_testing_tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Step Testing</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/fitting_step_test_data_to_empirical_models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Fitting Step Test Data to Empirical Models</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/tclab_lab_2_model_identification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 2: Model Identification</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/tclab_lab_2_model_identification_solutions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 2: Model Identification</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/tclab_lab_2_fitting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Model Identification: Fitting models to data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/relay_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Relay Control</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/pid_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">PID Control</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/lab-assignment-pid-control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab Assignment: PID Control</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/lab-assignment-pi-control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab Assignment 4: PI Control</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#controllo-proporzionale-controllo-p" id="toc-controllo-proporzionale-controllo-p" class="nav-link active" data-scroll-target="#controllo-proporzionale-controllo-p">Controllo proporzionale (controllo P)</a></li>
+  <li><a href="#proporzionale---controllo-integrale-controllo-pi" id="toc-proporzionale---controllo-integrale-controllo-pi" class="nav-link" data-scroll-target="#proporzionale---controllo-integrale-controllo-pi">Proporzionale - Controllo integrale (controllo PI)</a></li>
+  <li><a href="#controllo-proporzionale-derivativo-controllo-pd" id="toc-controllo-proporzionale-derivativo-controllo-pd" class="nav-link" data-scroll-target="#controllo-proporzionale-derivativo-controllo-pd">Controllo proporzionale-derivativo (controllo PD)</a></li>
+  <li><a href="#controllo-pid" id="toc-controllo-pid" class="nav-link" data-scroll-target="#controllo-pid">Controllo PID</a></li>
+  <li><a href="#esempio-sistema-di-controllo-della-temperatura" id="toc-esempio-sistema-di-controllo-della-temperatura" class="nav-link" data-scroll-target="#esempio-sistema-di-controllo-della-temperatura">Esempio: sistema di controllo della temperatura</a>
+  <ul class="collapse">
+  <li><a href="#utilizzo-di-un-proporzionale-proporzionale" id="toc-utilizzo-di-un-proporzionale-proporzionale" class="nav-link" data-scroll-target="#utilizzo-di-un-proporzionale-proporzionale">Utilizzo di un proporzionale proporzionale</a></li>
+  <li><a href="#modellazione-del-sistema-di-controllo-della-temperatura" id="toc-modellazione-del-sistema-di-controllo-della-temperatura" class="nav-link" data-scroll-target="#modellazione-del-sistema-di-controllo-della-temperatura">Modellazione del sistema di controllo della temperatura</a></li>
+  <li><a href="#diagramma-a-blocchi" id="toc-diagramma-a-blocchi" class="nav-link" data-scroll-target="#diagramma-a-blocchi">Diagramma a blocchi</a></li>
+  <li><a href="#ripartizione-dei-guadagni-e-delle-loro-unità" id="toc-ripartizione-dei-guadagni-e-delle-loro-unità" class="nav-link" data-scroll-target="#ripartizione-dei-guadagni-e-delle-loro-unità">Ripartizione dei guadagni e delle loro unità</a></li>
+  <li><a href="#calcolo-del-guadagno-complessivo-del-controller-proporzionale" id="toc-calcolo-del-guadagno-complessivo-del-controller-proporzionale" class="nav-link" data-scroll-target="#calcolo-del-guadagno-complessivo-del-controller-proporzionale">Calcolo del guadagno complessivo del controller proporzionale</a></li>
+  <li><a href="#interpretazione" id="toc-interpretazione" class="nav-link" data-scroll-target="#interpretazione">Interpretazione</a></li>
+  <li><a href="#componenti-come-sistemi-di-ordine-zero" id="toc-componenti-come-sistemi-di-ordine-zero" class="nav-link" data-scroll-target="#componenti-come-sistemi-di-ordine-zero">Componenti come sistemi di ordine zero</a></li>
+  </ul></li>
+  <li><a href="#comprendere-limpatto-del-disturbo-theta_a" id="toc-comprendere-limpatto-del-disturbo-theta_a" class="nav-link" data-scroll-target="#comprendere-limpatto-del-disturbo-theta_a">Comprendere l’impatto del disturbo (<span class="math inline">\(\theta_a\)</span>)</a></li>
+  <li><a href="#effetti-del-guadagno-dellamplificatore" id="toc-effetti-del-guadagno-dellamplificatore" class="nav-link" data-scroll-target="#effetti-del-guadagno-dellamplificatore">Effetti del guadagno dell’amplificatore</a>
+  <ul class="collapse">
+  <li><a href="#sviluppo-dellequazione-del-sistema" id="toc-sviluppo-dellequazione-del-sistema" class="nav-link" data-scroll-target="#sviluppo-dellequazione-del-sistema">Sviluppo dell’equazione del sistema</a></li>
+  <li><a href="#equazione-finale" id="toc-equazione-finale" class="nav-link" data-scroll-target="#equazione-finale">Equazione finale</a></li>
+  <li><a href="#punti-chiave-da-notare" id="toc-punti-chiave-da-notare" class="nav-link" data-scroll-target="#punti-chiave-da-notare">Punti chiave da notare</a></li>
+  <li><a href="#commenti" id="toc-commenti" class="nav-link" data-scroll-target="#commenti">Commenti:</a></li>
+  </ul></li>
+  <li><a href="#controllo-integrale-ed-errore-di-stato-stazionario" id="toc-controllo-integrale-ed-errore-di-stato-stazionario" class="nav-link" data-scroll-target="#controllo-integrale-ed-errore-di-stato-stazionario">Controllo integrale ed errore di stato stazionario</a></li>
+  <li><a href="#rivisitare-il-sistema-di-controllo-della-temperatura" id="toc-rivisitare-il-sistema-di-controllo-della-temperatura" class="nav-link" data-scroll-target="#rivisitare-il-sistema-di-controllo-della-temperatura">Rivisitare il sistema di controllo della temperatura</a>
+  <ul class="collapse">
+  <li><a href="#panoramica-del-sistema" id="toc-panoramica-del-sistema" class="nav-link" data-scroll-target="#panoramica-del-sistema">Panoramica del sistema</a></li>
+  <li><a href="#dinamica-e-stabilità-del-sistema" id="toc-dinamica-e-stabilità-del-sistema" class="nav-link" data-scroll-target="#dinamica-e-stabilità-del-sistema">Dinamica e stabilità del sistema</a></li>
+  <li><a href="#controllo-integrale-nei-sistemi-di-temperatura" id="toc-controllo-integrale-nei-sistemi-di-temperatura" class="nav-link" data-scroll-target="#controllo-integrale-nei-sistemi-di-temperatura">Controllo integrale nei sistemi di temperatura</a></li>
+  <li><a href="#implementazione-del-controllo-integrale-nei-sistemi-di-temperatura" id="toc-implementazione-del-controllo-integrale-nei-sistemi-di-temperatura" class="nav-link" data-scroll-target="#implementazione-del-controllo-integrale-nei-sistemi-di-temperatura">Implementazione del controllo integrale nei sistemi di temperatura</a></li>
+  <li><a href="#prestazioni-in-stato-stazionario-con-controllo-integrale" id="toc-prestazioni-in-stato-stazionario-con-controllo-integrale" class="nav-link" data-scroll-target="#prestazioni-in-stato-stazionario-con-controllo-integrale">Prestazioni in stato stazionario con controllo integrale</a></li>
+  <li><a href="#prestazioni-transitorie-con-controllo-integrale" id="toc-prestazioni-transitorie-con-controllo-integrale" class="nav-link" data-scroll-target="#prestazioni-transitorie-con-controllo-integrale">Prestazioni transitorie con controllo integrale</a></li>
+  <li><a href="#influenza-dei-poli-sulla-risposta-del-sistema" id="toc-influenza-dei-poli-sulla-risposta-del-sistema" class="nav-link" data-scroll-target="#influenza-dei-poli-sulla-risposta-del-sistema">Influenza dei Poli sulla risposta del sistema</a></li>
+  </ul></li>
+  <li><a href="#introduzione-al-controllo-dei-derivati" id="toc-introduzione-al-controllo-dei-derivati" class="nav-link" data-scroll-target="#introduzione-al-controllo-dei-derivati">Introduzione al controllo dei derivati</a>
+  <ul class="collapse">
+  <li><a href="#concetto-di-controllo-derivato" id="toc-concetto-di-controllo-derivato" class="nav-link" data-scroll-target="#concetto-di-controllo-derivato">Concetto di controllo derivato</a></li>
+  </ul></li>
+  <li><a href="#implementazione-del-controllo-derivato-nei-sistemi-di-controllo" id="toc-implementazione-del-controllo-derivato-nei-sistemi-di-controllo" class="nav-link" data-scroll-target="#implementazione-del-controllo-derivato-nei-sistemi-di-controllo">Implementazione del controllo derivato nei sistemi di controllo</a>
+  <ul class="collapse">
+  <li><a href="#problema-di-amplificazione-del-rumore" id="toc-problema-di-amplificazione-del-rumore" class="nav-link" data-scroll-target="#problema-di-amplificazione-del-rumore">Problema di amplificazione del rumore</a></li>
+  <li><a href="#alternative-al-controllo-derivato-standard" id="toc-alternative-al-controllo-derivato-standard" class="nav-link" data-scroll-target="#alternative-al-controllo-derivato-standard">Alternative al controllo derivato standard</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/andreamunafo/principles-of-automatic-controls/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../IT_🇮🇹/faq_it.html">IT_🇮🇹</a></li><li class="breadcrumb-item"><a href="../IT_🇮🇹/introduction_to_control_systems_it.html">Introduzione ai sistemi di controllo</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Introduzione ai sistemi di controllo</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
+<p>In questo notebook esploreremo i concetti fondamentali dei sistemi di controllo e le varie modalità di controllo, inclusi il controllo proporzionale, il controllo integrale e il controllo derivativo.</p>
+<p>In un sistema di controllo, abbiamo una struttura di feedback di base composta da diversi componenti:</p>
+<img src="../pics/15_Introduction_to_Control_Systems_feedback_loop.png" alt="15_Introduction_to_Control_Systems_feedback_loop" style="width:650px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<p>Per semplicità stiamo considerando un sistema a retroazione unitaria, e quindi ci concentriamo direttamente sull’errore di sistema $e$.</p>
+<ul>
+<li><strong><span class="math inline">\(G(s)\)</span></strong>: Rappresenta l’impianto, che per semplicità indicheremo come SG.</li>
+<li><strong><span class="math inline">\(D\)</span></strong>: la funzione di trasferimento del nostro controller.</li>
+<li><strong><span class="math inline">\(N\)</span></strong>: Un modello che cattura i disturbi che agiscono sul sistema.</li>
+<li><strong><span class="math inline">\(y\)</span></strong>: la nostra variabile controllata.</li>
+<li><strong><span class="math inline">\(y_r\)</span></strong>: Il comando o il segnale di riferimento.</li>
+<li><strong><span class="math inline">\(e = y_r - y\)</span></strong>: Il segnale di errore</li>
+</ul>
+<p>Appunti: - Feedback unitario quindi <span class="math inline">\(e = r-y\)</span>, mentre se fosse avvenuto tramite un sensore avremmo avuto <span class="math inline">\(\hat{e}\)</span>.</p>
+<ul>
+<li><p>Ora concentriamoci sul controller, indicato come <span class="math inline">\(D\)</span>. Fino ad ora, il tipo più elementare di controller che abbiamo utilizzato è un amplificatore. In questo corso abbiamo esplorato amplificatori con guadagni diversi in una varietà di contesti industriali. Tuttavia, come abbiamo osservato nella nostra discussione precedente, un amplificatore da solo potrebbe non soddisfare tutti i nostri obiettivi prestazionali. C’è un conflitto intrinseco negli obiettivi prestazionali. Ad esempio, l’aumento del guadagno dell’amplificatore migliora alcune caratteristiche prestazionali del sistema, ma allo stesso tempo può avere un impatto negativo su altri aspetti cruciali.</p></li>
+<li><p>Dobbiamo anche tenere presente che non è necessario vincolare la forma di <span class="math inline">\(D(s)\)</span>.</p></li>
+</ul>
+<p>Storicamente esistevano limitazioni hardware (i controller dovevano essere idraulici, pneumatici o elettrici).</p>
+<p>Con l’avvento della tecnologia digitale, praticamente qualsiasi funzione può essere realizzata tramite un computer digitale, eliminando le limitazioni dei sistemi di controllo basati su hardware.</p>
+<section id="controllo-proporzionale-controllo-p" class="level2">
+<h2 class="anchored" data-anchor-id="controllo-proporzionale-controllo-p">Controllo proporzionale (controllo P)</h2>
+<p>Il controllo proporzionale è una delle modalità di controllo più semplici. Il segnale di controllo $u$ nel controllo proporzionale è dato da:</p>
+<p><span class="math display">\[
+u = K_c \cdot e
+\]</span></p>
+<p>Dove <span class="math inline">\(K_c\)</span> è il guadagno del controller.</p>
+<p>Nel dominio di Laplace:</p>
+<p><span class="math display">\[
+U(s) = K_c \cdot E(s)
+\]</span></p>
+</section>
+<section id="proporzionale---controllo-integrale-controllo-pi" class="level2">
+<h2 class="anchored" data-anchor-id="proporzionale---controllo-integrale-controllo-pi">Proporzionale - Controllo integrale (controllo PI)</h2>
+<p>Il controllo proporzionale-integrale, spesso noto come controllo PI, introduce un’azione integrale per migliorare le prestazioni del controllo.</p>
+<p>Il segnale di controllo <span class="math inline">\(u\)</span> in controllo integrale è dato da:</p>
+<p><span class="math display">\[
+u = K_c \cdot \big( e + \frac{1}{T_I} \int e dt \big)
+\]</span></p>
+<p>È composto da due componenti, una proporzionale all’errore e una proporzionale all’integrale dell’errore.</p>
+<p>Nel dominio di Laplace:</p>
+<p><span class="math display">\[
+u = K_c \cdot \big( 1 + \frac{1}{T_I s}\big)E(s)
+\]</span></p>
+<p>A volte scritto anche come:</p>
+<p><span class="math display">\[
+u = \big( K_c + \frac{K_I}{s}\big)E(s)
+\]</span></p>
+<p>Dove: - <span class="math inline">\(K_I\)</span> è chiamato guadagno integrale - <span class="math inline">\(K_c\)</span> è chiamato guadagno del controller - <span class="math inline">\(T_I\)</span> è il tempo integrale o tempo di reset.</p>
+<p>Esploreremo i vantaggi del controllo integrale e la sua applicazione nei sistemi di controllo.</p>
+</section>
+<section id="controllo-proporzionale-derivativo-controllo-pd" class="level2">
+<h2 class="anchored" data-anchor-id="controllo-proporzionale-derivativo-controllo-pd">Controllo proporzionale-derivativo (controllo PD)</h2>
+<p>Il controllo proporzionale-derivativo, spesso noto come controllo PD, introduce un’azione derivativa nei sistemi di controllo.</p>
+<p>Il segnale di controllo <span class="math inline">\(u\)</span> nel controllo derivato è dato da:</p>
+<p><span class="math display">\[
+u = K_c \big(e + T_D \dot{e}\big )
+\]</span></p>
+<p>Nel dominio di Laplace:</p>
+<p><span class="math display">\[
+U(s) = K_c \big(1 + T_D s\big )E(s)
+\]</span></p>
+<p>Dove <span class="math inline">\(T_D\)</span> è il tempo derivativo o il tempo del tasso.</p>
+<p>A volte scritto anche come:</p>
+<p><span class="math display">\[
+u = \big( K_c + K_D s\big)E(s)
+\]</span></p>
+<p>Dove <span class="math inline">\(K_D\)</span> è chiamato guadagno derivato.</p>
+<p>Esamineremo il ruolo del controllo derivato e il suo impatto sulle prestazioni del sistema di controllo.</p>
+</section>
+<section id="controllo-pid" class="level2">
+<h2 class="anchored" data-anchor-id="controllo-pid">Controllo PID</h2>
+<p>Il controllo PID combina azioni proporzionali, integrali e derivative in un unico controller. Il segnale di controllo <span class="math inline">\(u\)</span> nel controllo PID è dato da:</p>
+<p><span class="math display">\[
+u = K_c \cdot (e + \frac{1}{T_I} \int e dt + T_D \cdot \frac{de}{dt})
+\]</span></p>
+<p><span class="math display">\[
+U(s) = K_c \big(1+\frac{1}{T_I s} + T_Ds\big)E(s)
+\]</span></p>
+<p>A volte scritto anche come:</p>
+<p><span class="math display">\[
+U(s) = \big(K_c+\frac{K_I}{s} + K_Ds\big)E(s)
+\]</span></p>
+<p>Spesso utilizzato come primo tentativo prima di tentare metodi diversi se il PID non funziona.</p>
+</section>
+<section id="esempio-sistema-di-controllo-della-temperatura" class="level2">
+<h2 class="anchored" data-anchor-id="esempio-sistema-di-controllo-della-temperatura">Esempio: sistema di controllo della temperatura</h2>
+<p>Considera un sistema di controllo della temperatura progettato per mantenere la temperatura di una camera a un livello prescritto. Questo sistema costituisce un eccellente esempio del controllo proporzionale.</p>
+<ul>
+<li><p>Descrizione del sistema: Consideriamo un sistema di controllo della temperatura, ovvero una camera in cui la temperatura deve essere mantenuta a un livello specifico <span class="math inline">\(\theta_r\)</span>. La variabile di disturbo (temperatura ambiente) in questo sistema è indicata come <span class="math inline">\(\theta_a\)</span> e <span class="math inline">\(\theta\)</span> rappresenta la temperatura della camera.</p></li>
+<li><p>Contesto applicativo: questo sistema può essere paragonato a una camera di prova per apparecchiature elettroniche, dove è necessario regolare la temperatura per testare i componenti in diverse condizioni termiche.</p></li>
+</ul>
+<img src="../pics/15_Introduction_to_Control_Systems_temperature_control.png" alt="15_Introduction_to_Control_Systems_temperature_control" style="width:650px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<p>Componenti del sistema: - Temperatura della Camera (<span class="math inline">\(\theta\)</span>): La variabile primaria da regolare. - Variabile di disturbo (<span class="math inline">\(\theta_a\)</span>): fattori esterni che influenzano la temperatura della camera, come la temperatura ambiente. - Termocoppia: un sensore utilizzato per misurare la temperatura della camera. - Trasduttore Elettropneumatico: Converte il segnale elettrico in un segnale di pressione. - Posizionatore della valvola: regola una valvola per controllare il flusso di vapore, regolando così la temperatura della camera. - Scambiatore di calore: Facilita il riscaldamento dell’aria all’interno della camera.</p>
+<p>Operazione: -La temperatura desiderata (<span class="math inline">\(\theta_r\)</span>) viene impostata e confrontata con la temperatura effettiva (θ). - La termocoppia genera un segnale elettrico proporzionale alla differenza di temperatura. - Questo segnale viene amplificato e utilizzato per regolare la posizione della valvola, controllando il flusso di vapore e, di conseguenza, la temperatura.</p>
+<p>Requisiti di controllo</p>
+<ul>
+<li>Obiettivo: mantenere la temperatura della camera ad un valore regolato, <span class="math inline">\(\theta_r\)</span>.</li>
+<li>Rilevamento della temperatura: una termocoppia viene utilizzata come sensore per misurare la temperatura della camera.</li>
+<li>Calcolo dell’errore: l’uscita del sensore, indicata come <span class="math inline">\(e_t\)</span>, viene confrontata con un valore di riferimento <span class="math inline">\(e_r\)</span> (proporzionale a <span class="math inline">\(\theta_r\)</span>) per calcolare il segnale di errore <span class="math inline">\(e\)</span>.</li>
+</ul>
+<p>Controller e attuatori</p>
+<ul>
+<li>Amplificatore come controller: l’uscita dell’amplificatore, in base al segnale di errore, viene utilizzata per controllare il trasduttore elettropneumatico, che a sua volta genera un segnale di pressione.</li>
+<li>Posizionatore della valvola: questo dispositivo regola la valvola in base al segnale di pressione, controllando il flusso di vapore e quindi la temperatura nella camera.</li>
+</ul>
+<p>Disturbi</p>
+<ul>
+<li>Sorgenti di disturbo: i cambiamenti della temperatura ambientale o le variazioni del segnale di comando sono i disturbi principali.</li>
+<li>Risposta del sistema: il sistema di controllo regola la portata del vapore per ripristinare l’equilibrio in risposta ai disturbi.</li>
+</ul>
+<section id="utilizzo-di-un-proporzionale-proporzionale" class="level3">
+<h3 class="anchored" data-anchor-id="utilizzo-di-un-proporzionale-proporzionale">Utilizzo di un proporzionale proporzionale</h3>
+<p>Analizziamo quanto sia efficace il controllo proporzionale nel mantenere la temperatura desiderata in presenza di disturbi.</p>
+<p>🤔 <strong>Domanda popup</strong>: Cosa succede al segnale di errore <span class="math inline">\(e\)</span> quando la temperatura della camera <span class="math inline">\(\theta\)</span> è uguale al setpoint <span class="math inline">\(\theta_r\)</span>?</p>
+<p><strong>Risposta</strong>: Il segnale di errore <span class="math inline">\(e\)</span> diventa zero, indicando che non vi è alcuna discrepanza tra la temperatura desiderata e quella effettiva.</p>
+<img src="../pics/15_Introduction_to_Control_Systems_temperature_control_1.png" alt="15_Introduction_to_Control_Systems_temperature_control_1" style="width:650px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<p>Nello stato di equilibrio sia il segnale di errore che il segnale di controllo sono nulli. La regolazione iniziale del trasduttore elettropneumatico all’interno del posizionatore della valvola mantiene l’equilibrio termico. Questa regolazione compensa inoltre eventuali perdite di calore nell’ambiente circostante, a condizione che la temperatura ambiente rimanga costante.</p>
+<p><strong>Cosa succede se si verificano disordini?</strong></p>
+<p>Le perturbazioni dalla posizione di equilibrio possono essere create da - Cambiamento nell’ambiente - Modifica del segnale di comando</p>
+<p>Quando ciò accade, abbiamo un segnale di errore <span class="math inline">\(e\)</span> e un corrispondente segnale di controllo <span class="math inline">\(u\)</span> che deve riaggiustare la portata del vapore per raggiungere un nuovo equilibrio.</p>
+</section>
+<section id="modellazione-del-sistema-di-controllo-della-temperatura" class="level3">
+<h3 class="anchored" data-anchor-id="modellazione-del-sistema-di-controllo-della-temperatura">Modellazione del sistema di controllo della temperatura</h3>
+<ul>
+<li><strong>Modello matematico:</strong> Possiamo modellare la camera come un sistema del primo ordine con una funzione di trasferimento</li>
+</ul>
+<p><span class="math display">\[ \frac{K_p}{\tau_p s + 1} \]</span></p>
+<p>dove <span class="math inline">\(K_p\)</span> è il guadagno del processo e <span class="math inline">\(\tau_p\)</span> è la costante di tempo.</p>
+<ul>
+<li><strong>Disturbo:</strong> I cambiamenti nella temperatura ambientale (<span class="math inline">\(\theta_a\)</span>) possono perturbare il sistema dal suo equilibrio.</li>
+</ul>
+<p>Possiamo quindi modellare l’influenza del disturbo come un sistema del primo ordine con una funzione di trasferimento</p>
+<p><span class="math display">\[ \frac{1}{\tau_p s + 1} \]</span></p>
+<p>Impostare <span class="math inline">\(K\)</span> come 1 implica che stiamo assumendo un impatto diretto e uno a uno di $ _a $ su $ $ allo stato stazionario. Se una valutazione sperimentale rivela una deviazione da questa ipotesi, è possibile introdurre una costante appropriata per tenere conto della differenza.</p>
+<p><em>Quando consideriamo i modelli dinamici consideriamo sempre rispetto allo stato stazionario. La temperatura ambiente totale non è <span class="math inline">\(\theta_a\)</span>, che è la perturbazione della temperatura ambiente dal punto di equilibrio.</em></p>
+<img src="../pics/15_Introduction_to_Control_Systems_temperature_control_1.png" alt="15_Introduction_to_Control_Systems_temperature_control_1" style="width:650px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+</section>
+<section id="diagramma-a-blocchi" class="level3">
+<h3 class="anchored" data-anchor-id="diagramma-a-blocchi">Diagramma a blocchi</h3>
+<p>Possiamo quindi scrivere lo schema a blocchi del sistema di termoregolazione, illustrando la relazione tra il segnale di controllo, l’impianto e l’uscita.</p>
+<img src="../pics/15_Introduction_to_Control_Systems_temperature_control_2.png" alt="15_Introduction_to_Control_Systems_temperature_control_2" style="width:750px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<p>Nell’esempio del sistema di controllo della temperatura, stiamo osservando un controller proporzionale (P) in cui vengono moltiplicati insieme vari guadagni. Analizziamo questi guadagni e le loro unità per comprendere l’unità complessiva del controller proporzionale in questo contesto.</p>
+</section>
+<section id="ripartizione-dei-guadagni-e-delle-loro-unità" class="level3">
+<h3 class="anchored" data-anchor-id="ripartizione-dei-guadagni-e-delle-loro-unità">Ripartizione dei guadagni e delle loro unità</h3>
+<ol type="1">
+<li><p><strong>Guadagno dell’amplificatore (<span class="math inline">\(K_A\)</span>):</strong> questo guadagno è generalmente espresso nell’unità volt per volt (V/V), poiché mette in relazione la tensione di uscita con la tensione di ingresso dell’amplificatore.</p></li>
+<li><p><strong>Guadagno trasduttore elettropneumatico (<span class="math inline">\(K_e\)</span>):</strong> questo guadagno converte il segnale elettrico (tensione) in un segnale pneumatico (pressione).</p></li>
+<li><p><strong>Guadagno posizionatore valvola (<span class="math inline">\(K_x\)</span>):</strong> Mette in relazione il segnale di pressione pneumatica con la posizione meccanica della valvola. La sua unità potrebbe essere adimensionale e rappresentare il rapporto tra lo spostamento dello stelo della valvola e il segnale di pressione in ingresso (ad esempio mm/psi o mm/bar).</p></li>
+<li><p><strong>Guadagno valvola di controllo (<span class="math inline">\(K_v\)</span>):</strong> Questo guadagno descrive come la posizione della valvola influisce sulla portata del vapore. L’unità potrebbe essere in termini di portata di vapore per unità di spostamento, ad esempio metri cubi all’ora per millimetro (m³/h/mm).</p></li>
+</ol>
+</section>
+<section id="calcolo-del-guadagno-complessivo-del-controller-proporzionale" class="level3">
+<h3 class="anchored" data-anchor-id="calcolo-del-guadagno-complessivo-del-controller-proporzionale">Calcolo del guadagno complessivo del controller proporzionale</h3>
+<p>Quando questi guadagni vengono moltiplicati insieme, l’unità risultante del guadagno complessivo del controller proporzionale (<span class="math inline">\(K\)</span>) sarà un composto di tutte queste singole unità. Nello scenario indicato, le unità si moltiplicherebbero come segue:</p>
+<p><span class="math display">\[ K = K_A \times K_e \times K_x \times K_v \]</span></p>
+<p>Quindi, ad esempio, l’unità di <span class="math inline">\(K\)</span> sarebbe:</p>
+<p><span class="math display">\[ \text{V/V} \times \text{psi/V} \times \text{(mm/psi)} \times \text{(m³/h/mm)} \]</span></p>
+<p>Se semplificato, questo ci dà:</p>
+<p><span class="math display">\[ \text{m³/h/V} \]</span></p>
+</section>
+<section id="interpretazione" class="level3">
+<h3 class="anchored" data-anchor-id="interpretazione">Interpretazione</h3>
+<p>L’unità risultante di m³/h/V indica che la produzione del controller, in termini di portata di vapore (m³/h), è proporzionale alla tensione in ingresso al sistema. Ciò riflette l’essenza di un controller proporzionale, in cui l’uscita è direttamente proporzionale al segnale di errore, che, in questo caso, è rappresentato in tensione.</p>
+<p>Questa conoscenza dettagliata delle unità è fondamentale per la progettazione e la messa a punto dei sistemi di controllo, garantendo che il controller funzioni entro l’intervallo desiderato e gestisca efficacemente l’impianto che sta controllando.</p>
+</section>
+<section id="componenti-come-sistemi-di-ordine-zero" class="level3">
+<h3 class="anchored" data-anchor-id="componenti-come-sistemi-di-ordine-zero">Componenti come sistemi di ordine zero</h3>
+<p>Abbiamo semplificato il nostro modello trattando tutti questi componenti come sistemi di ordine zero, ignorando le loro dinamiche intrinseche. È importante ricordare che questi componenti possiedono caratteristiche dinamiche.</p>
+<p>Caratterizzarli come sistemi di ordine zero implica l’assunzione di una risposta istantanea, che non è possibile per nessun sistema fisico. Tuttavia questa semplificazione è dovuta al fatto che le costanti di tempo di questi singoli componenti sono notevolmente piccole rispetto alla costante di tempo dell’impianto $ _p $.</p>
+</section>
+</section>
+<section id="comprendere-limpatto-del-disturbo-theta_a" class="level2">
+<h2 class="anchored" data-anchor-id="comprendere-limpatto-del-disturbo-theta_a">Comprendere l’impatto del disturbo (<span class="math inline">\(\theta_a\)</span>)</h2>
+<p>Con riferimento al disegno fisico sopra riportato, considerare un aumento della temperatura ambiente (<span class="math inline">\(\theta_a\)</span>). Intuitivamente, se la temperatura esterna aumenta, il flusso di calore in uscita dal sistema diminuirà, portando ad un aumento della temperatura della camera.</p>
+<p>Premesso questo, considereremo positivo l’effetto del disturbo <span class="math inline">\(\theta_a\)</span> sul sistema <span class="math inline">\(\theta\)</span> (vedi punto di somma nello schema a blocchi).</p>
+</section>
+<section id="effetti-del-guadagno-dellamplificatore" class="level2">
+<h2 class="anchored" data-anchor-id="effetti-del-guadagno-dellamplificatore">Effetti del guadagno dell’amplificatore</h2>
+<p>Il nostro obiettivo è studiare l’effetto del guadagno dell’amplificatore (<span class="math inline">\(K_A\)</span>) su vari parametri prestazionali come errore a regime, risposta ai transitori e sensibilità ai disturbi.</p>
+<section id="sviluppo-dellequazione-del-sistema" class="level3">
+<h3 class="anchored" data-anchor-id="sviluppo-dellequazione-del-sistema">Sviluppo dell’equazione del sistema</h3>
+<section id="descrivere-le-equazioni" class="level4">
+<h4 class="anchored" data-anchor-id="descrivere-le-equazioni">Descrivere le equazioni</h4>
+<ol type="1">
+<li><strong>Segnale di errore:</strong> L’errore è rappresentato da</li>
+</ol>
+<p><span class="math display">\[e = K_t \theta_r(s) - K_t \theta(s)\]</span></p>
+<p>dove <span class="math inline">\(K_t\)</span> è la costante della termocoppia, <span class="math inline">\(\theta_r\)</span> è la temperatura di riferimento e <span class="math inline">\(\theta\)</span> è la temperatura effettiva.</p>
+<ol start="2" type="1">
+<li><strong>Segnale di controllo:</strong> il segnale di errore viene moltiplicato per il prodotto dei guadagni</li>
+</ol>
+<p><span class="math display">\[K_A K_e K_x K_v\]</span></p>
+<p>risultante nella variabile manipolata.</p>
+<ol start="3" type="1">
+<li><strong>Dinamica complessiva del sistema:</strong> Incorporando la dinamica dell’impianto, rappresentata da <span class="math inline">\(\frac{K_p}{\tau_p s + 1}\)</span>, e il disturbo <span class="math inline">\(\theta_a\)</span>, otteniamo un’equazione completa che descrive il sistema:</li>
+</ol>
+<p><span class="math display">\[\Big[ (K_t \theta_r(s) - K_t \theta(s))K_A K_e K_x K_v \Big] \frac{K_p}{\tau_p s + 1}\]</span></p>
+<ol start="4" type="1">
+<li><strong>Incluso il disturbo:</strong></li>
+</ol>
+<p><span class="math display">\[\Big[ (K_t \theta_r(s) - K_t \theta(s))K_A K_e K_x K_v \Big] \frac{K_p}{\tau_p s + 1} + \frac{1}{\tau_p s + 1}\theta_a(s) = \theta\]</span></p>
+</section>
+<section id="manipolazione-dellequazione" class="level4">
+<h4 class="anchored" data-anchor-id="manipolazione-dellequazione">Manipolazione dell’equazione</h4>
+<ul>
+<li><strong>Obiettivo:</strong> Esprimere l’uscita del sistema <span class="math inline">\(\theta(s)\)</span> in termini di ingresso di riferimento <span class="math inline">\(\theta_r(s)\)</span> e disturbo (_a(s)).</li>
+</ul>
+<p><span class="math display">\[ (\tau_p s + 1)\theta(s) + K_tK_A K_e K_x K_vK_p\theta(s) = (K_tK_A K_e K_x K_vK_p)\theta_r + \theta_a \]</span></p>
+<ul>
+<li><strong>Guadagno del loop (<span class="math inline">\(K\)</span>):</strong> Combinando le costanti, definiamo</li>
+</ul>
+<p><span class="math display">\[K = K_t K_A K_e K_x K_v K_p\]</span></p>
+<p>definito guadagno d’anello.</p>
+<p>Questo guadagno, in particolare <span class="math inline">\(K_A\)</span> (il guadagno dell’amplificatore), influenza direttamente la risposta del sistema.</p>
+</section>
+</section>
+<section id="equazione-finale" class="level3">
+<h3 class="anchored" data-anchor-id="equazione-finale">Equazione finale</h3>
+<p>Utilizzando il guadagno d’anello <span class="math inline">\(K\)</span> possiamo ora ottenere:</p>
+<p><span class="math display">\[ (\tau_p s + 1 + K )\theta(s) = K \theta_r(s) + \theta_a(s) \]</span></p>
+<p><strong>Interpretazione:</strong> Questa equazione collega la temperatura di uscita <span class="math inline">\(\theta(s)\)</span> con la temperatura di riferimento <span class="math inline">\(\theta_r(s)\)</span> e il disturbo della temperatura ambiente <span class="math inline">\(\theta_a(s)\)</span>.</p>
+</section>
+<section id="punti-chiave-da-notare" class="level3">
+<h3 class="anchored" data-anchor-id="punti-chiave-da-notare">Punti chiave da notare</h3>
+<ul>
+<li><p><strong>Costante di controllo proporzionale:</strong> Il guadagno del circuito <span class="math inline">\(K\)</span> può essere considerato come una costante di controllo proporzionale, che riflette l’efficacia del controllore proporzionale nel mantenere la temperatura desiderata in presenza di disturbi.</p></li>
+<li><p><strong>Attenzione ai dettagli:</strong> È necessario prestare attenzione nella derivazione di questa equazione. Qualsiasi errore nella manipolazione può portare a conclusioni errate sul comportamento del sistema.</p></li>
+</ul>
+<p>Quindi in questo caso l’equazione finale è:</p>
+<p><span class="math display">\[ \theta(s) = \frac{K}{\tau_p s + 1 + K} \theta_r(s) + \frac{1}{\tau_p s + 1 + K} \theta_a(s) \]</span></p>
+<p>Abbiamo la relazione tra l’uscita <span class="math inline">\(\theta(s)\)</span> e il comando <span class="math inline">\(\theta_r(s)\)</span> e tra l’uscita <span class="math inline">\(\theta(s)\)</span> e il disturbo <span class="math inline">\(\theta_a(s)\)</span>.</p>
+<section id="impatto-del-feedback-sulla-costante-di-tempo" class="level4">
+<h4 class="anchored" data-anchor-id="impatto-del-feedback-sulla-costante-di-tempo">Impatto del feedback sulla costante di tempo</h4>
+<p>Riscrivere l’espressione del sistema come</p>
+<p><span class="math display">\[ \theta(s) = \frac{K}{1 + K} \cdot \frac{1}{\tau s + 1} \theta_r(s) + \frac{1}{1 + K} \cdot \frac{1}{\tau s + 1} \theta_a(s) \]</span></p>
+<p>osserviamo che la costante di tempo del sistema retroazionato, $ $, è:</p>
+<p><span class="math display">\[\tau = \frac{\tau_p}{1 + K} \]</span></p>
+<ul>
+<li>Qui ( _p ) è la costante di tempo originale della pianta senza feedback.</li>
+<li>Il feedback riduce la costante di tempo ($ $) poiché $ K &gt; 0 $.</li>
+<li>Implicazione: una riduzione della costante di tempo implica una risposta più rapida del sistema. I transitori decadono più rapidamente e il sistema raggiunge lo stato stazionario prima dopo un disturbo.</li>
+</ul>
+</section>
+<section id="analisi-degli-errori-in-stato-stazionario" class="level4">
+<h4 class="anchored" data-anchor-id="analisi-degli-errori-in-stato-stazionario">Analisi degli errori in stato stazionario</h4>
+<p>Analizziamo ora l’errore a regime. Per questo separiamo l’effetto dell’ingresso <span class="math inline">\(\theta_r\)</span> e quello del disturbo <span class="math inline">\(\theta_a\)</span> (possiamo applicare la sovrapposizione dato che parliamo di sistemi lineari).</p>
+<p>Più nel dettaglio, analizziamo la risposta del sistema ad un ingresso a gradino unitario per determinare il valore di regime:</p>
+<p><span class="math display">\[\theta_r = \frac{1}{s}\]</span></p>
+<p>e l’output è:</p>
+<p><span class="math display">\[ \theta(s) = \frac{K}{1 + K} \cdot \frac{1}{\tau s + 1} \frac{1}{s} \]</span></p>
+<p><strong>Valore di stato stazionario per ingresso passo:</strong></p>
+<p><span class="math display">\[ \theta_{ss} = \lim_{s \to 0} s \theta(s) = \frac{K}{1 + K} \]</span></p>
+<p>Esaminiamo ora la risposta del sistema ad un disturbo a gradino unitario.</p>
+<p><span class="math display">\[\theta_a = \frac{1}{s}\]</span></p>
+<p><strong>Valore di stato stazionario per disturbo:</strong></p>
+<p><span class="math display">\[ \theta_{ss} = \frac{1}{1 + K} \]</span></p>
+</section>
+<section id="commenti-e-risultati" class="level4">
+<h4 class="anchored" data-anchor-id="commenti-e-risultati">Commenti e risultati</h4>
+<p><strong>Segnale di comando:</strong> - <span class="math inline">\(\theta_r(s)\)</span> è il segnale di comando. Vogliamo che <span class="math inline">\(\theta_{ss}\)</span> sia uguale a 1 (stiamo monitorando un input di passo unitario). - All’aumentare di $ K $, $ _{ss} $ si avvicina a 1, riducendo l’errore a regime per segnali di comando costanti. - All’aumentare di $ K $, l’errore a regime in risposta a un segnale di comando diminuisce.</p>
+<p><strong>Rifiuto per disturbo:</strong> - Valori <span class="math inline">\(K\)</span> più alti migliorano la reiezione del disturbo, spingendo (_{ss}) verso lo zero, e quindi filtrando il disturbo.</p>
+<ul>
+<li><strong>Miglioramento con $ K $ elevati:</strong> le prestazioni sia in stato transitorio che stazionario migliorano con un $ K $ più elevato.</li>
+<li><strong>Scenario ideale:</strong> Teoricamente, con $ K $, il sistema avrebbe una risposta immediata e un errore in stato stazionario pari a zero.</li>
+</ul>
+</section>
+<section id="il-compromesso-tra-prestazioni-e-stabilità" class="level4">
+<h4 class="anchored" data-anchor-id="il-compromesso-tra-prestazioni-e-stabilità">Il compromesso tra prestazioni e stabilità</h4>
+<ul>
+<li><strong>Miglioramento rispetto alla stabilità:</strong>
+<ul>
+<li>Valori $ K $ più alti migliorano le prestazioni sia transitorie che stazionarie.</li>
+<li>Teoricamente, un $ K $ infinito risulterebbe in un sistema istantaneo con errore stazionario pari a zero.</li>
+<li>Tuttavia, ciò porta a un conflitto tra miglioramento delle prestazioni e stabilità del sistema.</li>
+</ul></li>
+</ul>
+</section>
+<section id="considerazioni-sulle-dinamiche-di-sistema" class="level4">
+<h4 class="anchored" data-anchor-id="considerazioni-sulle-dinamiche-di-sistema">Considerazioni sulle dinamiche di sistema:</h4>
+<ul>
+<li><strong>Rivisitazione delle dinamiche dei componenti:</strong>
+<ul>
+<li>Il nostro modello iniziale utilizzava approssimazioni di ordine zero per componenti come l’amplificatore e il posizionatore della valvola (le loro costanti di tempo sono trascurabili rispetto alla costante di tempo <span class="math inline">\(\tau_p\)</span> dell’impianto).</li>
+<li>Quando operiamo in retroazione invece la costante temporale è <span class="math inline">\(\tau=\frac{\tau_p}{1+K}\)</span></li>
+<li>All’aumentare di $ K $ e alla diminuzione della costante di tempo effettiva ($ $), queste approssimazioni diventano non valide (le costanti di tempo delle componenti non sono più trascurabili).</li>
+</ul></li>
+<li><strong>Implicazioni di valori $ K$ elevati:</strong>
+<ul>
+<li>Un $ K $ elevato trasforma il sistema del primo ordine (vedi lo schema a blocchi iniziale sopra) in un sistema di ordine superiore, potenzialmente del quinto ordine (vedi lo schema a blocchi sotto).</li>
+<li>I sistemi di ordine elevato (&gt; terzo ordine) possono diventare instabili con grandi valori di $ K $ (vedremo perché più avanti quando studieremo gli strumenti di analisi della stabilità).</li>
+<li>Il sistema quindi non si comporta come vorremmo.</li>
+<li>Questa instabilità introduce un compromesso tra le prestazioni del sistema (precisione in stato stazionario) e i suoi requisiti di stabilità.</li>
+</ul></li>
+<li><strong>Non linearità e saturazione:</strong> valori elevati di <span class="math inline">\(K\)</span> possono portare i componenti alla saturazione, portando a un comportamento non lineare e potenziale instabilità.</li>
+</ul>
+<img src="../pics/15_Introduction_to_Control_Systems_temperature_control_3.png" alt="15_Introduction_to_Control_Systems_temperature_control_3" style="width:750px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<p>Per rendere il concetto più chiaro, facciamo un esempio</p>
+<img src="../pics/15_Introduction_to_Control_Systems_temperature_control_4.png?1" alt="15_Introduction_to_Control_Systems_temperature_control_4" style="width:750px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<p>La funzione di trasferimento ad anello chiuso diventa:</p>
+<p><span class="math display">\[
+\frac{\theta(s)}{\theta_r(s)} = \frac{\frac{K_cK_vK_p}{(\tau_cs+1)(\tau_vs+1)(\tau_ps+1)}}{1+\ frac{K_cK_vK_p}{(\tau_cs+1)(\tau_vs+1)(\tau_ps+1)}} = \frac{K_cK_vK_p}{(\tau_cs+1)(\tau_vs+1)(\tau_ps+1) + K_cK_vK_p}
+\]</span></p>
+<p>L’espressione originale per il sistema senza la dinamica del primo ordine dei singoli componenti era:</p>
+<p><span class="math display">\[
+\frac{\theta(s)}{\theta_r(s)} = \frac{K}{\tau_p s + 1 + K}
+\]</span></p>
+<p>In quest’ultimo caso l’equazione caratteristica è:</p>
+<p><span class="math display">\[
+\tau_ps + 1 + K = 0
+\]</span></p>
+<p>e la sua radice (il polo del sistema ad anello chiuso) è:</p>
+<p><span class="math display">\[
+s = -\frac{1+K}{\tau_p}
+\]</span></p>
+<p>Non abbiamo discusso la stabilità nei dettagli, ma intuitivamente (quella delle equazioni differenziali e delle sue soluzioni), se i poli sono nella Mezza Posta Sinistra (LHP) il sistema è stabile.</p>
+<p>Nel caso in cui <span class="math inline">\(s = -\frac{1+K}{\tau_p}\)</span>, per tutti i valori di <span class="math inline">\(K\)</span>, <span class="math inline">\(s\)</span> è sempre negativo.</p>
+<p>Quando consideriamo le costanti di tempo per ciascuna componente, l’equazione caratteristica diventa quella di un sistema del terzo ordine:</p>
+<p><span class="math display">\[ a_1 s^3 + a_2 s^2 + a_3 s + a_4 = 0 \]</span></p>
+<p>Questa equazione ha tre poli nel piano s (tre radici che puoi calcolare come esercizio). Per valori elevati di <span class="math inline">\(K\)</span> alcuni poli vengono spinti verso il semipiano destro (RHP) portando ad un sistema instabile.</p>
+<p>I poli di questo sistema di ordine superiore, influenzato da <span class="math inline">\(K\)</span>, ne determinano la stabilità.</p>
+</section>
+</section>
+<section id="commenti" class="level3">
+<h3 class="anchored" data-anchor-id="commenti">Commenti:</h3>
+<ul>
+<li>Una volta che il sistema è instabile, tutto il resto non ha importanza! Non ha senso studiare le costanti di tempo, ecc.</li>
+<li>In circuito aperto, le singole modalità dinamiche sono stabili, ma in circuito chiuso la loro interazione può portare all’instabilità.</li>
+<li>Il circuito di feedback, che contribuisce a migliorare robustezza e sensibilità, crea anche problemi di stabilità.</li>
+</ul>
+</section>
+</section>
+<section id="controllo-integrale-ed-errore-di-stato-stazionario" class="level2">
+<h2 class="anchored" data-anchor-id="controllo-integrale-ed-errore-di-stato-stazionario">Controllo integrale ed errore di stato stazionario</h2>
+<p>Affrontare l’errore dello stato stazionario con il controllo integrale</p>
+<ul>
+<li>Limitazione del controllo proporzionale: nel controllo proporzionale, è necessario un errore persistente per mantenere l’equilibrio del sistema. Se l’errore è zero, l’azione di controllo è zero (vedere il diagramma seguente).</li>
+</ul>
+<img src="../pics/15_Introduction_to_Control_Systems_temperature_control_5.png" alt="15_Introduction_to_Control_Systems_temperature_control_5" style="width:750px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<p>Nel controllo proporzionale, l’errore fornisce l’energia necessaria per sostenere un nuovo equilibrio. Il nuovo equilibrio si ottiene utilizzando nuova energia disponibile solo se è presente il segnale di errore. Se l’errore è zero, si torna alla posizione di equilibrio originale. Tuttavia ciò non è possibile perché il sistema è costretto alla nuova situazione.</p>
+<ul>
+<li>Ruolo del controllo integrale: il controller integrale accumula l’errore nel tempo, consentendo all’errore di ridursi a zero pur fornendo l’azione di controllo necessaria.</li>
+</ul>
+<img src="../pics/15_Introduction_to_Control_Systems_temperature_control_6.png?1" alt="15_Introduction_to_Control_Systems_temperature_control_6" style="width:750px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<p>Il controllo integrale utilizza l’accumulo di errori passati per raggiungere questo obiettivo, consentendo all’errore di ridursi eventualmente a zero. Questo è sempre possibile per la tipologia di impianti che stiamo considerando.</p>
+<hr>
+</section>
+<section id="rivisitare-il-sistema-di-controllo-della-temperatura" class="level2">
+<h2 class="anchored" data-anchor-id="rivisitare-il-sistema-di-controllo-della-temperatura">Rivisitare il sistema di controllo della temperatura</h2>
+<p>Rivisiteremo ora il processo di controllo della temperatura discusso in precedenza, concentrandoci sulle dinamiche del sistema, in particolare sul ruolo del controllo integrale nel miglioramento delle prestazioni del sistema.</p>
+<section id="panoramica-del-sistema" class="level3">
+<h3 class="anchored" data-anchor-id="panoramica-del-sistema">Panoramica del sistema</h3>
+<img src="../pics/15_Introduction_to_Control_Systems_temperature_control_2.png" alt="15_Introduction_to_Control_Systems_temperature_control_2" style="width:750px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<section id="descrizione-del-diagramma-a-blocchi" class="level4">
+<h4 class="anchored" data-anchor-id="descrizione-del-diagramma-a-blocchi">Descrizione del diagramma a blocchi</h4>
+<ul>
+<li><strong>Temperatura di riferimento:</strong> Indicata come <span class="math inline">\(\theta_r\)</span>, l’impostazione della temperatura desiderata.</li>
+<li><strong>Sensore e segnale di errore:</strong> Un sensore a termocoppia converte <span class="math inline">\(\theta_r\)</span> in un segnale di tensione. Questa tensione viene confrontata con la tensione di temperatura effettiva per generare un segnale di errore.</li>
+<li><strong>Amplificatore e Trasduttore:</strong> Il segnale di errore viene amplificato (guadagno <span class="math inline">\(K_A\)</span>) e quindi inviato ad un trasduttore elettropneumatico (costante <span class="math inline">\(K_e\)</span>).</li>
+<li><strong>Posizionatore e guadagno della valvola:</strong> il segnale del trasduttore controlla un posizionatore della valvola (costante (K_x)) per regolare la portata, influenzato dal guadagno della valvola <span class="math inline">\(K_v\)</span>.</li>
+<li><strong>Funzione di trasferimento del processo:</strong> Rappresentata come <span class="math inline">\(\frac{K_p}{\tau_p s + 1}\)</span>.</li>
+<li><strong>Effetto di disturbo:</strong> Modellato come <span class="math inline">\(\frac{1}{\tau_p s + 1}\)</span>, dove <span class="math inline">\(\theta_a\)</span> è il disturbo della temperatura ambiente.</li>
+</ul>
+</section>
+</section>
+<section id="dinamica-e-stabilità-del-sistema" class="level3">
+<h3 class="anchored" data-anchor-id="dinamica-e-stabilità-del-sistema">Dinamica e stabilità del sistema</h3>
+<p>Quando abbiamo assunto che l’impianto fosse un sistema del primo ordine e che i vari componenti possano essere approssimati come di ordine zero: - <strong>Prestazioni transitorie:</strong> Il guadagno del circuito più ampio (<span class="math inline">\(K\)</span>) migliora le prestazioni transitorie riducendo la costante di tempo del sistema. - <strong>Errore in stato stazionario:</strong> <span class="math inline">\(K\)</span> più grandi riducono anche l’errore in stato stazionario. - <strong>Limiti sul guadagno:</strong> Un guadagno elevato <span class="math inline">\(K\)</span> può portare alla saturazione dei componenti e al comportamento non lineare, limitando l’intervallo di risposta lineare del sistema. Inoltre, la dinamica dei vari componenti non può essere trascurata, portando a una potenziale instabilità.</p>
+</section>
+<section id="controllo-integrale-nei-sistemi-di-temperatura" class="level3">
+<h3 class="anchored" data-anchor-id="controllo-integrale-nei-sistemi-di-temperatura">Controllo integrale nei sistemi di temperatura</h3>
+<section id="indirizzamento-alle-modifiche-del-segnale-di-comando" class="level4">
+<h4 class="anchored" data-anchor-id="indirizzamento-alle-modifiche-del-segnale-di-comando">Indirizzamento alle modifiche del segnale di comando</h4>
+<ul>
+<li><strong>Scenario:</strong> Considerare l’esigenza di aumentare la temperatura della camera di 10 gradi.</li>
+<li><strong>Cambio comando:</strong> Ciò richiede un cambiamento in <span class="math inline">\(\theta_r\)</span> dello stesso importo.</li>
+</ul>
+</section>
+<section id="meccanismo-di-controllo-integrale" class="level4">
+<h4 class="anchored" data-anchor-id="meccanismo-di-controllo-integrale">Meccanismo di controllo integrale</h4>
+<ul>
+<li><strong>Dinamica del segnale di errore:</strong> Con il controllo integrale, il sistema può gestire le modifiche nel segnale di comando mantenendo stabilità e prestazioni.</li>
+</ul>
+<p><strong>Espressione matematica:</strong></p>
+<p><span class="math display">\[ u(t) = K_I \int e(t) \, dt \]</span></p>
+<p><strong>Commenti:</strong> - <strong>Ruolo nella stabilità del sistema:</strong> Il controllo integrale consente al sistema di adattarsi automaticamente a nuovi equilibri senza compromettere la stabilità.</p>
+<ul>
+<li><p><strong>Adattabilità del sistema:</strong> Il controller integrale regola l’azione di controllo nel tempo in base all’errore accumulato, portando a un errore stazionario pari a zero anche con modifiche dei comandi.</p></li>
+<li><p><strong>Adattabilità del sistema:</strong> Il controller integrale regola l’azione di controllo nel tempo in base all’errore accumulato, portando a un errore stazionario pari a zero anche con modifiche dei comandi.</p></li>
+</ul>
+<p>Ci sarà un prezzo da pagare: il controllo integrale potrebbe portare all’instabilità ancor più dell’utilizzo di un semplice controllo proporzionale.</p>
+</section>
+</section>
+<section id="implementazione-del-controllo-integrale-nei-sistemi-di-temperatura" class="level3">
+<h3 class="anchored" data-anchor-id="implementazione-del-controllo-integrale-nei-sistemi-di-temperatura">Implementazione del controllo integrale nei sistemi di temperatura</h3>
+<p>Sostituiamo l’amplificatore <span class="math inline">\(K_A\)</span> con un controller integrale <span class="math inline">\(K_I/s\)</span>.</p>
+<p><strong>Dinamica del sistema:</strong> il sistema ora include il controller integrale, il trasduttore elettropneumatico (<span class="math inline">\(K_e\)</span>), il posizionatore della valvola (<span class="math inline">\(K_x\)</span>) e il guadagno della valvola (<span class="math inline">\(K_v\)</span>).</p>
+<img src="../pics/15_Introduction_to_Control_Systems_temperature_control_7.png" alt="15_Introduction_to_Control_Systems_temperature_control_7" style="width:750px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<p>Sulla base di questo diagramma a blocchi possiamo quindi scrivere le equazioni matematiche:</p>
+<p><span class="math display">\[
+(K_t\theta_r - K_t\theta)\cdot \Big(\frac{K_I}{s}K_eK_xK_v \Big) \Big(\frac{K_p}{\tau_ps+1} \Big) + \frac{1}{ \tau_ps+1} \theta_a = \theta
+\]</span></p>
+<p>Possiamo quindi riorganizzare l’equazione per isolare <span class="math inline">\(\theta(s)\)</span> da un lato.:</p>
+<p><span class="math display">\[
+(\tau_p s + 1)\theta(s) + \frac{K}{s} \theta(s) = \frac{K}{s} \theta_r(s) + \theta_a(s)
+\]</span></p>
+<p>dove <span class="math inline">\(K = K_tK_IK_eK_xK_vK_p\)</span>.</p>
+<p>E quindi:</p>
+<p><span class="math display">\[
+\Big(\tau_p s + 1 + \frac{K}{s}\Big) \theta(s) = \frac{K}{s} \theta_r(s) + \theta_a(s)
+\]</span></p>
+<p>o equivalentemente:</p>
+<p><span class="math display">\[
+\Big(\tau_p s^2 + s + K \Big) \theta(s) = K \theta_r(s) + s\theta_a(s)
+\]</span></p>
+</section>
+<section id="prestazioni-in-stato-stazionario-con-controllo-integrale" class="level3">
+<h3 class="anchored" data-anchor-id="prestazioni-in-stato-stazionario-con-controllo-integrale">Prestazioni in stato stazionario con controllo integrale</h3>
+<p>Vorremmo ora calcolare lo stato stazionario per un gradino in ingresso in comando ed in disturbo</p>
+<ul>
+<li><strong>Risposta ingresso comando:</strong> Per un comando di ingresso passo, l’uscita in stato stazionario <span class="math inline">\(\theta_{ss}\)</span> è uguale a 1, indipendentemente da <span class="math inline">\(K\)</span>, indicando un errore in stato stazionario pari a zero.</li>
+</ul>
+<p><span class="math display">\[
+\frac{\theta(s)}{\theta_r(s)} = \frac{K}{\tau_p s^2 + s + K}
+\]</span></p>
+<p>Applicando <span class="math inline">\(\theta_r(s)=\frac{1}{s}\)</span>, possiamo calcolare <span class="math inline">\(\theta_{ss}\)</span>:</p>
+<p><span class="math display">\[ \theta_{ss} = \lim_{s \to 0} s \theta(s) = s \frac{K}{\tau_p s^2 + s + K} \frac{1}{s} = 1 \]</span></p>
+<p>Ciò è vero per tutti i possibili valori di <span class="math inline">\(K\)</span> e l’errore in stato stazionario è zero.</p>
+<ul>
+<li><strong>Risposta al disturbo:</strong> In risposta a un disturbo a gradino <span class="math inline">\(\theta_a(s)=\frac{1}{s}\)</span>, l’uscita in stato stazionario <span class="math inline">\(\theta_{ss}\)</span> diventa zero, respingendo di fatto il disturbo :</li>
+</ul>
+<p><span class="math display">\[
+\frac{\theta(s)}{\theta_a(s)} = \frac{s}{\tau_p s^2 + s + K}
+\]</span></p>
+</section>
+<section id="prestazioni-transitorie-con-controllo-integrale" class="level3">
+<h3 class="anchored" data-anchor-id="prestazioni-transitorie-con-controllo-integrale">Prestazioni transitorie con controllo integrale</h3>
+<p>Torniamo alla risposta all’input:</p>
+<p><span class="math display">\[
+\frac{\theta(s)}{\theta_r(s)} = \frac{K}{\tau_p s^2 + s + K}
+\]</span></p>
+<section id="commenti-1" class="level4">
+<h4 class="anchored" data-anchor-id="commenti-1">Commenti:</h4>
+<ul>
+<li>L’aggiunta del controllo integrale cambia il sistema dal primo ordine al secondo ordine.</li>
+</ul>
+<p>Ricordiamo che con un controllore proporzionale il sistema era un sistema del primo ordine con forma <span class="math inline">\(\frac{\theta(s)}{\theta_r(s)} = \frac{K}{\tau_p s + 1 + K}\)</span></p>
+<p>Per questo sistema del primo ordine il polo è:</p>
+<p><span class="math display">\[
+s= \frac{-(1+K)}{\tau_p}
+\]</span></p>
+<p>Quando aumentiamo <span class="math inline">\(K\)</span> il polo rimane sul piano di sinistra e si sposta da <span class="math inline">\(s=\frac{-1}{\tau_p}\)</span> (quando <span class="math inline">\(K=0\)</span>) a sinistra e la sua risposta diventa sempre più rapida .</p>
+<p>Per il sistema del secondo ordine, i poli sono le radici di:</p>
+<p>$$ _p s^2 + s + K = 0 $</p>
+<p>Quando <span class="math inline">\(K=0\)</span>, le radici sono <span class="math inline">\(s=0\)</span> e <span class="math inline">\(s=\frac{-1}{\tau_p}\)</span>.</p>
+<p>Si noti che se all’origine c’è un polo il transitorio non decade mai.</p>
+<p>Aumentando il guadagno <span class="math inline">\(K\)</span> i due poli si avvicineranno, finché ad un certo punto diventeranno complessi coniugati.</p>
+</section>
+<section id="limitazioni-nel-miglioramento" class="level4">
+<h4 class="anchored" data-anchor-id="limitazioni-nel-miglioramento">Limitazioni nel miglioramento</h4>
+<ul>
+<li><strong>Limite sulle prestazioni transitorie:</strong> Il controllo integrale impone un limite al miglioramento delle prestazioni transitorie, poiché i poli possono essere guidati solo fino a un certo punto (vedere il grafico del luogo delle radici di seguito).</li>
+<li><strong>Risposta oscillatoria:</strong> L’aumento di (K) può portare a un comportamento oscillatorio, una conseguenza diretta del controllo integrale.</li>
+</ul>
+<div id="ce138bfb" class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> control <span class="im">import</span> tf, root_locus</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># System parameters</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>tau_p <span class="op">=</span> <span class="dv">1</span>  <span class="co"># For example, let's take tau_p as 1</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the characteristic equation of the system with integral control</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># The characteristic equation is tau_p * s^2 + s + K = 0</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># For the root locus, we consider the open-loop transfer function G(s)H(s)</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co"># G(s)H(s) = K / (tau_p * s^2 + s)</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># This is equivalent to a system with a numerator [K] and a denominator [tau_p, 1, 0]</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>numerator <span class="op">=</span> [<span class="dv">1</span>]  <span class="co"># Coefficient for K</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>denominator <span class="op">=</span> [tau_p, <span class="dv">1</span>, <span class="dv">0</span>]  <span class="co"># Coefficients of s^2, s, and constant term for the denominator</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the transfer function for the system</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>system <span class="op">=</span> tf(numerator, denominator)</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the root locus</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>root_locus_data <span class="op">=</span> root_locus(system, Plot<span class="op">=</span><span class="va">True</span>, ax<span class="op">=</span>ax)</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Add labels and title for clarity</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Real Axis'</span>)</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Imaginary Axis'</span>)</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Root Locus with Integral Control'</span>)</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="15_Introduction_to_Control_Systems_it_files/figure-html/cell-2-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="influenza-dei-poli-sulla-risposta-del-sistema" class="level3">
+<h3 class="anchored" data-anchor-id="influenza-dei-poli-sulla-risposta-del-sistema">Influenza dei Poli sulla risposta del sistema</h3>
+<ul>
+<li><p><strong>Poli:</strong> Nella teoria del controllo, i poli di un sistema sono le radici della sua equazione caratteristica. Sono cruciali nel determinare il comportamento del sistema nel tempo, in particolare la sua stabilità e la risposta transitoria.</p></li>
+<li><p><strong>Rappresentazione del piano complesso:</strong> i poli sono rappresentati nel piano complesso, dove l’asse orizzontale è l’asse reale e l’asse verticale è l’asse immaginario (asse jω).</p></li>
+<li><p><strong>Posizione dei poli:</strong> La posizione dei poli nel piano complesso influisce in modo significativo sul modo in cui il sistema risponde agli input.</p></li>
+<li><p><strong>Prossimità dell’asse reale:</strong> i poli più vicini all’asse jω (asse immaginario) hanno una parte reale più piccola. Questa piccola parte reale implica un tasso di decadimento più lento della risposta transitoria del sistema.</p></li>
+<li><p><strong>Poli dominanti:</strong> i poli più vicini all’asse jω vengono spesso definiti “poli dominanti” perché hanno un effetto più pronunciato sul comportamento transitorio del sistema. Il loro tasso di decadimento più lento fa sì che determinino la risposta complessiva del sistema, soprattutto nella fase transitoria.</p></li>
+</ul>
+<section id="considerazioni-sul-design" class="level4">
+<h4 class="anchored" data-anchor-id="considerazioni-sul-design">Considerazioni sul design</h4>
+<ul>
+<li>Con riferimento al luogo delle radici sopra, il polo dominante non può essere spostato ulteriormente a sinistra, limitando quindi la risposta dinamica che possiamo ottenere.</li>
+<li>Quando si progettano sistemi di controllo, gli ingegneri spesso mirano a posizionare i poli dominanti in modo da raggiungere l’equilibrio desiderato tra risposta rapida e stabilità. I poli troppo vicini all’asse jω possono comportare tempi di risposta lenti, mentre i poli troppo lontani nel semipiano sinistro possono far sì che il sistema risponda troppo rapidamente, portando potenzialmente a superamento e instabilità.</li>
+<li><strong>Risposta transitoria vs.&nbsp;allo stato stazionario:</strong> i poli dominanti influenzano principalmente la risposta transitoria del sistema. Una volta che gli effetti transitori sono decaduti, il comportamento in stato stazionario è determinato da altri fattori, come il guadagno in stato stazionario del sistema e il tipo di controller utilizzato (ad esempio proporzionale, integrale, derivativo).</li>
+</ul>
+<p>In questo caso i poli non si spostano verso destra (diventano instabili). Tuttavia, se una delle costanti di tempo dei nostri componenti inizia ad avere un effetto che potrebbe facilmente portare il sistema all’instabilità (il sistema diventa almeno del terzo ordine e potrebbe avere poli che vanno verso RHP per K elevato).</p>
+</section>
+</section>
+</section>
+<section id="introduzione-al-controllo-dei-derivati" class="level2">
+<h2 class="anchored" data-anchor-id="introduzione-al-controllo-dei-derivati">Introduzione al controllo dei derivati</h2>
+<p>Consideriamo ora il seguente errore:</p>
+<img src="../pics/15_Introduction_to_Control_Systems_temperature_control_8_Derivative.png" alt="15_Introduction_to_Control_Systems_temperature_control_8_Derivative" style="width:750px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<p>Ai tempi $ t_1 $ e $ t_2 $, un controller proporzionale mostrerebbe azioni di controllo identiche poiché l’entità dell’errore è la stessa in entrambi i casi. Tuttavia, gli scenari con $ t_1 $ e $ t_2 $ sono nettamente diversi: con $ t_1 $ l’errore è in aumento, mentre con $ t_2 $ l’errore ha una tendenza decrescente.</p>
+<p>Intuitivamente, preferiremmo azioni di controllo diversificate in queste situazioni. Nello specifico, a $ t_1 $, potrebbe essere auspicabile un’azione di controllo più aggressiva per evitare che l’errore si aggravi. Considerando il tasso di variazione dell’errore, o la sua pendenza, possiamo distinguere tra questi scenari. Questa pendenza informa efficacemente il controllore sui potenziali errori futuri, consentendo una risposta più predittiva e adattiva.</p>
+<p>Questo è ciò che fa un controllo derivativo: introduce un segnale che non è solo proporzionale all’entità dell’errore (controllo proporzionale), ma sulla derivata di quel segnale.</p>
+<section id="concetto-di-controllo-derivato" class="level3">
+<h3 class="anchored" data-anchor-id="concetto-di-controllo-derivato">Concetto di controllo derivato</h3>
+<section id="natura-predittiva-del-controllo-derivato" class="level4">
+<h4 class="anchored" data-anchor-id="natura-predittiva-del-controllo-derivato">Natura predittiva del controllo derivato</h4>
+<ul>
+<li><strong>Previsione tramite derivata:</strong> Il controllo derivativo predice gli errori futuri (attraverso la pendenza del segnale di errore) e regola di conseguenza l’azione di controllo, <em>fornendo maggiore smorzamento durante i transitori</em>.</li>
+</ul>
+<p><strong>Equazione:</strong></p>
+<p><span class="math display">\[ U(s) = K_c (1 + T_D s) E(s) \]</span></p>
+<ul>
+<li><strong>Efficacia:</strong> il controllo derivato è efficace durante i periodi transitori ma non ha alcun impatto sull’errore stazionario.
+<ul>
+<li>Se l’errore stazionario diventa costante, ovvero quando si raggiunge lo stato stazionario, la derivata è zero e l’effetto del controllo derivativo è zero (vedere il grafico dell’errore sopra).</li>
+<li>A regime il controllo derivato perde il suo ruolo e solo il controllo proporzionale ed integrale può supportarlo.</li>
+</ul></li>
+</ul>
+</section>
+</section>
+</section>
+<section id="implementazione-del-controllo-derivato-nei-sistemi-di-controllo" class="level2">
+<h2 class="anchored" data-anchor-id="implementazione-del-controllo-derivato-nei-sistemi-di-controllo">Implementazione del controllo derivato nei sistemi di controllo</h2>
+<p>Spostiamo ora la nostra attenzione sugli aspetti pratici dell’implementazione del controllo derivato nei sistemi di controllo. Discuteremo le sfide e le alternative nell’impiego del controllo derivato, in particolare nel contesto di un sistema di controllo della posizione.</p>
+<p>Abbiamo la seguente azione di controllo:</p>
+<p><span class="math display">\[ U(s) = K_c (1 + T_D s) E(s) \]</span></p>
+<section id="problema-di-amplificazione-del-rumore" class="level3">
+<h3 class="anchored" data-anchor-id="problema-di-amplificazione-del-rumore">Problema di amplificazione del rumore</h3>
+<ul>
+<li><p><strong>Derivato del rumore ad alta frequenza:</strong> Il controllo derivato può amplificare i segnali di rumore ad alta frequenza, disturbando potenzialmente le prestazioni del sistema.</p></li>
+<li><p><strong>Scenario di esempio:</strong> Considera un segnale di rumore <span class="math inline">\(0,01 \sin(10^3 t)\)</span>. L’ampiezza di questo segnale è molto piccola ed è ad alta frequenza. Nel controllo proporzionale, molto probabilmente non abbiamo bisogno di considerarlo esplicitamente perché il sistema stesso è un filtro passa basso.</p></li>
+</ul>
+<p>Nel controllo derivativo, la derivata di questo segnale è $10^3 (10^3 t) = 10 (10^3 t) $, che amplifica significativamente il rumore.</p>
+<p><em>L’azione derivativa $ T_D s $ applicata a un segnale di rumore può portare a un segnale di grande ampiezza che può oscurare l’effettivo segnale di errore.</em></p>
+<p>Per questo motivo il controllo derivato sopra descritto è solo teorico e mai attuato nella pratica. Si applica sempre un filtro passa basso adatto per l’implementazione (lo vedremo più avanti).</p>
+<p>Per lo scopo di questo notebook si presuppone che il rumore ad alta frequenza non sia parte del problema o che sia stato opportunamente filtrato.</p>
+</section>
+<section id="alternative-al-controllo-derivato-standard" class="level3">
+<h3 class="anchored" data-anchor-id="alternative-al-controllo-derivato-standard">Alternative al controllo derivato standard</h3>
+<p>Vediamo quali alternative possiamo avere utilizzando un sistema di controllo della posizione. Per questo rivisiteremo il Position Control System che abbiamo analizzato in un precedente quaderno e riportato di seguito.</p>
+<p>Tieni presente che abbiamo apportato alcune semplificazioni: - L’impianto è solo inerziale. - Si trascura l’induttanza.</p>
+<img src="../pics/15_Introduction_to_Control_Systems_position_control.png" alt="15_Introduction_to_Control_Systems_position_control" style="width:750px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<p>Da ciò possiamo calcolare l’equazione (notare che il segno della coppia di disturbo <span class="math inline">\(T_W\)</span> non è importante):</p>
+<p><span class="math display">\[
+\Big[ \Big(K_p\theta_r - K_p\theta\Big) K_c \Big(1+T_Ds\Big)\frac{K_T}{R_f} + T_W \big] \frac{1}{Js^s} = \theta
+\]</span></p>
+<p>che può essere scritto come:</p>
+<p><span class="math display">\[
+Js^s\theta + K_pK_C\frac{K_T}{R_f}\Big(1+T_Ds\Big)\theta = K_pK_C\frac{K_T}{R_f}\Big(1+T_Ds\Big)\theta_r + T_W
+\]</span></p>
+<p>possiamo porre: <span class="math inline">\(K = K_pK_C\frac{K_T}{R_f}\)</span> e otteniamo:</p>
+<p><span class="math display">\[
+\Big(Js^2 + K T_D s + K\Big)\theta(s) = K(1+T_Ds)\theta_r + T_W
+\]</span></p>
+<p>e finalmente possiamo scrivere la <strong>Funzione di trasferimento:</strong></p>
+<p><span class="math display">\[
+\frac{\theta(s)}{\theta_r(s)} = \frac{K (1 + T_D s)}{Js^2 + K T_D s + K}
+\]</span></p>
+<p>E i “parametri di personalità” dei sistemi sono:</p>
+<p><span class="math display">\[
+\omega_n = \sqrt{\frac{K}{J}}
+\]</span></p>
+<p><span class="math display">\[
+2\zeta\omega_n = \frac{KT_D}{J} \rightarrow \zeta=\frac{T_D}{2}\sqrt{\frac{K}{J}}
+\]</span></p>
+<p>L’effetto del controllo derivativo sul transitorio è visibile attraverso <span class="math inline">\(\zeta\)</span>. È possibile aumentare lo smorzamento aumentando <span class="math inline">\(T_D\)</span>.</p>
+<section id="commenti-aggiuntivi" class="level4">
+<h4 class="anchored" data-anchor-id="commenti-aggiuntivi">Commenti aggiuntivi:</h4>
+<p>Se osserviamo la funzione di trasferimento notiamo: - Il denominatore è un sistema del secondo ordine - Il numeratore ha uno zero</p>
+<p>Quando viene introdotto un cambio di passo nel segnale di comando (<span class="math inline">\(\theta_r\)</span>), come <span class="math inline">\(\theta_r = \frac{1}{s}\)</span> nel dominio di Laplace, e questo segnale interagisce con un elemento di controllo derivato caratterizzato da $T_Ds $, provoca la generazione di un impulso, o picco. Questo fenomeno si verifica perché differenziando una funzione a gradino, che rimane sostanzialmente costante dopo il cambiamento iniziale, produce un impulso:</p>
+<p><span class="math display">\[
+T_Ds \cdot \frac{1}{s} \rightarrow T_D \cdot \delta(t)
+\]</span></p>
+<p>Ciò implica che in risposta a un cambiamento di gradino, un controller derivato produce un output iniziale eccezionalmente elevato, comunemente indicato come picco. Questo comportamento può essere interpretato come uno sforzo immediato del sistema di controllo per contrastare un cambiamento improvviso e significativo nell’errore.</p>
+<p>Tuttavia, un tale picco nell’output del controller non è sempre auspicabile. Sebbene rappresenti una risposta immediata al cambiamento dell’errore, può essere paragonato all’introduzione di un disturbo nel sistema per poi correggerlo successivamente. Ciò potrebbe potenzialmente portare a problemi quali instabilità del sistema o eccessivo superamento, soprattutto nei sistemi sensibili ai rapidi cambiamenti.</p>
+<p>Per affrontare questo problema, i sistemi di controllo sono spesso dotati di meccanismi di filtraggio aggiuntivi. In alternativa, viene impiegato un approccio modificato al controllo derivato, che non reagisce così intensamente alle componenti ad alta frequenza del segnale di errore. Queste strategie di progettazione aiutano a rendere più fluida la risposta del controller, prevenendo picchi improvvisi e garantendo un comportamento del sistema più stabile.</p>
+<img src="../pics/15_Introduction_to_Control_Systems_position_control_1.png" alt="15_Introduction_to_Control_Systems_position_control_1" style="width:750px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<p>E la presenza della Dinamo Tachimetrica equivale a:</p>
+<img src="../pics/15_Introduction_to_Control_Systems_position_control_2.png" alt="15_Introduction_to_Control_Systems_position_control_2" style="width:750px;"><table>
+<tbody><tr>
+
+</tr>
+</tbody></table>
+<p>Invece di calcolare la derivata del segnale di uscita, è possibile utilizzare una dinamo tachimetrica per generare un segnale di feedback proporzionale alla velocità di variazione dell’uscita.</p>
+<p>Questo metodo aggira le sfide tipicamente incontrate quando si differenzia il comando di input, in particolare i problemi di amplificazione del rumore e la creazione di picchi quando si verificano cambiamenti improvvisi nel segnale di comando.</p>
+<p>Nell’effettiva implementazione di questo sistema non viene effettuata alcuna operazione derivativa. Sebbene il modello includa un termine derivato (<span class="math inline">\(sK_t\)</span>), nella pratica questa differenziazione non avviene.</p>
+<p>È importante notare, tuttavia, che questo approccio non è universalmente applicabile. Ad esempio, nei sistemi di controllo della temperatura, non esiste un segnale intrinseco all’interno del sistema che rappresenti direttamente la derivata della variabile controllata.</p>
+<p>Nel controllo del movimento ciò è possibile, nel controllo del processo generalmente non è possibile. In questo caso aggiungiamo filtri adeguati per evitare picchi.</p>
+<p>Invece di calcolare direttamente la derivata del segnale di uscita, è possibile utilizzare una dinamo tachimetrica per produrre un segnale di feedback correlato alla velocità di variazione dell’uscita. Questa strategia affronta in modo efficace i problemi tipici associati alla differenziazione diretta del comando di input. Queste problematiche includono l’amplificazione del rumore e la generazione di picchi, soprattutto quando il segnale di comando subisce brusche variazioni.</p>
+<p>Nelle implementazioni pratiche di tale sistema, non viene eseguito un calcolo della derivata effettiva. Il modello del sistema potrebbe includere un termine derivato rappresentato come $ sK_t $, ma in realtà questo processo di differenziazione non viene eseguito. La dinamo tachimetrica fornisce intrinsecamente un segnale che riflette la derivata, aggirando così la necessità di una differenziazione esplicita.</p>
+<p>Tuttavia, è fondamentale riconoscere che questo metodo non è universalmente applicabile a tutti i tipi di sistemi di controllo. Ad esempio, nei sistemi di controllo della temperatura, in genere non è presente un segnale immediatamente disponibile che rappresenti intrinsecamente la derivata della temperatura. Tali sistemi non hanno un equivalente della dinamo tachimetrica utilizzata nei sistemi di controllo del movimento, dove il feedback derivato è naturalmente integrato.</p>
+<p>In contesti come il controllo di processo, dove non è possibile ottenere direttamente un segnale derivato, è necessario impiegare strategie alternative. Questi spesso comportano l’aggiunta di filtri adeguati al sistema di controllo. Questi filtri sono progettati per mitigare o eliminare gli effetti indesiderati, come i picchi, che possono verificarsi quando si utilizza il controllo derivato. Questo approccio garantisce prestazioni del sistema più fluide e riduce il rischio di instabilità o di risposta eccessiva ai disturbi ad alta frequenza.</p>
+
+
+</section>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/andreamunafo\.github\.io\/principles-of-automatic-controls");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/andreamunafo/principles-of-automatic-controls/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

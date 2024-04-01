@@ -1,0 +1,2208 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.552">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>principles-of-automatic-controls - Modelli di dispositivi controllati</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+<meta property="og:title" content="principles-of-automatic-controls - Modelli di dispositivi controllati">
+<meta property="og:description" content="Course in feedback control for the University of Pisa">
+<meta property="og:site_name" content="principles-of-automatic-controls">
+<meta name="twitter:title" content="principles-of-automatic-controls - Modelli di dispositivi controllati">
+<meta name="twitter:description" content="Course in feedback control for the University of Pisa">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">principles-of-automatic-controls</span>
+    </a>
+  </div>
+        <div class="quarto-navbar-tools tools-end">
+</div>
+          <div id="quarto-search" class="" title="Search"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../IT_🇮🇹/faq_it.html">IT_🇮🇹</a></li><li class="breadcrumb-item"><a href="../IT_🇮🇹/models_of_control_devices_and_systems_it.html">Modelli di dispositivi controllati</a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Feedback Control</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../faq.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Frequently Asked Questions (FAQ)</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../syllabus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Syllabus for “Principles of Automatic Control”</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../toc.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Table of Contents</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../update_and_manage_local_changes_guide.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A Guide to Updating Your Local Repository with Git in Anaconda’s Virtual Environment</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../getting_started_with_python_and_jupyter_notebook.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Getting Started with Python and Jupyter Notebooks</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principles of Automatic Control</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../basics_of_feedback_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Feedback Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../introduction_to_control_problem.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to the control problem</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../dynamic_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modeling in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../dynamic_response.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Dynamic response of control systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../06_inverse_laplace_transform.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Inverse Laplace Transform: Partial fraction decomposition</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../modeling_dynamic_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Modeling of Dynamic Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../control_system_components.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Control System Components</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../models_of_control_devices_and_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Models of Controlled Devices</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../hardware_and_case_studies.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Hardware of Control Systems and Case Studies</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../ac_hardware_and_case_studies.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">AC Motion Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../a_first_complete_application.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A Feedback Control System</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../principles_of_feedback_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principles of Feedback Control</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../feedback_systems_and_their_effects.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Feedback systems and their effects</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../introduction_to_control_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../stability.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Stability Analysis in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../stability_and_routh_criterion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Stability Analysis in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../performance_of_feedback_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Performance of Feedback Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../design_of_feedback_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Design Cycle for a Standard Second-Order System</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../20_Design_of_feedback_control_continued.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Understanding the Standard Second-Order System: Recap</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../steady_state_accuracy_and_design_principles.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Steady State Accuracy and Design Principles</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../compensator_design_using_root_locus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compensator Design</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../design_with_the_root_locus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Design with the Root Locus</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../compensators_and_root_locus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compensators and the Root Locus</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../introduction_to_frequency_domain_analysis_in_control_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Frequency Domain Analysis in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../application_of_nyquist_stability_criterion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Application of Nyquist Stability Criterion in Control Systems</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../the_nyquist_stability_criterion_and_relative_stability.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The Nyquist Stability Criterion and Relative Stability</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../bode_plots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Bode Plot Analysis</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../feedback_system_performance_based_on_frequency_response.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Feedback System Performance Based On Frequency Response</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../compensator_design_using_frequency_response_plots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principles of Automatic Control: Lead and Lag Compensation</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">IT_TCLab_🇮🇹</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/spacecraft_thermal_control_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Il Laboratorio di Controllo della Temperatura</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/tclab_exercises_report_template_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modello di report sugli esercizi TCLab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/tclab_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Il Laboratorio di Controllo della Temperatura</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/understanding_tclab_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Comprendere TCLab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/tclab_lab_1_coding_a_relay_controller_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 1: Codifica di un controller relè</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/system_model_and_identification_tclab_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modellazione del sistema</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/step_testing_tclab_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Passo Test</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/fitting_step_test_data_to_empirical_models_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Adattamento dei dati dei test di fase ai modelli empirici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/tclab_lab_2_model_identification_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 2: Identificazione del modello</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/tclab_lab_2_fitting_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Identificazione del modello: adattamento dei modelli ai dati</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/relay_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Controllo relè</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/pid_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Controllo PID</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/lab-assignment-pid-control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compito di laboratorio: Controllo PID</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_TCLab_🇮🇹/lab-assignment-pi-control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compito di laboratorio 4: Controllo PI</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">IT_🇮🇹</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/faq_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Domande frequenti (FAQ)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/syllabus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Programma del corso “Principi del controllo automatico”</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/update_and_manage_local_changes_guide_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Aggiornare il Proprio Repository Locale Mantenendo le Modifiche Locali</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/getting_started_with_python_and_jupyter_notebook_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Guida introduttiva ai notebook Python e Jupyter</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/intro_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principi di controllo automatico</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/basics_of_feedback_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione ai sistemi di controllo del feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/introduction_to_control_problem_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione al problema del controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/dynamic_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modellazione nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/dynamic_response_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Risposta dinamica dei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/06_inverse_laplace_transform_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Trasformata di Laplace inversa: scomposizione parziale di frazioni</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/modeling_dynamic_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione alla modellazione dei sistemi dinamici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/control_system_components_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Componenti del sistema di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/models_of_control_devices_and_systems_it.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Modelli di dispositivi controllati</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/hardware_and_case_studies_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Hardware dei sistemi di controllo e casi di studio</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/ac_hardware_and_case_studies_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sistemi di controllo del movimento CA</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/a_first_complete_application_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Un sistema di controllo del feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/principles_of_feedback_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principi di controllo del feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/feedback_systems_and_their_effects_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sistemi di feedback e loro effetti</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/introduction_to_control_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione ai sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/stability_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analisi di stabilità nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/stability_and_routh_criterion_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analisi di stabilità nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/performance_of_feedback_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prestazioni dei sistemi di feedback</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/design_of_feedback_control_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Ciclo di progettazione per un sistema standard del secondo ordine</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/20_Design_of_feedback_control_continued_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Comprensione del sistema standard del secondo ordine: riepilogo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/steady_state_accuracy_and_design_principles_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Precisione dello stato stazionario e principi di progettazione</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/compensator_design_using_root_locus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Progettazione del compensatore</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/design_with_the_root_locus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Progettare con il luogo delle radici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/compensators_and_root_locus_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compensatori e luogo delle radici</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/introduction_to_frequency_domain_analysis_in_control_systems_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduzione all’analisi nel dominio della frequenza nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/application_of_nyquist_stability_criterion_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Applicazione del criterio di stabilità di Nyquist nei sistemi di controllo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/the_nyquist_stability_criterion_and_relative_stability_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Il criterio di stabilità di Nyquist e la stabilità relativa</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/bode_plots_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analisi del diagramma di Bode</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/feedback_system_performance_based_on_frequency_response_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prestazioni del sistema di feedback basate sulla risposta in frequenza</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../IT_🇮🇹/index_it.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Syllabus - Fondamenti di Automatica</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">TCLab</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/spacecraft_thermal_control_systems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The Temperature Control Laboratory</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/tclab_exercises_report_template.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Exercises Report Template</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The Temperature Control Lab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/understanding_tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Understanding TCLab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/tclab_lab_1_coding_a_relay_controller-solution.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 1: Coding a relay controller</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/tclab_lab_1_coding_a_relay_controller.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 1: Coding a relay controller</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/system_model_and_identification_tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">System Modeling</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/step_testing_tclab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Step Testing</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/fitting_step_test_data_to_empirical_models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Fitting Step Test Data to Empirical Models</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/tclab_lab_2_model_identification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 2: Model Identification</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/tclab_lab_2_model_identification_solutions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TCLab Lab 2: Model Identification</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/tclab_lab_2_fitting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Model Identification: Fitting models to data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/relay_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Relay Control</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/pid_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">PID Control</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/lab-assignment-pid-control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab Assignment: PID Control</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../TCLab/lab-assignment-pi-control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab Assignment 4: PI Control</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#rivisitazione-dei-modelli-di-impianti" id="toc-rivisitazione-dei-modelli-di-impianti" class="nav-link active" data-scroll-target="#rivisitazione-dei-modelli-di-impianti">Rivisitazione dei modelli di impianti</a></li>
+  <li><a href="#cascata-di-blocchi" id="toc-cascata-di-blocchi" class="nav-link" data-scroll-target="#cascata-di-blocchi">Cascata di blocchi</a></li>
+  <li><a href="#nodi-sommatori-e-punti-di-diramazione" id="toc-nodi-sommatori-e-punti-di-diramazione" class="nav-link" data-scroll-target="#nodi-sommatori-e-punti-di-diramazione">Nodi sommatori e punti di diramazione</a>
+  <ul class="collapse">
+  <li><a href="#sistema-di-livello-del-liquido-uno-sguardo-dettagliato" id="toc-sistema-di-livello-del-liquido-uno-sguardo-dettagliato" class="nav-link" data-scroll-target="#sistema-di-livello-del-liquido-uno-sguardo-dettagliato">Sistema di livello del liquido: uno sguardo dettagliato</a></li>
+  <li><a href="#barra-laterale---modellazione-di-un-singolo-serbatoio" id="toc-barra-laterale---modellazione-di-un-singolo-serbatoio" class="nav-link" data-scroll-target="#barra-laterale---modellazione-di-un-singolo-serbatoio">Barra laterale - Modellazione di un singolo serbatoio</a></li>
+  </ul></li>
+  <li><a href="#fondamenti-del-diagramma-a-blocchi" id="toc-fondamenti-del-diagramma-a-blocchi" class="nav-link" data-scroll-target="#fondamenti-del-diagramma-a-blocchi">Fondamenti del diagramma a blocchi</a></li>
+  <li><a href="#una-panoramica-del-sistema-di-controllo-del-feedback" id="toc-una-panoramica-del-sistema-di-controllo-del-feedback" class="nav-link" data-scroll-target="#una-panoramica-del-sistema-di-controllo-del-feedback">Una panoramica del sistema di controllo del feedback</a>
+  <ul class="collapse">
+  <li><a href="#commenti" id="toc-commenti" class="nav-link" data-scroll-target="#commenti">Commenti</a></li>
+  <li><a href="#diagramma-a-blocchi-standard-per-la-progettazione-del-feedback" id="toc-diagramma-a-blocchi-standard-per-la-progettazione-del-feedback" class="nav-link" data-scroll-target="#diagramma-a-blocchi-standard-per-la-progettazione-del-feedback">Diagramma a blocchi standard per la progettazione del feedback</a></li>
+  <li><a href="#un-comodo-diagramma-a-blocchi" id="toc-un-comodo-diagramma-a-blocchi" class="nav-link" data-scroll-target="#un-comodo-diagramma-a-blocchi">Un comodo diagramma a blocchi</a></li>
+  <li><a href="#sistema-di-feedback-unitario" id="toc-sistema-di-feedback-unitario" class="nav-link" data-scroll-target="#sistema-di-feedback-unitario">Sistema di feedback unitario</a></li>
+  </ul></li>
+  <li><a href="#il-diagramma-a-blocchi-del-feedback-di-progettazione" id="toc-il-diagramma-a-blocchi-del-feedback-di-progettazione" class="nav-link" data-scroll-target="#il-diagramma-a-blocchi-del-feedback-di-progettazione">Il diagramma a blocchi del feedback di progettazione</a>
+  <ul class="collapse">
+  <li><a href="#i-disturbi-contano" id="toc-i-disturbi-contano" class="nav-link" data-scroll-target="#i-disturbi-contano">I disturbi contano</a></li>
+  </ul></li>
+  <li><a href="#funzione-di-trasferimento-ad-anello-chiuso" id="toc-funzione-di-trasferimento-ad-anello-chiuso" class="nav-link" data-scroll-target="#funzione-di-trasferimento-ad-anello-chiuso">Funzione di trasferimento ad anello chiuso</a>
+  <ul class="collapse">
+  <li><a href="#impostazione-del-disturbo-su-zero" id="toc-impostazione-del-disturbo-su-zero" class="nav-link" data-scroll-target="#impostazione-del-disturbo-su-zero">Impostazione del disturbo su zero</a></li>
+  <li><a href="#impostazione-dellingresso-di-riferimento-su-zero" id="toc-impostazione-dellingresso-di-riferimento-su-zero" class="nav-link" data-scroll-target="#impostazione-dellingresso-di-riferimento-su-zero">Impostazione dell’ingresso di riferimento su zero</a></li>
+  <li><a href="#la-funzione-di-trasferimento-del-ciclo" id="toc-la-funzione-di-trasferimento-del-ciclo" class="nav-link" data-scroll-target="#la-funzione-di-trasferimento-del-ciclo">La funzione di trasferimento del ciclo</a></li>
+  </ul></li>
+  <li><a href="#considerazioni-conclusive-sui-diagrammi-delle-funzioni-di-trasferimento" id="toc-considerazioni-conclusive-sui-diagrammi-delle-funzioni-di-trasferimento" class="nav-link" data-scroll-target="#considerazioni-conclusive-sui-diagrammi-delle-funzioni-di-trasferimento">Considerazioni conclusive sui diagrammi delle funzioni di trasferimento</a></li>
+  <li><a href="#riduzione-avanzata-del-diagramma-a-blocchi" id="toc-riduzione-avanzata-del-diagramma-a-blocchi" class="nav-link" data-scroll-target="#riduzione-avanzata-del-diagramma-a-blocchi">Riduzione avanzata del diagramma a blocchi</a>
+  <ul class="collapse">
+  <li><a href="#dissezione-di-un-sistema-multi-loop" id="toc-dissezione-di-un-sistema-multi-loop" class="nav-link" data-scroll-target="#dissezione-di-un-sistema-multi-loop">Dissezione di un sistema multi-loop</a>
+  <ul class="collapse">
+  <li><a href="#soluzione" id="toc-soluzione" class="nav-link" data-scroll-target="#soluzione">Soluzione</a></li>
+  <li><a href="#soluzione-alternativa" id="toc-soluzione-alternativa" class="nav-link" data-scroll-target="#soluzione-alternativa">Soluzione alternativa</a></li>
+  </ul></li>
+  <li><a href="#regole-per-la-manipolazione-del-diagramma-a-blocchi" id="toc-regole-per-la-manipolazione-del-diagramma-a-blocchi" class="nav-link" data-scroll-target="#regole-per-la-manipolazione-del-diagramma-a-blocchi">Regole per la manipolazione del diagramma a blocchi</a></li>
+  </ul></li>
+  <li><a href="#grafici-del-flusso-del-segnale-e-formula-del-guadagno-di-mason" id="toc-grafici-del-flusso-del-segnale-e-formula-del-guadagno-di-mason" class="nav-link" data-scroll-target="#grafici-del-flusso-del-segnale-e-formula-del-guadagno-di-mason">Grafici del flusso del segnale e formula del guadagno di Mason</a>
+  <ul class="collapse">
+  <li><a href="#dai-diagrammi-a-blocchi-ai-grafici-del-flusso-dei-segnali" id="toc-dai-diagrammi-a-blocchi-ai-grafici-del-flusso-dei-segnali" class="nav-link" data-scroll-target="#dai-diagrammi-a-blocchi-ai-grafici-del-flusso-dei-segnali">Dai diagrammi a blocchi ai grafici del flusso dei segnali</a>
+  <ul class="collapse">
+  <li><a href="#comprensione-di-nodi-e-percorsi-negli-sfg" id="toc-comprensione-di-nodi-e-percorsi-negli-sfg" class="nav-link" data-scroll-target="#comprensione-di-nodi-e-percorsi-negli-sfg">Comprensione di nodi e percorsi negli SFG</a></li>
+  <li><a href="#costruire-il-grafico-del-flusso-del-segnale" id="toc-costruire-il-grafico-del-flusso-del-segnale" class="nav-link" data-scroll-target="#costruire-il-grafico-del-flusso-del-segnale">Costruire il grafico del flusso del segnale</a></li>
+  </ul></li>
+  <li><a href="#un-esempio-più-complesso" id="toc-un-esempio-più-complesso" class="nav-link" data-scroll-target="#un-esempio-più-complesso">Un esempio più complesso</a></li>
+  </ul></li>
+  <li><a href="#presentazione-della-formula-del-guadagno-di-mason" id="toc-presentazione-della-formula-del-guadagno-di-mason" class="nav-link" data-scroll-target="#presentazione-della-formula-del-guadagno-di-mason">Presentazione della formula del guadagno di Mason</a>
+  <ul class="collapse">
+  <li><a href="#esempio" id="toc-esempio" class="nav-link" data-scroll-target="#esempio">Esempio</a></li>
+  <li><a href="#cosè-il-self-loop" id="toc-cosè-il-self-loop" class="nav-link" data-scroll-target="#cosè-il-self-loop">Cos’è il self loop?</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/andreamunafo/principles-of-automatic-controls/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../IT_🇮🇹/faq_it.html">IT_🇮🇹</a></li><li class="breadcrumb-item"><a href="../IT_🇮🇹/models_of_control_devices_and_systems_it.html">Modelli di dispositivi controllati</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Modelli di dispositivi controllati</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
+<p>Dopo essere stati introdotti ai vari modelli di impianti che incontriamo frequentemente in varie applicazioni, siamo ora ben pronti per approfondire il sistema completo di controllo del feedback. Di conseguenza, la nostra attenzione con questo notebook è rivolta ai modelli di dispositivi controllati, nonché ai sistemi completi che costruiremo utilizzando questi dispositivi.</p>
+<section id="rivisitazione-dei-modelli-di-impianti" class="level2">
+<h2 class="anchored" data-anchor-id="rivisitazione-dei-modelli-di-impianti">Rivisitazione dei modelli di impianti</h2>
+<p>Per essere sicuri di avere delle basi chiare, rivediamo lo scenario rispetto ai modelli di impianto che abbiamo modellato attraverso funzioni di trasferimento e diagrammi a blocchi.</p>
+<table>
+<tbody><tr>
+<td>
+<img src="../pics/09_Models_of_Control_Devices_and_Systems_transfer_function_block_diagram.png" alt="09_Models_of_Control_Devices_and_Systems_transfer_function_block_diagram" style="width: 350px;">
+</td></tr>
+</tbody></table>
+<p>Questo diagramma incapsula la dinamica dell’impianto attraverso una funzione di trasferimento, <span class="math inline">\(G(s)\)</span>. L’input dell’impianto, indicato come <span class="math inline">\(R(s)\)</span>, produce un output, <span class="math inline">\(Y(s)\)</span>. Questa uscita, chiamata anche variabile controllata del sistema, sarà sempre il risultato della moltiplicazione della funzione di trasferimento <span class="math inline">\(G(s)\)</span> per l’ingresso <span class="math inline">\(R(s)\)</span>.</p>
+<p><span class="math display">\[
+Y(s) = G(s)R(s)
+\]</span></p>
+<p>Questa equazione fornisce una rappresentazione matematica nel dominio di trasformazione dell’impianto, che funge da sottosistema nel sistema di controllo generale che esploreremo presto.</p>
+<p><strong>Domanda pop-up:</strong> Nell’equazione <span class="math inline">\(Y(s) = G(s)R(s)\)</span>, dove <span class="math inline">\(Y(s) =\frac{1}{s+1}\)</span> e <span class="math inline">\(R( s)=1\)</span>, quanto sarebbe <span class="math inline">\(Y(s)\)</span>?</p>
+<p><strong>Risposta</strong>: <span class="math inline">\(\frac{1}{s+1}\)</span></p>
+</section>
+<section id="cascata-di-blocchi" class="level2">
+<h2 class="anchored" data-anchor-id="cascata-di-blocchi">Cascata di blocchi</h2>
+<p>Supponiamo ora di avere due blocchi, <span class="math inline">\(G_1(s)\)</span> e <span class="math inline">\(G_2(s)\)</span>.</p>
+<table>
+<tbody><tr>
+<td>
+<img src="../pics/09_Models_of_Control_Devices_and_Systems_cascade.png" alt="09_Models_of_Control_Devices_and_Systems_cascade" style="width: 350px;">
+</td></tr>
+</tbody></table>
+<p>Se <span class="math inline">\(R(s)\)</span> è l’input del primo blocco e <span class="math inline">\(Y(s)\)</span> è l’output dell’intero setup e <span class="math inline">\(X(s)\)</span> è il segnale tra i due blocchi, possiamo affermare:</p>
+<p><span class="math display">\[
+\begin{align}
+X(s) &amp;= G_1(s)R(s)\\
+Y(s) &amp;= G_2(s)X(s)\\
+\end{align}
+\]</span></p>
+<p>Combinando queste equazioni, otteniamo:</p>
+<p><span class="math display">\[
+Y(s) = G_1(s) \cdot G_2(s) \cdot R(s)
+\]</span></p>
+<p>Ciò dimostra che quando due blocchi (o sottosistemi) sono collegati in cascata, le loro funzioni di trasferimento possono essere moltiplicate per accertare la relazione tra l’input e l’output.</p>
+</section>
+<section id="nodi-sommatori-e-punti-di-diramazione" class="level2">
+<h2 class="anchored" data-anchor-id="nodi-sommatori-e-punti-di-diramazione">Nodi sommatori e punti di diramazione</h2>
+<p>Abbiamo spesso visto cerchi insieme a segni algebrici nei nostri diagrammi a blocchi. Questi denotano <em>rilevatori di errori</em> o <em>giunzioni o nodi sommatori</em>.</p>
+<table>
+<tbody><tr>
+<td>
+<img src="../pics/09_Models_of_Control_Devices_and_Systems_summation_point.png" alt="09_Models_of_Control_Devices_and_Systems_summation_point" style="width: 350px;">
+</td></tr>
+</tbody></table>
+<p>Ad esempio, se <span class="math inline">\(R(s)\)</span> e <span class="math inline">\(B(s)\)</span> sono segnali in corrispondenza di un incrocio, il segnale risultante <span class="math inline">\(E(s)\)</span> viene calcolato come:</p>
+<p><span class="math display">\[E(s)=R(s)−B(s)\]</span></p>
+<p>o <span class="math inline">\(E(s)=R(s)+B(s)\)</span> se i segnali vengono sommati.</p>
+<p>Questa rappresentazione simbolica funge da metodo conveniente per rappresentare manipolazioni algebriche di più segnali.</p>
+<p>In alcuni casi, potremmo voler attingere a un segnale per ottenere feedback. Tali diramazioni (o branch-off) sono stati illustrati nei nostri diagrammi attraverso ramificazioni su una linea di segnale principale. Ciò garantisce che il valore del segnale restituito rimanga coerente.</p>
+<table>
+<tbody><tr>
+<td>
+<img src="../pics/09_Models_of_Control_Devices_and_Systems_take_off_point.png" alt="09_Models_of_Control_Devices_and_Systems_take_off_point" style="width: 350px;">
+</td></tr>
+</tbody></table>
+<p>Per riassumere, qualsiasi sistema può essere rappresentato in modo completo utilizzando una combinazione di questi quattro elementi fondamentali del diagramma a blocchi: un blocco base, blocchi in cascata, giunzioni sommatrici e punti di diramazione.</p>
+<section id="sistema-di-livello-del-liquido-uno-sguardo-dettagliato" class="level3">
+<h3 class="anchored" data-anchor-id="sistema-di-livello-del-liquido-uno-sguardo-dettagliato">Sistema di livello del liquido: uno sguardo dettagliato</h3>
+<p>Per fornire ulteriore chiarezza, parliamo di un sistema di livello del liquido.</p>
+<table>
+<tbody><tr>
+<td>
+<img src="../pics/09_Models_of_Control_Devices_and_Systems_one_tank.png" alt="09_Models_of_Control_Devices_and_Systems_one_tank" style="width: 350px;">
+</td></tr>
+</tbody></table>
+<p>Quando modelliamo un singolo serbatoio, ci preoccupiamo principalmente della dinamica tra afflusso, deflusso e altezza del liquido. Il modello più comune e semplificato si basa sull’equilibrio del volume del liquido, considerando le velocità di afflusso e deflusso.</p>
+<p>Assunzioni base:</p>
+<ul>
+<li>La sezione trasversale del serbatoio è costante.</li>
+<li>Il liquido nel serbatoio sia ben miscelato e abbia una densità uniforme.</li>
+<li>La velocità di deflusso dipende dall’altezza del liquido (a causa della pressione gravitazionale).</li>
+</ul>
+<p>L’obiettivo principale di questo sistema è controllare l’altezza del liquido all’interno di un serbatoio. Quando modelliamo un serbatoio di questo tipo, spesso deriviamo un modello di sistema del primo ordine, con la dinamica del serbatoio sintetizzata da un guadagno di sistema e da una costante di tempo.</p>
+<p><span class="math display">\[
+\frac{H_1(s)}{Q_i(s)} = \frac{\frac{R_1}{\rho g}}{\tau_1 s+1}
+\]</span></p>
+<p>Dove:</p>
+<ul>
+<li><span class="math inline">\(H(s)\)</span> è la trasformata di Laplace dell’altezza del liquido <span class="math inline">\(h(t)\)</span>.</li>
+<li><span class="math inline">\(Q_i(s)\)</span> è la trasformata di Laplace del tasso di afflusso <span class="math inline">\(q_in(t)\)</span>.</li>
+<li><span class="math inline">\(\rho\)</span> è la densità del liquido</li>
+<li><span class="math inline">\(g\)</span> è l’accelerazione dovuta alla gravità.</li>
+<li><span class="math inline">\(R\)</span>: resistenza al flusso, tipicamente determinata dalla dimensione e dalla forma dell’uscita.</li>
+</ul>
+<p>Consideriamo due serbatoi. <em>L’input del secondo serbatoio proviene dall’output del primo serbatoio</em>. Utilizzando i nostri modelli derivati in precedenza e se consideriamo il flusso in ingresso e l’altezza del liquido, possiamo determinare la relazione tra i serbatoi e le rispettive uscite.</p>
+<table>
+<tbody><tr>
+<td>
+<img src="../pics/09_Models_of_Control_Devices_and_Systems_two_tanks.png" alt="09_Models_of_Control_Devices_and_Systems_two_tanks" style="width: 350px;">
+</td></tr>
+</tbody></table>
+<p>Possiamo modellare il secondo serbatoio come abbiamo fatto per il primo:</p>
+<p><span class="math display">\[
+\frac{H_2(s)}{Q_1(s)} = \frac{\frac{R_2}{\rho g}}{\tau_2 s+1}
+\]</span></p>
+<p>possiamo rappresentare questa relazione dinamica con diagrammi a blocchi:</p>
+<table>
+<tbody><tr>
+<td>
+<img src="../pics/09_Models_of_Control_Devices_and_Systems_two_tanks_block_diagram-corrected.png" alt="09_Models_of_Control_Devices_and_Systems_two_tanks_block_diagram" style="width: 350px;">
+</td></tr>
+</tbody></table>
+<p>L’input per il secondo sistema è <span class="math inline">\(Q_1(s)\)</span>. Tuttavia:</p>
+<p><span class="math display">\[
+q_1 = \frac{p_1}{R_1}
+\]</span></p>
+<p>dove <span class="math inline">\(p_1\)</span> è la pressione all’uscita del primo serbatoio, e la pressione totale è <span class="math inline">\(\bar{p_1}+p_1\)</span>, e <span class="math inline">\(\bar{p_1}\)</span> è la pressione statica.</p>
+<p>Possiamo quindi scrivere:</p>
+<p><span class="math display">\[
+q_1 = \frac{p_1}{R_1} = \frac{\rho g h_1}{R_1}
+\]</span></p>
+<p>Ed è così che possiamo mettere in relazione <span class="math inline">\(Q_1\)</span> e <span class="math inline">\(H_1\)</span>, ma notiamo che l’output del primo serbatoio, secondo il nostro modello è <span class="math inline">\(H_1\)</span> e non <span class="math inline">\(Q_1\)</span>, la seconda funzione di trasferimento è diversa dalla prima.</p>
+<p>Per il secondo sistema, l’input è <span class="math inline">\(Q_1\)</span> (afflusso) e la variabile controllata è <span class="math inline">\(H_2\)</span>.</p>
+<p>Tuttavia, un punto cruciale da notare è che la dinamica del secondo serbatoio non influenza la dinamica del primo serbatoio. Questa caratteristica implica che il secondo sistema non “carica” ​​il primo. Solo in tali scenari le funzioni di trasferimento dei due sistemi possono essere moltiplicate.</p>
+<p>Tuttavia, se i serbatoi fossero collegati in modo diverso, dove la pressione del secondo serbatoio influenza il flusso del primo serbatoio, allora questo effetto di “carico” ci impedirebbe di moltiplicare semplicemente le loro funzioni di trasferimento. Questo effetto di caricamento può alterare drasticamente la dinamica del sistema, persino trasformando un sistema del primo ordine in uno del secondo ordine.</p>
+<table>
+<tbody><tr>
+<td>
+<img src="../pics/09_Models_of_Control_Devices_and_Systems_two_tanks_alternative.png" alt="09_Models_of_Control_Devices_and_Systems_two_tanks_alternative" style="width: 450px;">
+</td></tr>
+</tbody></table>
+<p>Se modelliamo questo caso.</p>
+<p>La velocità di stoccaggio nel serbatoio 1 è:</p>
+<p><span class="math display">\[
+\begin{align}
+C_1\frac{dp_1}{dt} &amp;= q_i - \frac{p_1-p_2}{R_1}
+\end{align}
+\]</span></p>
+<p>e la velocità di stoccaggio nel secondo serbatoio è:</p>
+<p><span class="math display">\[
+\begin{align}
+C_2\frac{dp_2}{dt} &amp;= q_1 - \frac{p_2}{R_2}
+\end{align}
+\]</span></p>
+<p>dove <span class="math inline">\(p_2\)</span> è la pressione del secondo serbatoio. Notare come ciò influisce sul flusso del primo serbatoio (termine più a destra nell’equazione (1) sopra), e quindi c’è un effetto di carico del secondo serbatoio sul primo.</p>
+<p>In questo caso i due sistemi non possono essere scritti come sistemi a cascata! I due sottosistemi non sono indipendenti e non possono essere considerati due blocchi separati.</p>
+<p>Possiamo trovare la funzione di trasferimento complessiva come (ottenuta dalle due equazioni precedenti):</p>
+<p><span class="math display">\[
+\frac{H_2(s)}{Q_i(s)} = \frac{\frac{R_2}{\rho g}}{\tau_1\tau_2s^2+(\tau_1 + \tau_2 + \frac{R_2}{ R_1})s + 1}
+\]</span></p>
+<p>Si noti che mentre nei sistemi liquidi e termici abbiamo tipicamente sistemi del primo ordine, la presenza di un effetto di carico produce un sistema del secondo ordine. Negli ambienti industriali, i singoli serbatoi vengono generalmente modellati utilizzando una costante di tempo e un guadagno di sistema. Quando connesso senza carico, la funzione di trasferimento del sistema rimane di secondo ordine, ma è rappresentata da due costanti di tempo distinte. Al contrario, quando connesso in modalità di caricamento, la funzione di trasferimento del sistema è ancora del secondo ordine, ma caratterizzata da un ritardo quadratico.</p>
+<p>Per ribadire e sottolineare: nelle nostre rappresentazioni del diagramma a blocchi, se rappresentiamo due sistemi, <span class="math inline">\(G_1\)</span> e <span class="math inline">\(G_2\)</span>, in cascata, è implicito che <span class="math inline">\(G_2\)</span> non carica <span class="math inline">\(G_1\)</span>. Questo è un presupposto cruciale che garantisce l’accuratezza dei nostri modelli e dei calcoli successivi.</p>
+<p>Si possono avere opportuni ammortizzatori (elettrici, idraulici, termici, ecc.) per evitare l’effetto di carico e le due funzioni di trasferimento possono essere considerate indipendentemente. Se ciò non è possibile allora i due sistemi dovranno essere considerati insieme e saranno rappresentati da un’unica funzione di trasferimento.</p>
+</section>
+<section id="barra-laterale---modellazione-di-un-singolo-serbatoio" class="level3">
+<h3 class="anchored" data-anchor-id="barra-laterale---modellazione-di-un-singolo-serbatoio">Barra laterale - Modellazione di un singolo serbatoio</h3>
+<p>Quando modelliamo un singolo serbatoio, ci preoccupiamo principalmente della dinamica tra afflusso, deflusso e altezza del liquido. Il modello più comune e semplificato si basa sull’equilibrio del volume del liquido, considerando le velocità di afflusso e deflusso.</p>
+<section id="assunzioni-base" class="level4">
+<h4 class="anchored" data-anchor-id="assunzioni-base">Assunzioni base:</h4>
+<ol type="1">
+<li>L’area della sezione trasversale del serbatoio è costante.</li>
+<li>Il liquido nel serbatoio è ben miscelato e ha una densità uniforme.</li>
+<li>La velocità di deflusso dipende dall’altezza del liquido (a causa della pressione gravitazionale).</li>
+</ol>
+</section>
+<section id="rappresentazione-matematica" class="level4">
+<h4 class="anchored" data-anchor-id="rappresentazione-matematica">Rappresentazione matematica:</h4>
+<p>Definiamo le seguenti variabili:</p>
+<ul>
+<li>$ h(t) $: altezza del liquido al tempo $ t $.</li>
+<li>$ A $: area della sezione trasversale del serbatoio.</li>
+<li>$ Q_{in}(t) $: tasso di afflusso al tempo $ t $.</li>
+<li>$ Q_{out}(t) $: tasso di deflusso al tempo $ t $.</li>
+<li>$ $: densità del liquido.</li>
+<li>$ g $: accelerazione dovuta alla gravità.</li>
+<li>$ R $: resistenza al flusso, tipicamente determinata dalla dimensione e dalla forma dell’uscita.</li>
+</ul>
+<p>Dal principio di conservazione della massa:</p>
+<p><span class="math display">\[
+A \frac{dh(t)}{dt} = Q_{in}(t) - Q_{out}(t)
+\]</span></p>
+<p>Utilizzando la legge di Torricelli, la portata di deflusso, $ Q_{out}(t) $, dal serbatoio attraverso un orifizio può essere correlata all’altezza del liquido:</p>
+<p><span class="math display">\[
+Q_{out}(t) = \frac{\rho g h(t)}{R}
+\]</span></p>
+<p>Sostituisci la velocità di deflusso nell’equazione di conservazione della massa:</p>
+<p><span class="math display">\[
+A \frac{dh(t)}{dt} = Q_{in}(t) - \frac{\rho g h(t)}{R}
+\]</span></p>
+<p>Questa è un’equazione differenziale del primo ordine che rappresenta la dinamica del serbatoio. Mette in relazione la velocità di variazione dell’altezza del liquido con l’afflusso e l’altezza stessa. La soluzione di questa equazione, date le opportune condizioni iniziali, ti darà l’altezza del liquido nel serbatoio in funzione del tempo.</p>
+</section>
+<section id="modello-di-funzione-di-trasferimento" class="level4">
+<h4 class="anchored" data-anchor-id="modello-di-funzione-di-trasferimento">Modello di funzione di trasferimento:</h4>
+<p>Nella teoria del controllo, è spesso utile descrivere i sistemi nel dominio della frequenza utilizzando una funzione di trasferimento. La funzione di trasferimento del serbatoio può essere derivata prendendo la trasformata di Laplace dell’equazione differenziale. Assumendo condizioni iniziali pari a zero e denotando la variabile della trasformata di Laplace come $ s $:</p>
+<p><span class="math display">\[
+A s H(s) = Q_{in}(s) - \frac{\rho g}{R} H(s)
+\]</span></p>
+<p>Dove: - $ H(s) $ è la trasformata di Laplace dell’altezza del liquido $ h(t) $. - $ Q_{in}(s) $ è la trasformata di Laplace della portata di afflusso $ Q_{in}(t) $.</p>
+<p>Riordinare e risolvere la funzione di trasferimento $ G(s) = $:</p>
+<p><span class="math display">\[
+G(s) = \frac{A}{As + \frac{\rho g}{R}}
+\]</span></p>
+<p>Questa funzione di trasferimento mette in relazione l’altezza del liquido con la velocità di afflusso nel dominio della frequenza.</p>
+<p>Riorganizzare i termini:</p>
+<p><span class="math display">\[
+A \frac{dh(t)}{dt} + \frac{\rho g h(t)}{R} = Q_{in}(t)
+\]</span></p>
+<p>Consideriamo ora la trasformata di Laplace di entrambi i membri. Supponendo condizioni iniziali pari a zero:</p>
+<p><span class="math display">\[
+A s H(s) + \frac{\rho g}{R} H(s) = Q_{in}(s)
+\]</span></p>
+<p>Fattorizza <span class="math inline">\(H(s)\)</span>:</p>
+<p><span class="math display">\[
+H(s) \Big( A s + \frac{\rho g}{R} \Big) = Q_{in}(s)
+\]</span></p>
+<p>che porta:</p>
+<p><span class="math display">\[
+G(s) = \frac{H(s)}{Q_{in}(s)} = \frac{1}{\Big( A s + \frac{\rho g}{R} \Big)}
+\]</span></p>
+<p>Ora, il guadagno di stato stazionario del sistema, quando <span class="math inline">\(s=0\)</span>, è:</p>
+<p><span class="math display">\[
+\frac{1}{\frac{\rho g}{R}} = \frac{R}{\rho g}
+\]</span></p>
+<p>Impostando <span class="math inline">\(A=\tau\)</span> - la costante di tempo τ è uguale all’area della sezione trasversale <span class="math inline">\(A\)</span> del serbatoio, otteniamo:</p>
+<p><span class="math display">\[
+\frac{H(s)}{Q_{in}(s)} = \frac{\frac{R}{\rho g}}{\tau s+1}
+\]</span></p>
+<p>— FINE DELLA BARRA LATERALE</p>
+</section>
+</section>
+</section>
+<section id="fondamenti-del-diagramma-a-blocchi" class="level1">
+<h1>Fondamenti del diagramma a blocchi</h1>
+<p>Prima di addentrarci nelle complessità del sistema di controllo del feedback, prendiamoci un momento per riassumere i quattro componenti principali di cui abbiamo discusso in precedenza.</p>
+<ol type="1">
+<li>Funzione di trasferimento di base: una semplice rappresentazione della dinamica di un sistema con un input <span class="math inline">\(R\)</span> e un output <span class="math inline">\(Y\)</span>. Questo sistema è denotato da una funzione di trasferimento <span class="math inline">\(G\)</span>.</li>
+<li>Cascata di blocchi: due funzioni di trasferimento, diciamo <span class="math inline">\(G_1\)</span> e <span class="math inline">\(G_2\)</span>, disposte in serie. L’input del primo blocco è <span class="math inline">\(R\)</span> e l’output finale del secondo blocco è <span class="math inline">\(Y\)</span>.</li>
+<li>Nodi sommatori: un punto nello schema a blocchi in cui due segnali vengono sommati o sottratti algebricamente. Una rappresentazione tipica include un cerchio con i segni “+” e “-”, che indicano come sono combinati i segnali in arrivo.</li>
+<li>Punto di diramazione: una posizione nel diagramma a blocchi in cui un segnale, ad esempio <span class="math inline">\(Y\)</span>, si dirama senza alcuna modifica. Questo viene in genere utilizzato per i cicli di feedback.</li>
+</ol>
+<p><strong>Domanda pop-up</strong>: Perché abbiamo bisogno di un punto di diramazione in un sistema di controllo in feedback?</p>
+<p><strong>Risposta</strong>: il punto di diramazione ci consente di utilizzare l’output del sistema (o una sua versione elaborata) per essere reimmesso nel sistema, in genere per il confronto con il segnale di riferimento o di comando.</p>
+</section>
+<section id="una-panoramica-del-sistema-di-controllo-del-feedback" class="level1">
+<h1>Una panoramica del sistema di controllo del feedback</h1>
+<p>Consideriamo ora lo schema a blocchi completo di un generico sistema di controllo in feedback:</p>
+<table>
+<tbody><tr>
+<td>
+<img src="../pics/09_Models_of_Control_Devices_and_Systems_control-diagram.png" alt="09_Models_of_Control_Devices_and_Systems_control-diagram" style="width: 650px;">
+</td></tr>
+</tbody></table>
+<ol type="1">
+<li><strong>Segnale di comando</strong>: <span class="math inline">\(y_r\)</span> è il segnale desiderato o di setpoint.</li>
+<li><strong>Elementi di ingresso di riferimento</strong>: questi elementi trasformano il segnale di comando in un segnale di riferimento <span class="math inline">\(r\)</span>, utilizzando una funzione di trasferimento <span class="math inline">\(A(s)\)</span>. Ad esempio, la temperatura desiderata (<span class="math inline">\(y_r\)</span>) viene convertita in una tensione (<span class="math inline">\(r\)</span>).</li>
+<li><strong>Rilevatore di errori</strong>: Si tratta di una giunzione di somma in cui il segnale di riferimento <span class="math inline">\(r\)</span> e il segnale di feedback <span class="math inline">\(b\)</span> vengono combinati algebricamente per produrre il segnale di errore di attuazione <span class="math inline">\(\hat{e}\)</span>.</li>
+<li><strong>Controller</strong>: indicato con <span class="math inline">\(D(s)\)</span>, questo blocco elabora il segnale di errore per generare un segnale di controllo <span class="math inline">\(u\)</span>.</li>
+<li><strong>Attuatore</strong>: rappresentato da <span class="math inline">\(G_A(s)\)</span>, è il muscolo del sistema che amplifica o modifica il segnale di controllo per produrre la variabile manipolata <span class="math inline">\(m\)</span>.</li>
+<li><strong>Impianto</strong>: questo è il sistema principale che vogliamo controllare, rappresentato da <span class="math inline">\(G_P(s)\)</span>. L’output dell’impianto è la variabile controllata <span class="math inline">\(y\)</span>.</li>
+<li><strong>Sensore</strong>: Il sensore, caratterizzato da <span class="math inline">\(H(s)\)</span>, misura la variabile controllata e produce un segnale di feedback <span class="math inline">\(b\)</span>. Ad esempio, l’uscita (<span class="math inline">\(y\)</span>) può essere la temperatura e il blocco sensore la converte in tensione (<span class="math inline">\(b\)</span>).</li>
+<li><strong>Disturbo</strong>: <span class="math inline">\(w\)</span> è un input indesiderato che può influenzare l’output del sistema. Può accadere ovunque, ma lo modelliamo come se entrasse nel sistema in un punto di somma prima dell’impianto.</li>
+</ol>
+<section id="commenti" class="level3">
+<h3 class="anchored" data-anchor-id="commenti">Commenti</h3>
+<ol type="1">
+<li><p>Andando avanti, ometteremo il sottosistema <span class="math inline">\(Z(s)\)</span> responsabile della produzione della variabile controllata indirettamente. Dato che non gioca un ruolo all’interno del ciclo di feedback, la nostra attenzione primaria sarà rivolta alla variabile controllata <span class="math inline">\(y\)</span>.</p></li>
+<li><p>Attuazione ed errore di sistema: la differenza tra <span class="math inline">\(\hat{e}\)</span> e <span class="math inline">\(e\)</span> è cruciale. Mentre <span class="math inline">\(\hat{e}\)</span> è il segnale che eccita il controllore, cioè la differenza tra <span class="math inline">\(b\)</span> e <span class="math inline">\(r\)</span>; <span class="math inline">\(e\)</span> è l’errore reale tra la variabile controllata <span class="math inline">\(y\)</span> e il segnale di comando <span class="math inline">\(y_r\)</span>. È importante capire che <span class="math inline">\(b\ne y\)</span>. Il nostro obiettivo principale in un sistema di feedback è ridurre al minimo <span class="math inline">\(e\)</span>, portando l’output del sistema vicino al setpoint desiderato.</p></li>
+</ol>
+<p>Noi chiamiamo: - <span class="math inline">\(e=y-y_r\)</span>, il segnale di errore del sistema. - <span class="math inline">\(\bar{e} = r-b\)</span>, è il segnale di errore di attuazione.</p>
+<p>La differenza tra i due segnali dipende dagli specifici <span class="math inline">\(A(s)\)</span> e <span class="math inline">\(H(s)\)</span>.</p>
+</section>
+<section id="diagramma-a-blocchi-standard-per-la-progettazione-del-feedback" class="level2">
+<h2 class="anchored" data-anchor-id="diagramma-a-blocchi-standard-per-la-progettazione-del-feedback">Diagramma a blocchi standard per la progettazione del feedback</h2>
+<p>Per facilità di analisi, possiamo riorganizzare lo schema a blocchi.</p>
+<table>
+<tbody><tr>
+<td>
+<img src="../pics/09_Models_of_Control_Devices_and_Systems_control-diagram-standard.png" alt="09_Models_of_Control_Devices_and_Systems_control-diagram-standard" style="width: 650px;">
+</td></tr>
+</tbody></table>
+<p>In questo diagramma: - La funzione di trasferimento tra <span class="math inline">\(Y\)</span> e <span class="math inline">\(W\)</span> è <span class="math inline">\(G_P(s)\)</span>. - La funzione di trasferimento tra <span class="math inline">\(Y\)</span> e <span class="math inline">\(U\)</span> è <span class="math inline">\(G_A(s)G_P(s)\)</span>.</p>
+</section>
+<section id="un-comodo-diagramma-a-blocchi" class="level2">
+<h2 class="anchored" data-anchor-id="un-comodo-diagramma-a-blocchi">Un comodo diagramma a blocchi</h2>
+<p>Possiamo anche manipolare il diagramma per ulteriore comodità.</p>
+<table>
+<tbody><tr>
+<td>
+<img src="../pics/09_Models_of_Control_Devices_and_Systems_control-diagram-standard-noise.png" alt="09_Models_of_Control_Devices_and_Systems_control-diagram-standard-noise" style="width: 650px;">
+</td></tr>
+</tbody></table>
+<p>In questo diagramma: - La funzione di trasferimento tra <span class="math inline">\(Y\)</span> e <span class="math inline">\(W\)</span> è <span class="math inline">\(N(s)\)</span>. - La funzione di trasferimento tra <span class="math inline">\(Y\)</span> e <span class="math inline">\(U\)</span> è <span class="math inline">\(G_A(s)G_P(s)\)</span>.</p>
+<p>Impostando <span class="math inline">\(N(s)=G_P(s)\)</span>, entrambi i diagrammi diventano identici. Di conseguenza, la posizione della giunzione di somma diventa irrilevante. Inoltre, i due sottosistemi, <span class="math inline">\(G_A(s)\)</span> e <span class="math inline">\(G_P(s)\)</span> possono essere combinati per formare una funzione di trasferimento unificata rappresentata come <span class="math inline">\(G=G_A(s)G_P(s)\)</span>.</p>
+<p>Il diagramma diventa:</p>
+<table>
+<tbody><tr>
+<td>
+<img src="../pics/09_Models_of_Control_Devices_and_Systems_control-diagram-standard-noise-plant.png" alt="09_Models_of_Control_Devices_and_Systems_control-diagram-standard-noise-plant" style="width: 650px;">
+</td></tr>
+</tbody></table>
+<p>Man mano che avanziamo sempre più nel regno dei sistemi di controllo, la nostra rappresentazione visiva dei sistemi – i diagrammi a blocchi – diventa indispensabile. Questi diagrammi sono rappresentazioni simboliche delle equazioni matematiche che descrivono il nostro sistema. Ma come ogni lingua, esistono molti modi per trasmettere lo stesso messaggio. Pertanto, è spesso necessario manipolare i nostri diagrammi a blocchi per chiarezza o comodità.</p>
+<p><strong>Domanda pop</strong>: manipolare il diagramma a blocchi in modo che il blocco <span class="math inline">\(A(s)\)</span> non appaia nel percorso in avanti. - Suggerimento: il segnale <span class="math inline">\(\hat{e}\)</span> deve essere lo stesso in entrambi i casi.</p>
+<p><strong>Risposta</strong>: <span class="math inline">\(\hat{e} = Ay_r - Hy\)</span>. Se dovessimo calcolare il segnale controllato <span class="math inline">\(u\)</span> in questa configurazione, sarebbe:</p>
+<p><span class="math display">\[ u = GI_r − DHy\]</span></p>
+<p>Questa equazione descrive la relazione tra il segnale di comando (<span class="math inline">\(y_r\)</span>), il segnale controllato (<span class="math inline">\(u\)</span>) e l’uscita (<span class="math inline">\(y\)</span>).</p>
+<p>Se spostiamo il sottosistema <span class="math inline">\(A(s)\)</span> dopo la giunzione di sommatoria:</p>
+<table>
+<tbody><tr>
+<td>
+<img src="../pics/09_Models_of_Control_Devices_and_Systems_control-diagram-2.png" alt="09_Models_of_Control_Devices_and_Systems_control-diagram-2" style="width: 650px;">
+</td></tr>
+</tbody></table>
+<p>In questa versione modificata, il nostro segnale controllato <span class="math inline">\(u\)</span> può essere espresso come:</p>
+<p><span class="math display">\[
+u = ADy_r - \frac{H}{A}ADy
+\]</span></p>
+<p>Il confronto di queste due equazioni conferma l’equivalenza di entrambi gli schemi a blocchi. Le trasformazioni che abbiamo applicato per passare dallo schema iniziale a quello semplificato sono puramente simboliche, ma presentano il sistema in una maniera più digeribile. Lo facciamo perché il sistema risultante diventa più conveniente.</p>
+<p>Nota: - In quest’ultimo diagramma possiamo dire <span class="math inline">\(y_r=r\)</span> perché non esiste un elemento di riferimento esplicito. Spostando il blocco <span class="math inline">\(A\)</span> all’interno del circuito di feedback, la rappresentazione matematica sarebbe identica e potremmo dire <span class="math inline">\(y_r=r\)</span>. Nota che fisicamente potrebbe non avere alcun senso, ma le equazioni matematiche sarebbero le stesse.</p>
+<ul>
+<li>Se <span class="math inline">\(H=A\)</span> allora il segnale in uscita dalla giunzione di sommatoria diventa <span class="math inline">\(e=y_r-y\)</span>. In tutti gli altri casi è <span class="math inline">\(\hat{e}\)</span>.</li>
+</ul>
+<p><strong>Domanda popup</strong>: Perchè è fondamentale confermare l’equivalenza dei due schemi a blocchi?</p>
+<p><strong>Risposta</strong>: Confermare l’equivalenza garantisce che le nostre semplificazioni o manipolazioni non alterino inavvertitamente il comportamento del sistema. Le prestazioni e la risposta del sistema dovrebbero rimanere invariate indipendentemente dalla sua rappresentazione.</p>
+</section>
+<section id="sistema-di-feedback-unitario" class="level2">
+<h2 class="anchored" data-anchor-id="sistema-di-feedback-unitario">Sistema di feedback unitario</h2>
+<p>Un’ulteriore trasformazione può portarci a quello che viene definito “Unity Feedback System”.</p>
+<p>Quando <span class="math inline">\(H(s)\)</span> corrisponde a <span class="math inline">\(A(s)\)</span> — il che significa che la funzione di trasferimento del sensore si allinea con la funzione di trasferimento di riferimento (uno scenario che potrebbe essere progettato intenzionalmente) — lo schema a blocchi diventa più snello:</p>
+<table>
+<tbody><tr>
+<td>
+<img src="../pics/09_Models_of_Control_Devices_and_Systems_control_unity_feedback.png" alt="09_Models_of_Control_Devices_and_Systems_control_unity_feedback" style="width: 650px;">
+</td></tr>
+</tbody></table>
+<p>Questo schema a blocchi è di fondamentale importanza. Spesso possiamo adattare il sistema per allinearlo a questa rappresentazione, rendendolo particolarmente vantaggioso per considerazioni di progettazione. Per via della sua importanza, viene chiamato “sistema di feedback unitario”.</p>
+<p>Il termine “unità” qui non implica necessariamente che la funzione di trasferimento del sensore H(s)H(s) sia unità (o 1). Piuttosto, attraverso un’attenta manipolazione e in determinate condizioni (come <span class="math inline">\(H=A\)</span>), possiamo arrivare a una rappresentazione del diagramma a blocchi che sembra implicare un feedback diretto senza alcuna trasformazione. Ma ricorda, questa è solo una rappresentazione.</p>
+<p>Un malinteso comune è credere che il segnale <span class="math inline">\(y\)</span> venga restituito direttamente alla giunzione di sommatoria senza l’intervento di un sensore, o presupponendo che la funzione di trasferimento del sensore sia sempre 1. Tuttavia, questo non è necessariamente vero. Sebbene la funzione di trasferimento del sensore possa effettivamente essere 1, può anche esserci una funzione di trasferimento del sensore distinta <span class="math inline">\(H\)</span>. Selezionando giudiziosamente la funzione di trasferimento del riferimento, è possibile ottenere la struttura di feedback unitario.</p>
+</section>
+</section>
+<section id="il-diagramma-a-blocchi-del-feedback-di-progettazione" class="level1">
+<h1>Il diagramma a blocchi del feedback di progettazione</h1>
+<p>Tenendo a mente le discussioni precedenti possiamo semplificare ulteriormente il nostro diagramma a blocchi per ottenere una forma che sarà molto utile quando si progettano sistemi di controllo feedback:</p>
+<table>
+<tbody><tr>
+<td>
+<img src="../pics/09_Models_of_Control_Devices_and_Systems_design_feedback_diagram.png" alt="09_Models_of_Control_Devices_and_Systems_design_feedback_diagram" style="width: 650px;">
+</td></tr>
+</tbody></table>
+<p>All’interno di questo modello, i blocchi <span class="math inline">\(D\)</span>, <span class="math inline">\(G\)</span> e <span class="math inline">\(H\)</span> hanno una portata ampia e rappresentano gli effetti cumulativi di tutti gli elementi lungo i rispettivi percorsi. È essenziale riconoscere che questi blocchi potrebbero non rispecchiare direttamente i singoli componenti fisici. Spesso emergono da semplificazioni strategiche e riarrangiamenti delle equazioni fondamentali del sistema.</p>
+<p>Per approfondire:</p>
+<ul>
+<li><p><span class="math inline">\(D(s)\)</span> indica principalmente la funzione di trasferimento del titolare del trattamento. Anche se il controller gioca un ruolo fondamentale in questo blocco, la sua composizione potrebbe riflettere anche altri aggiustamenti del sistema.</p></li>
+<li><p><span class="math inline">\(G(s)\)</span> amalgama la dinamica sia dell’impianto che degli attuatori. Nonostante la sua natura composita, continueremo a chiamarla “Pianta” per via della sua influenza predominante.</p></li>
+<li><p><span class="math inline">\(H(s)\)</span>, invece, non si limita a rappresentare solo la funzione di trasferimento del sensore. Dato il suo ruolo più ampio, è più appropriatamente descritta come la “funzione di trasferimento del percorso di feedback”.</p></li>
+</ul>
+<p>Si noti che in questo schema a blocchi è presente solo il segnale di errore di attuazione <span class="math inline">\(\bar{e}\)</span>. Il segnale <span class="math inline">\(y_r\)</span> non è nemmeno presente in questo diagramma a blocchi. Dovrebbe essere chiaro tuttavia che quando calcoli le prestazioni totali del tuo sistema dovresti calcolare l’errore <span class="math inline">\(e = y_r - y\)</span>. Questo errore è cruciale quando si analizzano le prestazioni del sistema, anche se non fa esplicitamente parte del nostro ciclo di feedback primario.</p>
+<p><strong>Domanda popup</strong>: Cosa rappresentano i blocchi <span class="math inline">\(D\)</span>, <span class="math inline">\(G\)</span> e <span class="math inline">\(H\)</span> nel nostro nuovo diagramma a blocchi? <strong>Risposta</strong>: rappresentano effetti e relazioni cumulativi lungo i rispettivi percorsi, non necessariamente rispecchiando direttamente i singoli componenti fisici.</p>
+<section id="i-disturbi-contano" class="level2">
+<h2 class="anchored" data-anchor-id="i-disturbi-contano">I disturbi contano</h2>
+<p>Infine, un elemento cruciale da non trascurare mai è il disturbo, che rappresentiamo come <span class="math inline">\(w\)</span>.</p>
+<p>L’essenza stessa della teoria del controllo del feedback ruota attorno ai disturbi. Se i nostri sistemi non subissero disturbi, l’intero campo del controllo del feedback potrebbe non esistere. I sistemi a circuito aperto potrebbero gestire perfettamente scenari indisturbati.</p>
+<table>
+<tbody><tr>
+<td>
+<img src="../pics/09_Models_of_Control_Devices_and_Systems_design_feedback_diagram_with_noise.png?1" alt="09_Models_of_Control_Devices_and_Systems_design_feedback_diagram_with_noise" style="width: 650px;">
+</td></tr>
+</tbody></table>
+<p>Questo sarà il diagramma a blocchi di feedback che utilizzeremo principalmente.</p>
+<p>Questi diagrammi a blocchi servono a rappresentare le relazioni tra i segnali di interesse. Sono costruiti per catturare la relazione dinamica tra tutte le variabili.</p>
+<p>Quando modelli un sistema, sarai sempre in grado di ricondurre il suo modello a uno di questi diagrammi a blocchi standard.</p>
+<p><strong>Domanda popup</strong>: Perché i disturbi sono cruciali nei sistemi di controllo del feedback?</p>
+<p><strong>Risposta</strong>: i disturbi sono cambiamenti inaspettati o imprevedibili nell’ambiente o negli input di un sistema. I sistemi di controllo del feedback sono progettati per mitigare gli effetti di questi disturbi, garantendo che il sistema funzioni come desiderato nonostante questi cambiamenti imprevisti.</p>
+</section>
+</section>
+<section id="funzione-di-trasferimento-ad-anello-chiuso" class="level1">
+<h1>Funzione di trasferimento ad anello chiuso</h1>
+<p>Considerato il nostro diagramma a blocchi standard, con <span class="math inline">\(R\)</span> come input di riferimento e i blocchi <span class="math inline">\(D\)</span>, <span class="math inline">\(G\)</span>, <span class="math inline">\(N\)</span> e <span class="math inline">\(H\)</span> come definito in precedenza.</p>
+<table>
+<tbody><tr>
+<td>
+<img src="../pics/09_Models_of_Control_Devices_and_Systems_design_feedback_diagram_with_noise.png" alt="09_Models_of_Control_Devices_and_Systems_design_feedback_diagram_with_noise" style="width: 650px;">
+</td></tr>
+</tbody></table>
+<p>Ora determiniamo la funzione di trasferimento ad anello chiuso:</p>
+<p><span class="math display">\[\frac{Y(s)}{R(s)}=?\]</span></p>
+<p>Si noti che questo è un sistema a due ingressi e un’uscita. Dobbiamo applicare la <em>sovrapposizione</em> e considerare un input alla volta:</p>
+<section id="impostazione-del-disturbo-su-zero" class="level2">
+<h2 class="anchored" data-anchor-id="impostazione-del-disturbo-su-zero">Impostazione del disturbo su zero</h2>
+<p><span class="math display">\[\frac{Y(s)}{R(s)}\Big|_{w=0}=\frac{D(s)G(s)}{1+D(s)G(s)H (s)} = M(s)\]</span></p>
+<p>È importante notare che se il nostro sistema fosse invece un ciclo di feedback positivo, questa equazione vedrebbe un segno meno al denominatore.</p>
+<p>Questa è chiamata <strong>Funzione di trasferimento del riferimento</strong> perché mette in relazione il riferimento <span class="math inline">\(R\)</span> con l’output <span class="math inline">\(Y\)</span>.</p>
+</section>
+<section id="impostazione-dellingresso-di-riferimento-su-zero" class="level2">
+<h2 class="anchored" data-anchor-id="impostazione-dellingresso-di-riferimento-su-zero">Impostazione dell’ingresso di riferimento su zero</h2>
+<p>A noi interessa ora la funzione di trasferimento tra l’uscita del sistema <span class="math inline">\(Y\)</span> e l’ingresso di disturbo <span class="math inline">\(W\)</span>, rappresentata come:</p>
+<table>
+<tbody><tr>
+<td>
+<img src="../pics/09_Models_of_Control_Devices_and_Systems_design_feedback_diagram_tf_with_disturbance.png" alt="09_Models_of_Control_Devices_and_Systems_design_feedback_diagram_tf_with_disturbance" style="width: 650px;">
+</td></tr>
+</tbody></table>
+<p><span class="math display">\[
+\frac{Y(s)}{W(s)}\Grande|_{R(s)=0} = ?
+\]</span></p>
+<p>Questa funzione di trasferimento cattura efficacemente la risposta del sistema ai disturbi. È una misura di come i disturbi esterni vengono filtrati o amplificati dalle dinamiche del sistema prima di influenzare l’output.</p>
+<p>Per rendere il nostro compito più gestibile, possiamo semplificare il nostro diagramma a blocchi combinando gli elementi. Nello specifico, prendendo il segno negativo del rilevatore di errori e consolidandolo con il segno meno esistente, possiamo semplificare la nostra rappresentazione.</p>
+<table>
+<tbody><tr>
+<td>
+<img src="../pics/09_Models_of_Control_Devices_and_Systems_design_feedback_diagram_tf_with_disturbance-1.png" alt="09_Models_of_Control_Devices_and_Systems_design_feedback_diagram_tf_with_disturbance-1" style="width: 650px;">
+</td></tr>
+</tbody></table>
+<p>Da questo diagramma modificato si possono ricavare due relazioni fondamentali:</p>
+<ol type="1">
+<li><span class="math inline">\(\hat{E}(s) = -H(s)Y(s)\)</span></li>
+<li><span class="math inline">\(Y(i) = D(i)G(i)\hat{E}(i) + N(i)W(i)\)</span></li>
+</ol>
+<p>Manipolando e combinando queste equazioni, possiamo eliminare <span class="math inline">\(\hat{E}(s)\)</span> per determinare la relazione tra <span class="math inline">\(Y(s)\)</span> e <span class="math inline">\(W(s)\)</span>.</p>
+<p><span class="math display">\[
+Y(s) = -D(s)G(s)H(s)Y(s) + N(s)W(s)
+\]</span></p>
+<p>E quindi:</p>
+<p><span class="math display">\[
+\frac{Y(s)}{W(s)}\Big|_{R(s)=0} = \frac{N(s)}{1+D(s)G(s)H(s) } = M_W(s)
+\]</span></p>
+<p>Questa è chiamata <strong>Funzione di trasferimento dei disturbi</strong>.</p>
+<p>**Notare che sia nella funzione di trasferimento del riferimento che in quella di trasferimento del disturbo il denominatore è lo stesso: <span class="math inline">\(1+D(s)G(s)H(s)\)</span>.</p>
+</section>
+<section id="la-funzione-di-trasferimento-del-ciclo" class="level2">
+<h2 class="anchored" data-anchor-id="la-funzione-di-trasferimento-del-ciclo">La funzione di trasferimento del ciclo</h2>
+<p>L’espressione:</p>
+<p><span class="math display">\[
+D(s)G(s)H(s)
+\]</span></p>
+<p>è definita “funzione di trasferimento del loop”. Questo nome deriva dal fatto che rappresenta l’effetto combinato di tutte le funzioni di trasferimento presenti all’interno dell’anello di retroazione.</p>
+<p><strong>Domanda popup</strong>: Perché il denominatore è lo stesso sia per la funzione di trasferimento del riferimento che per quella del disturbo? <strong>Risposta</strong>: Il denominatore rappresenta la funzione di trasferimento dell’anello, che è il prodotto di tutte le funzioni di trasferimento nell’anello di feedback. Ciò rimane coerente, indipendentemente dall’input in esame.</p>
+</section>
+</section>
+<section id="considerazioni-conclusive-sui-diagrammi-delle-funzioni-di-trasferimento" class="level1">
+<h1>Considerazioni conclusive sui diagrammi delle funzioni di trasferimento</h1>
+<p>La nostra esplorazione delle funzioni di trasferimento ci ha fornito due equazioni critiche:</p>
+<p>La funzione di trasferimento del riferimento, <span class="math inline">\(M(s)\)</span>, che descrive la relazione tra l’output del sistema e l’input di riferimento. La funzione di trasferimento dei disturbi, <span class="math inline">\(M_W(s)\)</span>, che cattura la risposta del sistema ai disturbi esterni.</p>
+<p>Con queste funzioni di trasferimento in mano, possiamo rappresentare il nostro sistema con uno schema a blocchi più compatto:</p>
+<table>
+<tbody><tr>
+<td>
+<img src="../pics/09_Models_of_Control_Devices_and_Systems_final_block_diagram.png" alt="09_Models_of_Control_Devices_and_Systems_final_block_diagram" style="width: 450px;">
+</td></tr>
+</tbody></table>
+<p>Questa rappresentazione condensata, che è la rappresentazione equivalente dei diagrammi a blocchi standard che abbiamo visto prima, è preziosa per l’analisi del sistema poiché collega direttamente l’uscita del sistema agli ingressi di riferimento e di disturbo. Concentrandoci su queste funzioni di trasferimento, possiamo ottenere informazioni dettagliate sul comportamento, la stabilità e le prestazioni del sistema.</p>
+</section>
+<section id="riduzione-avanzata-del-diagramma-a-blocchi" class="level1">
+<h1>Riduzione avanzata del diagramma a blocchi</h1>
+<p>Abbiamo approfondito i fondamenti dei diagrammi a blocchi e le loro procedure di riduzione. Man mano che si avanza nel campo del controllo automatico, la comprensione dei diagrammi a blocchi diventa fondamentale. Queste rappresentazioni grafiche ci consentono di visualizzare sistemi complessi, rendendone l’analisi e la progettazione più intuitive.</p>
+<p>I diagrammi a blocchi sono più che semplici rappresentazioni schematiche di equazioni di sistema. Questi diagrammi offrono un passaggio per semplificare sistemi di controllo complessi. La loro utilità principale sta nell’aiutarci a comprendere il comportamento del sistema senza addentrarci in complesse equazioni matematiche.</p>
+<p>L’idea è semplice: qualsiasi sistema di controllo pratico, non importa quanto complesso, può essere ridotto a uno schema a blocchi. L’essenza di questa rappresentazione, come sottolineato in precedenza, deriva dalla sua capacità di incapsulare visivamente le equazioni del sistema.</p>
+<section id="dissezione-di-un-sistema-multi-loop" class="level2">
+<h2 class="anchored" data-anchor-id="dissezione-di-un-sistema-multi-loop">Dissezione di un sistema multi-loop</h2>
+<p>Considera una configurazione multi-loop, come presentata nel nostro esempio. Il diagramma mostra più loop, di cui il loop primario è quello in cui l’uscita controllata, <span class="math inline">\(Y\)</span>, viene restituita all’ingresso di riferimento <span class="math inline">\(R\)</span>. Questo ciclo primario è completato da numerosi circuiti di feedback minori, che rendono la struttura del sistema più complessa.</p>
+<table>
+<tbody><tr>
+<td>
+<img src="../pics/09_Models_of_Control_Devices_and_Systems_MultiLoop_System_Example.png" alt="09_Models_of_Control_Devices_and_Systems_MultiLoop_System_Example" style="width: 650px;">
+</td></tr>
+</tbody></table>
+<p>La sfida sta nel determinare la relazione tra <span class="math inline">\(Y\)</span> e <span class="math inline">\(R\)</span>. Questa è la relazione di cui ho bisogno dal punto di vista del controllo.</p>
+<p>Si noti che se ci fossero state fornite le equazioni differenziali avremmo potuto manipolarle direttamente per ottenere la relazione desiderata. In alternativa, date le equazioni possiamo scrivere lo schema a blocchi equivalente e poi manipolare lo schema a blocchi per ottenere la relazione di cui abbiamo bisogno tra qualsiasi variabile di interesse.</p>
+<p>La sfida qui è che spesso questi diagrammi non sono immediatamente riducibili a un ciclo di feedback di base. Pertanto, potremmo aver bisogno di riorganizzare le giunzioni di somma, i punti di diramazione o persino spostare i blocchi per creare cicli di feedback di base identificabili.</p>
+<section id="soluzione" class="level3">
+<h3 class="anchored" data-anchor-id="soluzione">Soluzione</h3>
+<ol type="1">
+<li><strong>Identificazione del ciclo di feedback di base:</strong></li>
+</ol>
+<p>Il nostro primo compito è trasformare il sistema multi-loop in cicli di feedback di base. Un ciclo di feedback di base fornisce una relazione diretta tra input e output, facilitando un’analisi più semplice.</p>
+<table>
+<tbody><tr>
+<td>
+<img src="../pics/09_Models_of_Control_Devices_and_Systems_basic_diagram.png" alt="09_Models_of_Control_Devices_and_Systems_basic_diagram" style="width: 450px;">
+</td></tr>
+</tbody></table>
+<p><em>Figura: Ciclo di feedback di base</em></p>
+<ol start="2" type="1">
+<li><strong>Manipolazione del diagramma a blocchi:</strong> Per ora non ci sono cicli di feedback di base nel nostro diagramma.</li>
+</ol>
+<p>Per ottenere un ciclo di feedback di base, potrebbe essere necessario spostare le giunzioni di somma o i punti di diramazione. L’obiettivo è identificare e isolare questi circuiti di base, rendendo il sistema più suscettibile di analisi.</p>
+<ol start="3" type="1">
+<li><strong>Applicazione delle formule di riduzione:</strong> Una volta identificati i cicli di feedback di base, applichiamo la formula standard:</li>
+</ol>
+<p><span class="math display">\[
+\frac{Y(s)}{R(s)}=\frac{G(s)}{1±G(s)H(s)}
+\]</span></p>
+<p>Questa formula ci consente di ridurre un ciclo di feedback di base in un unico blocco, semplificando l’intero sistema.</p>
+<ol start="4" type="1">
+<li><strong>Riduzione iterativa:</strong> Il processo è iterativo. Continuiamo a identificare i cicli di feedback di base, ad applicare la formula di riduzione e a semplificare il sistema fino a ottenere la relazione desiderata tra <span class="math inline">\(Y\)</span> e <span class="math inline">\(R\)</span>.</li>
+</ol>
+<p>La procedura non è unica.</p>
+<p>Nel nostro caso possiamo partire da:</p>
+<table>
+<tbody><tr>
+<td>
+<img src="../pics/09_Models_of_Control_Devices_and_Systems_basic_diagram.png" alt="09_Models_of_Control_Devices_and_Systems_basic_diagram" style="width: 450px;">
+</td></tr>
+</tbody></table>
+<ul>
+<li>Se l’input del blocco <span class="math inline">\(H_2\)</span> continua ad essere <span class="math inline">\(X\)</span> (o l’output del blocco <span class="math inline">\(H_2\)</span> rimane <span class="math inline">\(H_2X\)</span>, allora possiamo spostare il punto di diramazione dopo il blocco <span class="math inline">\(G_4\)</span>. Questo infatti garantisce che l’input nel resto del diagramma rimane lo stesso.</li>
+</ul>
+<p>Possiamo quindi modificare il diagramma precedente in:</p>
+<table>
+<tbody><tr>
+<td>
+<img src="../pics/09_Models_of_Control_Devices_and_Systems_MultiLoop_System_Example-1.png" alt="09_Models_of_Control_Devices_and_Systems_MultiLoop_System_Example-1" style="width: 450px;">
+</td></tr>
+</tbody></table>
+<p>o per rendere più espliciti i punti di diramazione:</p>
+<table>
+<tbody><tr>
+<td>
+<img src="../pics/09_Models_of_Control_Devices_and_Systems_MultiLoop_System_Example-2.png" alt="09_Models_of_Control_Devices_and_Systems_MultiLoop_System_Example-2" style="width: 450px;">
+</td></tr>
+</tbody></table>
+<p>Quest’ultimo diagramma facilita l’identificazione del primo ciclo di feedback di base (<strong>Notare che si tratta di un ciclo di feedback positivo</strong>).</p>
+<p>Possiamo quindi riorganizzare lo schema a blocchi come:</p>
+<table>
+<tbody><tr>
+<td>
+<img src="../pics/09_Models_of_Control_Devices_and_Systems_MultiLoop_System_Example-3.png" alt="09_Models_of_Control_Devices_and_Systems_MultiLoop_System_Example-3" style="width: 450px;">
+</td></tr>
+</tbody></table>
+<p>che, una volta ridotti i blocchi in cascata, possiamo scrivere come:</p>
+<table>
+<tbody><tr>
+<td>
+<img src="../pics/09_Models_of_Control_Devices_and_Systems_MultiLoop_System_Example-4.png" alt="09_Models_of_Control_Devices_and_Systems_MultiLoop_System_Example-4" style="width: 450px;">
+</td></tr>
+</tbody></table>
+<p>E ora è facile vedere i rimanenti cicli di feedback di base. Il primo è evidenziato in rosso.</p>
+<p>Infine otteniamo:</p>
+<table>
+<tbody><tr>
+<td>
+<img src="../pics/09_Models_of_Control_Devices_and_Systems_MultiLoop_System_Example-5.png" alt="09_Models_of_Control_Devices_and_Systems_MultiLoop_System_Example-5" style="width: 450px;">
+</td></tr>
+</tbody></table>
+<p>che possiamo ridurre ancora una volta per ottenere l’equivalente finale a ciclo chiuso:</p>
+<table>
+<tbody><tr>
+<td>
+<img src="../pics/09_Models_of_Control_Devices_and_Systems_MultiLoop_System_Example-6.png" alt="09_Models_of_Control_Devices_and_Systems_MultiLoop_System_Example-6" style="width: 450px;">
+</td></tr>
+</tbody></table>
+<p><strong>Domanda pop-up</strong>: due diversi diagrammi a blocchi possono rappresentare le stesse equazioni di sistema? <strong>Risposta</strong>: Sì, due diversi diagrammi a blocchi possono rappresentare le stesse equazioni di sistema se catturano le stesse relazioni e dinamiche.</p>
+</section>
+<section id="soluzione-alternativa" class="level3">
+<h3 class="anchored" data-anchor-id="soluzione-alternativa">Soluzione alternativa</h3>
+<p>La sequenza di riduzione non è unica. Approcci diversi potrebbero produrre lo stesso risultato. Ad esempio, lo spostamento delle giunzioni di somma può offrire un metodo alternativo di riduzione.</p>
+<table>
+<tbody><tr>
+<td>
+<img src="../pics/09_Models_of_Control_Devices_and_Systems_MultiLoop_System_Example-7.png" alt="09_Models_of_Control_Devices_and_Systems_MultiLoop_System_Example-7" style="width: 450px;">
+</td></tr>
+</tbody></table>
+<p>Per apportare questa modifica, chiamiamo il segnale che esce dal blocco <span class="math inline">\(H_1\)</span>,<span class="math inline">\(Z = H_1Y\)</span>. Poiché il segnale <span class="math inline">\(Z\)</span> arriva come input a <span class="math inline">\(G_3\)</span>, significa che se spostiamo la somma prima del blocco <span class="math inline">\(G_2\)</span>, questo blocco contribuirà ad un ulteriore guadagno di <span class="math inline">\(G_2\)</span>. Dobbiamo prenderci cura di questo guadagno per avere una relazione equivalente e dividerlo per <span class="math inline">\(G_2\)</span> nel percorso di feedback.</p>
+<table>
+<tbody><tr>
+<td>
+<img src="../pics/09_Models_of_Control_Devices_and_Systems_MultiLoop_System_Example-8.png" alt="09_Models_of_Control_Devices_and_Systems_MultiLoop_System_Example-8" style="width: 450px;">
+</td></tr>
+</tbody></table>
+<table>
+<tbody><tr>
+<td>
+<img src="../pics/09_Models_of_Control_Devices_and_Systems_MultiLoop_System_Example-9.png" alt="09_Models_of_Control_Devices_and_Systems_MultiLoop_System_Example-9" style="width: 450px;">
+</td></tr>
+</tbody></table>
+<p>o anche in modo equivalente</p>
+<table>
+<tbody><tr>
+<td>
+<img src="../pics/09_Models_of_Control_Devices_and_Systems_MultiLoop_System_Example-10.png" alt="09_Models_of_Control_Devices_and_Systems_MultiLoop_System_Example-10" style="width: 450px;">
+</td></tr>
+</tbody></table>
+<p>Possiamo farlo perché i diagrammi a blocchi non rappresentano sistemi fisici, sono una rappresentazione matematica.</p>
+<p>In conclusione, i diagrammi a blocchi offrono un potente strumento per l’analisi e la progettazione di sistemi per il controllo automatico. Rappresentando visivamente le equazioni del sistema, facilitano la comprensione, soprattutto dei sistemi complessi.</p>
+</section>
+</section>
+<section id="regole-per-la-manipolazione-del-diagramma-a-blocchi" class="level2">
+<h2 class="anchored" data-anchor-id="regole-per-la-manipolazione-del-diagramma-a-blocchi">Regole per la manipolazione del diagramma a blocchi</h2>
+<table>
+<tbody><tr>
+<td>
+<img src="../pics/09_Models_of_Control_Devices_and_Systems_Rules_For_Diagram_Manipulation.png" alt="09_Models_of_Control_Devices_and_Systems_Rules_For_Diagram_Manipulation" style="width: 650px;">
+</td></tr>
+</tbody></table>
+<hr>
+</section>
+</section>
+<section id="grafici-del-flusso-del-segnale-e-formula-del-guadagno-di-mason" class="level1">
+<h1>Grafici del flusso del segnale e formula del guadagno di Mason</h1>
+<p>Nel nostro viaggio per comprendere i sistemi complessi, spesso facciamo affidamento su ausili visivi per comprendere meglio relazioni complesse. Uno di questi strumenti è il diagramma del flusso del segnale (SFG), una rappresentazione grafica che ci aiuta a visualizzare il flusso dei segnali attraverso un sistema. Accoppiando l’SFG con la formula del guadagno di Mason, possiamo ricavare la trasmittanza complessiva (o funzione di trasferimento) di un sistema senza ricorrere ad estese manipolazioni del diagramma a blocchi.</p>
+<p>In questa sezione esamineremo più da vicino la trasformazione dai diagrammi a blocchi ai grafici del flusso del segnale e come applicare la formula del guadagno di Mason alla rappresentazione risultante.</p>
+<p>La formula del guadagno di Mason è un approccio sistematico per trovare la funzione di trasferimento di un sistema complesso rappresentato da un grafico del flusso di segnale o da un diagramma a blocchi. La formula fornisce un modo per determinare il guadagno complessivo di un sistema considerando i guadagni individuali e i circuiti all’interno del sistema. La formula del guadagno di Mason è particolarmente utile per i sistemi con più loop e percorsi che si intersecano. Torneremo su questo tra un momento. Per ora, concentriamoci sui grafici del flusso del segnale.</p>
+<section id="dai-diagrammi-a-blocchi-ai-grafici-del-flusso-dei-segnali" class="level2">
+<h2 class="anchored" data-anchor-id="dai-diagrammi-a-blocchi-ai-grafici-del-flusso-dei-segnali">Dai diagrammi a blocchi ai grafici del flusso dei segnali</h2>
+<p>Prima di approfondire le complessità della formula del guadagno di Mason, è essenziale capire come convertire un diagramma a blocchi nel corrispondente grafico del flusso del segnale. Questa trasformazione non è solo fondamentale per una migliore visualizzazione, ma facilita anche l’applicazione della formula del guadagno di Mason.</p>
+<section id="comprensione-di-nodi-e-percorsi-negli-sfg" class="level3">
+<h3 class="anchored" data-anchor-id="comprensione-di-nodi-e-percorsi-negli-sfg">Comprensione di nodi e percorsi negli SFG</h3>
+<p>In un grafico del flusso del segnale, il termine “nodo” rappresenta una variabile o un segnale, mentre le frecce o i percorsi tra i nodi rappresentano il guadagno o la trasmittanza del sistema.</p>
+<p>Analizziamo ulteriori concetti:</p>
+<ul>
+<li><strong>Nodo di input</strong>: un nodo senza segnali in entrata. Il valore di tale nodo è definito esternamente. Ad esempio, il nodo etichettato “R” nei nostri esempi precedenti.</li>
+<li><strong>Nodo di Output</strong>: Un nodo da cui non ci sono rami in uscita. È essenzialmente il punto finale o il risultato del nostro sistema.</li>
+</ul>
+</section>
+<section id="costruire-il-grafico-del-flusso-del-segnale" class="level3">
+<h3 class="anchored" data-anchor-id="costruire-il-grafico-del-flusso-del-segnale">Costruire il grafico del flusso del segnale</h3>
+<p>Dato lo schema a blocchi, proviamo a costruire il corrispondente grafico del flusso del segnale:</p>
+<ul>
+<li>Identificare il/i nodo/i di input. Nel nostro esempio, R funge da nodo di input.</li>
+<li>Traccia il percorso dall’input all’output, assicurandoti di attraversare un nodo o un ramo solo una volta. Questo è ciò che definisce un “percorso in avanti”.</li>
+<li>Contrassegnare le trasmittanze o i guadagni lungo ciascun ramo. Ad esempio, un ramo con un guadagno di <span class="math inline">\(G1\)</span> dovrebbe essere etichettato come tale.</li>
+</ul>
+<p>Prendiamo un blocco base con ingresso <span class="math inline">\(R\)</span> e uscita <span class="math inline">\(Y\)</span>, collegati tramite un sistema <span class="math inline">\(G\)</span></p>
+<table>
+<tbody><tr>
+<td>
+<img src="../pics/09_Models_of_Control_Devices_and_Systems_signal_flow_1.png" alt="09_Models_of_Control_Devices_and_Systems_signal_flow_1" style="width: 350px;">
+</td></tr>
+</tbody></table>
+<p>Dove: - <span class="math inline">\(R\)</span> è una variabile - <span class="math inline">\(Y\)</span> è una variabile - <span class="math inline">\(G\)</span> è il guadagno del sistema</p>
+<p>Possiamo costruire il grafico del flusso del segnale equivalente come:</p>
+<table>
+<tbody><tr>
+<td>
+<img src="../pics/09_Models_of_Control_Devices_and_Systems_signal_flow_2.png" alt="09_Models_of_Control_Devices_and_Systems_signal_flow_2" style="width: 350px;">
+</td></tr>
+</tbody></table>
+<p>In un grafico del flusso del segnale, <span class="math inline">\(R\)</span> e <span class="math inline">\(Y\)</span> diventano nodi e <span class="math inline">\(G\)</span> diventa una trasmittanza di ramo.</p>
+<p>Il concetto chiave nei grafici del flusso del segnale è l’idea di nodi che rappresentano variabili e rami che indicano la relazione (o guadagno) tra questi nodi.</p>
+<p>Da tenere presente che _La somma dei segnali in ingresso a un nodo fornisce il valore del nodo. Il segnale in uscita è il valore della variabile del nodo.</p>
+<p>Consideriamo un circuito di feedback in cui un segnale <span class="math inline">\(Y\)</span> viene restituito attraverso un guadagno <span class="math inline">\(H\)</span>.</p>
+<table>
+<tbody><tr>
+<td>
+<img src="../pics/09_Models_of_Control_Devices_and_Systems_signal_flow_3.png" alt="09_Models_of_Control_Devices_and_Systems_signal_flow_3" style="width: 350px;">
+</td></tr>
+</tbody></table>
+<p>Per convertirlo in un diagramma di flusso del segnale:</p>
+<ul>
+<li>Quante variabili ci sono? 4: <span class="math inline">\(R\)</span>, <span class="math inline">\(Y\)</span>, <span class="math inline">\(B\)</span>, <span class="math inline">\(\hat{E}\)</span>.</li>
+<li>Quanti guadagni ci sono? 2: <span class="math inline">\(G\)</span>, <span class="math inline">\(H\)</span></li>
+</ul>
+<p>Partiamo dalle due variabili di interesse: <span class="math inline">\(R\)</span> e <span class="math inline">\(Y\)</span> e le disegniamo come nodi.</p>
+<table>
+<tbody><tr>
+<td>
+<img src="../pics/09_Models_of_Control_Devices_and_Systems_signal_flow_feedback_loop_1.png" alt="09_Models_of_Control_Devices_and_Systems_signal_flow_3" style="width: 350px;">
+</td></tr>
+</tbody></table>
+<table>
+<tbody><tr>
+<td>
+<img src="../pics/09_Models_of_Control_Devices_and_Systems_signal_flow_feedback_loop_2.png" alt="09_Models_of_Control_Devices_and_Systems_signal_flow_3" style="width: 350px;">
+</td></tr>
+</tbody></table>
+<table>
+<tbody><tr>
+<td>
+<img src="../pics/09_Models_of_Control_Devices_and_Systems_signal_flow_feedback_loop_3.png" alt="09_Models_of_Control_Devices_and_Systems_signal_flow_3" style="width: 350px;">
+</td></tr>
+</tbody></table>
+<p>Il diagramma precedente può essere rappresentato anche esplicitando il nodo <span class="math inline">\(B\)</span> e separando i contributi <span class="math inline">\(H\)</span> e <span class="math inline">\(-1\)</span>. In questo caso è sufficiente la rappresentazione precedente per cogliere la dinamica di cui abbiamo bisogno.</p>
+<table>
+<tbody><tr>
+<td>
+<img src="../pics/09_Models_of_Control_Devices_and_Systems_signal_flow_feedback_loop_3_alternative.png" alt="09_Models_of_Control_Devices_and_Systems_signal_flow_3" style="width: 350px;">
+</td></tr>
+</tbody></table>
+<p>E infine otteniamo:</p>
+<table>
+<tbody><tr>
+<td>
+<img src="../pics/09_Models_of_Control_Devices_and_Systems_signal_flow_feedback_loop_4.png" alt="09_Models_of_Control_Devices_and_Systems_signal_flow_4" style="width: 350px;">
+</td></tr>
+</tbody></table>
+<p>Nel grafico del flusso del segnale, il nodo etichettato “R” non ha segnali in entrata. Nella nostra terminologia, un tale nodo senza rami entranti viene definito “nodo di input”.</p>
+<p>Questo perché il suo valore è definito esternamente, e quindi il valore del nodo “R” dipende da ciò che gli assegniamo.</p>
+<p>Il segnale proveniente da “R” viaggia lungo un ramo, moltiplicandosi per una trasmittanza pari a 1, prima di raggiungere il nodo successivo.</p>
+<p>Allo stesso modo, il segnale “Y” viaggia lungo il suo ramo, moltiplicandosi per una trasmittanza di <span class="math inline">\(-H\)</span>, prima di raggiungere il nodo di destinazione. Di conseguenza, il valore in questo nodo è la somma algebrica di questi due segnali.</p>
+<p>Nel frattempo, il segnale “<span class="math inline">\(\hat{E}\)</span>” viaggia lungo un altro ramo, moltiplicandosi per il guadagno “G”, prima di raggiungere la sua destinazione. Di conseguenza, il valore del nodo di output “Y” è dato da $ G $.</p>
+<p>Solo per una migliore visualizzazione, se dovessi introdurre un ramo aggiuntivo (che non è presente nello schema a blocchi originale) e etichettarlo “Y”, questa aggiunta non avrebbe alcun impatto sulle equazioni del nostro sistema. Essenzialmente, questa equazione suggerisce <span class="math inline">\(Y=Y\)</span>.</p>
+<table>
+<tbody><tr>
+<td>
+<img src="../pics/09_Models_of_Control_Devices_and_Systems_signal_flow_feedback_loop_5.png" alt="09_Models_of_Control_Devices_and_Systems_signal_flow_5" style="width: 350px;">
+</td></tr>
+</tbody></table>
+<p>Sebbene ciò possa sembrare ridondante, offre un vantaggio in termini di chiarezza. Ora possiamo definirlo un “nodo di output”. Un nodo di output è caratterizzato dall’assenza di rami in uscita, mentre un nodo di input è privo di rami in entrata. L’introduzione di questo nodo di output aiuta a delineare chiaramente l’attributo di interesse.</p>
+</section>
+</section>
+<section id="un-esempio-più-complesso" class="level2">
+<h2 class="anchored" data-anchor-id="un-esempio-più-complesso">Un esempio più complesso</h2>
+<table>
+<tbody><tr>
+<td>
+<img src="../pics/09_Models_of_Control_Devices_and_Systems_MultiLoop_System_Example.png" alt="09_Models_of_Control_Devices_and_Systems_MultiLoop_System_Example" style="width: 650px;">
+</td></tr>
+</tbody></table>
+<table>
+<tbody><tr>
+<td>
+<img src="../pics/09_Models_of_Control_Devices_and_Systems_signal_flow_complex_ex_1.png" alt="09_Models_of_Control_Devices_and_Systems_signal_flow_complex_ex_1" style="width: 350px;">
+</td>
+<td>
+<img src="../pics/09_Models_of_Control_Devices_and_Systems_signal_flow_complex_ex.png" alt="09_Models_of_Control_Devices_and_Systems_signal_flow_complex_ex" style="width: 350px;">
+</td>
+</tr>
+</tbody></table>
+<table>
+<tbody><tr>
+<td>
+<img src="../pics/09_Models_of_Control_Devices_and_Systems_signal_flow_complex_ex_2.png" alt="09_Models_of_Control_Devices_and_Systems_signal_flow_complex_ex_2" style="width: 350px;">
+</td>
+<td>
+<img src="../pics/09_Models_of_Control_Devices_and_Systems_signal_flow_complex_ex.png" alt="09_Models_of_Control_Devices_and_Systems_signal_flow_complex_ex" style="width: 350px;">
+</td>
+</tr>
+</tbody></table>
+<table>
+<tbody><tr>
+<td>
+<img src="../pics/09_Models_of_Control_Devices_and_Systems_signal_flow_complex_ex_3.png" alt="09_Models_of_Control_Devices_and_Systems_signal_flow_complex_ex_3" style="width: 350px;">
+</td>
+<td>
+<img src="../pics/09_Models_of_Control_Devices_and_Systems_signal_flow_complex_ex.png" alt="09_Models_of_Control_Devices_and_Systems_signal_flow_complex_ex" style="width: 350px;">
+</td>
+</tr>
+</tbody></table>
+<table>
+<tbody><tr>
+<td>
+<img src="../pics/09_Models_of_Control_Devices_and_Systems_signal_flow_complex_ex_4.png" alt="09_Models_of_Control_Devices_and_Systems_signal_flow_complex_ex_4" style="width: 350px;">
+</td>
+<td>
+<img src="../pics/09_Models_of_Control_Devices_and_Systems_signal_flow_complex_ex.png" alt="09_Models_of_Control_Devices_and_Systems_signal_flow_complex_ex" style="width: 350px;">
+</td>
+</tr>
+</tbody></table>
+<table>
+<tbody><tr>
+<td>
+<img src="../pics/09_Models_of_Control_Devices_and_Systems_signal_flow_complex_ex_5.png" alt="09_Models_of_Control_Devices_and_Systems_signal_flow_complex_ex_5" style="width: 350px;">
+</td>
+<td>
+<img src="../pics/09_Models_of_Control_Devices_and_Systems_signal_flow_complex_ex.png" alt="09_Models_of_Control_Devices_and_Systems_signal_flow_complex_ex" style="width: 350px;">
+</td>
+</tr>
+</tbody></table>
+<table>
+<tbody><tr>
+<td>
+<img src="../pics/09_Models_of_Control_Devices_and_Systems_signal_flow_complex_ex_6.png" alt="09_Models_of_Control_Devices_and_Systems_signal_flow_complex_ex_6" style="width: 350px;">
+</td>
+<td>
+<img src="../pics/09_Models_of_Control_Devices_and_Systems_signal_flow_complex_ex.png" alt="09_Models_of_Control_Devices_and_Systems_signal_flow_complex_ex" style="width: 350px;">
+</td>
+</tr>
+</tbody></table>
+</section>
+</section>
+<section id="presentazione-della-formula-del-guadagno-di-mason" class="level1">
+<h1>Presentazione della formula del guadagno di Mason</h1>
+<p>Con il grafico del flusso del segnale in mano, ora possiamo applicare la formula del guadagno di Mason per determinare la trasmittanza complessiva del sistema (variabile di uscita/variabile di ingresso) o la funzione di trasferimento ad anello chiuso (tutte le variabili sono state trasferite nel dominio di Laplace).</p>
+<p>La formula è data da:</p>
+<p><span class="math display">\[
+\frac{Y(s)}{R(s)} = M(s) = \frac{\sum P_k\Delta_k}{\Delta}
+\]</span></p>
+<p>Dove: - <span class="math inline">\(M(s)\)</span> rappresenta la trasmittanza complessiva o la funzione di trasferimento ad anello chiuso.</p>
+<p>Entriamo nei dettagli della formula:</p>
+<section id="comprendere-large-delta" class="level4">
+<h4 class="anchored" data-anchor-id="comprendere-large-delta">Comprendere <span class="math inline">\(\large \Delta\)</span></h4>
+<ul>
+<li><span class="math inline">\(\Delta\)</span> = 1−(somma dei guadagni di tutti i cicli indipendenti) + (somma dei prodotti dei guadagni di coppie di cicli non toccanti) − (somma dei prodotti dei guadagni di triplette di cicli non toccanti) + …</li>
+</ul>
+<p>È fondamentale comprendere il concetto di: - “<strong>Loop</strong>”. Un percorso chiuso in cui un nodo o un ramo viene attraversato una e una sola volta. In altre parole, partendo da qualsiasi punto del percorso, se si seguono le frecce o le direzioni indicate, si dovrebbe ritornare al punto di partenza senza ripercorrere alcuna parte del percorso né rivisitare alcun nodo o ramo. Per esempio:</p>
+<table>
+<tbody><tr>
+<td>
+<img src="../pics/09_Models_of_Control_Devices_and_Systems_signal_flow_complex_ex_loop.png" alt="09_Models_of_Control_Devices_and_Systems_signal_flow_complex_ex_loop" style="width: 450px;">
+</td>
+</tr>
+</tbody></table>
+<p>Alcuni punti chiave da notare sui loop:</p>
+<ol type="1">
+<li>La direzione è importante: la traversata deve seguire rigorosamente la direzione indicata dalle frecce nell’SFG.</li>
+<li>Nessuna rivisitazione: nessun nodo o ramo deve essere rivisitato o ritracciato nel ciclo.</li>
+<li>Guadagno del loop: è il prodotto di tutte le trasmittanze (o guadagni) dei rami che costituiscono il loop. Ad esempio, il guadagno del loop, per il loop evidenziato in rosso sopra, è: <span class="math inline">\(G_2\times G_3\times -H_2\)</span></li>
+</ol>
+<ul>
+<li>“<strong>Loop indipendenti</strong>”: I loop indipendenti sono loop in cui ogni loop ha almeno qualcosa (un nodo o un ramo) diverso dagli altri loop. Se stai considerando <span class="math inline">\(X\)</span> loop come indipendenti, quindi tutti questi loop dovrebbero avere qualche elemento che li differenzia dagli altri loop nel set. Quando si identifica un insieme di loop indipendenti in un grafico del flusso del segnale, ogni loop in quell’insieme dovrebbe avere almeno un nodo o ramo univoco che non sia condiviso con nessun altro loop in quell’insieme.</li>
+</ul>
+<p>Ad esempio, nel nostro grafico del flusso del segnale ci sono tre cicli indipendenti. Hanno almeno un nodo o un ramo diverso.</p>
+<ul>
+<li>“<strong>Anelli non toccanti.</strong>” Due anelli sono considerati non toccanti se non condividono alcun nodo o ramo comune. Questa distinzione è fondamentale quando si applica la formula del guadagno di Mason.</li>
+</ul>
+</section>
+<section id="capire-p_k" class="level4">
+<h4 class="anchored" data-anchor-id="capire-p_k">Capire <span class="math inline">\(P_k\)</span></h4>
+<ul>
+<li><span class="math inline">\(P_k\)</span> indica il guadagno del <span class="math inline">\(k\)</span>-esimo percorso in avanti.</li>
+<li><span class="math inline">\(k\)</span> è il numero di percorsi diretti.</li>
+</ul>
+<p>Ad esempio, <span class="math inline">\(P_1\)</span> è il guadagno del primo percorso in avanti. Un percorso in avanti è il percorso che porta dal nodo di input al nodo di output.</p>
+<table>
+<tbody><tr>
+<td>
+<img src="../pics/09_Models_of_Control_Devices_and_Systems_signal_flow_complex_ex_forward_path.png" alt="09_Models_of_Control_Devices_and_Systems_signal_flow_complex_ex_forward_path" style="width: 450px;">
+</td>
+</tr>
+</tbody></table>
+<p>In questo esempio, esiste un solo modo per viaggiare da <span class="math inline">\(R\)</span> a <span class="math inline">\(Y\)</span>. Non esiste un percorso alternativo in avanti e quindi esiste uno e solo <span class="math inline">\(P_1\)</span>.</p>
+<p>Il guadagno è quindi: $P_1 = G_1 G_2 G_3 G_4 $</p>
+</section>
+<section id="comprendere-delta_k" class="level4">
+<h4 class="anchored" data-anchor-id="comprendere-delta_k">Comprendere <span class="math inline">\(\Delta_k\)</span></h4>
+<p><span class="math inline">\(\Delta_k\)</span> è il valore di <span class="math inline">\(\Delta\)</span> quando calcolato per il sistema <em>escludendo</em> (“non toccando”) il <span class="math inline">\(k\)</span>-esimo percorso in avanti. In termini più semplici, <span class="math inline">\(\Delta_k\)</span> viene calcolato utilizzando la stessa formula di <span class="math inline">\(\Delta\)</span> ma ignorando tutti i cicli che toccano o si intersecano con il percorso in avanti <span class="math inline">\(k\)</span>-esimo.</p>
+<p>Per spiegare ulteriormente:</p>
+<ul>
+<li><p><strong>Percorso in avanti</strong>: Un percorso in avanti è un attraversamento dal nodo di input al nodo di output nella direzione delle frecce senza alcuna ripetizione di nodi o rami. Il k-esimo percorso in avanti si riferisce a uno specifico percorso in avanti su cui ci stiamo concentrando.</p></li>
+<li><p><strong>Non toccare il k-esimo percorso in avanti</strong>: Ciò significa che nel calcolo di <span class="math inline">\(\Delta_k\)</span>, escludiamo tutti i loop che hanno un nodo o un ramo in comune con il k-esimo percorso in avanti.</p></li>
+</ul>
+<p>Usiamo la stessa definizione che abbiamo dato per <span class="math inline">\(\Delta\)</span> ma tutti i termini non devono “toccare” il <span class="math inline">\(k-\)</span>esimo percorso di andata, cioè non hanno nulla in comune (ramo o nodo) con $k- $esimo percorso in avanti.</p>
+<p>Per esempio:</p>
+<p><span class="math inline">\(\Delta_1\)</span> = 1 - (somma dei guadagni di tutti i loop indipendenti <strong>che non toccano il 1° percorso in avanti</strong>) + (somma dei prodotti dei guadagni di coppie di loop che non si toccano <strong>che non toccano il 1° percorso in avanti</strong>) − (somma dei prodotti di guadagno di triplette di anelli che non si toccano <strong>non toccano il primo percorso in avanti</strong>) + …</p>
+<p>Applichiamo tutto questo al grafico del flusso del segnale:</p>
+<table>
+<tbody><tr>
+<td>
+<img src="../pics/09_Models_of_Control_Devices_and_Systems_signal_flow_complex_ex_mason_formula.png" alt="09_Models_of_Control_Devices_and_Systems_signal_flow_complex_ex_mason_formula" style="width: 450px;">
+</td>
+</tr>
+</tbody></table>
+<ul>
+<li>Prima di tutto dobbiamo identificare il valore di <span class="math inline">\(k\)</span>, che in questo caso è 1. Un nodo o un ramo infatti devono essere attraversati una e una sola volta.</li>
+</ul>
+<p><span class="math display">\[
+\frac{Y(s)}{R(s)} = M(s) = \frac{\sum P_k\Delta_k}{\Delta} = \frac{P_1\Delta_1}{\Delta}
+\]</span></p>
+<ul>
+<li><span class="math inline">\(\Delta\)</span> = 1−(somma dei guadagni di tutti i cicli indipendenti) + (somma dei prodotti dei guadagni di coppie di cicli non toccanti) − (somma dei prodotti dei guadagni di triplette di cicli non toccanti) + …</li>
+</ul>
+<p><span class="math inline">\(\Delta = 1 − \Big[ \Big( -G_2G_3H_2 \Big) + \Big(G_3G_4H_1 \Big) + \Big(-G_1G_2G_3G_4H_3 \Big)\Big]\)</span></p>
+<p>Si noti che non ci sono coppie di anelli che non si toccano. Almeno un nodo o un ramo è comune a tutti i circuiti. Poiché non ci sono coppie, non ci sono terzine, ecc.</p>
+<p>-<span class="math inline">\(\Delta_1\)</span></p>
+<p><span class="math inline">\(\Delta_1=1\)</span>.</p>
+<p>Tutti i loop hanno qualcosa in comune con il percorso in avanti.</p>
+<p>-<span class="math inline">\(P_1\)</span></p>
+<p>$P_1 = SOL_1 SOL_2 SOL_3 SOL_4 $</p>
+<p>E abbiamo tutto ciò di cui abbiamo bisogno per scrivere la funzione di trasferimento ad anello chiuso complessiva sul sistema.</p>
+</section>
+<section id="esempio" class="level3">
+<h3 class="anchored" data-anchor-id="esempio">Esempio</h3>
+<table>
+<tbody><tr>
+<td>
+<img src="../pics/09_Models_of_Control_Devices_and_Systems_signal_flow_complex_ex1.png" alt="09_Models_of_Control_Devices_and_Systems_signal_flow_complex_ex1" style="width: 550px;">
+</td>
+</tr>
+</tbody></table>
+<p><span class="math display">\[
+\frac{Y(s)}{R(s)} = M(s) = \frac{\sum P_k\Delta_k}{\Delta}
+\]</span></p>
+<p><span class="math display">\[k=2\]</span></p>
+<table>
+<tbody><tr>
+<td>
+<img src="../pics/09_Models_of_Control_Devices_and_Systems_signal_flow_complex_ex1_1.png" alt="09_Models_of_Control_Devices_and_Systems_signal_flow_complex_ex1_1" style="width: 550px;">
+</td>
+</tr>
+</tbody></table>
+<p><span class="math inline">\(P_1 = SOL_{12}sol_{23}sol_{34}sol_{45}\)</span></p>
+<p><span class="math inline">\(P_2 = SOL_{12}sol_{23}sol_{35}\)</span></p>
+<p>Tieni presente che <span class="math inline">\(G_{44}\)</span> è un ciclo chiuso, quindi non può essere incluso.</p>
+<p>Ci sono 5 cicli:</p>
+<table>
+<tbody><tr>
+<td>
+<img src="../pics/09_Models_of_Control_Devices_and_Systems_signal_flow_complex_ex1_2.png" alt="09_Models_of_Control_Devices_and_Systems_signal_flow_complex_ex1_2" style="width: 550px;">
+</td>
+</tr>
+</tbody></table>
+<p>E possiamo calcolare i guadagni di loop per questi loop.</p>
+<p>Tieni presente che <span class="math inline">\(G_{34},G_{45},G_{35}\)</span> non è un ciclo perché la direzione è importante!.</p>
+<p>Ci sono due paia di anelli non toccanti.</p>
+<p>Il primo è:</p>
+<table>
+<tbody><tr>
+<td>
+<img src="../pics/09_Models_of_Control_Devices_and_Systems_signal_flow_complex_ex1_3.png" alt="09_Models_of_Control_Devices_and_Systems_signal_flow_complex_ex1_3" style="width: 550px;">
+</td>
+</tr>
+</tbody></table>
+<p>E il suo guadagno è: <span class="math inline">\(G_{23}G_{32}G_{44}\)</span>.</p>
+Il secondo è:
+<table>
+<tbody><tr>
+<td>
+<img src="../pics/09_Models_of_Control_Devices_and_Systems_signal_flow_complex_ex1_4.png" alt="09_Models_of_Control_Devices_and_Systems_signal_flow_complex_ex1_4" style="width: 550px;">
+</td>
+</tr>
+</tbody></table>
+<p>E il suo guadagno è: <span class="math inline">\(G_{23}G_{35}G_{52}\)</span>.</p>
+<p>E dobbiamo riassumerli nella formula <span class="math inline">\(\Delta\)</span></p>
+<p>Nessuna terzina.</p>
+<p>Finalmente: - <span class="math inline">\(\Delta_1 = 1\)</span> perché tutti i loop toccano il percorso in avanti. - <span class="math inline">\(\Delta_2 = 1-G_{44}\)</span> perché è l’unico loop che non tocca il <strong>2°</strong> percorso in avanti.</p>
+<p>Abbiamo tutti gli elementi per calcolare la formula del guadagno di Mason e ottenere la funzione di trasferimento ad anello chiuso.</p>
+</section>
+<section id="cosè-il-self-loop" class="level3">
+<h3 class="anchored" data-anchor-id="cosè-il-self-loop">Cos’è il self loop?</h3>
+<p>Un self-loop, nel contesto dei grafici del flusso del segnale, si riferisce a un loop di feedback in cui un segnale o una variabile si influenza direttamente, spesso attraverso qualche trasformazione. In sostanza, una parte dell’output viene restituita direttamente al proprio input.</p>
+Il secondo è:
+<table>
+<tbody><tr>
+<td>
+<img src="../pics/09_Models_of_Control_Devices_and_Systems_signal_flow_complex_ex1_5.png" alt="09_Models_of_Control_Devices_and_Systems_signal_flow_complex_ex1_5" style="width: 550px;">
+</td>
+</tr>
+</tbody></table>
+<p>Analizziamolo:</p>
+<ul>
+<li>Hai un blocco (o sistema) con un input e un output.</li>
+<li>L’uscita viene restituita all’ingresso tramite un sistema di feedback o guadagno.</li>
+<li>All’ingresso è presente una giunzione di somma che combina l’ingresso originale con il feedback dall’uscita.</li>
+</ul>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/andreamunafo\.github\.io\/principles-of-automatic-controls");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/andreamunafo/principles-of-automatic-controls/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
